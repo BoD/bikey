@@ -20,7 +20,7 @@ public class RideListActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.session_list, menu);
+        getMenuInflater().inflate(R.menu.ride_list, menu);
         return true;
     }
 

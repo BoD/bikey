@@ -6,10 +6,13 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.backend.provider.RideColumns;
@@ -18,13 +21,14 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 
 public class RideEditActivity extends FragmentActivity {
-    private EditText edtName;
+    private EditText mEdtName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_edit);
-        edtName = (EditText) findViewById(R.id.edtName);
+        mEdtName = (EditText) findViewById(R.id.edtName);
+        mEdtName.setOnEditorActionListener(mNameOnEditorActionListener);
         setupActionBar();
     }
 
@@ -41,30 +45,34 @@ public class RideEditActivity extends FragmentActivity {
         btnDiscard.setOnClickListener(mDiscardOnClickListener);
     }
 
+    private void createRide() {
+        new TaskFragment(new Task<RideEditActivity>() {
+            private Uri mCreatedRideUri;
+
+            @Override
+            protected void doInBackground() throws Exception {
+                String name = getActivity().mEdtName.getText().toString().trim();
+                ContentValues values = new ContentValues(3);
+                values.put(RideColumns.CREATED_DATE, System.currentTimeMillis());
+                if (!name.isEmpty()) {
+                    values.put(RideColumns.NAME, name);
+                }
+                values.put(RideColumns.STATE, RideState.CREATED.getValue());
+                mCreatedRideUri = getContentResolver().insert(RideColumns.CONTENT_URI, values);
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                setResult(RESULT_OK, new Intent(null, mCreatedRideUri));
+                getActivity().finish();
+            }
+        }).execute(getSupportFragmentManager());
+    }
+
     private OnClickListener mDoneOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            new TaskFragment(new Task<RideEditActivity>() {
-                private Uri mCreatedRideUri;
-
-                @Override
-                protected void doInBackground() throws Exception {
-                    String name = getActivity().edtName.getText().toString().trim();
-                    ContentValues values = new ContentValues(3);
-                    values.put(RideColumns.CREATED_DATE, System.currentTimeMillis());
-                    if (!name.isEmpty()) {
-                        values.put(RideColumns.NAME, name);
-                    }
-                    values.put(RideColumns.STATE, RideState.CREATED.getValue());
-                    mCreatedRideUri = getContentResolver().insert(RideColumns.CONTENT_URI, values);
-                }
-
-                @Override
-                protected void onPostExecuteOk() {
-                    setResult(RESULT_OK, new Intent(null, mCreatedRideUri));
-                    getActivity().finish();
-                }
-            }).execute(getSupportFragmentManager());
+            createRide();
         }
     };
 
@@ -72,6 +80,14 @@ public class RideEditActivity extends FragmentActivity {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    };
+
+    private OnEditorActionListener mNameOnEditorActionListener = new OnEditorActionListener() {
+        @Override
+        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            createRide();
+            return true;
         }
     };
 }

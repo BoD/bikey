@@ -17,7 +17,8 @@ public class RideAdapter extends ResourceCursorAdapter {
     private java.text.DateFormat mTimeFormat;
 
     public RideAdapter(Context context) {
-        super(context, android.R.layout.simple_list_item_2, null, 0);
+        //        super(context, android.R.layout.simple_list_item_2, null, 0);
+        super(context, android.R.layout.simple_list_item_activated_2, null, 0);
         mDateFormat = DateFormat.getMediumDateFormat(context);
         mTimeFormat = DateFormat.getTimeFormat(context);
     }

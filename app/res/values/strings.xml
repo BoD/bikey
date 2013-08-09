@@ -15,7 +15,13 @@
     <string name="ride_list_title">Rides</string>
     <string name="ride_list_action_add">New ride</string>
     <string name="ride_list_action_settings">Settings</string>
+    <string name="ride_list_action_delete">Delete</string>
     <string name="ride_edit_edtName_hint">Ride name (optional)</string>
     <string name="ride_list_empty">No rides</string>
+
+    <plurals name="ride_list_cab_subtitle">
+        <item quantity="one">%1$d ride selected</item>
+        <item quantity="other">%1$d rides selected</item>
+    </plurals>
 
 </resources>

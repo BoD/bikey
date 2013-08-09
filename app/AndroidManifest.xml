@@ -47,7 +47,9 @@
         </activity>
 
         <!-- Session edit -->
-        <activity android:name="org.jraf.android.bike.app.ride.edit.RideEditActivity" />
+        <activity
+            android:name="org.jraf.android.bike.app.ride.edit.RideEditActivity"
+            android:windowSoftInputMode="stateVisible" />
 
         <!-- Hud -->
         <activity

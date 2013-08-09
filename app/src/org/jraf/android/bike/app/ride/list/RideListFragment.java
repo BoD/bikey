@@ -1,11 +1,11 @@
 package org.jraf.android.bike.app.ride.list;
 
-import android.app.ListFragment;
-import android.app.LoaderManager.LoaderCallbacks;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.support.v4.app.LoaderManager.LoaderCallbacks;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,9 +23,11 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
     private RideAdapter mAdapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         mAdapter = new RideAdapter(getActivity());
+        setListAdapter(mAdapter);
+        setListShown(false);
         getLoaderManager().initLoader(0, null, this);
     }
 
@@ -38,6 +40,16 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
             @Override
+            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+                mode.setTitle(R.string.ride_list_title);
+                int quantity = getListView().getCheckedItemCount();
+                mode.setSubtitle(getResources().getQuantityString(R.plurals.ride_list_cab_subtitle, quantity, quantity));
+                MenuInflater inflater = mode.getMenuInflater();
+                inflater.inflate(R.menu.ride_list_contextual, menu);
+                return true;
+            }
+
+            @Override
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 int quantity = getListView().getCheckedItemCount();
                 mode.setSubtitle(getResources().getQuantityString(R.plurals.ride_list_cab_subtitle, quantity, quantity));
@@ -45,29 +57,17 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-                // Respond to clicks on the actions in the CAB
                 switch (item.getItemId()) {
                     case R.id.action_delete:
-                        //TODO
-                        mode.finish(); // Action picked, so close the CAB
+                        ((RideListActivity) getActivity()).showDeleteDialog(getListView().getCheckedItemIds());
+                        mode.finish();
                         return true;
                 }
                 return false;
             }
 
             @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                mode.setTitle(R.string.ride_list_title);
-                MenuInflater inflater = mode.getMenuInflater();
-                inflater.inflate(R.menu.ride_list_contextual, menu);
-                return true;
-            }
-
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-                // Here you can make any necessary updates to the activity when
-                // the CAB is removed. By default, selected items are deselected/unchecked.
-            }
+            public void onDestroyActionMode(ActionMode mode) {}
 
             @Override
             public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
@@ -93,8 +93,12 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if (getListAdapter() == null) setListAdapter(mAdapter);
         mAdapter.swapCursor(data);
+        if (isResumed()) {
+            setListShown(true);
+        } else {
+            setListShownNoAnimation(true);
+        }
     }
 
     @Override

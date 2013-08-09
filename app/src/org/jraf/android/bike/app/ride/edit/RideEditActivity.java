@@ -1,7 +1,6 @@
 package org.jraf.android.bike.app.ride.edit;
 
 import android.app.ActionBar;
-import android.content.ContentValues;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -15,8 +14,7 @@ import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
 import org.jraf.android.bike.R;
-import org.jraf.android.bike.backend.provider.RideColumns;
-import org.jraf.android.bike.backend.provider.RideState;
+import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 
@@ -52,13 +50,7 @@ public class RideEditActivity extends FragmentActivity {
             @Override
             protected void doInBackground() throws Exception {
                 String name = getActivity().mEdtName.getText().toString().trim();
-                ContentValues values = new ContentValues(3);
-                values.put(RideColumns.CREATED_DATE, System.currentTimeMillis());
-                if (!name.isEmpty()) {
-                    values.put(RideColumns.NAME, name);
-                }
-                values.put(RideColumns.STATE, RideState.CREATED.getValue());
-                mCreatedRideUri = getContentResolver().insert(RideColumns.CONTENT_URI, values);
+                mCreatedRideUri = RideManager.get().create(name);
             }
 
             @Override

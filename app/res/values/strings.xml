@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">bike</string>
+
+    <!-- Common -->
+    <string name="common_done">Done</string>
+    <string name="common_discard">Discard</string>
+
+    <!-- Service -->
+    <string name="service_notification_ticker">Ongoing ride</string>
+    <string name="service_notification_text">Ongoing ride</string>
+
+    <!-- Ride list -->
+    <string name="ride_list_title">Rides</string>
+    <string name="ride_list_action_add">New ride</string>
+    <string name="ride_list_action_settings">Settings</string>
+    <string name="ride_edit_edtName_hint">Ride name (optional)</string>
+    <string name="ride_list_empty">No rides</string>
+
+</resources>

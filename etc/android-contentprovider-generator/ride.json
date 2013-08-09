@@ -1,0 +1,28 @@
+{
+	"fields": [
+		{
+			"name": "name",
+			"type": "text"
+		},
+		{
+			"name": "created_date",
+			"type": "integer"
+		},
+		{
+			"name": "state",
+			"type": "integer"
+		},
+		{
+			"name": "start_date",
+			"type": "integer"
+		},
+		{
+			"name": "duration",
+			"type": "integer"
+		},
+		{
+			"name": "distance",
+			"type": "float"
+		},
+	],
+}

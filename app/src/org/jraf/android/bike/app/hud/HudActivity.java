@@ -1,13 +1,13 @@
 package org.jraf.android.bike.app.hud;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,15 +24,19 @@ import org.jraf.android.bike.backend.DataCollectingService;
 import org.jraf.android.bike.backend.location.LocationManager;
 import org.jraf.android.bike.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bike.backend.location.Speedometer;
+import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.bike.util.UnitUtil;
 import org.jraf.android.util.Log;
+import org.jraf.android.util.async.Task;
+import org.jraf.android.util.async.TaskFragment;
 
 
-public class HudActivity extends Activity {
+public class HudActivity extends FragmentActivity {
     private Handler mHandler = new Handler();
 
     private TextView mTxtValue;
     private ImageView mImgGpsStatus;
+    private ToggleButton mTogRecording;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
@@ -48,12 +52,34 @@ public class HudActivity extends Activity {
 
         mTxtValue = (TextView) findViewById(R.id.txtValue);
         mTxtValue.setOnClickListener(mValueOnClickListener);
-        ((ToggleButton) findViewById(R.id.togRecording)).setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
+        mTogRecording = (ToggleButton) findViewById(R.id.togRecording);
+        mTogRecording.setEnabled(false);
+        toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setupNavigationBarHiding();
         }
+    }
+
+    private void toggleRecordingIfActive() {
+        new TaskFragment(new Task<HudActivity>() {
+            private Uri mActiveRideUri;
+
+            @Override
+            protected void doInBackground() throws Throwable {
+                mActiveRideUri = RideManager.get().getActiveRide();
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                if (getActivity().mRideUri.equals(mActiveRideUri)) {
+                    getActivity().mTogRecording.setChecked(true);
+                }
+                getActivity().mTogRecording.setEnabled(true);
+                getActivity().mTogRecording.setOnCheckedChangeListener(getActivity().mRecordingOnCheckedChangeListener);
+            }
+        }).execute(getSupportFragmentManager());
     }
 
     @Override
@@ -174,5 +200,4 @@ public class HudActivity extends Activity {
             mTxtValue.setEnabled(active);
         }
     };
-
 }

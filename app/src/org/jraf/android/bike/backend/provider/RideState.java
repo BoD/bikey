@@ -29,6 +29,10 @@ public enum RideState {
         return mValue;
     }
 
+    public String getValueAsString() {
+        return String.valueOf(mValue);
+    }
+
     public static RideState from(int value) {
         for (RideState rideState : values()) {
             if (rideState.mValue == value) return rideState;

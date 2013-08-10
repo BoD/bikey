@@ -33,7 +33,7 @@ public class LocationManager {
         return INSTANCE;
     }
 
-    private Context mContext;
+    private final Context mContext;
     private Set<LocationListener> mLocationListeners = new HashSet<LocationListener>(3);
     private Set<StatusListener> mStatusListeners = new HashSet<StatusListener>(3);
     private LocationClient mLocationClient;

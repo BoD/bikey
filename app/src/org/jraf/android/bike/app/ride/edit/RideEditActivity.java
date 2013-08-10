@@ -48,7 +48,7 @@ public class RideEditActivity extends FragmentActivity {
             private Uri mCreatedRideUri;
 
             @Override
-            protected void doInBackground() throws Exception {
+            protected void doInBackground() throws Throwable {
                 String name = getActivity().mEdtName.getText().toString().trim();
                 mCreatedRideUri = RideManager.get().create(name);
             }

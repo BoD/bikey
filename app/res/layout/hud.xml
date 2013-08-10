@@ -7,13 +7,20 @@
 
     <LinearLayout
         android:id="@+id/conLeftPanel"
-        android:layout_width="wrap_content"
+        android:layout_width="64dp"
         android:layout_height="match_parent"
         android:orientation="vertical" >
 
+        <ImageView
+            android:id="@+id/imgGpsStatus"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:padding="4dp"
+            android:src="#F00" />
+
         <ToggleButton
             android:id="@+id/togRecording"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textOff="REC"
             android:textOn="REC" />
@@ -25,7 +32,7 @@
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/conLeftPanel"
         android:gravity="center"
-        android:text="25.2"
+        android:text="0"
         android:textSize="280sp"
         android:textStyle="bold" />
 

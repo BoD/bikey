@@ -6,6 +6,7 @@ import java.util.Set;
 import android.content.Context;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 
 import org.jraf.android.bike.app.Application;
 import org.jraf.android.util.Log;
@@ -18,35 +19,43 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 
 public class LocationManager {
+    public static interface StatusListener {
+        void onStatusChanged(boolean active);
+    }
+
     private static final LocationManager INSTANCE = new LocationManager();
 
     private static final boolean DEBUG_USE_DEVICE_GPS = true;
-    private static final int INTERVAL_LOC_REQUEST = 1000;
+    private static final int INTERVAL_LOC_REQUEST = 2000;
 
     public static LocationManager get() {
         return INSTANCE;
     }
 
     private Context mContext;
-    private Set<LocationListener> mListeners = new HashSet<LocationListener>(3);
+    private Set<LocationListener> mLocationListeners = new HashSet<LocationListener>(3);
+    private Set<StatusListener> mStatusListeners = new HashSet<StatusListener>(3);
     private LocationClient mLocationClient;
+    protected long mLastFixDate;
+    private Handler mHandler;
+    private boolean mActive = false;
 
     private LocationManager() {
         mContext = Application.getApplication();
     }
 
     public void addLocationListener(LocationListener listener) {
-        mListeners.add(listener);
+        mLocationListeners.add(listener);
         onListenersUpdated();
     }
 
     public void removeLocationListener(LocationListener listener) {
-        mListeners.remove(listener);
+        mLocationListeners.remove(listener);
         onListenersUpdated();
     }
 
     private void onListenersUpdated() {
-        if (mListeners.size() == 0) {
+        if (mLocationListeners.size() == 0) {
             Log.d("No more interested listeners, stop location listener");
             stopLocationListener();
         } else {
@@ -56,12 +65,13 @@ public class LocationManager {
 
     private void startLocationListener() {
         Log.d();
-        // If already connected (or connecting) do not do anything
-        if (mLocationClient != null && (mLocationClient.isConnected() || mLocationClient.isConnecting())) return;
         if (DEBUG_USE_DEVICE_GPS) {
             android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(mGpsLocationListener);
             locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
         } else {
+            // If already connected (or connecting) do not do anything
+            if (mLocationClient != null && (mLocationClient.isConnected() || mLocationClient.isConnecting())) return;
             mLocationClient = new LocationClient(mContext, mLocationOnConnectionCallbacks, mLocationOnConnectionFailedListener);
             mLocationClient.connect();
         }
@@ -69,10 +79,15 @@ public class LocationManager {
 
     private void stopLocationListener() {
         Log.d();
-        if (mLocationClient == null) return;
-        mLocationClient.removeLocationUpdates(mLocationListener);
-        if (mLocationClient.isConnected()) mLocationClient.disconnect();
-        mLocationClient = null;
+        if (DEBUG_USE_DEVICE_GPS) {
+            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(mGpsLocationListener);
+        } else {
+            if (mLocationClient == null) return;
+            mLocationClient.removeLocationUpdates(mLocationListener);
+            if (mLocationClient.isConnected()) mLocationClient.disconnect();
+            mLocationClient = null;
+        }
     }
 
     private ConnectionCallbacks mLocationOnConnectionCallbacks = new ConnectionCallbacks() {
@@ -117,7 +132,6 @@ public class LocationManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.d("location=" + location);
             mLocationListener.onLocationChanged(location);
         }
     };
@@ -127,14 +141,57 @@ public class LocationManager {
         public void onLocationChanged(Location location) {
             Log.d("location=" + location);
 
+            mLastFixDate = System.currentTimeMillis();
+
             int latE6 = (int) (location.getLatitude() * 1E6);
             int lonE6 = (int) (location.getLongitude() * 1E6);
             Log.d("location.hasSpeed=" + location.hasSpeed());
 
             // Dispatch to listeners
-            for (LocationListener listener : mListeners) {
+            for (LocationListener listener : mLocationListeners) {
                 listener.onLocationChanged(location);
+            }
+
+            // We just received a fix so we're active
+            setActive(true);
+
+            // Schedule to check if we're still active
+            getHandler().removeCallbacks(mCheckForActiveRunnable);
+            getHandler().postDelayed(mCheckForActiveRunnable, INTERVAL_LOC_REQUEST * 3);
+        }
+    };
+
+    private Handler getHandler() {
+        if (mHandler == null) {
+            mHandler = new Handler();
+        }
+        return mHandler;
+    }
+
+    protected Runnable mCheckForActiveRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (System.currentTimeMillis() - mLastFixDate >= INTERVAL_LOC_REQUEST * 3) {
+                setActive(false);
             }
         }
     };
+
+    public void addStatusListener(StatusListener listener) {
+        mStatusListeners.add(listener);
+    }
+
+    public void removeStatusListener(StatusListener listener) {
+        mStatusListeners.remove(listener);
+    }
+
+    protected void setActive(boolean active) {
+        if (mActive != active) {
+            // Dispatch the change
+            for (StatusListener statusListener : mStatusListeners) {
+                statusListener.onStatusChanged(active);
+            }
+        }
+        mActive = active;
+    }
 }

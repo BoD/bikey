@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import org.jraf.android.bike.R;
+import org.jraf.android.bike.app.hud.HudActivity;
 import org.jraf.android.bike.app.ride.edit.RideEditActivity;
 import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.dialog.AlertDialogFragment;
@@ -62,4 +63,13 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
 
     @Override
     public void onClickNegative(int tag, Object payload) {}
+
+
+    /*
+     * Ride selected.
+     */
+
+    public void onRideSelected(long id) {
+        startActivity(new Intent(this, HudActivity.class));
+    }
 }

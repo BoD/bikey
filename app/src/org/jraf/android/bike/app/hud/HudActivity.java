@@ -3,6 +3,7 @@ package org.jraf.android.bike.app.hud;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -11,16 +12,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.WindowManager;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.backend.DataCollectingService;
+import org.jraf.android.bike.backend.location.LocationManager;
+import org.jraf.android.bike.backend.location.Speedometer;
+import org.jraf.android.bike.util.UnitUtil;
 import org.jraf.android.util.Log;
 
 
 public class HudActivity extends Activity {
     private Handler mHandler = new Handler();
 
-    protected boolean mStarted = false;
+    private TextView mTxtValue;
+
     private boolean mNavigationBarHiding = false;
 
     @Override
@@ -28,13 +37,27 @@ public class HudActivity extends Activity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// TODO only if setting says so
 
-        setContentView(R.layout.main);
+        setContentView(R.layout.hud);
 
-        findViewById(R.id.txtValue).setOnClickListener(mOnClickListener);
+        mTxtValue = (TextView) findViewById(R.id.txtValue);
+        mTxtValue.setOnClickListener(mValueOnClickListener);
+        ((ToggleButton) findViewById(R.id.togRecording)).setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setupNavigationBarHiding();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocationManager.get().addLocationListener(mSpeedometer);
+    }
+
+    @Override
+    protected void onPause() {
+        LocationManager.get().removeLocationListener(mSpeedometer);
+        super.onPause();
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -96,17 +119,30 @@ public class HudActivity extends Activity {
         findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
-    private OnClickListener mOnClickListener = new OnClickListener() {
+    private OnClickListener mValueOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
             Log.d();
-            if (mStarted) {
-                startService(new Intent(DataCollectingService.ACTION_STOP_COLLECTING));
-            } else {
-                startService(new Intent(DataCollectingService.ACTION_START_COLLECTING));
-            }
-            mStarted = !mStarted;
         }
     };
 
+    private OnCheckedChangeListener mRecordingOnCheckedChangeListener = new OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+            Log.d("isChecked=" + isChecked);
+            if (isChecked) {
+                startService(new Intent(DataCollectingService.ACTION_START_COLLECTING));
+            } else {
+                startService(new Intent(DataCollectingService.ACTION_STOP_COLLECTING));
+            }
+        }
+    };
+
+    private Speedometer mSpeedometer = new Speedometer() {
+        @Override
+        public void onLocationChanged(Location location) {
+            super.onLocationChanged(location);
+            mTxtValue.setText(UnitUtil.formatSpeed(getSpeed()));
+        }
+    };
 }

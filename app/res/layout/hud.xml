@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/conRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".app.hud.HudActivity" >
+
+    <LinearLayout
+        android:id="@+id/conLeftPanel"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <ToggleButton
+            android:id="@+id/togRecording"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOff="REC"
+            android:textOn="REC" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtValue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/conLeftPanel"
+        android:gravity="center"
+        android:text="25.2"
+        android:textSize="280sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>

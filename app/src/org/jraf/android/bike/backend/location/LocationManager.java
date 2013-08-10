@@ -26,7 +26,8 @@ public class LocationManager {
     private static final LocationManager INSTANCE = new LocationManager();
 
     private static final boolean DEBUG_USE_DEVICE_GPS = true;
-    private static final int INTERVAL_LOC_REQUEST = 2000;
+    private static final int INTERVAL_LOC_REQUEST = 1000;
+    private static final int ALLOWED_LOC_MISSES = 5;
 
     public static LocationManager get() {
         return INSTANCE;
@@ -157,7 +158,7 @@ public class LocationManager {
 
             // Schedule to check if we're still active
             getHandler().removeCallbacks(mCheckForActiveRunnable);
-            getHandler().postDelayed(mCheckForActiveRunnable, INTERVAL_LOC_REQUEST * 3);
+            getHandler().postDelayed(mCheckForActiveRunnable, INTERVAL_LOC_REQUEST * ALLOWED_LOC_MISSES);
         }
     };
 
@@ -171,7 +172,7 @@ public class LocationManager {
     protected Runnable mCheckForActiveRunnable = new Runnable() {
         @Override
         public void run() {
-            if (System.currentTimeMillis() - mLastFixDate >= INTERVAL_LOC_REQUEST * 3) {
+            if (System.currentTimeMillis() - mLastFixDate >= INTERVAL_LOC_REQUEST * ALLOWED_LOC_MISSES) {
                 setActive(false);
             }
         }

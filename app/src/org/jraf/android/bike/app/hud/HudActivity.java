@@ -167,6 +167,8 @@ public class HudActivity extends Activity {
             } else {
                 mImgGpsStatus.setImageResource(R.color.hud_gps_stopped);
             }
+            mTxtValue.setEnabled(active);
         }
     };
+
 }

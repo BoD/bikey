@@ -8,35 +8,34 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.backend.DataCollectingService;
 import org.jraf.android.bike.backend.location.LocationManager;
 import org.jraf.android.bike.backend.location.LocationManager.StatusListener;
-import org.jraf.android.bike.backend.location.Speedometer;
 import org.jraf.android.bike.backend.ride.RideManager;
-import org.jraf.android.bike.util.UnitUtil;
 import org.jraf.android.util.Log;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
+
+import com.google.android.gms.location.LocationListener;
 
 
 public class HudActivity extends FragmentActivity {
     private Handler mHandler = new Handler();
 
-    private TextView mTxtValue;
     private ImageView mImgGpsStatus;
     private ToggleButton mTogRecording;
+    private ViewPager mViewPager;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
@@ -50,12 +49,13 @@ public class HudActivity extends FragmentActivity {
 
         setContentView(R.layout.hud);
 
-        mTxtValue = (TextView) findViewById(R.id.txtValue);
-        mTxtValue.setOnClickListener(mValueOnClickListener);
         mTogRecording = (ToggleButton) findViewById(R.id.togRecording);
         mTogRecording.setEnabled(false);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
+
+        mViewPager = (ViewPager) findViewById(R.id.viewPager);
+        mViewPager.setAdapter(new HudViewPagerAdapter(getSupportFragmentManager()));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setupNavigationBarHiding();
@@ -89,7 +89,7 @@ public class HudActivity extends FragmentActivity {
         LocationManager.get().addStatusListener(mGpsStatusListener);
 
         // Speed updates
-        LocationManager.get().addLocationListener(mSpeedometer);
+        LocationManager.get().addLocationListener(mLocationListener);
     }
 
     @Override
@@ -98,8 +98,7 @@ public class HudActivity extends FragmentActivity {
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
         // Speed updates
-        LocationManager.get().removeLocationListener(mSpeedometer);
-
+        LocationManager.get().removeLocationListener(mLocationListener);
         super.onPause();
     }
 
@@ -162,13 +161,6 @@ public class HudActivity extends FragmentActivity {
         findViewById(android.R.id.content).setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
     }
 
-    private OnClickListener mValueOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Log.d();
-        }
-    };
-
     private OnCheckedChangeListener mRecordingOnCheckedChangeListener = new OnCheckedChangeListener() {
         @Override
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -181,12 +173,12 @@ public class HudActivity extends FragmentActivity {
         }
     };
 
-    private Speedometer mSpeedometer = new Speedometer() {
+    /**
+     * This does nothing, but we need a location listener to be registered so the GPS status listener is notified.
+     */
+    private LocationListener mLocationListener = new LocationListener() {
         @Override
-        public void onLocationChanged(Location location) {
-            super.onLocationChanged(location);
-            mTxtValue.setText(UnitUtil.formatSpeed(getSpeed()));
-        }
+        public void onLocationChanged(Location location) {}
     };
 
     private StatusListener mGpsStatusListener = new StatusListener() {
@@ -197,7 +189,6 @@ public class HudActivity extends FragmentActivity {
             } else {
                 mImgGpsStatus.setImageResource(R.color.hud_gps_stopped);
             }
-            mTxtValue.setEnabled(active);
         }
     };
 }

@@ -9,6 +9,7 @@
         android:id="@+id/conLeftPanel"
         android:layout_width="64dp"
         android:layout_height="match_parent"
+        android:background="@android:color/black"
         android:orientation="vertical" >
 
         <ImageView
@@ -20,22 +21,17 @@
 
         <ToggleButton
             android:id="@+id/togRecording"
+            style="@android:style/Widget.Holo.Button.Toggle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textOff="REC"
             android:textOn="REC" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/txtValue"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/conLeftPanel"
-        android:enabled="false"
-        android:gravity="center"
-        android:text="0"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textSize="280sp"
-        android:textStyle="bold" />
+        android:layout_toRightOf="@+id/conLeftPanel" />
 
 </RelativeLayout>

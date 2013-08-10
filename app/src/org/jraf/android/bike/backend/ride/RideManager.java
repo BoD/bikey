@@ -48,8 +48,21 @@ public class RideManager {
 
     @Background
     public void activate(Uri rideUri) {
-        ContentValues values = new ContentValues(1);
+        // Get current state
+        String[] projection = { RideColumns.STATE };
+        Cursor c = mContext.getContentResolver().query(rideUri, projection, null, null, null);
+        if (c == null || !c.moveToNext()) {
+            throw new IllegalArgumentException(rideUri + " not foundd");
+        }
+        RideState previousState = RideState.from(c.getInt(0));
+        c.close();
+
+        // Update state (and activated date if first time)
+        ContentValues values = new ContentValues(2);
         values.put(RideColumns.STATE, RideState.ACTIVE.getValue());
+        if (previousState == RideState.CREATED) {
+            values.put(RideColumns.ACTIVATED_DATE, System.currentTimeMillis());
+        }
         mContext.getContentResolver().update(rideUri, values, null, null);
     }
 

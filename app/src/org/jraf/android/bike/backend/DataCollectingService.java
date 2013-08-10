@@ -6,11 +6,13 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.hud.HudActivity;
+import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.Log;
 import org.jraf.android.util.string.StringUtil;
 
@@ -18,9 +20,9 @@ public class DataCollectingService extends Service {
     private static final String PREFIX = DataCollectingService.class.getName() + ".";
     public static final String ACTION_START_COLLECTING = PREFIX + "ACTION_START_COLLECTING";
     public static final String ACTION_STOP_COLLECTING = PREFIX + "ACTION_STOP_COLLECTING";
-    public static final String EXTRA_SESSION_ID = PREFIX + "EXTRA_SESSION_ID";
 
     private static final int NOTIFICATION_ID = 1;
+    private Uri mCollectingRideUri;
 
 
     @Override
@@ -32,27 +34,31 @@ public class DataCollectingService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("intent=" + StringUtil.toString(intent));
         String action = intent.getAction();
-        long sessionId = intent.getLongExtra(EXTRA_SESSION_ID, -1);
         if (ACTION_START_COLLECTING.equals(action)) {
-            startCollecting(sessionId);
+            startCollecting(intent.getData());
         } else if (ACTION_STOP_COLLECTING.equals(action)) {
-            stopCollecting(sessionId);
+            stopCollecting(intent.getData());
         }
         return Service.START_STICKY;
     }
 
-    private void startCollecting(long sessionId) {
-        Log.d("sessionId=" + sessionId);
-        startCollecting();
+    private void startCollecting(Uri rideUri) {
+        // First, pause current ride if any
+        if (mCollectingRideUri != null) {
+            RideManager.get().pause(mCollectingRideUri);
+        }
+        // Now collect for the new current ride
+        mCollectingRideUri = rideUri;
+        RideManager.get().activate(mCollectingRideUri);
         Notification notification = createNotification();
         startForeground(NOTIFICATION_ID, notification);
     }
 
-    private void stopCollecting(long sessionId) {
-        Log.d("sessionId=" + sessionId);
-        stopCollecting();
+    private void stopCollecting(Uri rideUri) {
+        RideManager.get().pause(rideUri);
         dismissNotification();
         stopSelf();
+        mCollectingRideUri = null;
     }
 
 
@@ -80,18 +86,5 @@ public class DataCollectingService extends Service {
     private void dismissNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
-    }
-
-
-    /*
-     * Collecting.
-     */
-
-    private void startCollecting() {
-        Log.d();
-    }
-
-    private void stopCollecting() {
-        Log.d();
     }
 }

@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Intent;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -34,11 +35,14 @@ public class HudActivity extends Activity {
     private ImageView mImgGpsStatus;
 
     private boolean mNavigationBarHiding = false;
+    private Uri mRideUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// TODO only if setting says so
+
+        mRideUri = getIntent().getData();
 
         setContentView(R.layout.hud);
 
@@ -144,9 +148,9 @@ public class HudActivity extends Activity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.d("isChecked=" + isChecked);
             if (isChecked) {
-                startService(new Intent(DataCollectingService.ACTION_START_COLLECTING));
+                startService(new Intent(DataCollectingService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, DataCollectingService.class));
             } else {
-                startService(new Intent(DataCollectingService.ACTION_STOP_COLLECTING));
+                startService(new Intent(DataCollectingService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, DataCollectingService.class));
             }
         }
     };

@@ -38,7 +38,7 @@ public class RideColumns implements BaseColumns {
     public static final String NAME = "name";
     public static final String CREATED_DATE = "created_date";
     public static final String STATE = "state";
-    public static final String START_DATE = "start_date";
+    public static final String ACTIVATED_DATE = "activated_date";
     public static final String DURATION = "duration";
     public static final String DISTANCE = "distance";
 

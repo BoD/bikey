@@ -1,5 +1,6 @@
 package org.jraf.android.bike.app.ride.list;
 
+import android.content.ContentUris;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
@@ -78,7 +79,7 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        ((RideListActivity) getActivity()).onRideSelected(id);
+        ((RideListActivity) getActivity()).onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id));
     }
 
 

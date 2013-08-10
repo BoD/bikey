@@ -1,6 +1,7 @@
 package org.jraf.android.bike.app.ride.list;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
@@ -69,7 +70,7 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
      * Ride selected.
      */
 
-    public void onRideSelected(long id) {
-        startActivity(new Intent(this, HudActivity.class));
+    public void onRideSelected(Uri rideUri) {
+        startActivity(new Intent(null, rideUri, this, HudActivity.class));
     }
 }

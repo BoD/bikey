@@ -27,14 +27,7 @@
             android:exported="false" />
 
         <!-- Data collecting service -->
-        <service
-            android:name="org.jraf.android.bike.backend.DataCollectingService"
-            android:exported="false" >
-            <intent-filter>
-                <action android:name="org.jraf.android.bike.backend.DataCollectingService.ACTION_START_COLLECTING" />
-                <action android:name="org.jraf.android.bike.backend.DataCollectingService.ACTION_STOP_COLLECTING" />
-            </intent-filter>
-        </service>
+        <service android:name="org.jraf.android.bike.backend.DataCollectingService" />
 
         <!-- Session list -->
 

@@ -10,6 +10,7 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
 import org.jraf.android.bike.backend.provider.RideCursorWrapper;
+import org.jraf.android.bike.backend.provider.RideState;
 import org.jraf.android.util.ui.ViewHolder;
 
 public class RideAdapter extends ResourceCursorAdapter {
@@ -39,13 +40,14 @@ public class RideAdapter extends ResourceCursorAdapter {
             txtText1.setText(name + " (" + createdDateTimeStr + ")");
         }
 
-        // Duration / distance
+        // Duration / distance / state
         TextView txtText2 = ViewHolder.get(view, android.R.id.text2);
         Long duration = c.getDuration();
         if (duration == null) duration = 0l;
         Double distance = c.getDistance();
         if (distance == null) distance = 0d;
-        txtText2.setText(duration + ", " + distance);
+        RideState rideState = RideState.from(c.getState().intValue());
+        txtText2.setText(duration + ", " + distance + ", " + rideState);
     }
 
 }

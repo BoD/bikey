@@ -40,4 +40,16 @@ public class RideManager {
         String where = RideColumns._ID + " in (" + TextUtils.join(",", idList) + ")";
         return mContext.getContentResolver().delete(RideColumns.CONTENT_URI, where, null);
     }
+
+    public void activate(Uri rideUri) {
+        ContentValues values = new ContentValues(1);
+        values.put(RideColumns.STATE, RideState.ACTIVE.getValue());
+        mContext.getContentResolver().update(rideUri, values, null, null);
+    }
+
+    public void pause(Uri rideUri) {
+        ContentValues values = new ContentValues(1);
+        values.put(RideColumns.STATE, RideState.PAUSED.getValue());
+        mContext.getContentResolver().update(rideUri, values, null, null);
+    }
 }

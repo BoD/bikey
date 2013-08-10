@@ -50,8 +50,8 @@ public class RideCursorWrapper extends AbstractCursorWrapper {
         return getLongOrNull(RideColumns.STATE);
     }
 
-    public Long getStartDate() {
-        return getLongOrNull(RideColumns.START_DATE);
+    public Long getActivatedDate() {
+        return getLongOrNull(RideColumns.ACTIVATED_DATE);
     }
 
     public Long getDuration() {

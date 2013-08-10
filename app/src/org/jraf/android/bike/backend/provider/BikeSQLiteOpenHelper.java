@@ -44,7 +44,7 @@ public class BikeSQLiteOpenHelper extends SQLiteOpenHelper {
             + RideColumns.NAME + " TEXT, "
             + RideColumns.CREATED_DATE + " INTEGER, "
             + RideColumns.STATE + " INTEGER, "
-            + RideColumns.START_DATE + " INTEGER, "
+            + RideColumns.ACTIVATED_DATE + " INTEGER, "
             + RideColumns.DURATION + " INTEGER, "
             + RideColumns.DISTANCE + " FLOAT "
             + " );";

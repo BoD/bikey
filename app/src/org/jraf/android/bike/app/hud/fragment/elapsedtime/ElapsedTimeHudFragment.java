@@ -1,6 +1,7 @@
-package org.jraf.android.bike.app.hud;
+package org.jraf.android.bike.app.hud.fragment.elapsedtime;
 
 import org.jraf.android.bike.R;
+import org.jraf.android.bike.app.hud.fragment.SimpleHudFragment;
 
 public class ElapsedTimeHudFragment extends SimpleHudFragment {
     public static ElapsedTimeHudFragment newInstance() {

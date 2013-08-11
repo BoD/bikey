@@ -21,12 +21,14 @@ import android.widget.ToggleButton;
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.backend.DataCollectingService;
 import org.jraf.android.bike.backend.location.LocationManager;
+import org.jraf.android.bike.backend.location.LocationManager.ActivityRecognitionListener;
 import org.jraf.android.bike.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.Log;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 
+import com.google.android.gms.location.DetectedActivity;
 import com.google.android.gms.location.LocationListener;
 
 
@@ -35,6 +37,7 @@ public class HudActivity extends FragmentActivity {
 
     private ImageView mImgGpsStatus;
     private ToggleButton mTogRecording;
+    private ImageView mImgActivity;
     private ViewPager mViewPager;
 
     private boolean mNavigationBarHiding = false;
@@ -53,6 +56,7 @@ public class HudActivity extends FragmentActivity {
         mTogRecording.setEnabled(false);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
+        mImgActivity = (ImageView) findViewById(R.id.imgActivity);
 
         mViewPager = (ViewPager) findViewById(R.id.viewPager);
         mViewPager.setAdapter(new HudViewPagerAdapter(getSupportFragmentManager()));
@@ -85,20 +89,29 @@ public class HudActivity extends FragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Location
+        // We need at least one location listener to be registered for the GPS status listeners to be notified.
+        LocationManager.get().addLocationListener(mLocationListener);
+
         // GPS status
         LocationManager.get().addStatusListener(mGpsStatusListener);
 
-        // Speed updates
-        LocationManager.get().addLocationListener(mLocationListener);
+        // Activity
+        LocationManager.get().addActivityRecognitionListener(mActivityRecognitionListener);
     }
 
     @Override
     protected void onPause() {
+        // Location
+        LocationManager.get().removeLocationListener(mLocationListener);
+
         // GPS status
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
-        // Speed updates
-        LocationManager.get().removeLocationListener(mLocationListener);
+        // Activity
+        LocationManager.get().removeActivityRecognitionListener(mActivityRecognitionListener);
+
         super.onPause();
     }
 
@@ -174,7 +187,7 @@ public class HudActivity extends FragmentActivity {
     };
 
     /**
-     * This does nothing, but we need a location listener to be registered so the GPS status listener is notified.
+     * This does nothing, but we need at least one location listener to be registered for the GPS status listeners to be notified.
      */
     private LocationListener mLocationListener = new LocationListener() {
         @Override
@@ -188,6 +201,17 @@ public class HudActivity extends FragmentActivity {
                 mImgGpsStatus.setImageResource(R.color.hud_gps_first_fix);
             } else {
                 mImgGpsStatus.setImageResource(R.color.hud_gps_stopped);
+            }
+        }
+    };
+
+    private ActivityRecognitionListener mActivityRecognitionListener = new ActivityRecognitionListener() {
+        @Override
+        public void onActivityRecognized(int activityType, int confidence) {
+            if (activityType == DetectedActivity.STILL) {
+                mImgActivity.setImageResource(R.color.hud_activity_still);
+            } else {
+                mImgActivity.setImageResource(R.color.hud_activity_other);
             }
         }
     };

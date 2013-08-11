@@ -1,8 +1,9 @@
-package org.jraf.android.bike.app.hud;
+package org.jraf.android.bike.app.hud.fragment.speed;
 
 import android.location.Location;
 
 import org.jraf.android.bike.R;
+import org.jraf.android.bike.app.hud.fragment.SimpleHudFragment;
 import org.jraf.android.bike.backend.location.LocationManager;
 import org.jraf.android.bike.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bike.backend.location.Speedometer;
@@ -25,7 +26,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
         LocationManager.get().addStatusListener(mGpsStatusListener);
 
         // Speed updates
-        LocationManager.get().addLocationListener(mSpeedometer);
+        mSpeedometer.startListening();
     }
 
     @Override
@@ -34,7 +35,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
         // Speed updates
-        LocationManager.get().removeLocationListener(mSpeedometer);
+        mSpeedometer.stopListening();
         super.onPause();
     }
 

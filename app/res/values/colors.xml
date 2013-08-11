@@ -3,6 +3,7 @@
 
     <color name="hud_gps_first_fix">#0F0</color>
     <color name="hud_gps_stopped">#F00</color>
-    <color name="hud_value_disabled">#808080</color>
+    <color name="hud_activity_other">#FF0</color>
+    <color name="hud_activity_still">#F00</color>
 
 </resources>

@@ -1,4 +1,4 @@
-package org.jraf.android.bike.app.hud;
+package org.jraf.android.bike.app.hud.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

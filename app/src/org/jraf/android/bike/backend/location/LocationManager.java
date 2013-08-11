@@ -3,7 +3,9 @@ package org.jraf.android.bike.backend.location;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import org.jraf.android.util.Log;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
 import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
+import com.google.android.gms.location.ActivityRecognitionClient;
 import com.google.android.gms.location.LocationClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
@@ -21,6 +24,10 @@ import com.google.android.gms.location.LocationRequest;
 public class LocationManager {
     public static interface StatusListener {
         void onStatusChanged(boolean active);
+    }
+
+    public static interface ActivityRecognitionListener {
+        void onActivityRecognized(int activityType, int confidence);
     }
 
     private static final LocationManager INSTANCE = new LocationManager();
@@ -36,10 +43,14 @@ public class LocationManager {
     private final Context mContext;
     private Set<LocationListener> mLocationListeners = new HashSet<LocationListener>(3);
     private Set<StatusListener> mStatusListeners = new HashSet<StatusListener>(3);
-    private volatile LocationClient mLocationClient;
+    private Set<ActivityRecognitionListener> mActivityRecognitionListeners = new HashSet<ActivityRecognitionListener>(3);
+    private LocationClient mLocationClient;
+    private ActivityRecognitionClient mActivityRecognitionClient;
     protected long mLastFixDate;
     private Handler mHandler;
     private boolean mActive = false;
+    private int mCurrentActivityType;
+    private int mCurrentActivityConfidence;
 
     private LocationManager() {
         mContext = Application.getApplication();
@@ -48,27 +59,28 @@ public class LocationManager {
     public void addLocationListener(LocationListener listener) {
         int prevSize = mLocationListeners.size();
         mLocationListeners.add(listener);
-        onListenersUpdated(prevSize);
+        locationListenersCountChanged(prevSize, mLocationListeners.size());
     }
 
     public void removeLocationListener(LocationListener listener) {
         int prevSize = mLocationListeners.size();
         mLocationListeners.remove(listener);
-        onListenersUpdated(prevSize);
+        locationListenersCountChanged(prevSize, mLocationListeners.size());
     }
 
-    private void onListenersUpdated(int prevSize) {
-        if (mLocationListeners.size() == 1 && prevSize == 0) {
-            Log.d("First listener, start location listener");
+    private void locationListenersCountChanged(int prevSize, int newSize) {
+        if (newSize == 1 && prevSize == 0) {
+            Log.d("First location listener, start location listener");
             startLocationListener();
-        } else if (mLocationListeners.size() == 0 && prevSize == 1) {
-            Log.d("No more interested listeners, stop location listener");
+        } else if (newSize == 0 && prevSize == 1) {
+            Log.d("No more location listeners, stop location listener");
             stopLocationListener();
         }
     }
 
-    private synchronized void startLocationListener() {
+    private void startLocationListener() {
         Log.d();
+        // Location
         if (DEBUG_USE_DEVICE_GPS) {
             android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             locationManager.removeUpdates(mGpsLocationListener);
@@ -84,7 +96,7 @@ public class LocationManager {
         }
     }
 
-    private synchronized void stopLocationListener() {
+    private void stopLocationListener() {
         Log.d();
         if (DEBUG_USE_DEVICE_GPS) {
             android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -113,6 +125,25 @@ public class LocationManager {
             Log.d();
         }
     };
+
+    private ConnectionCallbacks mActivityOnConnectionCallbacks = new ConnectionCallbacks() {
+        @Override
+        public void onConnected(Bundle params) {
+            Log.d();
+            mActivityRecognitionClient.requestActivityUpdates(INTERVAL_LOC_REQUEST, getActivityRecognitionPendingIntent());
+        }
+
+        @Override
+        public void onDisconnected() {
+            Log.d();
+        }
+    };
+
+    private PendingIntent getActivityRecognitionPendingIntent() {
+        Intent intent = new Intent(mContext, ActivityRecognitionIntentService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return pendingIntent;
+    }
 
     private OnConnectionFailedListener mLocationOnConnectionFailedListener = new OnConnectionFailedListener() {
         @Override
@@ -200,5 +231,57 @@ public class LocationManager {
             }
         }
         mActive = active;
+    }
+
+    public void addActivityRecognitionListener(ActivityRecognitionListener listener) {
+        int prevSize = mActivityRecognitionListeners.size();
+        mActivityRecognitionListeners.add(listener);
+        activityRecognitionListenersCountChanged(prevSize, mActivityRecognitionListeners.size());
+    }
+
+    public void removeActivityRecognitionListener(ActivityRecognitionListener listener) {
+        int prevSize = mActivityRecognitionListeners.size();
+        mActivityRecognitionListeners.remove(listener);
+        activityRecognitionListenersCountChanged(prevSize, mActivityRecognitionListeners.size());
+    }
+
+    private void activityRecognitionListenersCountChanged(int prevSize, int newSize) {
+        if (newSize == 1 && prevSize == 0) {
+            Log.d("First activity listener, start activity listener");
+            startActivityRecognitionListener();
+        } else if (newSize == 0 && prevSize == 1) {
+            Log.d("No more activity listeners, stop activity listener");
+            stopActivityRecognitionListener();
+        }
+    }
+
+    private void startActivityRecognitionListener() {
+        Log.d();
+        // If already connected (or connecting) do nothing
+        if (mActivityRecognitionClient != null) {
+            Log.d("Already connected: do nothing");
+            return;
+        }
+        mCurrentActivityType = -1;
+        mCurrentActivityConfidence = -1;
+        mActivityRecognitionClient = new ActivityRecognitionClient(mContext, mActivityOnConnectionCallbacks, mLocationOnConnectionFailedListener);
+        mActivityRecognitionClient.connect();
+    }
+
+    private void stopActivityRecognitionListener() {
+        Log.d();
+        if (mActivityRecognitionClient == null) return;
+        mActivityRecognitionClient.removeActivityUpdates(getActivityRecognitionPendingIntent());
+        if (mActivityRecognitionClient.isConnected()) mActivityRecognitionClient.disconnect();
+        mActivityRecognitionClient = null;
+    }
+
+    /* package */void onActivityRecognized(int activityType, int confidence) {
+        if (mCurrentActivityType != activityType && mCurrentActivityConfidence != confidence) {
+            // Dispatch the change
+            for (ActivityRecognitionListener activityRecognitionListener : mActivityRecognitionListeners) {
+                activityRecognitionListener.onActivityRecognized(activityType, confidence);
+            }
+        }
     }
 }

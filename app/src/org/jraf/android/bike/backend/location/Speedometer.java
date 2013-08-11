@@ -8,7 +8,7 @@ import android.location.Location;
 import com.google.android.gms.location.LocationListener;
 
 public class Speedometer implements LocationListener {
-    private static final int MAX_VALUES = 10;
+    private static final int MAX_VALUES = 6;
 
     private static class DistanceDuration {
         public float distance;
@@ -28,6 +28,11 @@ public class Speedometer implements LocationListener {
     private Location mLastLocation = null;
     private Deque<DistanceDuration> mDistanceDurations = new ArrayDeque<DistanceDuration>(MAX_VALUES);
 
+    public Speedometer() {
+        for (int i = 0; i < MAX_VALUES; i++) {
+            mDistanceDurations.addFirst(new DistanceDuration(0, 1000));
+        }
+    }
 
     @Override
     public void onLocationChanged(Location location) {

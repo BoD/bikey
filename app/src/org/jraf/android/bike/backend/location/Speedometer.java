@@ -45,7 +45,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
 
     public void stopListening() {
         LocationManager.get().removeLocationListener(this);
-        LocationManager.get().removeLocationListener(this);
+        LocationManager.get().removeActivityRecognitionListener(this);
     }
 
     @Override

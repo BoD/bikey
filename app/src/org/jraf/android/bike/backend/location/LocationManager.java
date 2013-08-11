@@ -195,17 +195,17 @@ public class LocationManager {
     private void startGpsLocationListener() {
         Log.d();
         android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(mGpsStatusListener);
-        locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsStatusListener);
+        locationManager.removeUpdates(mGpsStatusLocationListener);
+        locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsStatusLocationListener);
     }
 
     private void stopGpsLocationListener() {
         Log.d();
         android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        locationManager.removeUpdates(mGpsLocationListener);
+        locationManager.removeUpdates(mGpsStatusLocationListener);
     }
 
-    private android.location.LocationListener mGpsStatusListener = new android.location.LocationListener() {
+    private android.location.LocationListener mGpsStatusLocationListener = new android.location.LocationListener() {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             Log.d("status=" + status);

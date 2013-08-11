@@ -1,8 +1,6 @@
 package org.jraf.android.bike.app.hud;
 
 import android.annotation.TargetApi;
-import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -35,9 +33,6 @@ import com.google.android.gms.location.DetectedActivity;
 
 
 public class HudActivity extends FragmentActivity {
-    private static final String FRAGMENT_SPEED = "FRAGMENT_SPEED";
-    private static final String FRAGMENT_ELAPSED_TIME = "FRAGMENT_ELAPSED_TIME";
-
     private Handler mHandler = new Handler();
 
     private ImageView mImgGpsStatus;
@@ -46,6 +41,7 @@ public class HudActivity extends FragmentActivity {
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
+    private FragmentCycler mFragmentCycler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,37 +109,16 @@ public class HudActivity extends FragmentActivity {
     }
 
     private void setupFragments() {
-        if (getFragmentManager().findFragmentByTag(FRAGMENT_SPEED) == null) {
-            FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.add(R.id.conFragments, SpeedHudFragment.newInstance(), FRAGMENT_SPEED);
-            t.commit();
-        }
-        if (getFragmentManager().findFragmentByTag(FRAGMENT_ELAPSED_TIME) == null) {
-            FragmentTransaction t = getFragmentManager().beginTransaction();
-            Fragment fragment = ElapsedTimeHudFragment.newInstance();
-            t.add(R.id.conFragments, fragment, FRAGMENT_ELAPSED_TIME);
-            t.hide(fragment);
-            t.commit();
-        }
+        mFragmentCycler = new FragmentCycler(R.id.conFragments);
+        mFragmentCycler.add(this, SpeedHudFragment.newInstance());
+        mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance());
+        mFragmentCycler.show(this);
     }
 
     private OnClickListener mFragmentCycleOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_SPEED);
-            Fragment fragmentToHide;
-            Fragment fragmentToShow;
-            if (fragment.isVisible()) {
-                fragmentToHide = getFragmentManager().findFragmentByTag(FRAGMENT_SPEED);
-                fragmentToShow = getFragmentManager().findFragmentByTag(FRAGMENT_ELAPSED_TIME);
-            } else {
-                fragmentToHide = getFragmentManager().findFragmentByTag(FRAGMENT_ELAPSED_TIME);
-                fragmentToShow = getFragmentManager().findFragmentByTag(FRAGMENT_SPEED);
-            }
-            FragmentTransaction t = getFragmentManager().beginTransaction();
-            t.hide(fragmentToHide);
-            t.show(fragmentToShow);
-            t.commit();
+            mFragmentCycler.cycle(HudActivity.this);
         }
     };
 
@@ -156,6 +131,7 @@ public class HudActivity extends FragmentActivity {
                 Log.d("visibility=" + visibility);
                 if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) {
                     Log.d("Navigation bar showing");
+                    mFragmentCycler.cycle(HudActivity.this);
                     scheduleHideNavigationBar();
                 }
             }

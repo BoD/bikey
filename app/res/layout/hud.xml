@@ -35,8 +35,14 @@
             android:textOn="REC" />
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewPager"
+    <FrameLayout
+        android:id="@+id/conFragments"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toRightOf="@+id/conLeftPanel" />
+
+    <View
+        android:id="@+id/vieFragmentCycle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_toRightOf="@+id/conLeftPanel" />

@@ -1,15 +1,17 @@
 package org.jraf.android.bike.app.hud;
 
 import android.annotation.TargetApi;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.ViewPager;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
@@ -18,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import org.jraf.android.bike.R;
+import org.jraf.android.bike.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
+import org.jraf.android.bike.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bike.backend.DataCollectingService;
 import org.jraf.android.bike.backend.location.LocationManager;
 import org.jraf.android.bike.backend.location.LocationManager.ActivityRecognitionListener;
@@ -31,12 +35,14 @@ import com.google.android.gms.location.DetectedActivity;
 
 
 public class HudActivity extends FragmentActivity {
+    private static final String FRAGMENT_SPEED = "FRAGMENT_SPEED";
+    private static final String FRAGMENT_ELAPSED_TIME = "FRAGMENT_ELAPSED_TIME";
+
     private Handler mHandler = new Handler();
 
     private ImageView mImgGpsStatus;
     private ToggleButton mTogRecording;
     private ImageView mImgActivity;
-    private ViewPager mViewPager;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
@@ -55,9 +61,9 @@ public class HudActivity extends FragmentActivity {
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
         mImgActivity = (ImageView) findViewById(R.id.imgActivity);
+        findViewById(R.id.vieFragmentCycle).setOnClickListener(mFragmentCycleOnClickListener);
 
-        mViewPager = (ViewPager) findViewById(R.id.viewPager);
-        mViewPager.setAdapter(new HudViewPagerAdapter(getSupportFragmentManager()));
+        setupFragments();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setupNavigationBarHiding();
@@ -105,6 +111,42 @@ public class HudActivity extends FragmentActivity {
 
         super.onPause();
     }
+
+    private void setupFragments() {
+        if (getFragmentManager().findFragmentByTag(FRAGMENT_SPEED) == null) {
+            FragmentTransaction t = getFragmentManager().beginTransaction();
+            t.add(R.id.conFragments, SpeedHudFragment.newInstance(), FRAGMENT_SPEED);
+            t.commit();
+        }
+        if (getFragmentManager().findFragmentByTag(FRAGMENT_ELAPSED_TIME) == null) {
+            FragmentTransaction t = getFragmentManager().beginTransaction();
+            Fragment fragment = ElapsedTimeHudFragment.newInstance();
+            t.add(R.id.conFragments, fragment, FRAGMENT_ELAPSED_TIME);
+            t.hide(fragment);
+            t.commit();
+        }
+    }
+
+    private OnClickListener mFragmentCycleOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Fragment fragment = getFragmentManager().findFragmentByTag(FRAGMENT_SPEED);
+            Fragment fragmentToHide;
+            Fragment fragmentToShow;
+            if (fragment.isVisible()) {
+                fragmentToHide = getFragmentManager().findFragmentByTag(FRAGMENT_SPEED);
+                fragmentToShow = getFragmentManager().findFragmentByTag(FRAGMENT_ELAPSED_TIME);
+            } else {
+                fragmentToHide = getFragmentManager().findFragmentByTag(FRAGMENT_ELAPSED_TIME);
+                fragmentToShow = getFragmentManager().findFragmentByTag(FRAGMENT_SPEED);
+            }
+            FragmentTransaction t = getFragmentManager().beginTransaction();
+            t.hide(fragmentToHide);
+            t.show(fragmentToShow);
+            t.commit();
+        }
+    };
+
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setupNavigationBarHiding() {

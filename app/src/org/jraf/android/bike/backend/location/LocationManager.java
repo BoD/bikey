@@ -25,9 +25,9 @@ public class LocationManager {
 
     private static final LocationManager INSTANCE = new LocationManager();
 
-    private static final boolean DEBUG_USE_DEVICE_GPS = true;
+    private static final boolean DEBUG_USE_DEVICE_GPS = false;
     private static final int INTERVAL_LOC_REQUEST = 1000;
-    private static final int ALLOWED_LOC_MISSES = 5;
+    private static final int ALLOWED_LOC_MISSES = 4;
 
     public static LocationManager get() {
         return INSTANCE;
@@ -36,7 +36,7 @@ public class LocationManager {
     private final Context mContext;
     private Set<LocationListener> mLocationListeners = new HashSet<LocationListener>(3);
     private Set<StatusListener> mStatusListeners = new HashSet<StatusListener>(3);
-    private LocationClient mLocationClient;
+    private volatile LocationClient mLocationClient;
     protected long mLastFixDate;
     private Handler mHandler;
     private boolean mActive = false;
@@ -46,39 +46,45 @@ public class LocationManager {
     }
 
     public void addLocationListener(LocationListener listener) {
+        int prevSize = mLocationListeners.size();
         mLocationListeners.add(listener);
-        onListenersUpdated();
+        onListenersUpdated(prevSize);
     }
 
     public void removeLocationListener(LocationListener listener) {
+        int prevSize = mLocationListeners.size();
         mLocationListeners.remove(listener);
-        onListenersUpdated();
+        onListenersUpdated(prevSize);
     }
 
-    private void onListenersUpdated() {
-        if (mLocationListeners.size() == 0) {
+    private void onListenersUpdated(int prevSize) {
+        if (mLocationListeners.size() == 1 && prevSize == 0) {
+            Log.d("First listener, start location listener");
+            startLocationListener();
+        } else if (mLocationListeners.size() == 0 && prevSize == 1) {
             Log.d("No more interested listeners, stop location listener");
             stopLocationListener();
-        } else {
-            startLocationListener();
         }
     }
 
-    private void startLocationListener() {
+    private synchronized void startLocationListener() {
         Log.d();
         if (DEBUG_USE_DEVICE_GPS) {
             android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             locationManager.removeUpdates(mGpsLocationListener);
             locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
         } else {
-            // If already connected (or connecting) do not do anything
-            if (mLocationClient != null && (mLocationClient.isConnected() || mLocationClient.isConnecting())) return;
+            // If already connected (or connecting) do nothing
+            if (mLocationClient != null) {
+                Log.d("Already connected: do nothing");
+                return;
+            }
             mLocationClient = new LocationClient(mContext, mLocationOnConnectionCallbacks, mLocationOnConnectionFailedListener);
             mLocationClient.connect();
         }
     }
 
-    private void stopLocationListener() {
+    private synchronized void stopLocationListener() {
         Log.d();
         if (DEBUG_USE_DEVICE_GPS) {
             android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);

@@ -2,7 +2,6 @@ package org.jraf.android.bike.app.hud;
 
 import android.annotation.TargetApi;
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,7 +28,6 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 
 import com.google.android.gms.location.DetectedActivity;
-import com.google.android.gms.location.LocationListener;
 
 
 public class HudActivity extends FragmentActivity {
@@ -90,10 +88,6 @@ public class HudActivity extends FragmentActivity {
     protected void onResume() {
         super.onResume();
 
-        // Location
-        // We need at least one location listener to be registered for the GPS status listeners to be notified.
-        LocationManager.get().addLocationListener(mLocationListener);
-
         // GPS status
         LocationManager.get().addStatusListener(mGpsStatusListener);
 
@@ -103,9 +97,6 @@ public class HudActivity extends FragmentActivity {
 
     @Override
     protected void onPause() {
-        // Location
-        LocationManager.get().removeLocationListener(mLocationListener);
-
         // GPS status
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
@@ -184,14 +175,6 @@ public class HudActivity extends FragmentActivity {
                 startService(new Intent(DataCollectingService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, DataCollectingService.class));
             }
         }
-    };
-
-    /**
-     * This does nothing, but we need at least one location listener to be registered for the GPS status listeners to be notified.
-     */
-    private LocationListener mLocationListener = new LocationListener() {
-        @Override
-        public void onLocationChanged(Location location) {}
     };
 
     private StatusListener mGpsStatusListener = new StatusListener() {

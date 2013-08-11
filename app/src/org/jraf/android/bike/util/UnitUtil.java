@@ -8,7 +8,7 @@ import android.text.style.RelativeSizeSpan;
 public class UnitUtil {
     public static CharSequence formatSpeed(float metersPerSecond) {
         float kmPerHour = metersPerSecond * 3.6f;
-        if (kmPerHour < 1) return "0";
+        if (kmPerHour == 0f) return "0";
         DecimalFormat decimalFormat = new DecimalFormat("##0.0");
         String speedStr = decimalFormat.format(kmPerHour);
         SpannableString builder = new SpannableString(speedStr);

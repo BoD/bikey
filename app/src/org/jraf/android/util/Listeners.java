@@ -7,6 +7,10 @@ import java.util.Set;
 public class Listeners<T> implements Iterable<T> {
     private Set<T> mListeners = new HashSet<T>(3);
 
+    public static <T> Listeners<T> newInstance() {
+        return new Listeners<T>();
+    }
+
     public boolean add(T listener) {
         int prevSize = mListeners.size();
         boolean res = mListeners.add(listener);

@@ -1,6 +1,7 @@
 package org.jraf.android.bike.app.hud.fragment;
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.jraf.android.bike.R;
+import org.jraf.android.bike.app.hud.HudActivity;
 
 public abstract class SimpleHudFragment extends Fragment {
     protected TextView mTxtValue;
@@ -28,4 +30,8 @@ public abstract class SimpleHudFragment extends Fragment {
     }
 
     protected abstract int getLayoutResId();
+
+    protected Uri getRideUri() {
+        return ((HudActivity) getActivity()).getRideUri();
+    }
 }

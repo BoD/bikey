@@ -31,8 +31,9 @@ import org.jraf.android.util.async.TaskFragment;
 
 import com.google.android.gms.location.DetectedActivity;
 
-
 public class HudActivity extends FragmentActivity {
+    private static final long NAV_BAR_HIDE_DELAY = 4000;
+
     private Handler mHandler = new Handler();
 
     private ImageView mImgGpsStatus;
@@ -136,7 +137,7 @@ public class HudActivity extends FragmentActivity {
                 }
             }
         });
-        hideNavigationBar();
+        scheduleHideNavigationBar();
         mNavigationBarHiding = true;
     }
 
@@ -174,7 +175,7 @@ public class HudActivity extends FragmentActivity {
 
     private void scheduleHideNavigationBar() {
         mHandler.removeCallbacks(mHideNavigationBarRunnable);
-        mHandler.postDelayed(mHideNavigationBarRunnable, 2000);
+        mHandler.postDelayed(mHideNavigationBarRunnable, NAV_BAR_HIDE_DELAY);
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -216,4 +217,8 @@ public class HudActivity extends FragmentActivity {
             }
         }
     };
+
+    public Uri getRideUri() {
+        return mRideUri;
+    }
 }

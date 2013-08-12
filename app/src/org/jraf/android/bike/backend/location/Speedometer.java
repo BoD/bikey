@@ -29,7 +29,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
     /**
      * Number of entries to keep when going fast.
      */
-    private static final int LOG_SIZE_MAX = 15;
+    private static final int LOG_SIZE_MAX = 13;
 
     /**
      * Below this speed, we only keep LOG_SIZE_SLOW log entries.

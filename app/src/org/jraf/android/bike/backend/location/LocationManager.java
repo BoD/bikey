@@ -36,6 +36,10 @@ public class LocationManager {
     private static final int INTERVAL_LOC_REQUEST = 1000;
     private static final int ALLOWED_LOC_MISSES = 8;
 
+    protected static final float ACCURACY_THRESHOLD_M = 20;
+
+    private static final int IGNORE_LOCATION_COUNT = 7;
+
     public static LocationManager get() {
         return INSTANCE;
     }
@@ -51,6 +55,7 @@ public class LocationManager {
     private boolean mActive = false;
     private int mCurrentActivityType;
     private int mCurrentActivityConfidence;
+    private int mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
 
     private LocationManager() {
         mContext = Application.getApplication();
@@ -85,8 +90,8 @@ public class LocationManager {
 
     private void startLocationListener() {
         Log.d();
-        // Location
         if (DEBUG_USE_DEVICE_GPS) {
+            mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
             android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             locationManager.removeUpdates(mGpsLocationListener);
             locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
@@ -96,6 +101,7 @@ public class LocationManager {
                 Log.d("Already connected: do nothing");
                 return;
             }
+            mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
             mLocationClient = new LocationClient(mContext, mLocationOnConnectionCallbacks, mLocationOnConnectionFailedListener);
             mLocationClient.connect();
         }
@@ -157,6 +163,16 @@ public class LocationManager {
         @Override
         public void onLocationChanged(Location location) {
             Log.d("location=" + location);
+            if (location.hasAccuracy() && location.getAccuracy() > ACCURACY_THRESHOLD_M) {
+                Log.d("Accuracy above threshold: ignore location");
+                return;
+            }
+
+            mIgnoreLocationCount--;
+            if (mIgnoreLocationCount >= 0) {
+                Log.d("Ignore first few locations");
+                return;
+            }
 
             // Dispatch to listeners
             for (LocationListener listener : mLocationListeners) {
@@ -194,6 +210,7 @@ public class LocationManager {
 
     private void startGpsLocationListener() {
         Log.d();
+        setActive(false);
         android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         locationManager.removeUpdates(mGpsStatusLocationListener);
         locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsStatusLocationListener);
@@ -223,7 +240,7 @@ public class LocationManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.d("location=" + location);
+            Log.d();
             mLastFixDate = System.currentTimeMillis();
             // We just received a fix so we're active
             setActive(true);

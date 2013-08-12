@@ -24,12 +24,12 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
     /**
      * Number of entries to keep when going at medium speed.
      */
-    private static final int LOG_SIZE_MEDIUM = 8;
+    private static final int LOG_SIZE_MEDIUM = 3;
 
     /**
      * Number of entries to keep when going fast.
      */
-    private static final int LOG_SIZE_MAX = 13;
+    private static final int LOG_SIZE_MAX = 5;
 
     /**
      * Below this speed, we only keep LOG_SIZE_SLOW log entries.
@@ -106,13 +106,13 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
             if (currentSpeed < SPEED_MEDIUM_M_S) {
                 // Low speed: we only keep LOG_SIZE_SLOW values in the log
                 Log.d("Slow speed: keep only " + LOG_SIZE_SLOW + " values");
-                while (mLog.size() > LOG_SIZE_SLOW) {
+                if (mLog.size() > LOG_SIZE_SLOW) {
                     mLog.removeLast();
                 }
             } else if (currentSpeed < SPEED_FAST_M_S) {
                 // Medium speed: we only keep LOG_SIZE_MEDIUM values in the log
                 Log.d("Medium speed: keep only " + LOG_SIZE_MEDIUM + " values");
-                while (mLog.size() > LOG_SIZE_SLOW) {
+                if (mLog.size() > LOG_SIZE_SLOW) {
                     mLog.removeLast();
                 }
             }

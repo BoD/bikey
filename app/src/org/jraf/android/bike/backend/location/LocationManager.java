@@ -1,8 +1,5 @@
 package org.jraf.android.bike.backend.location;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import org.jraf.android.bike.app.Application;
+import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -45,9 +43,6 @@ public class LocationManager {
     }
 
     private final Context mContext;
-    private Set<LocationListener> mLocationListeners = new HashSet<LocationListener>(3);
-    private Set<StatusListener> mStatusListeners = new HashSet<StatusListener>(3);
-    private Set<ActivityRecognitionListener> mActivityRecognitionListeners = new HashSet<ActivityRecognitionListener>(3);
     private LocationClient mLocationClient;
     private ActivityRecognitionClient mActivityRecognitionClient;
     protected long mLastFixDate;
@@ -67,26 +62,26 @@ public class LocationManager {
      */
 
     public void addLocationListener(LocationListener listener) {
-        int prevSize = mLocationListeners.size();
         mLocationListeners.add(listener);
-        locationListenersCountChanged(prevSize, mLocationListeners.size());
     }
 
     public void removeLocationListener(LocationListener listener) {
-        int prevSize = mLocationListeners.size();
         mLocationListeners.remove(listener);
-        locationListenersCountChanged(prevSize, mLocationListeners.size());
     }
 
-    private void locationListenersCountChanged(int prevSize, int newSize) {
-        if (prevSize == 0 && newSize == 1) {
+    private Listeners<LocationListener> mLocationListeners = new Listeners<LocationListener>() {
+        @Override
+        protected void onFirstListener() {
             Log.d("First location listener, start location listener");
             startLocationListener();
-        } else if (newSize == 0) {
+        }
+
+        @Override
+        protected void onNoMoreListeners() {
             Log.d("No more location listeners, stop location listener");
             stopLocationListener();
         }
-    }
+    };
 
     private void startLocationListener() {
         Log.d();
@@ -187,26 +182,26 @@ public class LocationManager {
      */
 
     public void addStatusListener(StatusListener listener) {
-        int prevSize = mStatusListeners.size();
         mStatusListeners.add(listener);
-        statusListenersCountChanged(prevSize, mStatusListeners.size());
     }
 
     public void removeStatusListener(StatusListener listener) {
-        int prevSize = mStatusListeners.size();
         mStatusListeners.remove(listener);
-        statusListenersCountChanged(prevSize, mStatusListeners.size());
     }
 
-    private void statusListenersCountChanged(int prevSize, int newSize) {
-        if (prevSize == 0 && newSize == 1) {
+    private Listeners<StatusListener> mStatusListeners = new Listeners<StatusListener>() {
+        @Override
+        protected void onFirstListener() {
             Log.d("First status listener, start gps location listener");
             startGpsLocationListener();
-        } else if (newSize == 0) {
+        }
+
+        @Override
+        protected void onNoMoreListeners() {
             Log.d("No more status listeners, stop gps location listener");
             stopGpsLocationListener();
         }
-    }
+    };
 
     private void startGpsLocationListener() {
         Log.d();
@@ -270,8 +265,8 @@ public class LocationManager {
     protected void setActive(boolean active) {
         if (mActive != active) {
             // Dispatch the change
-            for (StatusListener statusListener : mStatusListeners) {
-                statusListener.onStatusChanged(active);
+            for (StatusListener listener : mStatusListeners) {
+                listener.onStatusChanged(active);
             }
         }
         mActive = active;
@@ -283,26 +278,26 @@ public class LocationManager {
      */
 
     public void addActivityRecognitionListener(ActivityRecognitionListener listener) {
-        int prevSize = mActivityRecognitionListeners.size();
         mActivityRecognitionListeners.add(listener);
-        activityRecognitionListenersCountChanged(prevSize, mActivityRecognitionListeners.size());
     }
 
     public void removeActivityRecognitionListener(ActivityRecognitionListener listener) {
-        int prevSize = mActivityRecognitionListeners.size();
         mActivityRecognitionListeners.remove(listener);
-        activityRecognitionListenersCountChanged(prevSize, mActivityRecognitionListeners.size());
     }
 
-    private void activityRecognitionListenersCountChanged(int prevSize, int newSize) {
-        if (prevSize == 0 && newSize == 1) {
+    private Listeners<ActivityRecognitionListener> mActivityRecognitionListeners = new Listeners<ActivityRecognitionListener>() {
+        @Override
+        protected void onFirstListener() {
             Log.d("First activity listener, start activity listener");
             startActivityRecognitionListener();
-        } else if (newSize == 0) {
+        }
+
+        @Override
+        protected void onNoMoreListeners() {
             Log.d("No more activity listeners, stop activity listener");
             stopActivityRecognitionListener();
         }
-    }
+    };
 
     private void startActivityRecognitionListener() {
         Log.d();
@@ -354,8 +349,8 @@ public class LocationManager {
     /* package */void onActivityRecognized(int activityType, int confidence) {
         if (mCurrentActivityType != activityType && mCurrentActivityConfidence != confidence) {
             // Dispatch the change
-            for (ActivityRecognitionListener activityRecognitionListener : mActivityRecognitionListeners) {
-                activityRecognitionListener.onActivityRecognized(activityType, confidence);
+            for (ActivityRecognitionListener listener : mActivityRecognitionListeners) {
+                listener.onActivityRecognized(activityType, confidence);
             }
         }
     }

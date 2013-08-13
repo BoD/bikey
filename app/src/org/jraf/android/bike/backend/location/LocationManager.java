@@ -30,7 +30,7 @@ public class LocationManager {
 
     private static final LocationManager INSTANCE = new LocationManager();
 
-    private static final boolean DEBUG_USE_DEVICE_GPS = false;
+    private static final boolean DEBUG_USE_DEVICE_GPS = true;
     private static final int INTERVAL_LOC_REQUEST = 1000;
     private static final int ALLOWED_LOC_MISSES = 8;
 

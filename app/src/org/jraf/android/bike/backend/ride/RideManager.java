@@ -70,24 +70,27 @@ public class RideManager {
         // Get current activated date / duration
         String[] projection = { RideColumns.ACTIVATED_DATE, RideColumns.DURATION };
         RideCursorWrapper c = new RideCursorWrapper(mContext.getContentResolver().query(rideUri, projection, null, null, null));
-        if (!c.moveToNext()) {
-            throw new IllegalArgumentException(rideUri + " not found");
-        }
-        long activatedDate = c.getActivatedDate();
-        long duration = c.getDuration();
-        c.close();
+        try {
+            if (!c.moveToNext()) {
+                throw new IllegalArgumentException(rideUri + " not found");
+            }
+            long activatedDate = c.getActivatedDate();
+            long duration = c.getDuration();
 
-        // Update duration and state
-        duration += System.currentTimeMillis() - activatedDate;
+            // Update duration and state
+            duration += System.currentTimeMillis() - activatedDate;
 
-        ContentValues values = new ContentValues(2);
-        values.put(RideColumns.STATE, RideState.PAUSED.getValue());
-        values.put(RideColumns.DURATION, duration);
-        mContext.getContentResolver().update(rideUri, values, null, null);
+            ContentValues values = new ContentValues(2);
+            values.put(RideColumns.STATE, RideState.PAUSED.getValue());
+            values.put(RideColumns.DURATION, duration);
+            mContext.getContentResolver().update(rideUri, values, null, null);
 
-        // Dispatch to listeners
-        for (RideListener listener : mListeners) {
-            listener.onPaused(rideUri);
+            // Dispatch to listeners
+            for (RideListener listener : mListeners) {
+                listener.onPaused(rideUri);
+            }
+        } finally {
+            c.close();
         }
     }
 
@@ -97,34 +100,43 @@ public class RideManager {
         String selection = RideColumns.STATE + "=?";
         String[] selectionArgs = { RideState.ACTIVE.getValueAsString() };
         Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, selection, selectionArgs, null);
-        if (c == null || !c.moveToNext()) return null;
-        long id = c.getLong(0);
-        c.close();
-        return ContentUris.withAppendedId(RideColumns.CONTENT_URI, id);
+        try {
+            if (!c.moveToNext()) return null;
+            long id = c.getLong(0);
+            return ContentUris.withAppendedId(RideColumns.CONTENT_URI, id);
+        } finally {
+            c.close();
+        }
     }
 
     @Background
     public long getActivatedDate(Uri rideUri) {
         String[] projection = { RideColumns.ACTIVATED_DATE };
         Cursor c = mContext.getContentResolver().query(rideUri, projection, null, null, null);
-        if (c == null || !c.moveToNext()) {
-            throw new IllegalArgumentException(rideUri + " not found");
+        try {
+            if (!c.moveToNext()) {
+                throw new IllegalArgumentException(rideUri + " not found");
+            }
+            long res = c.getLong(0);
+            return res;
+        } finally {
+            c.close();
         }
-        long res = c.getLong(0);
-        c.close();
-        return res;
     }
 
     @Background
     public long getDuration(Uri rideUri) {
         String[] projection = { RideColumns.DURATION };
         Cursor c = mContext.getContentResolver().query(rideUri, projection, null, null, null);
-        if (c == null || !c.moveToNext()) {
-            throw new IllegalArgumentException(rideUri + " not found");
+        try {
+            if (!c.moveToNext()) {
+                throw new IllegalArgumentException(rideUri + " not found");
+            }
+            long res = c.getLong(0);
+            return res;
+        } finally {
+            c.close();
         }
-        long res = c.getLong(0);
-        c.close();
-        return res;
     }
 
     public void addListener(RideListener listener) {

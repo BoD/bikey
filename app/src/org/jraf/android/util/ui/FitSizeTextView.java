@@ -8,8 +8,6 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
-import org.jraf.android.util.Log;
-
 public class FitSizeTextView extends TextView {
     public FitSizeTextView(Context context) {
         super(context);
@@ -37,19 +35,20 @@ public class FitSizeTextView extends TextView {
 
         int textSize = h;
         Rect bounds = new Rect();
-        int textWidth;
-        int textHeight;
+        int textWidth = -1;
+        int textHeight = -1;
 
         do {
-            Log.d("textSize=" + textSize);
-            textSize *= .9;
+            if (textWidth > w) {
+                textSize *= (float) w / textWidth;
+            } else if (textHeight > h) {
+                textSize *= (float) h / textHeight;
+            }
             setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
             measureText(getText(), bounds);
             textWidth = bounds.width();
             textHeight = bounds.height();
-            Log.d("- textWidth=" + textWidth + " textHeight=" + textHeight);
         } while (textWidth > w || textHeight > h);
-        Log.d("----");
     }
 
     private void measureText(CharSequence text, Rect bounds) {
@@ -59,15 +58,6 @@ public class FitSizeTextView extends TextView {
         bounds.top = tempLayout.getLineTop(0);
         bounds.bottom = tempLayout.getLineBottom(0);
     }
-
-    //    @Override
-    //    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    //        int width = MeasureSpec.getSize(widthMeasureSpec);
-    //        int height = MeasureSpec.getSize(heightMeasureSpec);
-    //        resetTextSize(width, height);
-    //        setMeasuredDimension(width, height);
-    //    }
 
     @Override
     protected void onTextChanged(final CharSequence text, final int start, final int before, final int after) {

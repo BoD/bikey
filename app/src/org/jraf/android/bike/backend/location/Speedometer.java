@@ -96,6 +96,9 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
         if (mLastLocation != null) {
             float[] results = new float[1];
             Location.distanceBetween(mLastLocation.getLatitude(), mLastLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
+            DistanceDuration distanceDuration = new DistanceDuration(results[0], now - mLastDate);
+            float currentSpeed = distanceDuration.getSpeed();
+
             if (mLog.size() >= mLogSize) {
                 // Make room for the new value
                 mLog.removeLast();
@@ -105,8 +108,12 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
                     mLog.removeLast();
                 }
             }
-            DistanceDuration distanceDuration = new DistanceDuration(results[0], now - mLastDate);
-            float currentSpeed = distanceDuration.getSpeed();
+
+            if (currentSpeed < SPEED_MIN_THRESHOLD_M_S) {
+                Log.d("Speed under threshold: not adding");
+                return;
+            }
+
             Log.d("Adding speed:" + UnitUtil.formatSpeed(currentSpeed) + "(" + currentSpeed + ")");
             mLog.addFirst(distanceDuration);
 

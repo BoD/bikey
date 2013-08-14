@@ -88,8 +88,8 @@ public class HudActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
+    protected void onStart() {
+        super.onStart();
 
         // GPS status
         LocationManager.get().addStatusListener(mGpsStatusListener);
@@ -99,14 +99,14 @@ public class HudActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onPause() {
+    protected void onStop() {
         // GPS status
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
         // Activity
         LocationManager.get().removeActivityRecognitionListener(mActivityRecognitionListener);
 
-        super.onPause();
+        super.onStop();
     }
 
     private void setupFragments() {

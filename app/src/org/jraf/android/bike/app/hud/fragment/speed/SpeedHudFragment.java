@@ -20,8 +20,8 @@ public class SpeedHudFragment extends SimpleHudFragment {
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         // GPS status
         LocationManager.get().addStatusListener(mGpsStatusListener);
 
@@ -30,13 +30,13 @@ public class SpeedHudFragment extends SimpleHudFragment {
     }
 
     @Override
-    public void onPause() {
+    public void onStop() {
         // GPS status
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
         // Speed updates
         mSpeedometer.stopListening();
-        super.onPause();
+        super.onStop();
     }
 
     private Speedometer mSpeedometer = new Speedometer() {

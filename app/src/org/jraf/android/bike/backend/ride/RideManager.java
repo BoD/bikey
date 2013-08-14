@@ -55,7 +55,7 @@ public class RideManager {
         // Update state
         ContentValues values = new ContentValues(3);
         values.put(RideColumns.STATE, RideState.ACTIVE.getValue());
-        // Update activated date if first time
+        // Update activated date
         values.put(RideColumns.ACTIVATED_DATE, System.currentTimeMillis());
         mContext.getContentResolver().update(rideUri, values, null, null);
 
@@ -77,12 +77,13 @@ public class RideManager {
             long activatedDate = c.getActivatedDate();
             long duration = c.getDuration();
 
-            // Update duration and state
+            // Update duration, state, and reset activated date
             duration += System.currentTimeMillis() - activatedDate;
 
-            ContentValues values = new ContentValues(2);
+            ContentValues values = new ContentValues(3);
             values.put(RideColumns.STATE, RideState.PAUSED.getValue());
             values.put(RideColumns.DURATION, duration);
+            values.put(RideColumns.ACTIVATED_DATE, 0);
             mContext.getContentResolver().update(rideUri, values, null, null);
 
             // Dispatch to listeners
@@ -92,6 +93,18 @@ public class RideManager {
         } finally {
             c.close();
         }
+    }
+
+    /**
+     * Queries all the columns for the given ride.
+     * Do not forget to call {@link Cursor#close()} on the returned Cursor.
+     */
+    private RideCursorWrapper query(Uri rideUri) {
+        Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
+        if (!c.moveToNext()) {
+            throw new IllegalArgumentException(rideUri + " not found");
+        }
+        return new RideCursorWrapper(c);
     }
 
     @Background
@@ -111,14 +124,9 @@ public class RideManager {
 
     @Background
     public long getActivatedDate(Uri rideUri) {
-        String[] projection = { RideColumns.ACTIVATED_DATE };
-        Cursor c = mContext.getContentResolver().query(rideUri, projection, null, null, null);
+        RideCursorWrapper c = query(rideUri);
         try {
-            if (!c.moveToNext()) {
-                throw new IllegalArgumentException(rideUri + " not found");
-            }
-            long res = c.getLong(0);
-            return res;
+            return c.getActivatedDate();
         } finally {
             c.close();
         }
@@ -126,14 +134,19 @@ public class RideManager {
 
     @Background
     public long getDuration(Uri rideUri) {
-        String[] projection = { RideColumns.DURATION };
-        Cursor c = mContext.getContentResolver().query(rideUri, projection, null, null, null);
+        RideCursorWrapper c = query(rideUri);
         try {
-            if (!c.moveToNext()) {
-                throw new IllegalArgumentException(rideUri + " not found");
-            }
-            long res = c.getLong(0);
-            return res;
+            return c.getDuration();
+        } finally {
+            c.close();
+        }
+    }
+
+    @Background
+    public RideState getState(Uri rideUri) {
+        RideCursorWrapper c = query(rideUri);
+        try {
+            return RideState.from(c.getState());
         } finally {
             c.close();
         }

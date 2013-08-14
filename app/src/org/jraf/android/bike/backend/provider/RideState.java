@@ -39,4 +39,8 @@ public enum RideState {
         }
         return null;
     }
+
+    public static RideState from(long value) {
+        return from((int) value);
+    }
 }

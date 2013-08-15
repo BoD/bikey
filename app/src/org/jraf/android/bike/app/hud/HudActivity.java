@@ -3,6 +3,7 @@ package org.jraf.android.bike.app.hud;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,8 +28,6 @@ import org.jraf.android.bike.backend.location.LocationManager.ActivityRecognitio
 import org.jraf.android.bike.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.Log;
-import org.jraf.android.util.async.Task;
-import org.jraf.android.util.async.TaskFragment;
 
 import com.google.android.gms.location.DetectedActivity;
 
@@ -69,23 +68,24 @@ public class HudActivity extends BaseFragmentActivity {
     }
 
     private void toggleRecordingIfActive() {
-        new TaskFragment(new Task<HudActivity>() {
+        new AsyncTask<Void, Void, Void>() {
             private Uri mActiveRideUri;
 
             @Override
-            protected void doInBackground() throws Throwable {
+            protected Void doInBackground(Void... params) {
                 mActiveRideUri = RideManager.get().getActiveRide();
+                return null;
             }
 
             @Override
-            protected void onPostExecuteOk() {
-                if (getActivity().mRideUri.equals(mActiveRideUri)) {
-                    getActivity().mTogRecording.setChecked(true);
+            protected void onPostExecute(Void result) {
+                if (mRideUri.equals(mActiveRideUri)) {
+                    mTogRecording.setChecked(true);
                 }
-                getActivity().mTogRecording.setEnabled(true);
-                getActivity().mTogRecording.setOnCheckedChangeListener(getActivity().mRecordingOnCheckedChangeListener);
+                mTogRecording.setEnabled(true);
+                mTogRecording.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
             }
-        }).execute(getSupportFragmentManager());
+        }.execute();
     }
 
     @Override

@@ -12,7 +12,7 @@ import android.app.FragmentTransaction;
 public class FragmentCycler {
     private int mContainerResId;
     private List<String> mFragmentTags = new ArrayList<String>(10);
-    private int mCurrentVisibleIndex = -1;
+    private int mCurrentVisibleIndex = 0;
 
     public FragmentCycler(int containerResId) {
         mContainerResId = containerResId;
@@ -28,19 +28,14 @@ public class FragmentCycler {
             t.hide(fragment);
             t.commit();
         } else {
-            if (foundFragment.isVisible()) {
-                mCurrentVisibleIndex = mFragmentTags.size();
-            }
+            FragmentTransaction t = fragmentManager.beginTransaction();
+            t.hide(foundFragment);
+            t.commit();
         }
         mFragmentTags.add(tag);
     }
 
     public void show(Activity activity) {
-        if (mCurrentVisibleIndex != -1) {
-            // A fragment is already showing, do nothing
-            return;
-        }
-        mCurrentVisibleIndex = 0;
         String tag = mFragmentTags.get(mCurrentVisibleIndex);
         FragmentManager fragmentManager = activity.getFragmentManager();
         fragmentManager.executePendingTransactions();

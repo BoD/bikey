@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.ToggleButton;
 
 import org.jraf.android.bike.R;
+import org.jraf.android.bike.app.BaseFragmentActivity;
 import org.jraf.android.bike.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bike.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bike.backend.DataCollectingService;
@@ -31,7 +31,7 @@ import org.jraf.android.util.async.TaskFragment;
 
 import com.google.android.gms.location.DetectedActivity;
 
-public class HudActivity extends FragmentActivity {
+public class HudActivity extends BaseFragmentActivity {
     private static final long NAV_BAR_HIDE_DELAY = 4000;
 
     private Handler mHandler = new Handler();
@@ -132,7 +132,7 @@ public class HudActivity extends FragmentActivity {
                 Log.d("visibility=" + visibility);
                 if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) {
                     Log.d("Navigation bar showing");
-                    mFragmentCycler.cycle(HudActivity.this);
+                    if (!isPaused()) mFragmentCycler.cycle(HudActivity.this);
                     scheduleHideNavigationBar();
                 }
             }

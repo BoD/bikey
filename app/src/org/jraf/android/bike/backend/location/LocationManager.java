@@ -30,7 +30,7 @@ public class LocationManager {
 
     private static final LocationManager INSTANCE = new LocationManager();
 
-    private static final boolean DEBUG_USE_DEVICE_GPS = false;
+    private static final boolean DEBUG_USE_DEVICE_GPS = true;
     private static final int INTERVAL_LOC_REQUEST = 1000;
     private static final int ALLOWED_LOC_MISSES = 8;
 
@@ -235,7 +235,6 @@ public class LocationManager {
 
         @Override
         public void onLocationChanged(Location location) {
-            Log.d();
             mLastFixDate = System.currentTimeMillis();
             // We just received a fix so we're active
             setActive(true);
@@ -315,8 +314,10 @@ public class LocationManager {
     private void stopActivityRecognitionListener() {
         Log.d();
         if (mActivityRecognitionClient == null) return;
-        mActivityRecognitionClient.removeActivityUpdates(getActivityRecognitionPendingIntent());
-        if (mActivityRecognitionClient.isConnected()) mActivityRecognitionClient.disconnect();
+        if (mActivityRecognitionClient.isConnected()) {
+            mActivityRecognitionClient.removeActivityUpdates(getActivityRecognitionPendingIntent());
+            mActivityRecognitionClient.disconnect();
+        }
         mActivityRecognitionClient = null;
     }
 

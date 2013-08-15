@@ -12,7 +12,7 @@ public class UnitUtil {
         DecimalFormat decimalFormat = new DecimalFormat("##0.0");
         String speedStr = decimalFormat.format(kmPerHour);
         SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(0.75f), speedStr.length() - 2, speedStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.length() - 2, speedStr.length(), 0);
         return builder;
     }
 }

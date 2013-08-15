@@ -1,6 +1,9 @@
 package org.jraf.android.bike.app.hud.fragment.speed;
 
 import android.location.Location;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.hud.fragment.SimpleHudFragment;
@@ -10,6 +13,8 @@ import org.jraf.android.bike.backend.location.Speedometer;
 import org.jraf.android.bike.util.UnitUtil;
 
 public class SpeedHudFragment extends SimpleHudFragment {
+    private TextView mTxtDebugLastSpeed;
+
     public static SpeedHudFragment newInstance() {
         return new SpeedHudFragment();
     }
@@ -17,6 +22,12 @@ public class SpeedHudFragment extends SimpleHudFragment {
     @Override
     protected int getLayoutResId() {
         return R.layout.hud_speed;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mTxtDebugLastSpeed = (TextView) view.findViewById(R.id.txtDebugLastSpeed);
     }
 
     @Override
@@ -44,6 +55,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
         public void onLocationChanged(Location location) {
             super.onLocationChanged(location);
             setText(UnitUtil.formatSpeed(getSpeed()));
+            if (mDebugInfo.lastDistanceDuration != null) mTxtDebugLastSpeed.setText(UnitUtil.formatSpeed(mDebugInfo.lastDistanceDuration.getSpeed()));
         }
     };
 

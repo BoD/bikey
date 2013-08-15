@@ -24,12 +24,12 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
     /**
      * Number of entries to keep when going at medium speed.
      */
-    private static final int LOG_SIZE_MEDIUM = 5;
+    private static final int LOG_SIZE_MEDIUM = 4;
 
     /**
      * Number of entries to keep when going fast.
      */
-    private static final int LOG_SIZE_MAX = 7;
+    private static final int LOG_SIZE_MAX = 5;
 
     /**
      * Below this speed, we only keep LOG_SIZE_SLOW log entries.
@@ -46,7 +46,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
      */
     private static final float SPEED_MIN_THRESHOLD_M_S = 2.5f / 3.6f;
 
-    private static class DistanceDuration {
+    public static class DistanceDuration {
         public float distance;
         public long duration;
 
@@ -63,7 +63,10 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
         public String toString() {
             return String.valueOf(getSpeed());
         }
+    }
 
+    public static class DebugInfo {
+        public DistanceDuration lastDistanceDuration;
     }
 
     private long mLastDate = 0;
@@ -71,6 +74,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
     private Deque<DistanceDuration> mLog = new ArrayDeque<DistanceDuration>(LOG_SIZE_MAX);
     private int mActivityType = DetectedActivity.STILL;
     private int mLogSize = LOG_SIZE_SLOW;
+    public DebugInfo mDebugInfo = new DebugInfo();
 
     /*
     public Speedometer() {
@@ -97,7 +101,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
             float[] results = new float[1];
             Location.distanceBetween(mLastLocation.getLatitude(), mLastLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
             DistanceDuration distanceDuration = new DistanceDuration(results[0], now - mLastDate);
-            float currentSpeed = distanceDuration.getSpeed();
+            float lastSpeed = distanceDuration.getSpeed();
 
             if (mLog.size() >= mLogSize) {
                 // Make room for the new value
@@ -109,18 +113,19 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
                 }
             }
 
-            if (currentSpeed < SPEED_MIN_THRESHOLD_M_S) {
-                Log.d("Speed under threshold: not adding");
-                return;
-            }
+            mDebugInfo.lastDistanceDuration = distanceDuration;
 
-            Log.d("Adding speed:" + UnitUtil.formatSpeed(currentSpeed) + "(" + currentSpeed + ")");
+            if (lastSpeed < SPEED_MIN_THRESHOLD_M_S) {
+                Log.d("Speed under threshold: rounding to 0");
+                distanceDuration.distance = 0;
+            }
+            Log.d("Adding speed:" + UnitUtil.formatSpeed(lastSpeed) + "(" + lastSpeed + ")");
             mLog.addFirst(distanceDuration);
 
-            if (currentSpeed < SPEED_MEDIUM_M_S) {
+            if (lastSpeed < SPEED_MEDIUM_M_S) {
                 Log.d("Slow speed: keep " + LOG_SIZE_SLOW + " values");
                 mLogSize = LOG_SIZE_SLOW;
-            } else if (currentSpeed < SPEED_FAST_M_S) {
+            } else if (lastSpeed < SPEED_FAST_M_S) {
                 Log.d("Medium speed: keep " + LOG_SIZE_MEDIUM + " values");
                 mLogSize = LOG_SIZE_MEDIUM;
             } else {

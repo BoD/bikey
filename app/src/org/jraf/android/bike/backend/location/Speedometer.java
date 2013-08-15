@@ -41,11 +41,6 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
      */
     private static final float SPEED_FAST_M_S = 20f / 3.6f;
 
-    /**
-     * Speeds below this value will be reported as 0 (because of GPS low precision).
-     */
-    private static final float SPEED_MIN_THRESHOLD_M_S = 2.2f / 3.6f;
-
     public static class DebugInfo {
         public DistanceDuration lastDistanceDuration;
     }
@@ -92,7 +87,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
 
             mDebugInfo.lastDistanceDuration = distanceDuration;
 
-            if (lastSpeed < SPEED_MIN_THRESHOLD_M_S) {
+            if (lastSpeed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
                 Log.d("Speed under threshold: rounding to 0");
                 distanceDuration.distance = 0;
             }
@@ -131,7 +126,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
         //        res = distance / (duration / 1000f);
         res /= count;
         Log.d("res=" + res);
-        if (res < SPEED_MIN_THRESHOLD_M_S) {
+        if (res < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
             Log.d("Speed under threshold: return 0");
             return 0f;
         }

@@ -37,6 +37,7 @@ public class ElapsedTimeHudFragment extends SimpleHudFragment {
     @Override
     public void onStart() {
         super.onStart();
+        // Ride updates
         RideManager rideManager = RideManager.get();
         rideManager.addListener(mRideListener);
 
@@ -56,6 +57,7 @@ public class ElapsedTimeHudFragment extends SimpleHudFragment {
 
     @Override
     public void onStop() {
+        // Ride updates
         RideManager.get().removeListener(mRideListener);
         super.onStop();
     }

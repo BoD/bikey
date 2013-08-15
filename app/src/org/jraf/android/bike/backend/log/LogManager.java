@@ -9,9 +9,11 @@ import android.net.Uri;
 
 import org.jraf.android.bike.app.Application;
 import org.jraf.android.bike.backend.location.DistanceDuration;
+import org.jraf.android.bike.backend.location.LocationManager;
 import org.jraf.android.bike.backend.provider.LogColumns;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
+import org.jraf.android.util.Log;
 import org.jraf.android.util.annotation.Background;
 
 public class LogManager {
@@ -38,9 +40,14 @@ public class LogManager {
         values.put(LogColumns.LON, location.getLongitude());
         if (previousLocation != null) {
             DistanceDuration distanceDuration = new DistanceDuration(previousLocation, location);
-            values.put(LogColumns.DURATION, distanceDuration.duration);
-            values.put(LogColumns.DISTANCE, distanceDuration.distance);
-            values.put(LogColumns.SPEED, distanceDuration.getSpeed());
+            float speed = distanceDuration.getSpeed();
+            if (speed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
+                Log.d("Speed under threshold, not logging it");
+            } else {
+                values.put(LogColumns.DURATION, distanceDuration.duration);
+                values.put(LogColumns.DISTANCE, distanceDuration.distance);
+                values.put(LogColumns.SPEED, speed);
+            }
         }
         Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values);
 

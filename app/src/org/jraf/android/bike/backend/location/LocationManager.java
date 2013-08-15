@@ -39,6 +39,12 @@ public class LocationManager {
 
     private static final int IGNORE_LOCATION_COUNT = 7;
 
+    /**
+     * Speeds below this value will be reported as 0 (because of GPS low precision).
+     */
+    public static final float SPEED_MIN_THRESHOLD_M_S = 2.2f / 3.6f;
+
+
     public static LocationManager get() {
         return INSTANCE;
     }

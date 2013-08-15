@@ -1,6 +1,7 @@
 package org.jraf.android.bike.app.hud.fragment.totaldistance;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 
 import org.jraf.android.bike.app.hud.fragment.SimpleHudFragment;
 import org.jraf.android.bike.backend.log.LogListener;
@@ -19,17 +20,32 @@ public class TotalDistanceHudFragment extends SimpleHudFragment {
     public void onStart() {
         super.onStart();
         // Ride updates
-        RideManager rideManager = RideManager.get();
+        final RideManager rideManager = RideManager.get();
         rideManager.addListener(mRideListener);
 
         // Log updates
-        LogManager.get().addListener(mLogListener);
+        final LogManager logManager = LogManager.get();
+        logManager.addListener(mLogListener);
 
-        Uri rideUri = getRideUri();
-        float totalDistance = LogManager.get().getTotalDistance(rideUri);
-        boolean isActive = rideManager.getState(rideUri) == RideState.ACTIVE;
-        mTxtValue.setEnabled(isActive);
-        mTxtValue.setText(UnitUtil.formatDistance(totalDistance));
+        final Uri rideUri = getRideUri();
+
+        new AsyncTask<Void, Void, Void>() {
+            private float mTotalDistance;
+            private boolean mIsActive;
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                mTotalDistance = logManager.getTotalDistance(rideUri);
+                mIsActive = rideManager.getState(rideUri) == RideState.ACTIVE;
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                mTxtValue.setEnabled(mIsActive);
+                mTxtValue.setText(UnitUtil.formatDistance(mTotalDistance));
+            }
+        }.execute();
     }
 
     @Override
@@ -58,10 +74,23 @@ public class TotalDistanceHudFragment extends SimpleHudFragment {
 
     private LogListener mLogListener = new LogListener() {
         @Override
-        public void onLogAdded(Uri rideUri) {
+        public void onLogAdded(final Uri rideUri) {
             if (!rideUri.equals(getRideUri())) return;
-            float totalDistance = LogManager.get().getTotalDistance(rideUri);
-            mTxtValue.setText(UnitUtil.formatDistance(totalDistance));
+
+            new AsyncTask<Void, Void, Void>() {
+                private float mTotalDistance;
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    mTotalDistance = LogManager.get().getTotalDistance(rideUri);
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    mTxtValue.setText(UnitUtil.formatDistance(mTotalDistance));
+                }
+            }.execute();
         }
     };
 }

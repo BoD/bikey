@@ -50,8 +50,8 @@ public class BikeProvider extends ContentProvider {
     private static final int URI_TYPE_RIDE = 0;
     private static final int URI_TYPE_RIDE_ID = 1;
 
-    private static final int URI_TYPE_COORDINATES = 2;
-    private static final int URI_TYPE_COORDINATES_ID = 3;
+    private static final int URI_TYPE_LOG = 2;
+    private static final int URI_TYPE_LOG_ID = 3;
 
 
 
@@ -61,8 +61,8 @@ public class BikeProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME, URI_TYPE_RIDE);
         URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME + "/#", URI_TYPE_RIDE_ID);
 
-        URI_MATCHER.addURI(AUTHORITY, CoordinatesColumns.TABLE_NAME, URI_TYPE_COORDINATES);
-        URI_MATCHER.addURI(AUTHORITY, CoordinatesColumns.TABLE_NAME + "/#", URI_TYPE_COORDINATES_ID);
+        URI_MATCHER.addURI(AUTHORITY, LogColumns.TABLE_NAME, URI_TYPE_LOG);
+        URI_MATCHER.addURI(AUTHORITY, LogColumns.TABLE_NAME + "/#", URI_TYPE_LOG_ID);
 
     }
 
@@ -83,10 +83,10 @@ public class BikeProvider extends ContentProvider {
             case URI_TYPE_RIDE_ID:
                 return TYPE_CURSOR_ITEM + RideColumns.TABLE_NAME;
 
-            case URI_TYPE_COORDINATES:
-                return TYPE_CURSOR_DIR + CoordinatesColumns.TABLE_NAME;
-            case URI_TYPE_COORDINATES_ID:
-                return TYPE_CURSOR_ITEM + CoordinatesColumns.TABLE_NAME;
+            case URI_TYPE_LOG:
+                return TYPE_CURSOR_DIR + LogColumns.TABLE_NAME;
+            case URI_TYPE_LOG_ID:
+                return TYPE_CURSOR_ITEM + LogColumns.TABLE_NAME;
 
         }
         return null;
@@ -182,10 +182,10 @@ public class BikeProvider extends ContentProvider {
                 res.orderBy = RideColumns.DEFAULT_ORDER;
                 break;
 
-            case URI_TYPE_COORDINATES:
-            case URI_TYPE_COORDINATES_ID:
-                res.table = CoordinatesColumns.TABLE_NAME;
-                res.orderBy = CoordinatesColumns.DEFAULT_ORDER;
+            case URI_TYPE_LOG:
+            case URI_TYPE_LOG_ID:
+                res.table = LogColumns.TABLE_NAME;
+                res.orderBy = LogColumns.DEFAULT_ORDER;
                 break;
 
             default:
@@ -194,7 +194,7 @@ public class BikeProvider extends ContentProvider {
 
         switch (matchedId) {
             case URI_TYPE_RIDE_ID:
-            case URI_TYPE_COORDINATES_ID:
+            case URI_TYPE_LOG_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

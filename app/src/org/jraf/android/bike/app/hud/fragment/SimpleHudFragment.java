@@ -29,7 +29,9 @@ public abstract class SimpleHudFragment extends Fragment {
         mTxtValue.setText(text);
     }
 
-    protected abstract int getLayoutResId();
+    protected int getLayoutResId() {
+        return R.layout.hud_simple;
+    }
 
     protected Uri getRideUri() {
         return ((HudActivity) getActivity()).getRideUri();

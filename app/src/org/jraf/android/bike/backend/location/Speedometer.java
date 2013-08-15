@@ -44,32 +44,12 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
     /**
      * Speeds below this value will be reported as 0 (because of GPS low precision).
      */
-    private static final float SPEED_MIN_THRESHOLD_M_S = 2.5f / 3.6f;
-
-    public static class DistanceDuration {
-        public float distance;
-        public long duration;
-
-        public DistanceDuration(float distance, long duration) {
-            this.distance = distance;
-            this.duration = duration;
-        }
-
-        public float getSpeed() {
-            return distance / (duration / 1000f);
-        }
-
-        @Override
-        public String toString() {
-            return String.valueOf(getSpeed());
-        }
-    }
+    private static final float SPEED_MIN_THRESHOLD_M_S = 2.2f / 3.6f;
 
     public static class DebugInfo {
         public DistanceDuration lastDistanceDuration;
     }
 
-    private long mLastDate = 0;
     private Location mLastLocation = null;
     private Deque<DistanceDuration> mLog = new ArrayDeque<DistanceDuration>(LOG_SIZE_MAX);
     private int mActivityType = DetectedActivity.STILL;
@@ -96,11 +76,8 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
 
     @Override
     public void onLocationChanged(Location location) {
-        long now = System.currentTimeMillis();
         if (mLastLocation != null) {
-            float[] results = new float[1];
-            Location.distanceBetween(mLastLocation.getLatitude(), mLastLocation.getLongitude(), location.getLatitude(), location.getLongitude(), results);
-            DistanceDuration distanceDuration = new DistanceDuration(results[0], now - mLastDate);
+            DistanceDuration distanceDuration = new DistanceDuration(mLastLocation, location);
             float lastSpeed = distanceDuration.getSpeed();
 
             if (mLog.size() >= mLogSize) {
@@ -134,7 +111,6 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
             }
         }
 
-        mLastDate = now;
         mLastLocation = location;
     }
 

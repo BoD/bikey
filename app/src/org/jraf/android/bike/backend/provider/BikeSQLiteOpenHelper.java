@@ -49,13 +49,16 @@ public class BikeSQLiteOpenHelper extends SQLiteOpenHelper {
             + RideColumns.DISTANCE + " FLOAT "
             + " );";
 
-    private static final String SQL_CREATE_TABLE_COORDINATES = "CREATE TABLE IF NOT EXISTS "
-            + CoordinatesColumns.TABLE_NAME + " ( "
-            + CoordinatesColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + CoordinatesColumns.RIDE_ID + " INTEGER, "
-            + CoordinatesColumns.RECORDED_DATE + " INTEGER, "
-            + CoordinatesColumns.LAT_E6 + " INTEGER, "
-            + CoordinatesColumns.LON_E6 + " INTEGER "
+    private static final String SQL_CREATE_TABLE_LOG = "CREATE TABLE IF NOT EXISTS "
+            + LogColumns.TABLE_NAME + " ( "
+            + LogColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + LogColumns.RIDE_ID + " INTEGER, "
+            + LogColumns.RECORDED_DATE + " INTEGER, "
+            + LogColumns.LAT + " FLOAT, "
+            + LogColumns.LON + " FLOAT, "
+            + LogColumns.DURATION + " INTEGER, "
+            + LogColumns.DISTANCE + " FLOAT, "
+            + LogColumns.SPEED + " FLOAT "
             + " );";
 
     // @formatter:on
@@ -68,7 +71,7 @@ public class BikeSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         if (Config.LOGD_PROVIDER) Log.d(TAG, "onCreate");
         db.execSQL(SQL_CREATE_TABLE_RIDE);
-        db.execSQL(SQL_CREATE_TABLE_COORDINATES);
+        db.execSQL(SQL_CREATE_TABLE_LOG);
     }
 
     @Override

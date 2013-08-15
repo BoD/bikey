@@ -27,13 +27,7 @@ public class ActivityRecognitionIntentService extends IntentService {
             DetectedActivity mostProbableActivity = result.getMostProbableActivity();
             final int activityType = mostProbableActivity.getType();
             final int confidence = mostProbableActivity.getConfidence();
-            // Dispatching is done on the main/ui thread
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    LocationManager.get().onActivityRecognized(activityType, confidence);
-                }
-            });
+            LocationManager.get().onActivityRecognized(activityType, confidence);
         }
     }
 }

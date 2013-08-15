@@ -26,30 +26,42 @@ package org.jraf.android.bike.backend.provider;
 import android.database.Cursor;
 
 /**
- * Cursor wrapper for the {@code coordinates} table.
+ * Cursor wrapper for the {@code log} table.
  */
-public class CoordinatesCursorWrapper extends AbstractCursorWrapper {
-    public CoordinatesCursorWrapper(Cursor cursor) {
+public class LogCursorWrapper extends AbstractCursorWrapper {
+    public LogCursorWrapper(Cursor cursor) {
         super(cursor);
     }
 
     public Long getId() {
-        return getLongOrNull(CoordinatesColumns._ID);
+        return getLongOrNull(LogColumns._ID);
     }
 
     public Long getRideId() {
-        return getLongOrNull(CoordinatesColumns.RIDE_ID);
+        return getLongOrNull(LogColumns.RIDE_ID);
     }
 
     public Long getRecordedDate() {
-        return getLongOrNull(CoordinatesColumns.RECORDED_DATE);
+        return getLongOrNull(LogColumns.RECORDED_DATE);
     }
 
-    public Long getLatE6() {
-        return getLongOrNull(CoordinatesColumns.LAT_E6);
+    public Double getLat() {
+        return getDoubleOrNull(LogColumns.LAT);
     }
 
-    public Long getLonE6() {
-        return getLongOrNull(CoordinatesColumns.LON_E6);
+    public Double getLon() {
+        return getDoubleOrNull(LogColumns.LON);
+    }
+
+    public Long getDuration() {
+        return getLongOrNull(LogColumns.DURATION);
+    }
+
+    public Double getDistance() {
+        return getDoubleOrNull(LogColumns.DISTANCE);
+    }
+
+    public Double getSpeed() {
+        return getDoubleOrNull(LogColumns.SPEED);
     }
 }

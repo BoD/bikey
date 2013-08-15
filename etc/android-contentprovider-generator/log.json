@@ -1,0 +1,33 @@
+{
+	"fields": [
+		{
+			"name": "ride_id",
+			"type": "integer"
+		},
+		{
+			"name": "recorded_date",
+			"type": "integer"
+		},
+		{
+			"name": "lat",
+			"type": "float"
+		},
+		{
+			"name": "lon",
+			"type": "float"
+		},
+		{
+			"name": "duration",
+			"type": "integer"
+		},
+		{
+			"name": "distance",
+			"type": "float"
+		},
+		{
+			"name": "speed",
+			"type": "float"
+		},
+
+	],
+}

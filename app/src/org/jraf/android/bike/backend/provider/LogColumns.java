@@ -27,18 +27,21 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Columns for the {@code coordinates} table.
+ * Columns for the {@code log} table.
  */
-public class CoordinatesColumns implements BaseColumns {
-    public static final String TABLE_NAME = "coordinates";
+public class LogColumns implements BaseColumns {
+    public static final String TABLE_NAME = "log";
     public static final Uri CONTENT_URI = Uri.parse(BikeProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
     public static final String _ID = BaseColumns._ID;
 
     public static final String RIDE_ID = "ride_id";
     public static final String RECORDED_DATE = "recorded_date";
-    public static final String LAT_E6 = "lat_e6";
-    public static final String LON_E6 = "lon_e6";
+    public static final String LAT = "lat";
+    public static final String LON = "lon";
+    public static final String DURATION = "duration";
+    public static final String DISTANCE = "distance";
+    public static final String SPEED = "speed";
 
     public static final String DEFAULT_ORDER = _ID;
 }

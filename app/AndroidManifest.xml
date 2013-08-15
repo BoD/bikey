@@ -28,7 +28,7 @@
             android:exported="false" />
 
         <!-- Data collecting service -->
-        <service android:name="org.jraf.android.bike.backend.DataCollectingService" />
+        <service android:name="org.jraf.android.bike.backend.LogCollectorService" />
 
         <!-- Activity recognition service -->
         <service android:name="org.jraf.android.bike.backend.location.ActivityRecognitionIntentService" />

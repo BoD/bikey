@@ -20,7 +20,8 @@ import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.BaseFragmentActivity;
 import org.jraf.android.bike.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bike.app.hud.fragment.speed.SpeedHudFragment;
-import org.jraf.android.bike.backend.DataCollectingService;
+import org.jraf.android.bike.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
+import org.jraf.android.bike.backend.LogCollectorService;
 import org.jraf.android.bike.backend.location.LocationManager;
 import org.jraf.android.bike.backend.location.LocationManager.ActivityRecognitionListener;
 import org.jraf.android.bike.backend.location.LocationManager.StatusListener;
@@ -113,6 +114,7 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler = new FragmentCycler(R.id.conFragments);
         mFragmentCycler.add(this, SpeedHudFragment.newInstance());
         mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance());
+        mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance());
         mFragmentCycler.show(this);
     }
 
@@ -189,9 +191,9 @@ public class HudActivity extends BaseFragmentActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.d("isChecked=" + isChecked);
             if (isChecked) {
-                startService(new Intent(DataCollectingService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, DataCollectingService.class));
+                startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
             } else {
-                startService(new Intent(DataCollectingService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, DataCollectingService.class));
+                startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
             }
         }
     };

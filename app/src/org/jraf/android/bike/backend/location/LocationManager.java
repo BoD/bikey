@@ -9,6 +9,7 @@ import android.os.Handler;
 
 import org.jraf.android.bike.app.Application;
 import org.jraf.android.util.Listeners;
+import org.jraf.android.util.Listeners.Dispatcher;
 import org.jraf.android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -156,7 +157,7 @@ public class LocationManager {
 
     private LocationListener mLocationListener = new LocationListener() {
         @Override
-        public void onLocationChanged(Location location) {
+        public void onLocationChanged(final Location location) {
             Log.d("location=" + location);
             if (location.hasAccuracy() && location.getAccuracy() > ACCURACY_THRESHOLD_M) {
                 Log.d("Accuracy above threshold: ignore location");
@@ -170,9 +171,12 @@ public class LocationManager {
             }
 
             // Dispatch to listeners
-            for (LocationListener listener : mLocationListeners) {
-                listener.onLocationChanged(location);
-            }
+            mLocationListeners.dispatch(new Dispatcher<LocationListener>() {
+                @Override
+                public void dispatch(LocationListener listener) {
+                    listener.onLocationChanged(location);
+                }
+            });
         }
     };
 
@@ -261,12 +265,15 @@ public class LocationManager {
         }
     };
 
-    protected void setActive(boolean active) {
+    protected void setActive(final boolean active) {
         if (mActive != active) {
-            // Dispatch the change
-            for (StatusListener listener : mStatusListeners) {
-                listener.onStatusChanged(active);
-            }
+            // Dispatch to listeners
+            mStatusListeners.dispatch(new Dispatcher<StatusListener>() {
+                @Override
+                public void dispatch(StatusListener listener) {
+                    listener.onStatusChanged(active);
+                }
+            });
         }
         mActive = active;
     }
@@ -347,12 +354,15 @@ public class LocationManager {
         return pendingIntent;
     }
 
-    /* package */void onActivityRecognized(int activityType, int confidence) {
+    /* package */void onActivityRecognized(final int activityType, final int confidence) {
         if (mCurrentActivityType != activityType && mCurrentActivityConfidence != confidence) {
-            // Dispatch the change
-            for (ActivityRecognitionListener listener : mActivityRecognitionListeners) {
-                listener.onActivityRecognized(activityType, confidence);
-            }
+            // Dispatch to listeners
+            mActivityRecognitionListeners.dispatch(new Dispatcher<ActivityRecognitionListener>() {
+                @Override
+                public void dispatch(ActivityRecognitionListener listener) {
+                    listener.onActivityRecognized(activityType, confidence);
+                }
+            });
         }
     }
 }

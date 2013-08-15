@@ -1,0 +1,88 @@
+package org.jraf.android.bike.backend.log;
+
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.location.Location;
+import android.net.Uri;
+
+import org.jraf.android.bike.app.Application;
+import org.jraf.android.bike.backend.location.DistanceDuration;
+import org.jraf.android.bike.backend.provider.LogColumns;
+import org.jraf.android.util.Listeners;
+import org.jraf.android.util.Listeners.Dispatcher;
+import org.jraf.android.util.annotation.Background;
+
+public class LogManager {
+    private static final LogManager INSTANCE = new LogManager();
+
+    public static LogManager get() {
+        return INSTANCE;
+    }
+
+    private final Context mContext;
+    private Listeners<LogListener> mListeners = Listeners.newInstance();
+
+    private LogManager() {
+        mContext = Application.getApplication();
+    }
+
+    @Background
+    public Uri add(final Uri rideUri, Location location, Location previousLocation) {
+        ContentValues values = new ContentValues(7);
+        long rideId = ContentUris.parseId(rideUri);
+        values.put(LogColumns.RIDE_ID, rideId);
+        values.put(LogColumns.RECORDED_DATE, location.getTime());
+        values.put(LogColumns.LAT, location.getLatitude());
+        values.put(LogColumns.LON, location.getLongitude());
+        if (previousLocation != null) {
+            DistanceDuration distanceDuration = new DistanceDuration(previousLocation, location);
+            values.put(LogColumns.DURATION, distanceDuration.duration);
+            values.put(LogColumns.DISTANCE, distanceDuration.distance);
+            values.put(LogColumns.SPEED, distanceDuration.getSpeed());
+        }
+        Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values);
+
+        // Dispatch to listeners
+        mListeners.dispatch(new Dispatcher<LogListener>() {
+            @Override
+            public void dispatch(LogListener listener) {
+                listener.onLogAdded(rideUri);
+            }
+        });
+        return res;
+    }
+
+    @Background
+    public float getTotalDistance(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
+        String selection = LogColumns.RIDE_ID + "=?";
+        String[] selectionArgs = { String.valueOf(rideId) };
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, selection, selectionArgs, null);
+        try {
+            if (!c.moveToNext()) {
+                return 0;
+            }
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
+
+
+    /*
+     * Listeners.
+     */
+
+    public void addListener(LogListener listener) {
+        mListeners.add(listener);
+    }
+
+    public void removeListener(LogListener listener) {
+        mListeners.remove(listener);
+    }
+
+
+}

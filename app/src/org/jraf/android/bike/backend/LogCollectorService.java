@@ -6,24 +6,29 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.location.Location;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.hud.HudActivity;
+import org.jraf.android.bike.backend.location.LocationManager;
+import org.jraf.android.bike.backend.log.LogManager;
 import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.Log;
 import org.jraf.android.util.string.StringUtil;
 
-public class DataCollectingService extends Service {
-    private static final String PREFIX = DataCollectingService.class.getName() + ".";
+import com.google.android.gms.location.LocationListener;
+
+public class LogCollectorService extends Service {
+    private static final String PREFIX = LogCollectorService.class.getName() + ".";
     public static final String ACTION_START_COLLECTING = PREFIX + "ACTION_START_COLLECTING";
     public static final String ACTION_STOP_COLLECTING = PREFIX + "ACTION_STOP_COLLECTING";
 
     private static final int NOTIFICATION_ID = 1;
     private Uri mCollectingRideUri;
-
+    protected Location mLastLocation;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -52,14 +57,29 @@ public class DataCollectingService extends Service {
         RideManager.get().activate(mCollectingRideUri);
         Notification notification = createNotification();
         startForeground(NOTIFICATION_ID, notification);
+        LocationManager.get().addLocationListener(mLocationListener);
     }
 
     private void stopCollecting(Uri rideUri) {
         RideManager.get().pause(rideUri);
         dismissNotification();
-        stopSelf();
+        LocationManager.get().removeLocationListener(mLocationListener);
         mCollectingRideUri = null;
+        stopSelf();
     }
+
+
+    /*
+     * Listener.
+     */
+
+    private LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(Location location) {
+            LogManager.get().add(mCollectingRideUri, location, mLastLocation);
+            mLastLocation = location;
+        }
+    };
 
 
     /*

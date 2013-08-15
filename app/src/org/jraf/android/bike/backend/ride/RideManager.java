@@ -14,6 +14,7 @@ import org.jraf.android.bike.backend.provider.RideColumns;
 import org.jraf.android.bike.backend.provider.RideCursorWrapper;
 import org.jraf.android.bike.backend.provider.RideState;
 import org.jraf.android.util.Listeners;
+import org.jraf.android.util.Listeners.Dispatcher;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.collection.CollectionUtil;
 
@@ -51,7 +52,7 @@ public class RideManager {
     }
 
     @Background
-    public void activate(Uri rideUri) {
+    public void activate(final Uri rideUri) {
         // Update state
         ContentValues values = new ContentValues(3);
         values.put(RideColumns.STATE, RideState.ACTIVE.getValue());
@@ -60,13 +61,16 @@ public class RideManager {
         mContext.getContentResolver().update(rideUri, values, null, null);
 
         // Dispatch to listeners
-        for (RideListener listener : mListeners) {
-            listener.onActivated(rideUri);
-        }
+        mListeners.dispatch(new Dispatcher<RideListener>() {
+            @Override
+            public void dispatch(RideListener listener) {
+                listener.onActivated(rideUri);
+            }
+        });
     }
 
     @Background
-    public void pause(Uri rideUri) {
+    public void pause(final Uri rideUri) {
         // Get current activated date / duration
         String[] projection = { RideColumns.ACTIVATED_DATE, RideColumns.DURATION };
         RideCursorWrapper c = new RideCursorWrapper(mContext.getContentResolver().query(rideUri, projection, null, null, null));
@@ -87,9 +91,12 @@ public class RideManager {
             mContext.getContentResolver().update(rideUri, values, null, null);
 
             // Dispatch to listeners
-            for (RideListener listener : mListeners) {
-                listener.onPaused(rideUri);
-            }
+            mListeners.dispatch(new Dispatcher<RideListener>() {
+                @Override
+                public void dispatch(RideListener listener) {
+                    listener.onPaused(rideUri);
+                }
+            });
         } finally {
             c.close();
         }
@@ -151,6 +158,11 @@ public class RideManager {
             c.close();
         }
     }
+
+
+    /*
+     * Listeners.
+     */
 
     public void addListener(RideListener listener) {
         mListeners.add(listener);

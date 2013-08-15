@@ -7,6 +7,9 @@ import android.os.StrictMode;
 import org.jraf.android.bike.Config;
 
 public class Application extends android.app.Application {
+    /**
+     * This is highly controversial.
+     */
     private static Context sApplication;
 
     @Override

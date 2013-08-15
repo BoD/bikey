@@ -1,6 +1,7 @@
 package org.jraf.android.bike.app.hud.fragment.elapsedtime;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.View;
@@ -38,21 +39,38 @@ public class ElapsedTimeHudFragment extends SimpleHudFragment {
     public void onStart() {
         super.onStart();
         // Ride updates
-        RideManager rideManager = RideManager.get();
+        final RideManager rideManager = RideManager.get();
         rideManager.addListener(mRideListener);
 
-        Uri rideUri = getRideUri();
-        long duration = rideManager.getDuration(rideUri);
-        boolean isActive = rideManager.getState(rideUri) == RideState.ACTIVE;
-        if (isActive) {
-            long activatedDate = rideManager.getActivatedDate(rideUri);
-            long additionalDuration = System.currentTimeMillis() - activatedDate;
-            setChronometerDuration(duration + additionalDuration);
-            mChronometer.setEnabled(true);
-            mChronometer.start();
-        } else {
-            setChronometerDuration(duration);
-        }
+        final Uri rideUri = getRideUri();
+
+        new AsyncTask<Void, Void, Void>() {
+            private long mDuration;
+            private boolean mIsActive;
+            private long mActivatedDate;
+
+            @Override
+            protected Void doInBackground(Void... params) {
+                mDuration = rideManager.getDuration(rideUri);
+                mIsActive = rideManager.getState(rideUri) == RideState.ACTIVE;
+                if (mIsActive) {
+                    mActivatedDate = rideManager.getActivatedDate(rideUri);
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                if (mIsActive) {
+                    long additionalDuration = System.currentTimeMillis() - mActivatedDate;
+                    setChronometerDuration(mDuration + additionalDuration);
+                    mChronometer.setEnabled(true);
+                    mChronometer.start();
+                } else {
+                    setChronometerDuration(mDuration);
+                }
+            }
+        }.execute();
     }
 
     @Override
@@ -64,12 +82,25 @@ public class ElapsedTimeHudFragment extends SimpleHudFragment {
 
     private RideListener mRideListener = new RideListener() {
         @Override
-        public void onActivated(Uri rideUri) {
+        public void onActivated(final Uri rideUri) {
             if (!rideUri.equals(getRideUri())) return;
-            long duration = RideManager.get().getDuration(rideUri);
-            setChronometerDuration(duration);
-            mChronometer.start();
-            mChronometer.setEnabled(true);
+
+            new AsyncTask<Void, Void, Void>() {
+                private long mDuration;
+
+                @Override
+                protected Void doInBackground(Void... params) {
+                    mDuration = RideManager.get().getDuration(rideUri);
+                    return null;
+                }
+
+                @Override
+                protected void onPostExecute(Void result) {
+                    setChronometerDuration(mDuration);
+                    mChronometer.start();
+                    mChronometer.setEnabled(true);
+                }
+            }.execute();
         }
 
         @Override

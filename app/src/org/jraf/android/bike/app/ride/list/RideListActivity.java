@@ -132,7 +132,8 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_subject));
                 String messageBody = getString(R.string.export_body);
                 sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + exportedFile.getAbsolutePath()));
-                sendIntent.setType("message/rfc822");
+                //                sendIntent.setType("message/rfc822");
+                sendIntent.setType("application/bikey");
                 sendIntent.putExtra(Intent.EXTRA_TEXT, messageBody);
 
                 startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.ride_list_action_share)));

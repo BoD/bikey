@@ -55,6 +55,24 @@
             android:name="org.jraf.android.bike.app.hud.HudActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.Hud" />
+
+        <!-- Save to storage -->
+        <activity
+            android:name="org.jraf.android.bike.app.savetostorage.SaveToStorageActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:icon="@drawable/ic_save_to_storage"
+            android:label="@string/saveToStorage_label"
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="application/*" />
+                <data android:mimeType="message/rfc822" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

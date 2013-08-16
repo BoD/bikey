@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">bike</string>
+    <string name="app_name">Bikey</string>
 
     <!-- Common -->
     <string name="common_done">Done</string>
@@ -35,6 +35,11 @@
     <!-- Export -->
     <string name="export_failToast">Could not export data. Is external storage available?</string>
     <string name="export_subject">Bike ride</string>
-    <string name="export_body">Ride data recorded with Byke for Android.</string>
+    <string name="export_body">Ride data recorded with Bikey for Android.</string>
+
+    <!-- Save to storage -->
+    <string name="saveToStorage_label">Save to storage</string>
+    <string name="saveToStorage_failedToast">Could not save file.</string>
+    <string name="saveToStorage_successToast">File saved to %1$s</string>
 
 </resources>

@@ -62,7 +62,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
     private StatusListener mGpsStatusListener = new StatusListener() {
         @Override
         public void onStatusChanged(boolean active) {
-            mTxtValue.setEnabled(active);
+            setTextEnabled(active);
         }
     };
 }

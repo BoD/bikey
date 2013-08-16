@@ -78,6 +78,23 @@ public class LogManager {
         }
     }
 
+    public float getAverageMovingSpeed(Uri rideUri) {
+        //TODO
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
+        String selection = LogColumns.RIDE_ID + "=?";
+        String[] selectionArgs = { String.valueOf(rideId) };
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, selection, selectionArgs, null);
+        try {
+            if (!c.moveToNext()) {
+                return 0;
+            }
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
+
 
     /*
      * Listeners.
@@ -90,6 +107,5 @@ public class LogManager {
     public void removeListener(LogListener listener) {
         mListeners.remove(listener);
     }
-
 
 }

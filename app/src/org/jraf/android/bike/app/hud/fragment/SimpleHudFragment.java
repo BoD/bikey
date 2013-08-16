@@ -12,7 +12,7 @@ import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.hud.HudActivity;
 
 public abstract class SimpleHudFragment extends Fragment {
-    protected TextView mTxtValue;
+    private TextView mTxtValue;
 
     public SimpleHudFragment() {
         super();
@@ -27,6 +27,10 @@ public abstract class SimpleHudFragment extends Fragment {
 
     protected void setText(CharSequence text) {
         mTxtValue.setText(text);
+    }
+
+    protected void setTextEnabled(boolean enabled) {
+        mTxtValue.setEnabled(enabled);
     }
 
     protected int getLayoutResId() {

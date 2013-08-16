@@ -8,6 +8,7 @@ import org.jraf.android.bike.backend.log.LogManager;
 import org.jraf.android.bike.backend.provider.RideState;
 import org.jraf.android.bike.backend.ride.RideListener;
 import org.jraf.android.bike.backend.ride.RideManager;
+import org.jraf.android.util.annotation.Background;
 
 public abstract class LogHudFragment extends SimpleHudFragment {
     @Override
@@ -88,5 +89,6 @@ public abstract class LogHudFragment extends SimpleHudFragment {
         }
     };
 
+    @Background
     protected abstract CharSequence queryValue();
 }

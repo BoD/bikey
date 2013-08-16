@@ -1,5 +1,6 @@
 package org.jraf.android.bike.backend.ride;
 
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentUris;
@@ -8,8 +9,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 
 import org.jraf.android.bike.app.Application;
+import org.jraf.android.bike.backend.provider.LogColumns;
 import org.jraf.android.bike.backend.provider.RideColumns;
 import org.jraf.android.bike.backend.provider.RideCursorWrapper;
 import org.jraf.android.bike.backend.provider.RideState;
@@ -47,8 +50,14 @@ public class RideManager {
     @Background
     public int delete(long[] ids) {
         List<Long> idList = CollectionUtil.asList(ids);
+        // Delete rides
         String where = RideColumns._ID + " in (" + TextUtils.join(",", idList) + ")";
-        return mContext.getContentResolver().delete(RideColumns.CONTENT_URI, where, null);
+        int res = mContext.getContentResolver().delete(RideColumns.CONTENT_URI, where, null);
+
+        // Delete logs
+        where = LogColumns.RIDE_ID + " in (" + TextUtils.join(",", idList) + ")";
+        mContext.getContentResolver().delete(LogColumns.CONTENT_URI, where, null);
+        return res;
     }
 
     @Background
@@ -154,6 +163,25 @@ public class RideManager {
         RideCursorWrapper c = query(rideUri);
         try {
             return RideState.from(c.getState());
+        } finally {
+            c.close();
+        }
+    }
+
+    @Background
+    public String getDisplayName(Uri rideUri) {
+        RideCursorWrapper c = query(rideUri);
+        try {
+            java.text.DateFormat dateFormat = DateFormat.getMediumDateFormat(mContext);
+            java.text.DateFormat timeFormat = DateFormat.getTimeFormat(mContext);
+            String name = c.getName();
+            long createdDateLong = c.getCreatedDate();
+            Date createDateDate = new Date(createdDateLong);
+            String createdDateTimeStr = dateFormat.format(createDateDate) + ", " + timeFormat.format(createDateDate);
+            if (name == null) {
+                return createdDateTimeStr;
+            }
+            return name + " (" + createdDateTimeStr + ")";
         } finally {
             c.close();
         }

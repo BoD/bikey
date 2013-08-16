@@ -54,6 +54,8 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 int quantity = getListView().getCheckedItemCount();
                 mode.setSubtitle(getResources().getQuantityString(R.plurals.ride_list_cab_subtitle, quantity, quantity));
+                // Enable sharing only if one item is selected (don't sharing of several items)
+                mode.getMenu().findItem(R.id.action_share).setVisible(quantity == 1);
             }
 
             @Override
@@ -61,6 +63,11 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
                 switch (item.getItemId()) {
                     case R.id.action_delete:
                         ((RideListActivity) getActivity()).showDeleteDialog(getListView().getCheckedItemIds());
+                        mode.finish();
+                        return true;
+
+                    case R.id.action_share:
+                        ((RideListActivity) getActivity()).showShareDialog(getListView().getCheckedItemIds());
                         mode.finish();
                         return true;
                 }

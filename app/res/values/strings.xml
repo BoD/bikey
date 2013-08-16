@@ -15,6 +15,7 @@
     <string name="ride_list_title">Rides</string>
     <string name="ride_list_action_add">New ride</string>
     <string name="ride_list_action_settings">Settings</string>
+    <string name="ride_list_action_share">Share</string>
     <string name="ride_list_action_delete">Delete</string>
     <string name="ride_edit_edtName_hint">Ride name (optional)</string>
     <string name="ride_list_empty">No rides</string>
@@ -24,11 +25,16 @@
         <item quantity="other">%1$d rides selected</item>
     </plurals>
 
-    <string name="ride_list_deleteDialog_title">Confirmation</string>
+    <string name="ride_list_shareDialog_title">File format</string>
 
     <plurals name="ride_list_deleteDialog_message">
         <item quantity="one">One item will be deleted</item>
         <item quantity="other">%1$d items will be deleted</item>
     </plurals>
+
+    <!-- Export -->
+    <string name="export_failToast">Could not export data. Is external storage available?</string>
+    <string name="export_subject">Bike ride</string>
+    <string name="export_body">Ride data recorded with Byke for Android.</string>
 
 </resources>

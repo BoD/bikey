@@ -1,8 +1,8 @@
 {
-	"projectPackage": "org.jraf.android.bike",
-	"providerPackage": "org.jraf.android.bike.backend.provider",
-	"providerClassName": "BikeProvider",
-	"sqliteHelperClassName": "BikeSQLiteOpenHelper",
-	"authority": "org.jraf.android.bike.backend.provider",
-	"databaseName": "bike_provider.db",
+	"projectPackage": "org.jraf.android.bikey",
+	"providerPackage": "org.jraf.android.bikey.backend.provider",
+	"providerClassName": "BikeyProvider",
+	"sqliteHelperClassName": "BikeySQLiteOpenHelper",
+	"authority": "org.jraf.android.bikey.backend.provider",
+	"databaseName": "bikey_provider.db",
 }

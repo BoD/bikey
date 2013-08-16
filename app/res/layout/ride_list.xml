@@ -12,6 +12,6 @@
         android:id="@+id/fraSessionList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        class="org.jraf.android.bike.app.ride.list.RideListFragment" />
+        class="org.jraf.android.bikey.app.ride.list.RideListFragment" />
 
 </RelativeLayout>

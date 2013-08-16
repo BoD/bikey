@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.jraf.android.bike"
+    package="org.jraf.android.bikey"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -15,7 +15,7 @@
     <uses-permission android:name="com.google.android.gms.permission.ACTIVITY_RECOGNITION" />
 
     <application
-        android:name="org.jraf.android.bike.app.Application"
+        android:name="org.jraf.android.bikey.app.Application"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -23,20 +23,20 @@
 
         <!-- Provider -->
         <provider
-            android:name="org.jraf.android.bike.backend.provider.BikeProvider"
-            android:authorities="org.jraf.android.bike.backend.provider"
+            android:name="org.jraf.android.bikey.backend.provider.BikeyProvider"
+            android:authorities="org.jraf.android.bikey.backend.provider"
             android:exported="false" />
 
         <!-- Data collecting service -->
-        <service android:name="org.jraf.android.bike.backend.LogCollectorService" />
+        <service android:name="org.jraf.android.bikey.backend.LogCollectorServicee" />
 
         <!-- Activity recognition service -->
-        <service android:name="org.jraf.android.bike.backend.location.ActivityRecognitionIntentService" />
+        <service android:name="org.jraf.android.bikey.backend.location.ActivityRecognitionIntentService" />
 
         <!-- Session list -->
 
         <activity
-            android:name="org.jraf.android.bike.app.ride.list.RideListActivity"
+            android:name="org.jraf.android.bikey.app.ride.list.RideListActivityy"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,18 +47,18 @@
 
         <!-- Session edit -->
         <activity
-            android:name="org.jraf.android.bike.app.ride.edit.RideEditActivity"
+            android:name="org.jraf.android.bikey.app.ride.edit.RideEditActivityy"
             android:windowSoftInputMode="stateVisible" />
 
         <!-- Hud -->
         <activity
-            android:name="org.jraf.android.bike.app.hud.HudActivity"
+            android:name="org.jraf.android.bikey.app.hud.HudActivityy"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@style/Theme.Hud" />
 
         <!-- Save to storage -->
         <activity
-            android:name="org.jraf.android.bike.app.savetostorage.SaveToStorageActivity"
+            android:name="org.jraf.android.bikey.app.savetostorage.SaveToStorageActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:icon="@drawable/ic_save_to_storage"

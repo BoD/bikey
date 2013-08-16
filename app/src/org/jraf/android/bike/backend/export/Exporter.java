@@ -35,4 +35,12 @@ public abstract class Exporter {
     public Context getContext() {
         return mContext;
     }
+
+    public String getString(int resId) {
+        return mContext.getString(resId);
+    }
+
+    public String getString(int resId, Object... args) {
+        return mContext.getString(resId, args);
+    }
 }

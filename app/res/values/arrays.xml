@@ -2,6 +2,7 @@
 <resources>
 
     <string-array name="export_choices">
+        <item>GPX file</item>
         <item>SQLite database</item>
     </string-array>
 

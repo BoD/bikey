@@ -14,6 +14,7 @@ import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.hud.HudActivity;
 import org.jraf.android.bike.app.ride.edit.RideEditActivity;
 import org.jraf.android.bike.backend.export.DbExporter;
+import org.jraf.android.bike.backend.export.GpxExporter;
 import org.jraf.android.bike.backend.provider.RideColumns;
 import org.jraf.android.bike.backend.ride.RideManager;
 import org.jraf.android.util.async.Task;
@@ -109,6 +110,10 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
         Uri rideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, (Long) payload);
         switch (index) {
             case 0:
+                // Gpx
+                mState.mExporter = new GpxExporter(rideUri);
+                break;
+            case 1:
                 // Database
                 mState.mExporter = new DbExporter(rideUri);
                 break;
@@ -132,7 +137,6 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
                 sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_subject));
                 String messageBody = getString(R.string.export_body);
                 sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + exportedFile.getAbsolutePath()));
-                //                sendIntent.setType("message/rfc822");
                 sendIntent.setType("application/bikey");
                 sendIntent.putExtra(Intent.EXTRA_TEXT, messageBody);
 

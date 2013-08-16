@@ -56,6 +56,7 @@ public class BikeSQLiteOpenHelper extends SQLiteOpenHelper {
             + LogColumns.RECORDED_DATE + " INTEGER, "
             + LogColumns.LAT + " FLOAT, "
             + LogColumns.LON + " FLOAT, "
+            + LogColumns.ELE + " FLOAT, "
             + LogColumns.DURATION + " INTEGER, "
             + LogColumns.DISTANCE + " FLOAT, "
             + LogColumns.SPEED + " FLOAT "
@@ -78,4 +79,8 @@ public class BikeSQLiteOpenHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (Config.LOGD_PROVIDER) Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
     }
+
+    // TODO REMOVE
+    @Override
+    public void onDowngrade(SQLiteDatabase db, int oldVersion, int newVersion) {}
 }

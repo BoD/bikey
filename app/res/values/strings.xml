@@ -36,6 +36,28 @@
     <string name="export_failToast">Could not export data. Is external storage available?</string>
     <string name="export_subject">Bike ride</string>
     <string name="export_body">Ride data recorded with Bikey for Android.</string>
+    <string name="export_gpx_begin">
+<![CDATA[<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" version=\"1.1\" creator=\"%1$s\">
+<trk>
+<name>%2$s</name>]]>
+    </string>
+    <string name="export_gpx_trackSegment_begin"><![CDATA[<trkseg>]]></string>
+    <string name="export_gpx_trackSegment_end"><![CDATA[</trkseg>]]></string>
+    <string name="export_gpx_trackPoint">
+<![CDATA[
+<trkpt lat=\"%1$s\" lon=\"%2$s\">
+    <ele>%3$s</ele>
+    <time>%4$s</time>
+</trkpt>
+]]>
+    </string>
+    <string name="export_gpx_end">
+<![CDATA[
+</trk>
+</gpx>
+]]>
+    </string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Save to storage</string>

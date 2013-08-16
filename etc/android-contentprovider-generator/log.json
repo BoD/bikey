@@ -17,6 +17,10 @@
 			"type": "float"
 		},
 		{
+			"name": "ele",
+			"type": "float"
+		},
+		{
 			"name": "duration",
 			"type": "integer"
 		},

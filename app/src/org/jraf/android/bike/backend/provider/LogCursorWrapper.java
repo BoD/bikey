@@ -53,6 +53,10 @@ public class LogCursorWrapper extends AbstractCursorWrapper {
         return getDoubleOrNull(LogColumns.LON);
     }
 
+    public Double getEle() {
+        return getDoubleOrNull(LogColumns.ELE);
+    }
+
     public Long getDuration() {
         return getLongOrNull(LogColumns.DURATION);
     }

@@ -19,6 +19,7 @@ import android.widget.ToggleButton;
 
 import org.jraf.android.bike.R;
 import org.jraf.android.bike.app.BaseFragmentActivity;
+import org.jraf.android.bike.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
 import org.jraf.android.bike.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bike.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bike.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
@@ -115,6 +116,7 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, SpeedHudFragment.newInstance());
         mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance());
         mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance());
+        mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance());
         mFragmentCycler.show(this);
     }
 

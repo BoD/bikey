@@ -79,11 +79,10 @@ public class LogManager {
     }
 
     public float getAverageMovingSpeed(Uri rideUri) {
-        //TODO
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
-        String selection = LogColumns.RIDE_ID + "=?";
-        String[] selectionArgs = { String.valueOf(rideId) };
+        String[] projection = { "sum(" + LogColumns.DISTANCE + ")/sum(" + LogColumns.DURATION + ")*1000" };
+        String selection = LogColumns.RIDE_ID + "=? and " + LogColumns.SPEED + ">?";
+        String[] selectionArgs = { String.valueOf(rideId), String.valueOf(LocationManager.SPEED_MIN_THRESHOLD_M_S) };
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, selection, selectionArgs, null);
         try {
             if (!c.moveToNext()) {

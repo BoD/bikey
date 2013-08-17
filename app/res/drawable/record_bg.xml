@@ -3,6 +3,6 @@
 
     <item android:drawable="@drawable/record_bg_pressed" android:state_pressed="true"/>
     <item android:drawable="@drawable/record_bg_checked" android:state_checked="true"/>
-    <item android:drawable="@android:color/transparent"/>
+    <item android:drawable="@drawable/record_bg_default"/>
 
 </selector>

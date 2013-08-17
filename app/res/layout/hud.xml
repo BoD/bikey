@@ -38,7 +38,6 @@
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="1"
-            android:checked="true"
             android:text="@string/hud_tab_speed" />
 
         <CheckBox
@@ -76,7 +75,6 @@
         android:layout_marginRight="8dp"
         android:layout_toRightOf="@+id/conTabsLeft"
         android:background="@drawable/record_bg"
-        android:checked="true"
         android:text="@string/hud_chkRecord_created" />
 
 </RelativeLayout>

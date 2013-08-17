@@ -37,6 +37,9 @@
     <string name="hud_tab_duration">Duration</string>
     <string name="hud_tab_distance">Distance</string>
     <string name="hud_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
+    <string name="hud_chkRecord_created">Start</string>
+    <string name="hud_chkRecord_active">Recording</string>
+    <string name="hud_chkRecord_paused">Paused</string>
 
     <!-- Export -->
     <string name="export_failToast">Could not export data. Is external storage available?</string>

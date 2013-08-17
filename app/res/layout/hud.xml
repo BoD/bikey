@@ -66,13 +66,17 @@
             android:text="@string/hud_tab_averageMovingSpeed" />
     </LinearLayout>
 
-    <ToggleButton
-        android:id="@+id/togRecording"
+    <CheckBox
+        android:id="@+id/chkRecord"
+        style="@style/tab"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
         android:layout_toRightOf="@+id/conTabsLeft"
-        android:textOff="REC"
-        android:textOn="REC" />
+        android:background="@drawable/record_bg"
+        android:checked="true"
+        android:text="@string/hud_chkRecord_created" />
 
 </RelativeLayout>

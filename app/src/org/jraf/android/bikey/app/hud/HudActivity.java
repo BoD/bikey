@@ -17,7 +17,6 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
-import android.widget.ToggleButton;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.BaseFragmentActivity;
@@ -28,6 +27,7 @@ import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFra
 import org.jraf.android.bikey.backend.LogCollectorService;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
+import org.jraf.android.bikey.backend.provider.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Log;
 
@@ -37,13 +37,13 @@ public class HudActivity extends BaseFragmentActivity {
     private Handler mHandler = new Handler();
 
     private ImageView mImgGpsStatus;
-    private ToggleButton mTogRecording;
+    private CompoundButton mChkRecording;
     private View mConTabsLeft;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
     private FragmentCycler mFragmentCycler;
-    private boolean mTabsVisible = true;
+    private boolean mControlsVisible = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +54,8 @@ public class HudActivity extends BaseFragmentActivity {
 
         setContentView(R.layout.hud);
 
-        mTogRecording = (ToggleButton) findViewById(R.id.togRecording);
-        mTogRecording.setEnabled(false);
+        mChkRecording = (CompoundButton) findViewById(R.id.chkRecord);
+        mChkRecording.setEnabled(false);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
@@ -66,26 +66,38 @@ public class HudActivity extends BaseFragmentActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setupNavigationBarHiding();
         }
-        scheduleHideTabs();
+        scheduleHideControls();
     }
 
     private void toggleRecordingIfActive() {
         new AsyncTask<Void, Void, Void>() {
-            private Uri mActiveRideUri;
+            private RideState mRideState;
 
             @Override
             protected Void doInBackground(Void... params) {
-                mActiveRideUri = RideManager.get().getActiveRide();
+                mRideState = RideManager.get().getState(mRideUri);
                 return null;
             }
 
             @Override
             protected void onPostExecute(Void result) {
-                if (mRideUri.equals(mActiveRideUri)) {
-                    mTogRecording.setChecked(true);
+                switch (mRideState) {
+                    case CREATED:
+                        mChkRecording.setChecked(false);
+                        mChkRecording.setText(R.string.hud_chkRecord_created);
+                        break;
+                    case ACTIVE:
+                        mChkRecording.setChecked(true);
+                        mChkRecording.setText(R.string.hud_chkRecord_active);
+                        break;
+                    case PAUSED:
+                        mChkRecording.setChecked(false);
+                        mChkRecording.setText(R.string.hud_chkRecord_paused);
+                        break;
                 }
-                mTogRecording.setEnabled(true);
-                mTogRecording.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
+
+                mChkRecording.setEnabled(true);
+                mChkRecording.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
             }
         }.execute();
     }
@@ -136,8 +148,8 @@ public class HudActivity extends BaseFragmentActivity {
                     Log.d("Navigation bar showing");
                     if (!isPaused()) mFragmentCycler.cycle(HudActivity.this);
                     scheduleHideNavigationBar();
-                    showTabs();
-                    scheduleHideTabs();
+                    showControls();
+                    scheduleHideControls();
                 }
             }
         });
@@ -147,20 +159,19 @@ public class HudActivity extends BaseFragmentActivity {
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        Log.d("ev=" + ev);
         if (mNavigationBarHiding) {
             switch (ev.getAction()) {
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     Log.d("up");
                     scheduleHideNavigationBar();
-                    scheduleHideTabs();
+                    scheduleHideControls();
                     break;
 
                 default:
                     mHandler.removeCallbacks(mHideNavigationBarRunnable);
-                    mHandler.removeCallbacks(mHideTabsRunnable);
-                    showTabs();
+                    mHandler.removeCallbacks(mHideControlsRunnable);
+                    showControls();
                     break;
             }
         }
@@ -176,7 +187,7 @@ public class HudActivity extends BaseFragmentActivity {
 
     private void scheduleHideNavigationBar() {
         mHandler.removeCallbacks(mHideNavigationBarRunnable);
-        mHandler.postDelayed(mHideNavigationBarRunnable, DELAY_HIDE_CONTROLS * 2);
+        mHandler.postDelayed(mHideNavigationBarRunnable, DELAY_HIDE_CONTROLS + 1000);
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
@@ -191,8 +202,10 @@ public class HudActivity extends BaseFragmentActivity {
             Log.d("isChecked=" + isChecked);
             if (isChecked) {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
+                buttonView.setText(R.string.hud_chkRecord_active);
             } else {
                 startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
+                buttonView.setText(R.string.hud_chkRecord_paused);
             }
         }
     };
@@ -214,31 +227,36 @@ public class HudActivity extends BaseFragmentActivity {
 
 
     /*
-     * Tabs.
+     * Controls show / hide.
      */
-    private void hideTabs() {
-        mTabsVisible = false;
+
+    private void hideControls() {
+        mControlsVisible = false;
         mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
+        mChkRecording.animate().alpha(0).translationY(-mChkRecording.getHeight()).setInterpolator(new AccelerateInterpolator())
+                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
     }
 
-    private void showTabs() {
-        if (mTabsVisible) return;
-        mTabsVisible = true;
-        mConTabsLeft.animate().alpha(1).translationX(-0).setInterpolator(new DecelerateInterpolator())
+    private void showControls() {
+        if (mControlsVisible) return;
+        mControlsVisible = true;
+        mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator())
+                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
+        mChkRecording.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
     }
 
 
-    private Runnable mHideTabsRunnable = new Runnable() {
+    private Runnable mHideControlsRunnable = new Runnable() {
         @Override
         public void run() {
-            hideTabs();
+            hideControls();
         }
     };
 
-    private void scheduleHideTabs() {
-        mHandler.removeCallbacks(mHideTabsRunnable);
-        mHandler.postDelayed(mHideTabsRunnable, DELAY_HIDE_CONTROLS);
+    private void scheduleHideControls() {
+        mHandler.removeCallbacks(mHideControlsRunnable);
+        mHandler.postDelayed(mHideControlsRunnable, DELAY_HIDE_CONTROLS);
     }
 }

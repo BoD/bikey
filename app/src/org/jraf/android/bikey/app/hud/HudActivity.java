@@ -1,5 +1,7 @@
 package org.jraf.android.bikey.app.hud;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.content.Intent;
 import android.net.Uri;
@@ -41,6 +43,7 @@ public class HudActivity extends BaseFragmentActivity {
     private ImageView mImgGpsStatus;
     private CheckableRelativeLayout mChkRecord;
     private TextView mChkRecordText;
+    private Animator mChkRecordTextAnimator;
     private View mConTabsLeft;
 
     private boolean mNavigationBarHiding = false;
@@ -60,6 +63,8 @@ public class HudActivity extends BaseFragmentActivity {
         mChkRecord = (CheckableRelativeLayout) findViewById(R.id.chkRecord);
         mChkRecord.setEnabled(false);
         mChkRecordText = (TextView) findViewById(R.id.chkRecord_text);
+        mChkRecordTextAnimator = AnimatorInflater.loadAnimator(HudActivity.this, R.animator.blink);
+        mChkRecordTextAnimator.setTarget(mChkRecordText);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
@@ -90,10 +95,13 @@ public class HudActivity extends BaseFragmentActivity {
                         mChkRecord.setChecked(false);
                         mChkRecordText.setText(R.string.hud_chkRecord_created);
                         break;
+
                     case ACTIVE:
                         mChkRecord.setChecked(true);
                         mChkRecordText.setText(R.string.hud_chkRecord_active);
+                        mChkRecordTextAnimator.start();
                         break;
+
                     case PAUSED:
                         mChkRecord.setChecked(false);
                         mChkRecordText.setText(R.string.hud_chkRecord_paused);
@@ -207,9 +215,12 @@ public class HudActivity extends BaseFragmentActivity {
             if (isChecked) {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
                 mChkRecordText.setText(R.string.hud_chkRecord_active);
+                mChkRecordTextAnimator.start();
             } else {
                 startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
                 mChkRecordText.setText(R.string.hud_chkRecord_paused);
+                mChkRecordTextAnimator.cancel();
+                mChkRecordText.setAlpha(1f);
             }
         }
     };

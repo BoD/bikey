@@ -65,7 +65,7 @@
             android:text="@string/hud_tab_averageMovingSpeed" />
     </LinearLayout>
 
-    <CheckBox
+    <org.jraf.android.util.ui.checkable.CheckableRelativeLayout
         android:id="@+id/chkRecord"
         style="@style/tab"
         android:layout_width="match_parent"
@@ -75,6 +75,16 @@
         android:layout_marginRight="8dp"
         android:layout_toRightOf="@+id/conTabsLeft"
         android:background="@drawable/record_bg"
-        android:text="@string/hud_chkRecord_created" />
+        android:clickable="true" >
+
+        <TextView
+            android:id="@+id/chkRecord_text"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/hud_chkRecord_created"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </org.jraf.android.util.ui.checkable.CheckableRelativeLayout>
 
 </RelativeLayout>

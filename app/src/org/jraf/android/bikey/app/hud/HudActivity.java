@@ -17,6 +17,7 @@ import android.view.animation.DecelerateInterpolator;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.BaseFragmentActivity;
@@ -30,6 +31,7 @@ import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Log;
+import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
 
 public class HudActivity extends BaseFragmentActivity {
     private static final long DELAY_HIDE_CONTROLS = 2000;
@@ -37,7 +39,8 @@ public class HudActivity extends BaseFragmentActivity {
     private Handler mHandler = new Handler();
 
     private ImageView mImgGpsStatus;
-    private CompoundButton mChkRecording;
+    private CheckableRelativeLayout mChkRecord;
+    private TextView mChkRecordText;
     private View mConTabsLeft;
 
     private boolean mNavigationBarHiding = false;
@@ -54,8 +57,9 @@ public class HudActivity extends BaseFragmentActivity {
 
         setContentView(R.layout.hud);
 
-        mChkRecording = (CompoundButton) findViewById(R.id.chkRecord);
-        mChkRecording.setEnabled(false);
+        mChkRecord = (CheckableRelativeLayout) findViewById(R.id.chkRecord);
+        mChkRecord.setEnabled(false);
+        mChkRecordText = (TextView) findViewById(R.id.chkRecord_text);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
@@ -83,21 +87,21 @@ public class HudActivity extends BaseFragmentActivity {
             protected void onPostExecute(Void result) {
                 switch (mRideState) {
                     case CREATED:
-                        mChkRecording.setChecked(false);
-                        mChkRecording.setText(R.string.hud_chkRecord_created);
+                        mChkRecord.setChecked(false);
+                        mChkRecordText.setText(R.string.hud_chkRecord_created);
                         break;
                     case ACTIVE:
-                        mChkRecording.setChecked(true);
-                        mChkRecording.setText(R.string.hud_chkRecord_active);
+                        mChkRecord.setChecked(true);
+                        mChkRecordText.setText(R.string.hud_chkRecord_active);
                         break;
                     case PAUSED:
-                        mChkRecording.setChecked(false);
-                        mChkRecording.setText(R.string.hud_chkRecord_paused);
+                        mChkRecord.setChecked(false);
+                        mChkRecordText.setText(R.string.hud_chkRecord_paused);
                         break;
                 }
 
-                mChkRecording.setEnabled(true);
-                mChkRecording.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
+                mChkRecord.setEnabled(true);
+                mChkRecord.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
             }
         }.execute();
     }
@@ -202,10 +206,10 @@ public class HudActivity extends BaseFragmentActivity {
             Log.d("isChecked=" + isChecked);
             if (isChecked) {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
-                buttonView.setText(R.string.hud_chkRecord_active);
+                mChkRecordText.setText(R.string.hud_chkRecord_active);
             } else {
                 startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
-                buttonView.setText(R.string.hud_chkRecord_paused);
+                mChkRecordText.setText(R.string.hud_chkRecord_paused);
             }
         }
     };
@@ -234,7 +238,7 @@ public class HudActivity extends BaseFragmentActivity {
         mControlsVisible = false;
         mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
-        mChkRecording.animate().alpha(0).translationY(-mChkRecording.getHeight()).setInterpolator(new AccelerateInterpolator())
+        mChkRecord.animate().alpha(0).translationY(-mChkRecord.getHeight()).setInterpolator(new AccelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
     }
 
@@ -243,7 +247,7 @@ public class HudActivity extends BaseFragmentActivity {
         mControlsVisible = true;
         mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
-        mChkRecording.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator())
+        mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
     }
 

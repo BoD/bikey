@@ -10,4 +10,8 @@
         <item name="android:textSize">22sp</item>
     </style>
 
+    <style name="TextAppearance.Large" parent="@android:style/TextAppearance.Holo.Large">
+        <item name="android:textColor">@color/primary_text_color_dark</item>
+    </style>
+
 </resources>

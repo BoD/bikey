@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <color name="bright_foreground_dark">#FFF</color>
+    <color name="bright_foreground_disabled_dark">#8FFF</color>
     <color name="hud_gps_first_fix">#0F0</color>
     <color name="hud_gps_stopped">#F00</color>
-    <color name="tab_bg_default">#8000</color>
+    <color name="tab_bar_bg">#000</color>
 
 </resources>

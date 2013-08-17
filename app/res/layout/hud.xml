@@ -28,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
+        android:background="@color/tab_bar_bg"
         android:gravity="center_vertical"
         android:orientation="vertical" >
 
@@ -35,7 +36,7 @@
             android:id="@+id/chkTabSpeed"
             style="@style/tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0px"
             android:layout_weight="1"
             android:checked="true"
             android:text="@string/hud_tab_speed" />
@@ -44,7 +45,7 @@
             android:id="@+id/chkTabDuration"
             style="@style/tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0px"
             android:layout_weight="1"
             android:text="@string/hud_tab_duration" />
 
@@ -52,7 +53,7 @@
             android:id="@+id/chkTabDistance"
             style="@style/tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0px"
             android:layout_weight="1"
             android:text="@string/hud_tab_distance" />
 
@@ -60,7 +61,7 @@
             android:id="@+id/chkTabAverageMovingSpeed"
             style="@style/tab"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0px"
             android:layout_weight="1"
             android:text="@string/hud_tab_averageMovingSpeed" />
     </LinearLayout>

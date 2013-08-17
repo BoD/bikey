@@ -2,8 +2,9 @@
 
     <style name="Theme" parent="android:Theme.Holo.Light" />
 
-    <style name="Theme.Hud" parent="android:Theme.Holo.NoActionBar"> <!-- .Fullscreen -->
+    <style name="Theme.Hud" parent="android:Theme.Holo.NoActionBar.Fullscreen">
         <item name="android:windowBackground">@android:color/black</item>
+        <item name="android:textAppearanceLarge">@style/TextAppearance.Large</item>
     </style>
 
 </resources>

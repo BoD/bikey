@@ -2,6 +2,8 @@
 
     <style name="Theme" parent="android:Theme.Holo.Light" />
 
-    <style name="Theme.Hud" parent="android:Theme.Holo.Light.NoActionBar" /> <!-- .Fullscreen -->
+    <style name="Theme.Hud" parent="android:Theme.Holo.NoActionBar"> <!-- .Fullscreen -->
+        <item name="android:windowBackground">@android:color/black</item>
+    </style>
 
 </resources>

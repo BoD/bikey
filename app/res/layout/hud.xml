@@ -3,48 +3,75 @@
     android:id="@+id/conRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".app.hud.HudActivity" >
-
-    <LinearLayout
-        android:id="@+id/conLeftPanel"
-        android:layout_width="64dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/black"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/imgGpsStatus"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:padding="4dp"
-            android:src="@color/hud_gps_stopped" />
-
-        <ImageView
-            android:id="@+id/imgActivity"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:padding="4dp"
-            android:src="@color/hud_activity_still" />
-
-        <ToggleButton
-            android:id="@+id/togRecording"
-            style="@android:style/Widget.Holo.Button.Toggle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textOff="REC"
-            android:textOn="REC" />
-    </LinearLayout>
+    tools:context="org.jraf.android.bikey.app.hud.HudActivity" >
 
     <FrameLayout
         android:id="@+id/conFragments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/conLeftPanel" />
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/imgGpsStatus"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_alignParentRight="true"
+        android:padding="4dp"
+        android:src="@color/hud_gps_stopped" />
 
     <View
         android:id="@+id/vieFragmentCycle"
         android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <LinearLayout
+        android:id="@+id/conTabsLeft"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_toRightOf="@+id/conLeftPanel" />
+        android:layout_alignParentTop="true"
+        android:gravity="center_vertical"
+        android:orientation="vertical" >
+
+        <CheckBox
+            android:id="@+id/chkTabSpeed"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:checked="true"
+            android:text="@string/hud_tab_speed" />
+
+        <CheckBox
+            android:id="@+id/chkTabDuration"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hud_tab_duration" />
+
+        <CheckBox
+            android:id="@+id/chkTabDistance"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hud_tab_distance" />
+
+        <CheckBox
+            android:id="@+id/chkTabAverageMovingSpeed"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/hud_tab_averageMovingSpeed" />
+    </LinearLayout>
+
+    <ToggleButton
+        android:id="@+id/togRecording"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_toRightOf="@+id/conTabsLeft"
+        android:textOff="REC"
+        android:textOn="REC" />
 
 </RelativeLayout>

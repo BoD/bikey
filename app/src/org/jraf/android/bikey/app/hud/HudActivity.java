@@ -25,12 +25,9 @@ import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
 import org.jraf.android.bikey.backend.LogCollectorService;
 import org.jraf.android.bikey.backend.location.LocationManager;
-import org.jraf.android.bikey.backend.location.LocationManager.ActivityRecognitionListener;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Log;
-
-import com.google.android.gms.location.DetectedActivity;
 
 public class HudActivity extends BaseFragmentActivity {
     private static final long NAV_BAR_HIDE_DELAY = 4000;
@@ -39,7 +36,6 @@ public class HudActivity extends BaseFragmentActivity {
 
     private ImageView mImgGpsStatus;
     private ToggleButton mTogRecording;
-    private ImageView mImgActivity;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
@@ -58,7 +54,6 @@ public class HudActivity extends BaseFragmentActivity {
         mTogRecording.setEnabled(false);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
-        mImgActivity = (ImageView) findViewById(R.id.imgActivity);
         findViewById(R.id.vieFragmentCycle).setOnClickListener(mFragmentCycleOnClickListener);
 
         setupFragments();
@@ -95,9 +90,6 @@ public class HudActivity extends BaseFragmentActivity {
 
         // GPS status
         LocationManager.get().addStatusListener(mGpsStatusListener);
-
-        // Activity
-        LocationManager.get().addActivityRecognitionListener(mActivityRecognitionListener);
     }
 
     @Override
@@ -105,18 +97,15 @@ public class HudActivity extends BaseFragmentActivity {
         // GPS status
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
-        // Activity
-        LocationManager.get().removeActivityRecognitionListener(mActivityRecognitionListener);
-
         super.onStop();
     }
 
     private void setupFragments() {
         mFragmentCycler = new FragmentCycler(R.id.conFragments);
-        mFragmentCycler.add(this, SpeedHudFragment.newInstance());
-        mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance());
-        mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance());
-        mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance());
+        mFragmentCycler.add(this, SpeedHudFragment.newInstance(), R.id.chkTabSpeed);
+        mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration);
+        mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance);
+        mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed);
         mFragmentCycler.show(this);
     }
 
@@ -207,17 +196,6 @@ public class HudActivity extends BaseFragmentActivity {
                 mImgGpsStatus.setImageResource(R.color.hud_gps_first_fix);
             } else {
                 mImgGpsStatus.setImageResource(R.color.hud_gps_stopped);
-            }
-        }
-    };
-
-    private ActivityRecognitionListener mActivityRecognitionListener = new ActivityRecognitionListener() {
-        @Override
-        public void onActivityRecognized(int activityType, int confidence) {
-            if (activityType == DetectedActivity.STILL) {
-                mImgActivity.setImageResource(R.color.hud_activity_still);
-            } else {
-                mImgActivity.setImageResource(R.color.hud_activity_other);
             }
         }
     };

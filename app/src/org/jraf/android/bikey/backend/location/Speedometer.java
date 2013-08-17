@@ -6,7 +6,6 @@ import java.util.Deque;
 import android.location.Location;
 
 import org.jraf.android.bikey.backend.location.LocationManager.ActivityRecognitionListener;
-import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.Log;
 
 import com.google.android.gms.location.DetectedActivity;
@@ -91,7 +90,7 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
                 Log.d("Speed under threshold: rounding to 0");
                 distanceDuration.distance = 0;
             }
-            Log.d("Adding speed:" + UnitUtil.formatSpeed(lastSpeed) + "(" + lastSpeed + ")");
+            Log.d("Adding speed:" + lastSpeed * 3.6f);
             mLog.addFirst(distanceDuration);
 
             if (lastSpeed < SPEED_MEDIUM_M_S) {
@@ -112,25 +111,31 @@ public class Speedometer implements LocationListener, ActivityRecognitionListene
     public float getSpeed() {
         Log.d("mLog=" + mLog);
         //        if (mActivityType == DetectedActivity.STILL) return 0f;
-        float distance = 0f;
-        float duration = 0f;
         int count = 0;
-        float res = 0;
+        float avgSpeed = 0;
+        float maxSpeed = 0;
         for (DistanceDuration distanceDuration : mLog) {
-            //            distance += distanceDuration.distance;
-            //            duration += distanceDuration.duration;
-            res += distanceDuration.getSpeed();
+            float speed = distanceDuration.getSpeed();
+            avgSpeed += speed;
             count++;
+            if (speed > maxSpeed) maxSpeed = speed;
         }
+
         if (count == 0) return 0f;
-        //        res = distance / (duration / 1000f);
-        res /= count;
-        Log.d("res=" + res);
-        if (res < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
+
+        // If we have at least 3 values, remove the max (to smooth the result)
+        if (count >= 3) {
+            avgSpeed -= maxSpeed;
+            count--;
+        }
+
+        avgSpeed /= count;
+        Log.d("res=" + avgSpeed);
+        if (avgSpeed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
             Log.d("Speed under threshold: return 0");
             return 0f;
         }
-        return res;
+        return avgSpeed;
     }
 
     @Override

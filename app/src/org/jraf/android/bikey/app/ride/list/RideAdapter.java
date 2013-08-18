@@ -1,5 +1,7 @@
 package org.jraf.android.bikey.app.ride.list;
 
+import android.animation.Animator;
+import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.database.Cursor;
 import android.text.format.DateUtils;
@@ -16,7 +18,6 @@ import org.jraf.android.util.ui.ViewHolder;
 
 public class RideAdapter extends ResourceCursorAdapter {
     public RideAdapter(Context context) {
-        //        super(context, android.R.layout.simple_list_item_2, null, 0);
         super(context, android.R.layout.simple_list_item_activated_2, null, 0);
     }
 
@@ -37,26 +38,37 @@ public class RideAdapter extends ResourceCursorAdapter {
 
         // Details
         TextView txtText2 = ViewHolder.get(view, android.R.id.text2);
-        String details = "";
-
-        // Distance
-        double distance = c.getDistance();
-        details += UnitUtil.formatDistance((float) distance, true) + "  -  ";
-
-        // Duration
+        String details = null;
+        Animator animator = (Animator) view.getTag(R.id.animator);
+        // Cancel the animation / reset the alpha in any case
+        if (animator != null) animator.cancel();
+        txtText2.setAlpha(1);
         RideState rideState = RideState.from(c.getState().intValue());
-        if (rideState == RideState.CREATED) {
-            details += context.getString(R.string.ride_list_notStarted);
-        } else {
-            long duration = c.getDuration();
-            if (rideState == RideState.ACTIVE) {
-                long activatedDate = c.getActivatedDate();
-                long additionalDuration = System.currentTimeMillis() - activatedDate;
-                duration += additionalDuration;
-            }
-            details += DateTimeUtil.formatDuration(context, duration);
+        switch (rideState) {
+            case CREATED:
+                details = context.getString(R.string.ride_list_notStarted);
+                break;
+
+            case ACTIVE:
+                details = context.getString(R.string.ride_list_active);
+                if (animator == null) {
+                    animator = AnimatorInflater.loadAnimator(context, R.animator.blink);
+                    animator.setTarget(txtText2);
+                    view.setTag(R.id.animator, animator);
+                }
+                animator.start();
+                break;
+
+            case PAUSED:
+                // Distance
+                double distance = c.getDistance();
+                details = UnitUtil.formatDistance((float) distance, true) + "  -  ";
+
+                // Duration
+                long duration = c.getDuration();
+                details += DateTimeUtil.formatDuration(context, duration);
+                break;
         }
         txtText2.setText(details);
     }
-
 }

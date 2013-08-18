@@ -33,6 +33,7 @@
     </plurals>
 
     <string name="ride_list_notStarted">Not started</string>
+    <string name="ride_list_active">In progress</string>
 
     <!-- Hud -->
     <string name="hud_tab_speed">Speed</string>

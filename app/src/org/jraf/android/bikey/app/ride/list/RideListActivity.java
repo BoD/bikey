@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
 import org.jraf.android.bikey.backend.export.DbExporter;
 import org.jraf.android.bikey.backend.export.GpxExporter;
@@ -56,6 +57,10 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
         switch (item.getItemId()) {
             case R.id.action_add:
                 startActivity(new Intent(this, RideEditActivity.class));
+                return true;
+
+            case R.id.action_settings:
+                startActivity(new Intent(this, PreferenceActivity.class));
                 return true;
         }
         return super.onOptionsItemSelected(item);

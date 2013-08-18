@@ -76,4 +76,7 @@
     <string name="saveToStorage_failedToast">Could not save file.</string>
     <string name="saveToStorage_successToast">File saved to %1$s</string>
 
+    <!-- Preferences -->
+    <string name="preferences_units_title">Units</string>
+
 </resources>

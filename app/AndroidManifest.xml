@@ -73,6 +73,9 @@
                 <data android:mimeType="message/rfc822" />
             </intent-filter>
         </activity>
+
+        <!-- Preference -->
+        <activity android:name="org.jraf.android.bikey.app.preference.PreferenceActivity" />
     </application>
 
 </manifest>

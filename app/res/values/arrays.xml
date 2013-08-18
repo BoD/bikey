@@ -5,5 +5,13 @@
         <item>GPX file</item>
         <item>SQLite database</item>
     </string-array>
+    <string-array name="preferences_units_labels">
+        <item>Imperial (miles)</item>
+        <item>Metric (meters)</item>
+    </string-array>
+    <string-array name="preferences_units_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
 </resources>

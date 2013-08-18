@@ -81,6 +81,7 @@ public class FragmentCycler {
     private OnClickListener mTabOnClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
+            if (!(v instanceof Checkable)) return;
             Checkable checkable = (Checkable) v;
             if (!checkable.isChecked()) checkable.setChecked(true);
             int newIndex = mTabs.indexOf(checkable);

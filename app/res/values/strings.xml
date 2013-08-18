@@ -34,9 +34,10 @@
 
     <!-- Hud -->
     <string name="hud_tab_speed">Speed</string>
-    <string name="hud_tab_duration">Duration</string>
-    <string name="hud_tab_distance">Distance</string>
+    <string name="hud_tab_duration">Dur.</string>
+    <string name="hud_tab_distance">Dist.</string>
     <string name="hud_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
+    <string name="hud_tab_currentTime">Cur. time</string>
     <string name="hud_chkRecord_created">Start</string>
     <string name="hud_chkRecord_active">Recording</string>
     <string name="hud_chkRecord_paused">Paused</string>

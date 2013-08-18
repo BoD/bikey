@@ -5,6 +5,6 @@
     <color name="bright_foreground_disabled_dark">#8FFF</color>
     <color name="hud_gps_first_fix">#0F0</color>
     <color name="hud_gps_stopped">#F00</color>
-    <color name="tab_bar_bg">#D000</color>
+    <color name="tab_bar_bg">#D444</color>
 
 </resources>

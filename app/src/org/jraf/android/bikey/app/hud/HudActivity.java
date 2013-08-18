@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.BaseFragmentActivity;
 import org.jraf.android.bikey.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
+import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
@@ -45,6 +47,7 @@ public class HudActivity extends BaseFragmentActivity {
     private TextView mChkRecordText;
     private Animator mChkRecordTextAnimator;
     private View mConTabsLeft;
+    private View mConTabsRight;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
@@ -67,8 +70,10 @@ public class HudActivity extends BaseFragmentActivity {
         mChkRecordTextAnimator.setTarget(mChkRecordText);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
+        ((AnimationDrawable) mImgGpsStatus.getDrawable()).start();
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
         mConTabsLeft = findViewById(R.id.conTabsLeft);
+        mConTabsRight = findViewById(R.id.conTabsRight);
 
         setupFragments();
 
@@ -136,6 +141,7 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration);
         mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance);
         mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed);
+        mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime);
         mFragmentCycler.show(this);
     }
 
@@ -229,9 +235,9 @@ public class HudActivity extends BaseFragmentActivity {
         @Override
         public void onStatusChanged(boolean active) {
             if (active) {
-                mImgGpsStatus.setImageResource(R.color.hud_gps_first_fix);
+                mImgGpsStatus.setVisibility(View.GONE);
             } else {
-                mImgGpsStatus.setImageResource(R.color.hud_gps_stopped);
+                mImgGpsStatus.setVisibility(View.VISIBLE);
             }
         }
     };
@@ -249,6 +255,8 @@ public class HudActivity extends BaseFragmentActivity {
         mControlsVisible = false;
         mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
+        mConTabsRight.animate().alpha(0).translationX(mConTabsRight.getWidth()).setInterpolator(new AccelerateInterpolator())
+                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
         mChkRecord.animate().alpha(0).translationY(-mChkRecord.getHeight()).setInterpolator(new AccelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
     }
@@ -257,6 +265,8 @@ public class HudActivity extends BaseFragmentActivity {
         if (mControlsVisible) return;
         mControlsVisible = true;
         mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator())
+                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
+        mConTabsRight.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
         mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator())
                 .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));

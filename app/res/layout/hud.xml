@@ -12,11 +12,11 @@
 
     <ImageView
         android:id="@+id/imgGpsStatus"
-        android:layout_width="32dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="4dp"
-        android:src="@color/hud_gps_stopped" />
+        android:layout_margin="8dp"
+        android:src="@drawable/ic_gps" />
 
     <View
         android:id="@+id/vieFragmentCycle"
@@ -25,12 +25,15 @@
 
     <LinearLayout
         android:id="@+id/conTabsLeft"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:background="@color/tab_bar_bg"
+        android:divider="?android:attr/dividerHorizontal"
+        android:dividerPadding="12dp"
         android:gravity="center_vertical"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:showDividers="middle" >
 
         <CheckBox
             android:id="@+id/chkTabSpeed"
@@ -65,14 +68,37 @@
             android:text="@string/hud_tab_averageMovingSpeed" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/conTabsRight"
+        android:layout_width="100dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:background="@color/tab_bar_bg"
+        android:divider="?android:attr/dividerHorizontal"
+        android:dividerPadding="12dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        android:weightSum="4" >
+
+        <CheckBox
+            android:id="@+id/chkTabCurrentTime"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:text="@string/hud_tab_currentTime" />
+    </LinearLayout>
+
     <org.jraf.android.util.ui.checkable.CheckableRelativeLayout
         android:id="@+id/chkRecord"
         style="@style/tab"
-        android:layout_width="match_parent"
+        android:layout_width="0px"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@+id/conTabsRight"
         android:layout_toRightOf="@+id/conTabsLeft"
         android:background="@drawable/record_bg"
         android:clickable="true" >

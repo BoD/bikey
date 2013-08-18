@@ -1,6 +1,5 @@
 package org.jraf.android.bikey.backend.ride;
 
-import java.util.Date;
 import java.util.List;
 
 import android.content.ContentUris;
@@ -9,7 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.backend.provider.LogColumns;
@@ -44,6 +43,7 @@ public class RideManager {
         }
         values.put(RideColumns.STATE, RideState.CREATED.getValue());
         values.put(RideColumns.DURATION, 0);
+        values.put(RideColumns.DISTANCE, 0);
         return mContext.getContentResolver().insert(RideColumns.CONTENT_URI, values);
     }
 
@@ -172,12 +172,9 @@ public class RideManager {
     public String getDisplayName(Uri rideUri) {
         RideCursorWrapper c = query(rideUri);
         try {
-            java.text.DateFormat dateFormat = DateFormat.getMediumDateFormat(mContext);
-            java.text.DateFormat timeFormat = DateFormat.getTimeFormat(mContext);
             String name = c.getName();
             long createdDateLong = c.getCreatedDate();
-            Date createDateDate = new Date(createdDateLong);
-            String createdDateTimeStr = dateFormat.format(createDateDate) + ", " + timeFormat.format(createDateDate);
+            String createdDateTimeStr = DateUtils.formatDateTime(mContext, createdDateLong, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
             if (name == null) {
                 return createdDateTimeStr;
             }

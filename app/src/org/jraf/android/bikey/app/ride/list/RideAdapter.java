@@ -1,53 +1,62 @@
 package org.jraf.android.bikey.app.ride.list;
 
-import java.util.Date;
-
 import android.content.Context;
 import android.database.Cursor;
-import android.text.format.DateFormat;
+import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
+import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.provider.RideCursorWrapper;
 import org.jraf.android.bikey.backend.provider.RideState;
+import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.ui.ViewHolder;
 
 public class RideAdapter extends ResourceCursorAdapter {
-    private java.text.DateFormat mDateFormat;
-    private java.text.DateFormat mTimeFormat;
-
     public RideAdapter(Context context) {
         //        super(context, android.R.layout.simple_list_item_2, null, 0);
         super(context, android.R.layout.simple_list_item_activated_2, null, 0);
-        mDateFormat = DateFormat.getMediumDateFormat(context);
-        mTimeFormat = DateFormat.getTimeFormat(context);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         RideCursorWrapper c = (RideCursorWrapper) cursor;
 
-        // Name / date
+        // Name or date
         TextView txtText1 = ViewHolder.get(view, android.R.id.text1);
         String name = c.getName();
         long createdDateLong = c.getCreatedDate();
-        Date createDateDate = new Date(createdDateLong);
-        String createdDateTimeStr = mDateFormat.format(createDateDate) + ", " + mTimeFormat.format(createDateDate);
+        String createdDateTimeStr = DateUtils.formatDateTime(context, createdDateLong, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
         if (name == null) {
             txtText1.setText(createdDateTimeStr);
         } else {
-            txtText1.setText(name + " (" + createdDateTimeStr + ")");
+            txtText1.setText(name + "  -  " + createdDateTimeStr);
         }
 
-        // Duration / distance / state
+        // Details
         TextView txtText2 = ViewHolder.get(view, android.R.id.text2);
-        Long duration = c.getDuration();
-        if (duration == null) duration = 0l;
-        Double distance = c.getDistance();
-        if (distance == null) distance = 0d;
+        String details = "";
+
+        // Distance
+        double distance = c.getDistance();
+        details += UnitUtil.formatDistance((float) distance, true) + "  -  ";
+
+        // Duration
         RideState rideState = RideState.from(c.getState().intValue());
-        txtText2.setText(duration + ", " + distance + ", " + rideState);
+        if (rideState == RideState.CREATED) {
+            details += context.getString(R.string.ride_list_notStarted);
+        } else {
+            long duration = c.getDuration();
+            if (rideState == RideState.ACTIVE) {
+                long activatedDate = c.getActivatedDate();
+                long additionalDuration = System.currentTimeMillis() - activatedDate;
+                duration += additionalDuration;
+            }
+            details += DateTimeUtil.formatDuration(context, duration);
+        }
+        txtText2.setText(details);
     }
 
 }

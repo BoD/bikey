@@ -8,6 +8,11 @@ import android.text.style.RelativeSizeSpan;
 public class UnitUtil {
     private static DecimalFormat FORMAT_SPEED = new DecimalFormat("0.0");
     private static DecimalFormat FORMAT_DISTANCE = new DecimalFormat("0.00");
+    private static char sDecimalSeparator;
+
+    static {
+        sDecimalSeparator = FORMAT_DISTANCE.getDecimalFormatSymbols().getDecimalSeparator();
+    }
 
     public static CharSequence formatSpeed(float metersPerSecond) {
         if (metersPerSecond == 0f) return "0";
@@ -18,12 +23,18 @@ public class UnitUtil {
         return builder;
     }
 
-    public static CharSequence formatDistance(float meters) {
-        if (meters == 0f) return "0";
+    public static CharSequence formatDistance(float meters, boolean withUnit) {
+        String unit = withUnit ? " km" : "";
+        if (meters == 0f) return "0" + unit;
         float km = meters / 1000f;
-        String speedStr = FORMAT_DISTANCE.format(km);
+        String speedStr = FORMAT_DISTANCE.format(km) + unit;
         SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.length() - 3, speedStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
         return builder;
     }
+
+    public static CharSequence formatDistance(float meters) {
+        return formatDistance(meters, false);
+    }
+
 }

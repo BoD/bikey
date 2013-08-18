@@ -32,6 +32,8 @@
         <item quantity="other">%1$d items will be deleted</item>
     </plurals>
 
+    <string name="ride_list_notStarted">Not started</string>
+
     <!-- Hud -->
     <string name="hud_tab_speed">Speed</string>
     <string name="hud_tab_duration">Dur.</string>

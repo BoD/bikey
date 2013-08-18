@@ -38,6 +38,7 @@ public class LogManager {
         values.put(LogColumns.RECORDED_DATE, location.getTime());
         values.put(LogColumns.LAT, location.getLatitude());
         values.put(LogColumns.LON, location.getLongitude());
+        values.put(LogColumns.ELE, location.getAltitude());
         if (previousLocation != null) {
             DistanceDuration distanceDuration = new DistanceDuration(previousLocation, location);
             float speed = distanceDuration.getSpeed();

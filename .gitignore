@@ -2,3 +2,10 @@ app/bin
 app/gen
 libs/google-play-services_lib/bin
 libs/google-play-services_lib/gen
+
+app/build-bod.properties
+app/build.number
+app/etc/
+app/local.properties
+build-bod-target/
+libs/google-play-services_lib/local.properties

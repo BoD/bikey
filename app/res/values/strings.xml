@@ -78,6 +78,7 @@
     <string name="saveToStorage_successToast">File saved to %1$s</string>
 
     <!-- Preferences -->
-    <string name="preferences_units_title">Units</string>
+    <string name="preference_title">Settings</string>
+    <string name="preference_units_title">Units</string>
 
 </resources>

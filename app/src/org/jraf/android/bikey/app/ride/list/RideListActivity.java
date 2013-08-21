@@ -33,8 +33,9 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("");
+        getActionBar().setLogo(R.drawable.ic_actionbar_logo);
         setContentView(R.layout.ride_list);
-        setTitle(R.string.ride_list_title);
         restoreState();
     }
 

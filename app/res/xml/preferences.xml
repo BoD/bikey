@@ -6,6 +6,6 @@
         android:entries="@array/preferences_units_labels"
         android:entryValues="@array/preferences_units_values"
         android:key="PREF_UNITS"
-        android:title="@string/preferences_units_title" />
+        android:title="@string/preference_units_title" />
 
 </PreferenceScreen>

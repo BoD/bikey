@@ -17,7 +17,7 @@
     <application
         android:name="org.jraf.android.bikey.app.Application"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic_actionbar_icon"
         android:label="@string/app_name"
         android:theme="@style/Theme" >
 
@@ -40,7 +40,7 @@
 
         <activity
             android:name="org.jraf.android.bikey.app.ride.list.RideListActivity"
-            android:label="@string/app_name" >
+            android:icon="@drawable/ic_launcher" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -78,7 +78,9 @@
         </activity>
 
         <!-- Preference -->
-        <activity android:name="org.jraf.android.bikey.app.preference.PreferenceActivity" />
+        <activity
+            android:name="org.jraf.android.bikey.app.preference.PreferenceActivity"
+            android:label="@string/preference_title" />
     </application>
 
 </manifest>

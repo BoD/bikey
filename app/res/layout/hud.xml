@@ -79,7 +79,16 @@
         android:dividerPadding="12dp"
         android:gravity="center_vertical"
         android:orientation="vertical"
+        android:showDividers="middle"
         android:weightSum="4" >
+
+        <CheckBox
+            android:id="@+id/chkTabSlope"
+            style="@style/tab"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:layout_weight="1"
+            android:text="@string/hud_tab_slope" />
 
         <CheckBox
             android:id="@+id/chkTabCurrentTime"

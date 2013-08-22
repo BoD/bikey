@@ -50,6 +50,7 @@ import org.jraf.android.bikey.app.BaseFragmentActivity;
 import org.jraf.android.bikey.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
+import org.jraf.android.bikey.app.hud.fragment.slope.SlopeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
 import org.jraf.android.bikey.backend.LogCollectorService;
@@ -164,6 +165,7 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration);
         mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance);
         mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed);
+        mFragmentCycler.add(this, SlopeHudFragment.newInstance(), R.id.chkTabSlope);
         mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime);
         mFragmentCycler.show(this);
     }
@@ -276,23 +278,19 @@ public class HudActivity extends BaseFragmentActivity {
 
     private void hideControls() {
         mControlsVisible = false;
-        mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator())
-                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
-        mConTabsRight.animate().alpha(0).translationX(mConTabsRight.getWidth()).setInterpolator(new AccelerateInterpolator())
-                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
-        mChkRecord.animate().alpha(0).translationY(-mChkRecord.getHeight()).setInterpolator(new AccelerateInterpolator())
-                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
+        int duration = getResources().getInteger(R.integer.animation_controls_showHide);
+        mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+        mConTabsRight.animate().alpha(0).translationX(mConTabsRight.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+        mChkRecord.animate().alpha(0).translationY(-mChkRecord.getHeight()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
     }
 
     private void showControls() {
         if (mControlsVisible) return;
         mControlsVisible = true;
-        mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator())
-                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
-        mConTabsRight.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator())
-                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
-        mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator())
-                .setDuration(getResources().getInteger(R.integer.animation_controls_showHide));
+        int duration = getResources().getInteger(R.integer.animation_controls_showHide);
+        mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+        mConTabsRight.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+        mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
     }
 
 

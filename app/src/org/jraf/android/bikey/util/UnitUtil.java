@@ -28,9 +28,12 @@ import java.text.DecimalFormat;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 
+import org.jraf.android.util.Log;
+
 public class UnitUtil {
     private static DecimalFormat FORMAT_SPEED = new DecimalFormat("0.0");
     private static DecimalFormat FORMAT_DISTANCE = new DecimalFormat("0.00");
+    private static DecimalFormat FORMAT_SLOPE = new DecimalFormat("0.0");
     private static char sDecimalSeparator;
 
     static {
@@ -42,7 +45,7 @@ public class UnitUtil {
         float kmPerHour = metersPerSecond * 3.6f;
         String speedStr = FORMAT_SPEED.format(kmPerHour);
         SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.length() - 2, speedStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
         return builder;
     }
 
@@ -50,9 +53,9 @@ public class UnitUtil {
         String unit = withUnit ? " km" : "";
         if (meters == 0f) return "0" + unit;
         float km = meters / 1000f;
-        String speedStr = FORMAT_DISTANCE.format(km) + unit;
-        SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
+        String distStr = FORMAT_DISTANCE.format(km) + unit;
+        SpannableString builder = new SpannableString(distStr);
+        builder.setSpan(new RelativeSizeSpan(.5f), distStr.indexOf(sDecimalSeparator), distStr.length(), 0);
         return builder;
     }
 
@@ -60,4 +63,13 @@ public class UnitUtil {
         return formatDistance(meters, false);
     }
 
+    public static CharSequence formatSlope(float fraction) {
+        if (fraction == 0f) return "0";
+        float percent = fraction * 100f;
+        String slopeStr = FORMAT_SLOPE.format(percent);
+        SpannableString builder = new SpannableString(slopeStr);
+        Log.d("slopeStr=" + slopeStr);
+        builder.setSpan(new RelativeSizeSpan(.5f), slopeStr.indexOf(sDecimalSeparator), slopeStr.length(), 0);
+        return builder;
+    }
 }

@@ -6,6 +6,8 @@
     android:versionName="${versionName}"
     tools:ignore="MissingVersion" >
 
+    <!-- android:sharedUserId="org.jraf.android" -->
+
     <uses-sdk
         android:minSdkVersion="14"
         android:targetSdkVersion="18" />
@@ -59,7 +61,12 @@
         <activity
             android:name="org.jraf.android.bikey.app.hud.HudActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@style/Theme.Hud" />
+            android:parentActivityName="org.jraf.android.bikey.app.ride.list.RideListActivity"
+            android:theme="@style/Theme.Hud" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.jraf.android.bikey.app.ride.list.RideListActivity" />
+        </activity>
 
         <!-- Save to storage -->
         <activity

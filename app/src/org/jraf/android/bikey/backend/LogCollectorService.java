@@ -33,6 +33,7 @@ import android.location.Location;
 import android.net.Uri;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
@@ -116,7 +117,12 @@ public class LogCollectorService extends Service {
         builder.setTicker(getString(R.string.service_notification_ticker));
         builder.setContentTitle(getString(R.string.app_name));
         builder.setContentText(getString(R.string.service_notification_text));
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, HudActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
+
+        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
+        taskStackBuilder.addParentStack(HudActivity.class);
+        Intent intent = new Intent(this, HudActivity.class).setData(mCollectingRideUri);
+        taskStackBuilder.addNextIntent(intent);
+        builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
         //TODO
         //        builder.addAction(R.drawable.ic_action_stop, getString(R.string.service_notification_action_stop),
         //                PendingIntent.getBroadcast(this, 0, new Intent(ACTION_DISABLE), PendingIntent.FLAG_CANCEL_CURRENT));

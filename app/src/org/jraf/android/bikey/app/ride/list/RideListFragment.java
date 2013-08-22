@@ -61,7 +61,6 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
         setEmptyText(getString(R.string.ride_list_empty));
 
         ListView listView = getListView();
-        //        listView.setPadding(16, 16, 16, 16); // TODO theme this
         listView.setChoiceMode(AbsListView.CHOICE_MODE_MULTIPLE_MODAL);
         listView.setMultiChoiceModeListener(new MultiChoiceModeListener() {
             @Override

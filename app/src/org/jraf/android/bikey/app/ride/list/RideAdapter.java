@@ -26,6 +26,8 @@ package org.jraf.android.bikey.app.ride.list;
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -40,46 +42,60 @@ import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.ui.ViewHolder;
 
 public class RideAdapter extends ResourceCursorAdapter {
+    private ColorStateList mColorDefault;
+    private ColorStateList mColorActive;
+
     public RideAdapter(Context context) {
-        super(context, android.R.layout.simple_list_item_activated_2, null, 0);
+        super(context, R.layout.ride_list_item, null, 0);
+
+        // Retrieve the default text secondary color from the theme
+        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.Theme, new int[] { android.R.attr.textColorSecondary });
+        int resId = a.getResourceId(0, 0);
+        a.recycle();
+        mColorDefault = context.getResources().getColorStateList(resId);
+        mColorActive = context.getResources().getColorStateList(R.color.ride_list_item_active);
     }
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
         RideCursorWrapper c = (RideCursorWrapper) cursor;
 
-        // Name or date
-        TextView txtText1 = ViewHolder.get(view, android.R.id.text1);
+        // Title (name / date)
+        TextView txtTitle = ViewHolder.get(view, R.id.txtTitle);
         String name = c.getName();
         long createdDateLong = c.getCreatedDate();
         String createdDateTimeStr = DateUtils.formatDateTime(context, createdDateLong, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
         if (name == null) {
-            txtText1.setText(createdDateTimeStr);
+            txtTitle.setText(createdDateTimeStr);
         } else {
-            txtText1.setText(name + "  -  " + createdDateTimeStr);
+            txtTitle.setText(name + "  -  " + createdDateTimeStr);
         }
 
-        // Details
-        TextView txtText2 = ViewHolder.get(view, android.R.id.text2);
+        // Summary
+        TextView txtSummary = ViewHolder.get(view, R.id.txtSummary);
         String details = null;
         Animator animator = (Animator) view.getTag(R.id.animator);
         // Cancel the animation / reset the alpha in any case
         if (animator != null) animator.cancel();
-        txtText2.setAlpha(1);
+        txtSummary.setAlpha(1);
         RideState rideState = RideState.from(c.getState().intValue());
         switch (rideState) {
             case CREATED:
                 details = context.getString(R.string.ride_list_notStarted);
+                txtSummary.setTextColor(mColorDefault);
+                txtSummary.setEnabled(false);
                 break;
 
             case ACTIVE:
                 details = context.getString(R.string.ride_list_active);
                 if (animator == null) {
                     animator = AnimatorInflater.loadAnimator(context, R.animator.blink);
-                    animator.setTarget(txtText2);
+                    animator.setTarget(txtSummary);
                     view.setTag(R.id.animator, animator);
                 }
                 animator.start();
+                txtSummary.setTextColor(mColorActive);
+                txtSummary.setEnabled(true);
                 break;
 
             case PAUSED:
@@ -90,8 +106,10 @@ public class RideAdapter extends ResourceCursorAdapter {
                 // Duration
                 long duration = c.getDuration();
                 details += DateTimeUtil.formatDuration(context, duration);
+                txtSummary.setTextColor(mColorDefault);
+                txtSummary.setEnabled(true);
                 break;
         }
-        txtText2.setText(details);
+        txtSummary.setText(details);
     }
 }

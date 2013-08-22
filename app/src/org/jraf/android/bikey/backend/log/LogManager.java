@@ -31,8 +31,8 @@ import android.location.Location;
 import android.net.Uri;
 
 import org.jraf.android.bikey.app.Application;
-import org.jraf.android.bikey.backend.location.DistanceDuration;
 import org.jraf.android.bikey.backend.location.LocationManager;
+import org.jraf.android.bikey.backend.location.LocationPair;
 import org.jraf.android.bikey.backend.provider.LogColumns;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
@@ -63,13 +63,13 @@ public class LogManager {
         values.put(LogColumns.LON, location.getLongitude());
         values.put(LogColumns.ELE, location.getAltitude());
         if (previousLocation != null) {
-            DistanceDuration distanceDuration = new DistanceDuration(previousLocation, location);
-            float speed = distanceDuration.getSpeed();
+            LocationPair locationPair = new LocationPair(previousLocation, location);
+            float speed = locationPair.getSpeed();
             if (speed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
                 Log.d("Speed under threshold, not logging it");
             } else {
-                values.put(LogColumns.DURATION, distanceDuration.duration);
-                values.put(LogColumns.DISTANCE, distanceDuration.distance);
+                values.put(LogColumns.DURATION, locationPair.getDuration());
+                values.put(LogColumns.DISTANCE, locationPair.getDistance());
                 values.put(LogColumns.SPEED, speed);
             }
         }

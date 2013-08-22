@@ -3,12 +3,12 @@
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share"
-        android:showAsAction="always|withText"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/ride_list_action_share"/>
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_action_delete"
-        android:showAsAction="always|withText"
+        android:showAsAction="ifRoom|withText"
         android:title="@string/ride_list_action_delete"/>
 
 </menu>

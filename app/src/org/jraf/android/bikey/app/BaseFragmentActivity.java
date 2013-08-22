@@ -25,7 +25,7 @@ package org.jraf.android.bikey.app;
 
 import android.support.v4.app.FragmentActivity;
 
-public class BaseFragmentActivity extends FragmentActivity {
+public abstract class BaseFragmentActivity extends FragmentActivity {
     private boolean mPaused;
 
     @Override

@@ -78,7 +78,7 @@ public class SlopeHudFragment extends SimpleHudFragment {
         public void onLocationChanged(Location location) {
             super.onLocationChanged(location);
             setText(UnitUtil.formatSlope(getSlope()));
-            if (mDebugInfo.lastDistanceDuration != null) mTxtDebugLastSpeed.setText("" + mDebugInfo.lastDistanceDuration.getSpeed() * 3.6f);
+            if (mDebugInfo.lastLocationPair != null) mTxtDebugLastSpeed.setText("" + mDebugInfo.lastLocationPair.getSlope() * 100f);
         }
     };
 

@@ -62,7 +62,7 @@ public class Speedometer implements LocationListener {
     private static final float SPEED_FAST_M_S = 20f / 3.6f;
 
     public static class DebugInfo {
-        public LocationPair lastDistanceDuration;
+        public LocationPair lastLocationPair;
     }
 
     private Location mLastLocation = null;
@@ -94,7 +94,7 @@ public class Speedometer implements LocationListener {
                 }
             }
 
-            mDebugInfo.lastDistanceDuration = locationPair;
+            mDebugInfo.lastLocationPair = locationPair;
 
             if (lastSpeed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
                 Log.d("Speed under threshold: rounding to 0");

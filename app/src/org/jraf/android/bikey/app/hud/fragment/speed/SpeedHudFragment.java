@@ -78,7 +78,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
         public void onLocationChanged(Location location) {
             super.onLocationChanged(location);
             setText(UnitUtil.formatSpeed(getSpeed()));
-            if (mDebugInfo.lastDistanceDuration != null) mTxtDebugLastSpeed.setText("" + mDebugInfo.lastDistanceDuration.getSpeed() * 3.6f);
+            if (mDebugInfo.lastLocationPair != null) mTxtDebugLastSpeed.setText("" + mDebugInfo.lastLocationPair.getSpeed() * 3.6f);
         }
     };
 

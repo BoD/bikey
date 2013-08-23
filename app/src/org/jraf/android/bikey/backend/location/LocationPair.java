@@ -58,6 +58,9 @@ public class LocationPair extends Pair<Location, Location> {
         return mDuration;
     }
 
+    /**
+     * In meters. Positive means going up, negative means going down.
+     */
     public double getAltitudeDiff() {
         if (mAltitudeDiff == null) {
             mAltitudeDiff = second.getAltitude() - first.getAltitude();
@@ -80,7 +83,7 @@ public class LocationPair extends Pair<Location, Location> {
     }
 
     /**
-     * In fraction of 1 (positive means going down, negative means going up).
+     * In fraction of 1 (positive means going up, negative means going down).
      */
     public float getSlope() {
         if (mSlope == null) {
@@ -95,6 +98,7 @@ public class LocationPair extends Pair<Location, Location> {
 
     @Override
     public String toString() {
-        return String.valueOf(getSpeed());
+        return "LocationPair [getDuration()=" + getDuration() + ", getDistance()=" + getDistance() + ", getSpeed()=" + getSpeed() + ", getAltitudeDiff()="
+                + getAltitudeDiff() + ", getSlope()=" + getSlope() + "]";
     }
 }

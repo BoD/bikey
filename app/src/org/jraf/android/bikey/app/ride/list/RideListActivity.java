@@ -37,8 +37,9 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
-import org.jraf.android.bikey.backend.export.DbExporter;
-import org.jraf.android.bikey.backend.export.GpxExporter;
+import org.jraf.android.bikey.backend.export.db.DbExporter;
+import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
+import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.provider.RideColumns;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.async.Task;
@@ -145,6 +146,10 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
             case 1:
                 // Database
                 mState.mExporter = new DbExporter(rideUri);
+                break;
+            case 2:
+                // Genymotion script
+                mState.mExporter = new GenymotionExporter(rideUri);
                 break;
         }
         startExport();

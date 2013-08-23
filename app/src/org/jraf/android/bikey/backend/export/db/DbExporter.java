@@ -21,13 +21,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.export;
+package org.jraf.android.bikey.backend.export.db;
 
 import java.io.File;
 import java.io.IOException;
 
 import android.net.Uri;
 
+import org.jraf.android.bikey.backend.export.Exporter;
 import org.jraf.android.bikey.backend.provider.BikeySQLiteOpenHelper;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;

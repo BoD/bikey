@@ -40,7 +40,7 @@
             android:name="org.jraf.android.bikey.backend.location.ActivityRecognitionIntentService"
             android:enabled="false" />
 
-        <!-- Session list -->
+        <!-- Ride list -->
 
         <activity
             android:name="org.jraf.android.bikey.app.ride.list.RideListActivity"
@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
 
-        <!-- Session edit -->
+        <!-- Ride edit -->
         <activity
             android:name="org.jraf.android.bikey.app.ride.edit.RideEditActivity"
             android:windowSoftInputMode="stateVisible" />
@@ -90,6 +90,11 @@
         <activity
             android:name="org.jraf.android.bikey.app.preference.PreferenceActivity"
             android:label="@string/preference_title" />
+
+        <!-- About -->
+        <activity
+            android:name="org.jraf.android.bikey.app.about.AboutActivity"
+            android:label="@string/about_title" />
     </application>
 
 </manifest>

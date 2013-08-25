@@ -21,12 +21,32 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey;
+package org.jraf.android.bikey.app.about;
 
-public class Config {
+import android.app.Activity;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
-    public static final boolean ACRA = true;
-    public static final boolean STRICT_MODE = true;
-    public static final boolean LOGD_PROVIDER = true;
+import org.acra.ACRA;
+import org.jraf.android.bikey.R;
 
+public class AboutActivity extends Activity {
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.about, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_sendLogs:
+                ACRA.getErrorReporter().handleSilentException(new Exception("User clicked on 'Send logs'"));
+                Toast.makeText(this, R.string.about_sendingLogsToast, Toast.LENGTH_SHORT).show();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

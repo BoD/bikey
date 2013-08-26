@@ -30,7 +30,9 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
@@ -42,8 +44,6 @@ import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Log;
 import org.jraf.android.util.string.StringUtil;
-
-import com.google.android.gms.location.LocationListener;
 
 public class LogCollectorService extends Service {
     private static final String PREFIX = LogCollectorService.class.getName() + ".";
@@ -103,6 +103,15 @@ public class LogCollectorService extends Service {
             LogManager.get().add(mCollectingRideUri, location, mLastLocation);
             mLastLocation = location;
         }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onProviderDisabled(String provider) {}
     };
 
 

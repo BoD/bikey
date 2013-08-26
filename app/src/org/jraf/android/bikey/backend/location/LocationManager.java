@@ -23,10 +23,9 @@
  */
 package org.jraf.android.bikey.backend.location;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.location.Location;
+import android.location.LocationListener;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -34,14 +33,6 @@ import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
 import org.jraf.android.util.Log;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient.ConnectionCallbacks;
-import com.google.android.gms.common.GooglePlayServicesClient.OnConnectionFailedListener;
-import com.google.android.gms.location.ActivityRecognitionClient;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 
 public class LocationManager {
     public static interface StatusListener {
@@ -54,7 +45,6 @@ public class LocationManager {
 
     private static final LocationManager INSTANCE = new LocationManager();
 
-    private static final boolean DEBUG_USE_DEVICE_GPS = true;
     private static final int INTERVAL_LOC_REQUEST = 1000;
     private static final int ALLOWED_LOC_MISSES = 8;
 
@@ -73,13 +63,9 @@ public class LocationManager {
     }
 
     private final Context mContext;
-    private LocationClient mLocationClient;
-    private ActivityRecognitionClient mActivityRecognitionClient;
     protected long mLastFixDate;
     private Handler mHandler;
     private boolean mActive = false;
-    private int mCurrentActivityType;
-    private int mCurrentActivityConfidence;
     private int mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
 
     private LocationManager() {
@@ -115,52 +101,17 @@ public class LocationManager {
 
     private void startLocationListener() {
         Log.d();
-        if (DEBUG_USE_DEVICE_GPS) {
-            mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
-            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.removeUpdates(mGpsLocationListener);
-            locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
-        } else {
-            // If already connected (or connecting) do nothing
-            if (mLocationClient != null) {
-                Log.d("Already connected: do nothing");
-                return;
-            }
-            mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
-            mLocationClient = new LocationClient(mContext, mLocationOnConnectionCallbacks, mLocationOnConnectionFailedListener);
-            mLocationClient.connect();
-        }
+        mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
+        android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.removeUpdates(mGpsLocationListener);
+        locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
     }
 
     private void stopLocationListener() {
         Log.d();
-        if (DEBUG_USE_DEVICE_GPS) {
-            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-            locationManager.removeUpdates(mGpsLocationListener);
-        } else {
-            if (mLocationClient == null) return;
-            mLocationClient.removeLocationUpdates(mLocationListener);
-            if (mLocationClient.isConnected()) mLocationClient.disconnect();
-            mLocationClient = null;
-        }
+        android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        locationManager.removeUpdates(mGpsLocationListener);
     }
-
-    private ConnectionCallbacks mLocationOnConnectionCallbacks = new ConnectionCallbacks() {
-        @Override
-        public void onConnected(Bundle params) {
-            Log.d();
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            locationRequest.setInterval(INTERVAL_LOC_REQUEST);
-            locationRequest.setFastestInterval(INTERVAL_LOC_REQUEST);
-            mLocationClient.requestLocationUpdates(locationRequest, mLocationListener);
-        }
-
-        @Override
-        public void onDisconnected() {
-            Log.d();
-        }
-    };
 
     private android.location.LocationListener mGpsLocationListener = new android.location.LocationListener() {
         @Override
@@ -207,6 +158,15 @@ public class LocationManager {
                 }
             });
         }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+        @Override
+        public void onProviderEnabled(String provider) {}
+
+        @Override
+        public void onProviderDisabled(String provider) {}
     };
 
 
@@ -305,93 +265,5 @@ public class LocationManager {
             });
         }
         mActive = active;
-    }
-
-
-    /*
-     * Activity.
-     */
-
-    public void addActivityRecognitionListener(ActivityRecognitionListener listener) {
-        mActivityRecognitionListeners.add(listener);
-    }
-
-    public void removeActivityRecognitionListener(ActivityRecognitionListener listener) {
-        mActivityRecognitionListeners.remove(listener);
-    }
-
-    private Listeners<ActivityRecognitionListener> mActivityRecognitionListeners = new Listeners<ActivityRecognitionListener>() {
-        @Override
-        protected void onFirstListener() {
-            Log.d("First activity listener, start activity listener");
-            startActivityRecognitionListener();
-        }
-
-        @Override
-        protected void onNoMoreListeners() {
-            Log.d("No more activity listeners, stop activity listener");
-            stopActivityRecognitionListener();
-        }
-    };
-
-    private void startActivityRecognitionListener() {
-        Log.d();
-        // If already connected (or connecting) do nothing
-        if (mActivityRecognitionClient != null) {
-            Log.d("Already connected: do nothing");
-            return;
-        }
-        mCurrentActivityType = -1;
-        mCurrentActivityConfidence = -1;
-        mActivityRecognitionClient = new ActivityRecognitionClient(mContext, mActivityOnConnectionCallbacks, mLocationOnConnectionFailedListener);
-        mActivityRecognitionClient.connect();
-    }
-
-    private void stopActivityRecognitionListener() {
-        Log.d();
-        if (mActivityRecognitionClient == null) return;
-        if (mActivityRecognitionClient.isConnected()) {
-            mActivityRecognitionClient.removeActivityUpdates(getActivityRecognitionPendingIntent());
-            mActivityRecognitionClient.disconnect();
-        }
-        mActivityRecognitionClient = null;
-    }
-
-    private ConnectionCallbacks mActivityOnConnectionCallbacks = new ConnectionCallbacks() {
-        @Override
-        public void onConnected(Bundle params) {
-            Log.d();
-            mActivityRecognitionClient.requestActivityUpdates(INTERVAL_LOC_REQUEST, getActivityRecognitionPendingIntent());
-        }
-
-        @Override
-        public void onDisconnected() {
-            Log.d();
-        }
-    };
-
-    private OnConnectionFailedListener mLocationOnConnectionFailedListener = new OnConnectionFailedListener() {
-        @Override
-        public void onConnectionFailed(ConnectionResult connectionResult) {
-            Log.w("Could not connect to LocationClient, errorCode=" + connectionResult.getErrorCode());
-        }
-    };
-
-    private PendingIntent getActivityRecognitionPendingIntent() {
-        Intent intent = new Intent(mContext, ActivityRecognitionIntentService.class);
-        PendingIntent pendingIntent = PendingIntent.getService(mContext, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        return pendingIntent;
-    }
-
-    /* package */void onActivityRecognized(final int activityType, final int confidence) {
-        if (mCurrentActivityType != activityType && mCurrentActivityConfidence != confidence) {
-            // Dispatch to listeners
-            mActivityRecognitionListeners.dispatch(new Dispatcher<ActivityRecognitionListener>() {
-                @Override
-                public void dispatch(ActivityRecognitionListener listener) {
-                    listener.onActivityRecognized(activityType, confidence);
-                }
-            });
-        }
     }
 }

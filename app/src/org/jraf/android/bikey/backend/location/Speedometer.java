@@ -27,10 +27,10 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import android.location.Location;
+import android.location.LocationListener;
+import android.os.Bundle;
 
 import org.jraf.android.util.Log;
-
-import com.google.android.gms.location.LocationListener;
 
 /**
  * Keeps a log of mDistance/mDuration. The size of the log depends on the last measured speed.
@@ -170,4 +170,13 @@ public class Speedometer implements LocationListener {
         Log.d("res=" + avgSlope);
         return avgSlope;
     }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {}
+
+    @Override
+    public void onProviderEnabled(String provider) {}
+
+    @Override
+    public void onProviderDisabled(String provider) {}
 }

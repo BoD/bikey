@@ -34,12 +34,6 @@
         <!-- Data collecting service -->
         <service android:name="org.jraf.android.bikey.backend.LogCollectorService" />
 
-        <!-- Activity recognition service -->
-        <!-- TODO: Disabled for now -->
-        <service
-            android:name="org.jraf.android.bikey.backend.location.ActivityRecognitionIntentService"
-            android:enabled="false" />
-
         <!-- Ride list -->
 
         <activity

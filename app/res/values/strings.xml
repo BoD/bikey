@@ -45,6 +45,7 @@
     <string name="hud_tab_distance">Dist.</string>
     <string name="hud_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
     <string name="hud_tab_slope">Slope</string>
+    <string name="hud_tab_compass">Comp.</string>
     <string name="hud_tab_currentTime">Cur. time</string>
     <string name="hud_chkRecord_created">Start</string>
     <string name="hud_chkRecord_active">Recording</string>

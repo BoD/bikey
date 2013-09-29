@@ -147,30 +147,6 @@ public class Speedometer implements LocationListener {
         return avgSpeed;
     }
 
-    public float getSlope() {
-        int count = 0;
-        float avgSlope = 0;
-        float maxSlope = 0;
-        for (LocationPair locationPair : mLog) {
-            float slope = locationPair.getSlope();
-            avgSlope += slope;
-            count++;
-            if (slope > maxSlope) maxSlope = slope;
-        }
-
-        if (count == 0) return 0f;
-
-        // If we have at least 3 values, remove the max (to smooth the result)
-        if (count >= 3) {
-            avgSlope -= maxSlope;
-            count--;
-        }
-
-        avgSlope /= count;
-        Log.d("res=" + avgSlope);
-        return avgSlope;
-    }
-
     @Override
     public void onStatusChanged(String provider, int status, Bundle extras) {}
 

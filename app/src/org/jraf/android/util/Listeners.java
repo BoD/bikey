@@ -45,14 +45,14 @@ public class Listeners<T> implements Iterable<T> {
     public boolean add(T listener) {
         int prevSize = mListeners.size();
         boolean res = mListeners.add(listener);
-        onListenerCountChanged(prevSize, mListeners.size());
+        if (res) onListenerCountChanged(prevSize, mListeners.size());
         return res;
     }
 
     public boolean remove(T listener) {
         int prevSize = mListeners.size();
         boolean res = mListeners.remove(listener);
-        onListenerCountChanged(prevSize, mListeners.size());
+        if (res) onListenerCountChanged(prevSize, mListeners.size());
         return res;
     }
 

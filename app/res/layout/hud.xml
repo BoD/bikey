@@ -83,12 +83,12 @@
         android:weightSum="4" >
 
         <CheckBox
-            android:id="@+id/chkTabSlope"
+            android:id="@+id/chkTabCompass"
             style="@style/tab"
             android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="1"
-            android:text="@string/hud_tab_slope" />
+            android:text="@string/hud_tab_compass" />
 
         <CheckBox
             android:id="@+id/chkTabCurrentTime"

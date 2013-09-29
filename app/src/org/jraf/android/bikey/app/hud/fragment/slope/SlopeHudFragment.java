@@ -32,7 +32,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.fragment.SimpleHudFragment;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
-import org.jraf.android.bikey.backend.location.Speedometer;
+import org.jraf.android.bikey.backend.location.SlopeMeter;
 import org.jraf.android.bikey.util.UnitUtil;
 
 public class SlopeHudFragment extends SimpleHudFragment {
@@ -60,7 +60,7 @@ public class SlopeHudFragment extends SimpleHudFragment {
         LocationManager.get().addStatusListener(mGpsStatusListener);
 
         // Speed updates
-        mSpeedometer.startListening();
+        mSlopeMmeter.startListening();
     }
 
     @Override
@@ -69,11 +69,11 @@ public class SlopeHudFragment extends SimpleHudFragment {
         LocationManager.get().removeStatusListener(mGpsStatusListener);
 
         // Speed updates
-        mSpeedometer.stopListening();
+        mSlopeMmeter.stopListening();
         super.onStop();
     }
 
-    private Speedometer mSpeedometer = new Speedometer() {
+    private SlopeMeter mSlopeMmeter = new SlopeMeter() {
         @Override
         public void onLocationChanged(Location location) {
             super.onLocationChanged(location);

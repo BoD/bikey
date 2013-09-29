@@ -28,8 +28,6 @@ import java.text.DecimalFormat;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 
-import org.jraf.android.util.Log;
-
 public class UnitUtil {
     private static DecimalFormat FORMAT_SPEED = new DecimalFormat("0.0");
     private static DecimalFormat FORMAT_DISTANCE = new DecimalFormat("0.00");
@@ -68,7 +66,14 @@ public class UnitUtil {
         float percent = fraction * 100f;
         String slopeStr = FORMAT_SLOPE.format(percent);
         SpannableString builder = new SpannableString(slopeStr);
-        Log.d("slopeStr=" + slopeStr);
+        builder.setSpan(new RelativeSizeSpan(.5f), slopeStr.indexOf(sDecimalSeparator), slopeStr.length(), 0);
+        return builder;
+    }
+
+    public static CharSequence formatCompass(float fraction) {
+        if (fraction == 0f) return "0";
+        String slopeStr = FORMAT_SLOPE.format(fraction);
+        SpannableString builder = new SpannableString(slopeStr);
         builder.setSpan(new RelativeSizeSpan(.5f), slopeStr.indexOf(sDecimalSeparator), slopeStr.length(), 0);
         return builder;
     }

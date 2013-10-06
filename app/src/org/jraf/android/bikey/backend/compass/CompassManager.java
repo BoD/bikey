@@ -88,7 +88,7 @@ public class CompassManager {
     private SensorEventListener mAccelerometerSensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
-            mLastAccelerometerValues = event.values;
+            mLastAccelerometerValues = event.values.clone();
         }
 
         @Override
@@ -105,10 +105,11 @@ public class CompassManager {
             //            Log.d();
             //            if (event.accuracy == SensorManager.SENSOR_STATUS_UNRELIABLE) return;
             if (System.currentTimeMillis() - mLastDate < RATE) return;
+            float[] values = event.values.clone();
             mLastDate = System.currentTimeMillis();
 
             if (mLastAccelerometerValues == null) return;
-            boolean ok = SensorManager.getRotationMatrix(mInR, null, mLastAccelerometerValues, event.values);
+            boolean ok = SensorManager.getRotationMatrix(mInR, null, mLastAccelerometerValues, values);
             if (ok) {
                 SensorManager.remapCoordinateSystem(mInR, SensorManager.AXIS_X, SensorManager.AXIS_Z, mOutR);
                 float[] deviceOrientation = new float[3];

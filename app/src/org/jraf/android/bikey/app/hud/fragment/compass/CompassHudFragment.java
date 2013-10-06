@@ -53,6 +53,18 @@ public class CompassHudFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (!isHidden()) CompassManager.get().addListener(mCompassListener);
+    }
+
+    @Override
+    public void onStop() {
+        CompassManager.get().removeListener(mCompassListener);
+        super.onStop();
+    }
+
+    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         Log.d("hidden=" + hidden);
@@ -67,8 +79,13 @@ public class CompassHudFragment extends Fragment {
         @Override
         public void onCompassChange(float compass) {
             //            mImgCompass.setRotation(compass * 360f);
-            Log.d();
-            mImgCompass.animate().setDuration(CompassManager.RATE).setInterpolator(LINEAR_INTERPOLATOR).rotation(compass * 360f);
+            float currentRotation = mImgCompass.getRotation();
+            float newRotation = compass * 360f;
+            if (newRotation - currentRotation < 180) {
+                mImgCompass.animate().setDuration(CompassManager.RATE).setInterpolator(LINEAR_INTERPOLATOR).rotation(newRotation);
+            } else {
+                mImgCompass.animate().setDuration(CompassManager.RATE).setInterpolator(LINEAR_INTERPOLATOR).rotation(newRotation - 360);
+            }
         }
     };
 }

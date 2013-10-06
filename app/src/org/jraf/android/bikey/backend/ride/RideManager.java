@@ -85,7 +85,7 @@ public class RideManager {
 
     @Background
     public void activate(final Uri rideUri) {
-        // Update state
+        // Update state 
         ContentValues values = new ContentValues(3);
         values.put(RideColumns.STATE, RideState.ACTIVE.getValue());
         // Update activated date
@@ -100,6 +100,15 @@ public class RideManager {
             }
         });
     }
+
+    @Background
+    public void updateTotalDistance(Uri rideUri, float distance) {
+        // Update state
+        ContentValues values = new ContentValues(1);
+        values.put(RideColumns.DISTANCE, distance);
+        mContext.getContentResolver().update(rideUri, values, null, null);
+    }
+
 
     @Background
     public void pause(final Uri rideUri) {

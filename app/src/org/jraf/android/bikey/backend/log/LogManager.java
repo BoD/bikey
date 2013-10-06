@@ -34,6 +34,7 @@ import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationPair;
 import org.jraf.android.bikey.backend.provider.LogColumns;
+import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
 import org.jraf.android.util.Log;
@@ -55,6 +56,7 @@ public class LogManager {
 
     @Background
     public Uri add(final Uri rideUri, Location location, Location previousLocation) {
+        // Add a log
         ContentValues values = new ContentValues(7);
         long rideId = ContentUris.parseId(rideUri);
         values.put(LogColumns.RIDE_ID, rideId);
@@ -74,6 +76,10 @@ public class LogManager {
             }
         }
         Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values);
+
+        // Update total distance for ride
+        float totalDistance = getTotalDistance(rideUri);
+        RideManager.get().updateTotalDistance(rideUri, totalDistance);
 
         // Dispatch to listeners
         mListeners.dispatch(new Dispatcher<LogListener>() {

@@ -9,3 +9,4 @@ app/etc/
 app/local.properties
 build-bod-target/
 libs/google-play-services_lib/local.properties
+build.number

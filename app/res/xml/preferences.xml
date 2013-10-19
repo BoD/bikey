@@ -1,5 +1,4 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-    android:key="preferenceScreen" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <ListPreference
         android:defaultValue="0"

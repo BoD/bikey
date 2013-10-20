@@ -46,7 +46,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.BaseFragmentActivity;
 import org.jraf.android.bikey.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.compass.CompassHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragment;
@@ -59,6 +58,7 @@ import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Log;
+import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
 
 public class HudActivity extends BaseFragmentActivity {
@@ -90,7 +90,7 @@ public class HudActivity extends BaseFragmentActivity {
         mChkRecord = (CheckableRelativeLayout) findViewById(R.id.chkRecord);
         mChkRecord.setEnabled(false);
         mChkRecordText = (TextView) findViewById(R.id.chkRecord_text);
-        mChkRecordTextAnimator = AnimatorInflater.loadAnimator(HudActivity.this, R.animator.blink);
+        mChkRecordTextAnimator = AnimatorInflater.loadAnimator(this, R.animator.blink);
         mChkRecordTextAnimator.setTarget(mChkRecordText);
         toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
@@ -175,7 +175,7 @@ public class HudActivity extends BaseFragmentActivity {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                mFragmentCycler.cycle(HudActivity.this);
+                mFragmentCycler.cycle(thiz);
             }
             return true;
         }
@@ -190,7 +190,7 @@ public class HudActivity extends BaseFragmentActivity {
                 Log.d("visibility=" + visibility);
                 if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) {
                     Log.d("Navigation bar showing");
-                    if (!isPaused()) mFragmentCycler.cycle(HudActivity.this);
+                    if (!isPaused()) mFragmentCycler.cycle(thiz);
                     scheduleHideNavigationBar();
                     showControls();
                     scheduleHideControls();
@@ -245,11 +245,11 @@ public class HudActivity extends BaseFragmentActivity {
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             Log.d("isChecked=" + isChecked);
             if (isChecked) {
-                startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
+                startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, thiz, LogCollectorService.class));
                 mChkRecordText.setText(R.string.hud_chkRecord_active);
                 mChkRecordTextAnimator.start();
             } else {
-                startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, HudActivity.this, LogCollectorService.class));
+                startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, thiz, LogCollectorService.class));
                 mChkRecordText.setText(R.string.hud_chkRecord_paused);
                 mChkRecordTextAnimator.cancel();
                 mChkRecordText.setAlpha(1f);

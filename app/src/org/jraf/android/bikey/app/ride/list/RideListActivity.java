@@ -29,7 +29,6 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,12 +45,13 @@ import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.provider.RideColumns;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 
-public class RideListActivity extends FragmentActivity implements AlertDialogListener, RideListContainer {
+public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListContainer {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
@@ -176,7 +176,7 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
 
             @Override
             protected void onPostExecuteOk() {
-                startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mCreatedRideUri, RideListActivity.this, LogCollectorService.class));
+                startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mCreatedRideUri, thiz, LogCollectorService.class));
                 onRideSelected(mCreatedRideUri);
             }
         }).execute(getSupportFragmentManager());

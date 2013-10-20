@@ -53,6 +53,9 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
     private static final int DIALOG_SHARE = 1;
+
+    private static final int REQUEST_ADD_RIDE = 0;
+
     private RideListStateFragment mState;
 
     @Override
@@ -82,7 +85,7 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                startActivity(new Intent(this, RideEditActivity.class));
+                startActivityForResult(new Intent(this, RideEditActivity.class), REQUEST_ADD_RIDE);
                 return true;
 
             case R.id.action_about:
@@ -105,6 +108,21 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
         startActivity(new Intent(null, rideUri, this, HudActivity.class));
     }
 
+
+    /*
+     * Ride added.
+     */
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_ADD_RIDE:
+                if (resultCode != RESULT_OK) return;
+                onRideSelected(data.getData());
+                break;
+        }
+    }
 
     /*
      * Delete.

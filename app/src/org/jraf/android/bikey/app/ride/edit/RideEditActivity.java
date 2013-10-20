@@ -49,7 +49,13 @@ public class RideEditActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_edit);
         mEdtName = (EditText) findViewById(R.id.edtName);
-        mEdtName.setOnEditorActionListener(mNameOnEditorActionListener);
+        mEdtName.setOnEditorActionListener(new OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                createRide();
+                return true;
+            }
+        });
         setupActionBar();
     }
 
@@ -60,10 +66,20 @@ public class RideEditActivity extends FragmentActivity {
         actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         View btnDone = customActionBarView.findViewById(R.id.actionbar_done);
-        btnDone.setOnClickListener(mDoneOnClickListener);
+        btnDone.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                createRide();
+            }
+        });
 
         View btnDiscard = customActionBarView.findViewById(R.id.actionbar_discard);
-        btnDiscard.setOnClickListener(mDiscardOnClickListener);
+        btnDiscard.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
     }
 
     private void createRide() {
@@ -83,26 +99,4 @@ public class RideEditActivity extends FragmentActivity {
             }
         }).execute(getSupportFragmentManager());
     }
-
-    private OnClickListener mDoneOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            createRide();
-        }
-    };
-
-    private OnClickListener mDiscardOnClickListener = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            finish();
-        }
-    };
-
-    private OnEditorActionListener mNameOnEditorActionListener = new OnEditorActionListener() {
-        @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            createRide();
-            return true;
-        }
-    };
 }

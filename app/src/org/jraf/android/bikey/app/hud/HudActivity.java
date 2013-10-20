@@ -62,7 +62,7 @@ import org.jraf.android.util.Log;
 import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
 
 public class HudActivity extends BaseFragmentActivity {
-    private static final long DELAY_HIDE_CONTROLS = 2000;
+    private static final long DELAY_HIDE_CONTROLS = 3000;
 
     private Handler mHandler = new Handler();
 

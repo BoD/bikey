@@ -32,12 +32,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
+import org.jraf.android.bikey.backend.LogCollectorService;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
@@ -48,7 +51,7 @@ import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 
-public class RideListActivity extends FragmentActivity implements AlertDialogListener {
+public class RideListActivity extends FragmentActivity implements AlertDialogListener, RideListContainer {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
@@ -64,6 +67,12 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
         setTitle("");
         getActionBar().setLogo(R.drawable.ic_actionbar_logo);
         setContentView(R.layout.ride_list);
+        findViewById(R.id.btnQuickStart).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickStart();
+            }
+        });
         restoreState();
     }
 
@@ -104,6 +113,7 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
      * Ride selected.
      */
 
+    @Override
     public void onRideSelected(Uri rideUri) {
         startActivity(new Intent(null, rideUri, this, HudActivity.class));
     }
@@ -124,10 +134,12 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
         }
     }
 
+
     /*
      * Delete.
      */
 
+    @Override
     public void showDeleteDialog(long[] checkedItemIds) {
         int quantity = checkedItemIds.length;
         String message = getResources().getQuantityString(R.plurals.ride_list_deleteDialog_message, quantity, quantity);
@@ -150,9 +162,32 @@ public class RideListActivity extends FragmentActivity implements AlertDialogLis
 
 
     /*
+     * Quick start.
+     */
+
+    private void quickStart() {
+        new TaskFragment(new Task<RideEditActivity>() {
+            private Uri mCreatedRideUri;
+
+            @Override
+            protected void doInBackground() throws Throwable {
+                mCreatedRideUri = RideManager.get().create(null);
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mCreatedRideUri, RideListActivity.this, LogCollectorService.class));
+                onRideSelected(mCreatedRideUri);
+            }
+        }).execute(getSupportFragmentManager());
+    }
+
+
+    /*
      * Share.
      */
 
+    @Override
     public void showShareDialog(long[] checkedItemIds) {
         AlertDialogFragment.newInstance(DIALOG_SHARE, R.string.ride_list_shareDialog_title, 0, R.array.export_choices, 0, 0, checkedItemIds[0]).show(
                 getSupportFragmentManager());

@@ -38,6 +38,7 @@
 
     <string name="ride_list_notStarted">Not started</string>
     <string name="ride_list_active">In progress</string>
+    <string name="ride_list_btnQuickStart">Quick Start</string>
 
     <!-- Hud -->
     <string name="hud_tab_speed">Speed</string>

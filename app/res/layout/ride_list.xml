@@ -1,14 +1,25 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context="org.jraf.android.bikey.app.ride.list.RideListActivity" >
 
     <fragment
         android:id="@+id/fraSessionList"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
         class="org.jraf.android.bikey.app.ride.list.RideListFragment"
         tools:layout="@android:layout/list_content" />
 
-</RelativeLayout>
+    <Button
+        android:id="@+id/btnQuickStart"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:padding="16dp"
+        android:text="@string/ride_list_btnQuickStart"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</LinearLayout>

@@ -85,12 +85,12 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_delete:
-                        ((RideListActivity) getActivity()).showDeleteDialog(getListView().getCheckedItemIds());
+                        getContainer().showDeleteDialog(getListView().getCheckedItemIds());
                         mode.finish();
                         return true;
 
                     case R.id.action_share:
-                        ((RideListActivity) getActivity()).showShareDialog(getListView().getCheckedItemIds());
+                        getContainer().showShareDialog(getListView().getCheckedItemIds());
                         mode.finish();
                         return true;
                 }
@@ -109,7 +109,11 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        ((RideListActivity) getActivity()).onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id));
+        getContainer().onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id));
+    }
+
+    private RideListContainer getContainer() {
+        return (RideListContainer) getActivity();
     }
 
 

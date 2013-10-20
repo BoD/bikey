@@ -61,7 +61,7 @@ public class RideManager {
     public Uri create(String name) {
         ContentValues values = new ContentValues(4);
         values.put(RideColumns.CREATED_DATE, System.currentTimeMillis());
-        if (!name.isEmpty()) {
+        if (!TextUtils.isEmpty(name)) {
             values.put(RideColumns.NAME, name);
         }
         values.put(RideColumns.STATE, RideState.CREATED.getValue());

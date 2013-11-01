@@ -25,10 +25,12 @@ package org.jraf.android.bikey.app.ride.list;
 
 import android.net.Uri;
 
-public interface RideListContainer {
+public interface RideListCallbacks {
     void onRideSelected(Uri rideUri);
 
     void showDeleteDialog(long[] checkedItemIds);
 
-    void showShareDialog(long[] checkedItemIds);
+    void showShareDialog(Uri checkedItemUri);
+
+    void edit(Uri checkedItemUri);
 }

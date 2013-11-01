@@ -52,11 +52,30 @@ public class RideEditActivity extends FragmentActivity {
         mEdtName.setOnEditorActionListener(new OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                createRide();
+                saveRide();
                 return true;
             }
         });
+        populateViews();
         setupActionBar();
+    }
+
+    private void populateViews() {
+        final Uri rideUri = getIntent().getData();
+        if (rideUri == null) return;
+        new TaskFragment(new Task<RideEditActivity>() {
+            private String mRideName;
+
+            @Override
+            protected void doInBackground() throws Throwable {
+                mRideName = RideManager.get().getName(rideUri);
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                if (mRideName != null) mEdtName.append(mRideName);
+            }
+        }).execute(getSupportFragmentManager());
     }
 
     private void setupActionBar() {
@@ -69,7 +88,7 @@ public class RideEditActivity extends FragmentActivity {
         btnDone.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                createRide();
+                saveRide();
             }
         });
 
@@ -82,19 +101,26 @@ public class RideEditActivity extends FragmentActivity {
         });
     }
 
-    private void createRide() {
+    private void saveRide() {
         new TaskFragment(new Task<RideEditActivity>() {
-            private Uri mCreatedRideUri;
+            private Uri mRideUri;
 
             @Override
             protected void doInBackground() throws Throwable {
                 String name = getActivity().mEdtName.getText().toString().trim();
-                mCreatedRideUri = RideManager.get().create(name);
+                Uri rideUri = getIntent().getData();
+                if (rideUri == null) {
+                    // Create
+                    mRideUri = RideManager.get().create(name);
+                } else {
+                    mRideUri = rideUri;
+                    RideManager.get().updateName(rideUri, name);
+                }
             }
 
             @Override
             protected void onPostExecuteOk() {
-                setResult(RESULT_OK, new Intent(null, mCreatedRideUri));
+                setResult(RESULT_OK, new Intent(null, mRideUri));
                 getActivity().finish();
             }
         }).execute(getSupportFragmentManager());

@@ -51,7 +51,7 @@ import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 
-public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListContainer {
+public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListCallbacks {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
@@ -188,8 +188,8 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
      */
 
     @Override
-    public void showShareDialog(long[] checkedItemIds) {
-        AlertDialogFragment.newInstance(DIALOG_SHARE, R.string.ride_list_shareDialog_title, 0, R.array.export_choices, 0, 0, checkedItemIds[0]).show(
+    public void showShareDialog(Uri checkedItemIdUri) {
+        AlertDialogFragment.newInstance(DIALOG_SHARE, R.string.ride_list_shareDialog_title, 0, R.array.export_choices, 0, 0, checkedItemIdUri).show(
                 getSupportFragmentManager());
     }
 
@@ -236,5 +236,15 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
 
             }
         }.toastFail(R.string.export_failToast)).execute(getSupportFragmentManager());
+    }
+
+
+    /*
+     * Edit
+     */
+
+    @Override
+    public void edit(Uri checkedItemUri) {
+        startActivity(new Intent(this, RideEditActivity.class).setData(checkedItemUri));
     }
 }

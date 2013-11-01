@@ -25,6 +25,7 @@ package org.jraf.android.bikey.app.ride.list;
 
 import android.content.ContentUris;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
@@ -77,20 +78,29 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 int quantity = getListView().getCheckedItemCount();
                 mode.setSubtitle(getResources().getQuantityString(R.plurals.ride_list_cab_subtitle, quantity, quantity));
-                // Enable sharing only if one item is selected (don't sharing of several items)
+                // Enable share / edit only if one item is selected (can't share / edit several items at the same time)
                 mode.getMenu().findItem(R.id.action_share).setVisible(quantity == 1);
+                mode.getMenu().findItem(R.id.action_edit).setVisible(quantity == 1);
             }
 
             @Override
             public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+                long[] checkedItemIds = getListView().getCheckedItemIds();
+                long checkedItemId = checkedItemIds[0];
+                Uri checkedItemUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, checkedItemId);
                 switch (item.getItemId()) {
                     case R.id.action_delete:
-                        getContainer().showDeleteDialog(getListView().getCheckedItemIds());
+                        getCallbacks().showDeleteDialog(checkedItemIds);
                         mode.finish();
                         return true;
 
                     case R.id.action_share:
-                        getContainer().showShareDialog(getListView().getCheckedItemIds());
+                        getCallbacks().showShareDialog(checkedItemUri);
+                        mode.finish();
+                        return true;
+
+                    case R.id.action_edit:
+                        getCallbacks().edit(checkedItemUri);
                         mode.finish();
                         return true;
                 }
@@ -109,11 +119,11 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        getContainer().onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id));
+        getCallbacks().onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id));
     }
 
-    private RideListContainer getContainer() {
-        return (RideListContainer) getActivity();
+    private RideListCallbacks getCallbacks() {
+        return (RideListCallbacks) getActivity();
     }
 
 

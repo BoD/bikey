@@ -103,12 +103,21 @@ public class RideManager {
 
     @Background
     public void updateTotalDistance(Uri rideUri, float distance) {
-        // Update state
         ContentValues values = new ContentValues(1);
         values.put(RideColumns.DISTANCE, distance);
         mContext.getContentResolver().update(rideUri, values, null, null);
     }
 
+    @Background
+    public void updateName(Uri rideUri, String name) {
+        ContentValues values = new ContentValues(1);
+        if (TextUtils.isEmpty(name)) {
+            values.put(RideColumns.NAME, (String) null);
+        } else {
+            values.put(RideColumns.NAME, name);
+        }
+        mContext.getContentResolver().update(rideUri, values, null, null);
+    }
 
     @Background
     public void pause(final Uri rideUri) {
@@ -215,6 +224,17 @@ public class RideManager {
             c.close();
         }
     }
+
+    @Background
+    public String getName(Uri rideUri) {
+        RideCursorWrapper c = query(rideUri);
+        try {
+            return c.getName();
+        } finally {
+            c.close();
+        }
+    }
+
 
 
     /*

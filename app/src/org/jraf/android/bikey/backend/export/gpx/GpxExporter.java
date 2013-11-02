@@ -67,7 +67,7 @@ public class GpxExporter extends Exporter {
         LogCursorWrapper c = new LogCursorWrapper(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
         try {
             while (c.moveToNext()) {
-                Long recordedDate = c.getRecordedDate();
+                long recordedDate = c.getRecordedDate().getTime();
                 // Track segment
                 if (previousRecordedDate == null) {
                     out.println(getString(R.string.export_gpx_trackSegment_begin));

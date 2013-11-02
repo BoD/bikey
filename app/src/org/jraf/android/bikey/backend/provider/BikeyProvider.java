@@ -6,15 +6,15 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,8 @@
  * limitations under the License.
  */
 package org.jraf.android.bikey.backend.provider;
+
+import java.util.Arrays;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -47,22 +49,22 @@ public class BikeyProvider extends ContentProvider {
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
     public static final String QUERY_GROUP_BY = "QUERY_GROUP_BY";
 
-    private static final int URI_TYPE_RIDE = 0;
-    private static final int URI_TYPE_RIDE_ID = 1;
+    private static final int URI_TYPE_LOG = 0;
+    private static final int URI_TYPE_LOG_ID = 1;
 
-    private static final int URI_TYPE_LOG = 2;
-    private static final int URI_TYPE_LOG_ID = 3;
+    private static final int URI_TYPE_RIDE = 2;
+    private static final int URI_TYPE_RIDE_ID = 3;
 
 
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME, URI_TYPE_RIDE);
-        URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME + "/#", URI_TYPE_RIDE_ID);
-
         URI_MATCHER.addURI(AUTHORITY, LogColumns.TABLE_NAME, URI_TYPE_LOG);
         URI_MATCHER.addURI(AUTHORITY, LogColumns.TABLE_NAME + "/#", URI_TYPE_LOG_ID);
+
+        URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME, URI_TYPE_RIDE);
+        URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME + "/#", URI_TYPE_RIDE_ID);
 
     }
 
@@ -78,15 +80,15 @@ public class BikeyProvider extends ContentProvider {
     public String getType(Uri uri) {
         final int match = URI_MATCHER.match(uri);
         switch (match) {
-            case URI_TYPE_RIDE:
-                return TYPE_CURSOR_DIR + RideColumns.TABLE_NAME;
-            case URI_TYPE_RIDE_ID:
-                return TYPE_CURSOR_ITEM + RideColumns.TABLE_NAME;
-
             case URI_TYPE_LOG:
                 return TYPE_CURSOR_DIR + LogColumns.TABLE_NAME;
             case URI_TYPE_LOG_ID:
                 return TYPE_CURSOR_ITEM + LogColumns.TABLE_NAME;
+
+            case URI_TYPE_RIDE:
+                return TYPE_CURSOR_DIR + RideColumns.TABLE_NAME;
+            case URI_TYPE_RIDE_ID:
+                return TYPE_CURSOR_ITEM + RideColumns.TABLE_NAME;
 
         }
         return null;
@@ -132,7 +134,8 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (Config.LOGD_PROVIDER) Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection);
+        if (Config.LOGD_PROVIDER)
+            Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
         final QueryParams queryParams = getQueryParams(uri, selection);
         final int res = mBikeySQLiteOpenHelper.getWritableDatabase().update(queryParams.table, values, queryParams.selection, selectionArgs);
         String notify;
@@ -144,7 +147,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (Config.LOGD_PROVIDER) Log.d(TAG, "delete uri=" + uri + " selection=" + selection);
+        if (Config.LOGD_PROVIDER) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
         final QueryParams queryParams = getQueryParams(uri, selection);
         final int res = mBikeySQLiteOpenHelper.getWritableDatabase().delete(queryParams.table, queryParams.selection, selectionArgs);
         String notify;
@@ -157,7 +160,9 @@ public class BikeyProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
-        if (Config.LOGD_PROVIDER) Log.d(TAG, "query uri=" + uri + " selection=" + selection + " sortOrder=" + sortOrder + " groupBy=" + groupBy);
+        if (Config.LOGD_PROVIDER)
+            Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
+                    + " groupBy=" + groupBy);
         final QueryParams queryParams = getQueryParams(uri, selection);
         final Cursor res = mBikeySQLiteOpenHelper.getReadableDatabase().query(queryParams.table, projection, queryParams.selection, selectionArgs, groupBy,
                 null, sortOrder == null ? queryParams.orderBy : sortOrder);
@@ -176,16 +181,16 @@ public class BikeyProvider extends ContentProvider {
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
         switch (matchedId) {
-            case URI_TYPE_RIDE:
-            case URI_TYPE_RIDE_ID:
-                res.table = RideColumns.TABLE_NAME;
-                res.orderBy = RideColumns.DEFAULT_ORDER;
-                break;
-
             case URI_TYPE_LOG:
             case URI_TYPE_LOG_ID:
                 res.table = LogColumns.TABLE_NAME;
                 res.orderBy = LogColumns.DEFAULT_ORDER;
+                break;
+
+            case URI_TYPE_RIDE:
+            case URI_TYPE_RIDE_ID:
+                res.table = RideColumns.TABLE_NAME;
+                res.orderBy = RideColumns.DEFAULT_ORDER;
                 break;
 
             default:
@@ -193,8 +198,8 @@ public class BikeyProvider extends ContentProvider {
         }
 
         switch (matchedId) {
-            case URI_TYPE_RIDE_ID:
             case URI_TYPE_LOG_ID:
+            case URI_TYPE_RIDE_ID:
                 id = uri.getLastPathSegment();
         }
         if (id != null) {

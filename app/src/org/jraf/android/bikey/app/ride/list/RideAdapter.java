@@ -63,7 +63,7 @@ public class RideAdapter extends ResourceCursorAdapter {
         // Title (name / date)
         TextView txtTitle = ViewHolder.get(view, R.id.txtTitle);
         String name = c.getName();
-        long createdDateLong = c.getCreatedDate();
+        long createdDateLong = c.getCreatedDate().getTime();
         String createdDateTimeStr = DateUtils.formatDateTime(context, createdDateLong, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
         if (name == null) {
             txtTitle.setText(createdDateTimeStr);

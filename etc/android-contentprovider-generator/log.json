@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "recorded_date",
-			"type": "integer"
+			"type": "date"
 		},
 		{
 			"name": "lat",

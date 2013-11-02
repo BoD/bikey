@@ -77,7 +77,7 @@ public class ElapsedTimeHudFragment extends SimpleHudFragment {
                 mDuration = rideManager.getDuration(rideUri);
                 mIsActive = rideManager.getState(rideUri) == RideState.ACTIVE;
                 if (mIsActive) {
-                    mActivatedDate = rideManager.getActivatedDate(rideUri);
+                    mActivatedDate = rideManager.getActivatedDate(rideUri).getTime();
                 }
                 return null;
             }

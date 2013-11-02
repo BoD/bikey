@@ -6,7 +6,7 @@
 		},
 		{
 			"name": "created_date",
-			"type": "integer"
+			"type": "date"
 		},
 		{
 			"name": "state",
@@ -14,7 +14,7 @@
 		},
 		{
 			"name": "activated_date",
-			"type": "integer"
+			"type": "date"
 		},
 		{
 			"name": "duration",

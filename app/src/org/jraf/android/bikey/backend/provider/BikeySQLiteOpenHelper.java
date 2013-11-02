@@ -6,15 +6,15 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -38,17 +38,6 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // @formatter:off
-    private static final String SQL_CREATE_TABLE_RIDE = "CREATE TABLE IF NOT EXISTS "
-            + RideColumns.TABLE_NAME + " ( "
-            + RideColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
-            + RideColumns.NAME + " TEXT, "
-            + RideColumns.CREATED_DATE + " INTEGER, "
-            + RideColumns.STATE + " INTEGER, "
-            + RideColumns.ACTIVATED_DATE + " INTEGER, "
-            + RideColumns.DURATION + " INTEGER, "
-            + RideColumns.DISTANCE + " FLOAT "
-            + " );";
-
     private static final String SQL_CREATE_TABLE_LOG = "CREATE TABLE IF NOT EXISTS "
             + LogColumns.TABLE_NAME + " ( "
             + LogColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -62,6 +51,17 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
             + LogColumns.SPEED + " FLOAT "
             + " );";
 
+    private static final String SQL_CREATE_TABLE_RIDE = "CREATE TABLE IF NOT EXISTS "
+            + RideColumns.TABLE_NAME + " ( "
+            + RideColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + RideColumns.NAME + " TEXT, "
+            + RideColumns.CREATED_DATE + " INTEGER, "
+            + RideColumns.STATE + " INTEGER, "
+            + RideColumns.ACTIVATED_DATE + " INTEGER, "
+            + RideColumns.DURATION + " INTEGER, "
+            + RideColumns.DISTANCE + " FLOAT "
+            + " );";
+
     // @formatter:on
 
     public BikeySQLiteOpenHelper(Context context) {
@@ -71,8 +71,8 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         if (Config.LOGD_PROVIDER) Log.d(TAG, "onCreate");
-        db.execSQL(SQL_CREATE_TABLE_RIDE);
         db.execSQL(SQL_CREATE_TABLE_LOG);
+        db.execSQL(SQL_CREATE_TABLE_RIDE);
     }
 
     @Override

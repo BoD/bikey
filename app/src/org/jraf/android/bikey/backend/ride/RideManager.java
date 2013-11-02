@@ -23,6 +23,7 @@
  */
 package org.jraf.android.bikey.backend.ride;
 
+import java.util.Date;
 import java.util.List;
 
 import android.content.ContentUris;
@@ -128,7 +129,7 @@ public class RideManager {
             if (!c.moveToNext()) {
                 throw new IllegalArgumentException(rideUri + " not found");
             }
-            long activatedDate = c.getActivatedDate();
+            long activatedDate = c.getActivatedDate().getTime();
             long duration = c.getDuration();
 
             // Update duration, state, and reset activated date
@@ -180,7 +181,7 @@ public class RideManager {
     }
 
     @Background
-    public long getActivatedDate(Uri rideUri) {
+    public Date getActivatedDate(Uri rideUri) {
         RideCursorWrapper c = query(rideUri);
         try {
             return c.getActivatedDate();
@@ -214,7 +215,7 @@ public class RideManager {
         RideCursorWrapper c = query(rideUri);
         try {
             String name = c.getName();
-            long createdDateLong = c.getCreatedDate();
+            long createdDateLong = c.getCreatedDate().getTime();
             String createdDateTimeStr = DateUtils.formatDateTime(mContext, createdDateLong, DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_TIME);
             if (name == null) {
                 return createdDateTimeStr;

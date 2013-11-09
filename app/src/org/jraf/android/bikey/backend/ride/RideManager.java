@@ -39,10 +39,10 @@ import org.jraf.android.bikey.backend.provider.LogColumns;
 import org.jraf.android.bikey.backend.provider.RideColumns;
 import org.jraf.android.bikey.backend.provider.RideCursorWrapper;
 import org.jraf.android.bikey.backend.provider.RideState;
-import org.jraf.android.util.Listeners;
-import org.jraf.android.util.Listeners.Dispatcher;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.collection.CollectionUtil;
+import org.jraf.android.util.listeners.Listeners;
+import org.jraf.android.util.listeners.Listeners.Dispatcher;
 
 public class RideManager {
     private static final RideManager INSTANCE = new RideManager();

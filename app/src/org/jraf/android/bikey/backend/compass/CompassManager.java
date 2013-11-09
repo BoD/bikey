@@ -30,8 +30,8 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
 import org.jraf.android.bikey.app.Application;
-import org.jraf.android.util.Listeners;
-import org.jraf.android.util.Listeners.Dispatcher;
+import org.jraf.android.util.listeners.Listeners;
+import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.wrapper.Log;
 
 public class CompassManager {

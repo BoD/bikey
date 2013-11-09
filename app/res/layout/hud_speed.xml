@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <org.jraf.android.util.ui.FitSizeTextView
+    <org.jraf.android.util.ui.fitsize.FitSizeTextView
         android:id="@+id/txtValue"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

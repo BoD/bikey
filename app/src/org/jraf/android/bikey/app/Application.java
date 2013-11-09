@@ -33,8 +33,9 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.jraf.android.bikey.Config;
+import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.util.Log;
+import org.jraf.android.util.log.wrapper.Log;
 
 //@formatter:off
 @ReportsCrashes(
@@ -88,6 +89,8 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         sApplication = this;
+
+        Log.init(Constants.TAG);
 
         // ACRA
         if (Config.ACRA) {

@@ -34,11 +34,11 @@ import android.support.v4.app.FragmentActivity;
 import android.widget.Toast;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.util.Log;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.intent.IntentUtil;
+import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.string.StringUtil;
 
 public class SaveToStorageActivity extends FragmentActivity {

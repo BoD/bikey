@@ -32,7 +32,7 @@ import android.hardware.SensorManager;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
-import org.jraf.android.util.Log;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class CompassManager {
     private static final CompassManager INSTANCE = new CompassManager();

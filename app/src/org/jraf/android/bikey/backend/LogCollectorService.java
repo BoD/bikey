@@ -42,7 +42,7 @@ import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.util.Log;
+import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.string.StringUtil;
 
 public class LogCollectorService extends Service {

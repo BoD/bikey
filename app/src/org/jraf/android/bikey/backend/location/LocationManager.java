@@ -32,7 +32,7 @@ import android.os.Handler;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
-import org.jraf.android.util.Log;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class LocationManager {
     public static interface StatusListener {

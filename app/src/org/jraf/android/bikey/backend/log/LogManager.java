@@ -37,8 +37,8 @@ import org.jraf.android.bikey.backend.provider.LogColumns;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.Listeners;
 import org.jraf.android.util.Listeners.Dispatcher;
-import org.jraf.android.util.Log;
 import org.jraf.android.util.annotation.Background;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class LogManager {
     private static final LogManager INSTANCE = new LogManager();

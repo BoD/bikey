@@ -165,7 +165,6 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration);
         mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance);
         mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed);
-        //        mFragmentCycler.add(this, SlopeHudFragment.newInstance(), R.id.chkTabSlope);
         mFragmentCycler.add(this, CompassHudFragment.newInstance(), R.id.chkTabCompass);
         mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime);
         mFragmentCycler.show(this);

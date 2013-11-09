@@ -25,33 +25,62 @@ package org.jraf.android.bikey.util;
 
 import java.text.DecimalFormat;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 
+import org.jraf.android.bikey.Constants;
+import org.jraf.android.util.annotation.Background;
+
 public class UnitUtil {
+    private static final float M_TO_KM = 0.001f;
+    private static final float M_S_TO_KM_H = 3.6f;
+    private static final float M_S_TO_MPH = 2.2369363f;
+    private static final float M_TO_MI = 0.00062137119f;
+
     private static DecimalFormat FORMAT_SPEED = new DecimalFormat("0.0");
     private static DecimalFormat FORMAT_DISTANCE = new DecimalFormat("0.00");
-    private static DecimalFormat FORMAT_SLOPE = new DecimalFormat("0.0");
     private static char sDecimalSeparator;
+    private static String sUnit;
 
     static {
         sDecimalSeparator = FORMAT_DISTANCE.getDecimalFormatSymbols().getDecimalSeparator();
     }
 
+    @Background
+    public static void readPreferences(Context context) {
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        sUnit = preferences.getString(Constants.PREF_UNITS, Constants.PREF_UNITS_DEFAULT);
+    }
+
     public static CharSequence formatSpeed(float metersPerSecond) {
         if (metersPerSecond == 0f) return "0";
-        float kmPerHour = metersPerSecond * 3.6f;
-        String speedStr = FORMAT_SPEED.format(kmPerHour);
+        float converted;
+        if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
+            converted = metersPerSecond * M_S_TO_KM_H;
+        } else {
+            converted = metersPerSecond * M_S_TO_MPH;
+        }
+        String speedStr = FORMAT_SPEED.format(converted);
         SpannableString builder = new SpannableString(speedStr);
         builder.setSpan(new RelativeSizeSpan(.5f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
         return builder;
     }
 
     public static CharSequence formatDistance(float meters, boolean withUnit) {
-        String unit = withUnit ? " km" : "";
+        String unit = "";
+        float converted;
+        if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
+            unit = " km";
+            converted = meters * M_TO_KM;
+        } else {
+            unit = " miles";
+            converted = meters * M_TO_MI;
+        }
         if (meters == 0f) return "0" + unit;
-        float km = meters / 1000f;
-        String distStr = FORMAT_DISTANCE.format(km) + unit;
+        String distStr = FORMAT_DISTANCE.format(converted) + unit;
         SpannableString builder = new SpannableString(distStr);
         builder.setSpan(new RelativeSizeSpan(.5f), distStr.indexOf(sDecimalSeparator), distStr.length(), 0);
         return builder;
@@ -59,22 +88,5 @@ public class UnitUtil {
 
     public static CharSequence formatDistance(float meters) {
         return formatDistance(meters, false);
-    }
-
-    public static CharSequence formatSlope(float fraction) {
-        if (fraction == 0f) return "0";
-        float percent = fraction * 100f;
-        String slopeStr = FORMAT_SLOPE.format(percent);
-        SpannableString builder = new SpannableString(slopeStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), slopeStr.indexOf(sDecimalSeparator), slopeStr.length(), 0);
-        return builder;
-    }
-
-    public static CharSequence formatCompass(float fraction) {
-        if (fraction == 0f) return "0";
-        String slopeStr = FORMAT_SLOPE.format(fraction);
-        SpannableString builder = new SpannableString(slopeStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), slopeStr.indexOf(sDecimalSeparator), slopeStr.length(), 0);
-        return builder;
     }
 }

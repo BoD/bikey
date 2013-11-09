@@ -31,6 +31,8 @@ import android.preference.PreferenceManager;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.backend.provider.RideColumns;
+import org.jraf.android.bikey.util.UnitUtil;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity {
     @SuppressWarnings("deprecation")
@@ -58,6 +60,10 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             updateListPreferenceSummary(key);
+            UnitUtil.readPreferences(PreferenceActivity.this);
+
+            // Notify observers of rides since they display distances using a conversion depending on the preference
+            getContentResolver().notifyChange(RideColumns.CONTENT_URI, null);
         }
     };
 

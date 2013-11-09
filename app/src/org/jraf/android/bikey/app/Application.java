@@ -35,6 +35,7 @@ import org.acra.annotation.ReportsCrashes;
 import org.jraf.android.bikey.Config;
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.log.wrapper.Log;
 
 //@formatter:off
@@ -90,6 +91,7 @@ public class Application extends android.app.Application {
         super.onCreate();
         sApplication = this;
 
+        // Log
         Log.init(Constants.TAG);
 
         // ACRA
@@ -103,6 +105,9 @@ public class Application extends android.app.Application {
                 Log.w("Problem while initializing ACRA", t);
             }
         }
+
+        // Units
+        UnitUtil.readPreferences(this);
 
         if (Config.STRICT_MODE) setupStrictMode();
     }

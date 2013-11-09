@@ -73,10 +73,10 @@ public class UnitUtil {
         String unit = "";
         float converted;
         if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
-            unit = " km";
+            if (withUnit) unit = " km";
             converted = meters * M_TO_KM;
         } else {
-            unit = " miles";
+            if (withUnit) unit = " miles";
             converted = meters * M_TO_MI;
         }
         if (meters == 0f) return "0" + unit;

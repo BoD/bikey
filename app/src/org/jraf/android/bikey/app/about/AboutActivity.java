@@ -24,14 +24,31 @@
 package org.jraf.android.bikey.app.about;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.acra.ACRA;
 import org.jraf.android.bikey.R;
 
 public class AboutActivity extends Activity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.about);
+        ((TextView) findViewById(R.id.txtInfo1)).setText(Html.fromHtml(getString(R.string.about_txtInfo1)));
+        findViewById(R.id.btnShare).setOnClickListener(mShareOnClickListener);
+        findViewById(R.id.btnRate).setOnClickListener(mRateOnClickListener);
+        findViewById(R.id.btnOtherApps).setOnClickListener(mOtherAppsOnClickListener);
+        findViewById(R.id.btnDonate).setOnClickListener(mDonateOnClickListener);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -49,4 +66,46 @@ public class AboutActivity extends Activity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private final OnClickListener mShareOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND);
+            shareIntent.setType("text/plain");
+            shareIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.about_shareText_subject));
+            String shareTextBody = getString(R.string.about_shareText_body, getPackageName());
+            shareIntent.putExtra(Intent.EXTRA_TEXT, shareTextBody);
+            shareIntent.putExtra("sms_body", shareTextBody);
+            startActivity(Intent.createChooser(shareIntent, getString(R.string.common_shareWith)));
+        }
+    };
+
+    private final OnClickListener mRateOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://details?id=" + getPackageName()));
+            startActivity(Intent.createChooser(intent, null));
+        }
+    };
+
+    private final OnClickListener mOtherAppsOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri.parse("market://search?q=pub:BoD"));
+            startActivity(Intent.createChooser(intent, null));
+        }
+    };
+
+    private final OnClickListener mDonateOnClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setData(Uri
+                    .parse("https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=BoD%40JRAF%2eorg&lc=US&item_name=Donate%20to%20BoD&item_number=Donate%20to%20BoD&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHostedGuest"
+                            + getPackageName()));
+            startActivity(Intent.createChooser(intent, null));
+        }
+    };
 }

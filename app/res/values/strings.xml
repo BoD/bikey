@@ -6,6 +6,7 @@
     <!-- Common -->
     <string name="common_done">Done</string>
     <string name="common_discard">Discard</string>
+    <string name="common_shareWith">Share with<xliff:g id="dotdotdot">&#8230;</xliff:g></string>
 
     <!-- Acra -->
     <string name="acra_toast">The application has crashed.<xliff:g id="new_line">\n</xliff:g>Logs are being sent so the issue can be fixed.</string>
@@ -93,5 +94,16 @@
     <string name="about_title">About</string>
     <string name="about_action_sendLogs">Send logs</string>
     <string name="about_sendingLogsToast">Logs are being sent.</string>
+    <string name="about_txtInfo1"><![CDATA[<b>BoD Bikey</b> v${versionName}<br/>Built on ${buildDate}<font color="#808080"> – ${gitSha1}</font>]]></string>
+    <string name="about_txtInfo2">Copyright 2013–2014 Benoit \'BoD\' Lubek.\nLicensed under the Apache License, Version 2.0.</string>
+    <string name="about_email">→ BoD@JRAF.org</string>
+    <string name="about_web">→ JRAF.org/android</string>
+    <string name="about_btnShare">Share app</string>
+    <string name="about_btnRate">Rate app</string>
+    <string name="about_btnOtherApps">Other apps</string>
+    <string name="about_btnEula"><u>End user license agreement</u></string>
+    <string name="about_shareText_subject">Checkout out Bikey!</string>
+    <string name="about_shareText_body">Bikey for Android is a most excellent app!\nCheck it out here:\nhttp://play.google.com/store/apps/details?id=%s</string>
+    <string name="about_btnDonate">Donate</string>
 
 </resources>

@@ -1,0 +1,10 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item>
+        <bitmap
+            android:dither="true"
+            android:gravity="center"
+            android:src="@drawable/bg_logo" />
+    </item>
+
+</layer-list>

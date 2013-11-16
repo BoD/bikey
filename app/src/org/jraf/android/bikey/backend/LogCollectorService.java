@@ -32,6 +32,7 @@ import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -60,10 +61,10 @@ public class LogCollectorService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(final Intent intent, int flags, int startId) {
         Log.d("intent=" + StringUtil.toString(intent));
         if (intent == null) return Service.START_STICKY;
-        String action = intent.getAction();
+        final String action = intent.getAction();
         if (ACTION_START_COLLECTING.equals(action)) {
             startCollecting(intent.getData());
         } else if (ACTION_STOP_COLLECTING.equals(action)) {
@@ -72,21 +73,35 @@ public class LogCollectorService extends Service {
         return Service.START_STICKY;
     }
 
-    private void startCollecting(Uri rideUri) {
-        // First, pause current ride if any
-        if (mCollectingRideUri != null) {
-            RideManager.get().pause(mCollectingRideUri);
-        }
-        // Now collect for the new current ride
-        mCollectingRideUri = rideUri;
-        RideManager.get().activate(mCollectingRideUri);
+    private void startCollecting(final Uri rideUri) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                // First, pause current ride if any
+                if (mCollectingRideUri != null) {
+                    RideManager.get().pause(mCollectingRideUri);
+                }
+                // Now collect for the new current ride
+                mCollectingRideUri = rideUri;
+                RideManager.get().activate(mCollectingRideUri);
+
+                return null;
+            }
+        }.execute();
         Notification notification = createNotification();
         startForeground(NOTIFICATION_ID, notification);
         LocationManager.get().addLocationListener(mLocationListener);
     }
 
-    private void stopCollecting(Uri rideUri) {
-        RideManager.get().pause(rideUri);
+    private void stopCollecting(final Uri rideUri) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                RideManager.get().pause(rideUri);
+                return null;
+            }
+        }.execute();
+
         dismissNotification();
         LocationManager.get().removeLocationListener(mLocationListener);
         mCollectingRideUri = null;

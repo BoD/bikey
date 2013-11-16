@@ -49,6 +49,7 @@ import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.collection.CollectionUtil;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class RideManager {
     private static final RideManager INSTANCE = new RideManager();
@@ -80,6 +81,10 @@ public class RideManager {
     @Background
     public int delete(long[] ids) {
         List<Long> idList = CollectionUtil.asList(ids);
+
+        // First pause any active rides in the list
+        pauseRides(ids);
+
         // Delete rides
         String where = RideColumns._ID + " in (" + TextUtils.join(",", idList) + ")";
         int res = mContext.getContentResolver().delete(RideColumns.CONTENT_URI, where, null);
@@ -95,14 +100,7 @@ public class RideManager {
         List<Long> idList = CollectionUtil.asList(ids);
 
         // First pause any active rides in the list
-        for (long rideId : ids) {
-            Uri rideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, rideId);
-            RideState state = getState(rideUri);
-            if (state == RideState.ACTIVE) {
-                mContext.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, rideUri, mContext, LogCollectorService.class));
-                break;
-            }
-        }
+        pauseRides(ids);
 
         // Choose the master ride (the one with the earliest creation date)
         String[] projection = { RideColumns._ID };
@@ -165,6 +163,17 @@ public class RideManager {
         updateDuration(masterRideUri, totalDuration);
     }
 
+    private void pauseRides(long[] ids) {
+        for (long rideId : ids) {
+            Uri rideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, rideId);
+            RideState state = getState(rideUri);
+            if (state == RideState.ACTIVE) {
+                mContext.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, rideUri, mContext, LogCollectorService.class));
+                break;
+            }
+        }
+    }
+
     @Background
     public void activate(final Uri rideUri) {
         // Update state 
@@ -215,7 +224,8 @@ public class RideManager {
         RideCursorWrapper c = new RideCursorWrapper(mContext.getContentResolver().query(rideUri, projection, null, null, null));
         try {
             if (!c.moveToNext()) {
-                throw new IllegalArgumentException(rideUri + " not found");
+                Log.w("Could not pause ride, uri " + rideUri + " not found");
+                return;
             }
             long activatedDate = c.getActivatedDate().getTime();
             long duration = c.getDuration();

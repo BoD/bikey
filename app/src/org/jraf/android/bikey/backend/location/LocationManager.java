@@ -131,6 +131,9 @@ public class LocationManager {
 
         @Override
         public void onLocationChanged(Location location) {
+            // For some reason, the time seems to have a 1 second precision.
+            // Use the system time instead.
+            location.setTime(System.currentTimeMillis());
             mLocationListener.onLocationChanged(location);
         }
     };

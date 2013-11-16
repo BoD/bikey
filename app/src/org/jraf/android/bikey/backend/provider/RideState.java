@@ -42,13 +42,13 @@ public enum RideState {
     PAUSED(2);
 
 
-    private int mValue;
+    private long mValue;
 
-    RideState(int value) {
+    RideState(long value) {
         mValue = value;
     }
 
-    public int getValue() {
+    public long getValue() {
         return mValue;
     }
 
@@ -56,14 +56,10 @@ public enum RideState {
         return String.valueOf(mValue);
     }
 
-    public static RideState from(int value) {
+    public static RideState from(long value) {
         for (RideState rideState : values()) {
             if (rideState.mValue == value) return rideState;
         }
         return null;
-    }
-
-    public static RideState from(long value) {
-        return from((int) value);
     }
 }

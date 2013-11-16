@@ -78,9 +78,11 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
             public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
                 int quantity = getListView().getCheckedItemCount();
                 mode.setSubtitle(getResources().getQuantityString(R.plurals.ride_list_cab_subtitle, quantity, quantity));
-                // Enable share / edit only if one item is selected (can't share / edit several items at the same time)
+                // Enable share / edit if only one item is selected (can't share / edit several items at the same time)
                 mode.getMenu().findItem(R.id.action_share).setVisible(quantity == 1);
                 mode.getMenu().findItem(R.id.action_edit).setVisible(quantity == 1);
+                // Enable merge only if several items are selected
+                mode.getMenu().findItem(R.id.action_merge).setVisible(quantity > 1);
             }
 
             @Override
@@ -101,6 +103,11 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
                     case R.id.action_edit:
                         getCallbacks().edit(checkedItemUri);
+                        mode.finish();
+                        return true;
+
+                    case R.id.action_merge:
+                        getCallbacks().showMergeDialog(checkedItemIds);
                         mode.finish();
                         return true;
                 }

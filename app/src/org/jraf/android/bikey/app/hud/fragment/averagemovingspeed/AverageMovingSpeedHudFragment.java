@@ -34,6 +34,6 @@ public class AverageMovingSpeedHudFragment extends LogHudFragment {
 
     @Override
     protected CharSequence queryValue() {
-        return UnitUtil.formatSpeed(LogManager.get().getAverageMovingSpeed(getRideUri()));
+        return UnitUtil.formatSpeed((float) LogManager.get().getAverageMovingSpeed(getRideUri()));
     }
 }

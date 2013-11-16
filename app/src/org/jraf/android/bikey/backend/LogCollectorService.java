@@ -62,6 +62,7 @@ public class LogCollectorService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("intent=" + StringUtil.toString(intent));
+        if (intent == null) return Service.START_STICKY;
         String action = intent.getAction();
         if (ACTION_START_COLLECTING.equals(action)) {
             startCollecting(intent.getData());

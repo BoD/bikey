@@ -34,6 +34,6 @@ public class TotalDistanceHudFragment extends LogHudFragment {
 
     @Override
     protected CharSequence queryValue() {
-        return UnitUtil.formatDistance(LogManager.get().getTotalDistance(getRideUri()));
+        return UnitUtil.formatDistance((float) LogManager.get().getTotalDistance(getRideUri()));
     }
 }

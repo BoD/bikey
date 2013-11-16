@@ -22,6 +22,7 @@
     <string name="ride_list_action_about">About</string>
     <string name="ride_list_action_share">Share</string>
     <string name="ride_list_action_edit">Edit</string>
+    <string name="ride_list_action_merge">Merge</string>
     <string name="ride_list_action_delete">Delete</string>
     <string name="ride_edit_edtName_hint">Ride name (optional)</string>
     <string name="ride_list_empty">No rides</string>
@@ -41,6 +42,9 @@
     <string name="ride_list_notStarted">Not started</string>
     <string name="ride_list_active">In progress</string>
     <string name="ride_list_btnQuickStart">Quick Start</string>
+    <string name="ride_list_mergeDialog_message">%1$d items will be merged together</string>
+    <string name="ride_list_mergedRide">Merged ride</string>
+    <string name="ride_list_mergedRide_append">%1$s (merged)</string>
 
     <!-- Hud -->
     <string name="hud_tab_speed">Speed</string>

@@ -27,16 +27,22 @@ import java.util.Date;
 import java.util.List;
 
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
+import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
+import org.jraf.android.bikey.backend.LogCollectorService;
+import org.jraf.android.bikey.backend.log.LogManager;
+import org.jraf.android.bikey.backend.provider.BikeyProvider;
 import org.jraf.android.bikey.backend.provider.LogColumns;
+import org.jraf.android.bikey.backend.provider.LogContentValues;
 import org.jraf.android.bikey.backend.provider.RideColumns;
+import org.jraf.android.bikey.backend.provider.RideContentValues;
 import org.jraf.android.bikey.backend.provider.RideCursorWrapper;
 import org.jraf.android.bikey.backend.provider.RideState;
 import org.jraf.android.util.annotation.Background;
@@ -60,15 +66,15 @@ public class RideManager {
 
     @Background
     public Uri create(String name) {
-        ContentValues values = new ContentValues(4);
-        values.put(RideColumns.CREATED_DATE, System.currentTimeMillis());
+        RideContentValues values = new RideContentValues();
+        values.putCreatedDate(new Date());
         if (!TextUtils.isEmpty(name)) {
-            values.put(RideColumns.NAME, name);
+            values.putName(name);
         }
-        values.put(RideColumns.STATE, RideState.CREATED.getValue());
-        values.put(RideColumns.DURATION, 0);
-        values.put(RideColumns.DISTANCE, 0);
-        return mContext.getContentResolver().insert(RideColumns.CONTENT_URI, values);
+        values.putState(RideState.CREATED.getValue());
+        values.putDuration(0l);
+        values.putDistance(0d);
+        return mContext.getContentResolver().insert(RideColumns.CONTENT_URI, values.getContentValues());
     }
 
     @Background
@@ -85,13 +91,88 @@ public class RideManager {
     }
 
     @Background
+    public void merge(long[] ids) {
+        List<Long> idList = CollectionUtil.asList(ids);
+
+        // First pause any active rides in the list
+        for (long rideId : ids) {
+            Uri rideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, rideId);
+            RideState state = getState(rideUri);
+            if (state == RideState.ACTIVE) {
+                mContext.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, rideUri, mContext, LogCollectorService.class));
+                break;
+            }
+        }
+
+        // Choose the master ride (the one with the earliest creation date)
+        String[] projection = { RideColumns._ID };
+        String where = RideColumns._ID + " in (" + TextUtils.join(",", idList) + ")";
+        String order = RideColumns.CREATED_DATE;
+        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, where, null, order);
+        long masterRideId = 0;
+        try {
+            c.moveToNext();
+            masterRideId = c.getLong(0);
+        } finally {
+            c.close();
+        }
+
+        // Calculate the total duration
+        projection = new String[] { "sum(" + RideColumns.DURATION + ")" };
+        c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, where, null, null);
+        long totalDuration = 0;
+        try {
+            if (c.moveToNext()) {
+                totalDuration = c.getLong(0);
+            }
+        } finally {
+            c.close();
+        }
+
+        // Merge
+        for (long mergedRideId : ids) {
+            if (mergedRideId == masterRideId) continue;
+
+            // Update logs
+            where = LogColumns.RIDE_ID + "=" + mergedRideId;
+            LogContentValues values = new LogContentValues();
+            values.putRideId(masterRideId);
+            mContext.getContentResolver().update(LogColumns.CONTENT_URI, values.getContentValues(), where, null);
+
+            // Delete merged ride
+            where = RideColumns._ID + "=" + mergedRideId;
+            Uri contentUri = BikeyProvider.notify(RideColumns.CONTENT_URI, false);
+            mContext.getContentResolver().delete(contentUri, where, null);
+        }
+
+        // Rename master ride
+        Uri masterRideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, masterRideId);
+        String name = getName(masterRideUri);
+        if (name == null) {
+            name = mContext.getString(R.string.ride_list_mergedRide);
+        } else {
+            name = mContext.getString(R.string.ride_list_mergedRide_append, name);
+        }
+        RideContentValues values = new RideContentValues();
+        values.putName(name);
+        mContext.getContentResolver().update(masterRideUri, values.getContentValues(), null, null);
+
+        // Update master ride total distance
+        double distance = LogManager.get().getTotalDistance(masterRideUri);
+        updateTotalDistance(masterRideUri, distance);
+
+        // Update master ride total duration
+        updateDuration(masterRideUri, totalDuration);
+    }
+
+    @Background
     public void activate(final Uri rideUri) {
         // Update state 
-        ContentValues values = new ContentValues(3);
-        values.put(RideColumns.STATE, RideState.ACTIVE.getValue());
+        RideContentValues values = new RideContentValues();
+        values.putState(RideState.ACTIVE.getValue());
         // Update activated date
-        values.put(RideColumns.ACTIVATED_DATE, System.currentTimeMillis());
-        mContext.getContentResolver().update(rideUri, values, null, null);
+        values.putActivatedDate(new Date());
+        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
 
         // Dispatch to listeners
         mListeners.dispatch(new Dispatcher<RideListener>() {
@@ -103,21 +184,28 @@ public class RideManager {
     }
 
     @Background
-    public void updateTotalDistance(Uri rideUri, float distance) {
-        ContentValues values = new ContentValues(1);
-        values.put(RideColumns.DISTANCE, distance);
-        mContext.getContentResolver().update(rideUri, values, null, null);
+    public void updateTotalDistance(Uri rideUri, double distance) {
+        RideContentValues values = new RideContentValues();
+        values.putDistance(distance);
+        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
+    }
+
+    @Background
+    private void updateDuration(Uri rideUri, long duration) {
+        RideContentValues values = new RideContentValues();
+        values.putDuration(duration);
+        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
     }
 
     @Background
     public void updateName(Uri rideUri, String name) {
-        ContentValues values = new ContentValues(1);
+        RideContentValues values = new RideContentValues();
         if (TextUtils.isEmpty(name)) {
-            values.put(RideColumns.NAME, (String) null);
+            values.putNameNull();
         } else {
-            values.put(RideColumns.NAME, name);
+            values.putName(name);
         }
-        mContext.getContentResolver().update(rideUri, values, null, null);
+        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
     }
 
     @Background
@@ -135,11 +223,11 @@ public class RideManager {
             // Update duration, state, and reset activated date
             duration += System.currentTimeMillis() - activatedDate;
 
-            ContentValues values = new ContentValues(3);
-            values.put(RideColumns.STATE, RideState.PAUSED.getValue());
-            values.put(RideColumns.DURATION, duration);
-            values.put(RideColumns.ACTIVATED_DATE, 0);
-            mContext.getContentResolver().update(rideUri, values, null, null);
+            RideContentValues values = new RideContentValues();
+            values.putState(RideState.PAUSED.getValue());
+            values.putDuration(duration);
+            values.putActivatedDate(0l);
+            mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
 
             // Dispatch to listeners
             mListeners.dispatch(new Dispatcher<RideListener>() {

@@ -11,6 +11,11 @@
         android:showAsAction="always|withText"
         android:title="@string/ride_list_action_edit"/>
     <item
+        android:id="@+id/action_merge"
+        android:icon="@drawable/ic_action_merge"
+        android:showAsAction="ifRoom|withText"
+        android:title="@string/ride_list_action_merge"/>
+    <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_action_delete"
         android:showAsAction="ifRoom|withText"

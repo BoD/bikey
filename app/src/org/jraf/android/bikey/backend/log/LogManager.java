@@ -24,7 +24,6 @@
 package org.jraf.android.bikey.backend.log;
 
 import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.location.Location;
@@ -34,6 +33,7 @@ import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationPair;
 import org.jraf.android.bikey.backend.provider.LogColumns;
+import org.jraf.android.bikey.backend.provider.LogContentValues;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.listeners.Listeners;
@@ -57,28 +57,28 @@ public class LogManager {
     @Background
     public Uri add(final Uri rideUri, Location location, Location previousLocation) {
         // Add a log
-        ContentValues values = new ContentValues(7);
+        LogContentValues values = new LogContentValues();
         long rideId = ContentUris.parseId(rideUri);
-        values.put(LogColumns.RIDE_ID, rideId);
-        values.put(LogColumns.RECORDED_DATE, location.getTime());
-        values.put(LogColumns.LAT, location.getLatitude());
-        values.put(LogColumns.LON, location.getLongitude());
-        values.put(LogColumns.ELE, location.getAltitude());
+        values.putRideId(rideId);
+        values.putRecordedDate(location.getTime());
+        values.putLat(location.getLatitude());
+        values.putLon(location.getLongitude());
+        values.putEle(location.getAltitude());
         if (previousLocation != null) {
             LocationPair locationPair = new LocationPair(previousLocation, location);
             float speed = locationPair.getSpeed();
             if (speed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
                 Log.d("Speed under threshold, not logging it");
             } else {
-                values.put(LogColumns.DURATION, locationPair.getDuration());
-                values.put(LogColumns.DISTANCE, locationPair.getDistance());
-                values.put(LogColumns.SPEED, speed);
+                values.putDuration(locationPair.getDuration());
+                values.putDistance((double) locationPair.getDistance());
+                values.putSpeed((double) speed);
             }
         }
-        Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values);
+        Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.getContentValues());
 
         // Update total distance for ride
-        float totalDistance = getTotalDistance(rideUri);
+        double totalDistance = getTotalDistance(rideUri);
         RideManager.get().updateTotalDistance(rideUri, totalDistance);
 
         // Dispatch to listeners
@@ -92,7 +92,7 @@ public class LogManager {
     }
 
     @Background
-    public float getTotalDistance(Uri rideUri) {
+    public double getTotalDistance(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
         String selection = LogColumns.RIDE_ID + "=?";
@@ -102,13 +102,13 @@ public class LogManager {
             if (!c.moveToNext()) {
                 return 0;
             }
-            return c.getFloat(0);
+            return c.getDouble(0);
         } finally {
             c.close();
         }
     }
 
-    public float getAverageMovingSpeed(Uri rideUri) {
+    public double getAverageMovingSpeed(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DISTANCE + ")/sum(" + LogColumns.DURATION + ")*1000" };
         String selection = LogColumns.RIDE_ID + "=? and " + LogColumns.SPEED + ">?";
@@ -118,7 +118,7 @@ public class LogManager {
             if (!c.moveToNext()) {
                 return 0;
             }
-            return c.getFloat(0);
+            return c.getDouble(0);
         } finally {
             c.close();
         }
@@ -136,5 +136,4 @@ public class LogManager {
     public void removeListener(LogListener listener) {
         mListeners.remove(listener);
     }
-
 }

@@ -25,7 +25,6 @@ package org.jraf.android.bikey.app.ride.list;
 
 import java.io.File;
 
-import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,7 +42,6 @@ import org.jraf.android.bikey.backend.LogCollectorService;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
-import org.jraf.android.bikey.backend.provider.RideColumns;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.async.Task;
@@ -56,6 +54,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
     private static final int DIALOG_SHARE = 1;
+    private static final int DIALOG_CONFIRM_MERGE = 2;
 
     private static final int REQUEST_ADD_RIDE = 0;
 
@@ -148,11 +147,53 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 checkedItemIds).show(getSupportFragmentManager());
     }
 
+    private void delete(final long[] ids) {
+        new TaskFragment(new Task<RideListActivity>() {
+            @Override
+            protected void doInBackground() throws Throwable {
+                RideManager.get().delete(ids);
+            }
+        }).execute(getSupportFragmentManager());
+    }
+
+
+    /*
+     * Merge.
+     */
+
+    @Override
+    public void showMergeDialog(long[] checkedItemIds) {
+        int quantity = checkedItemIds.length;
+        String message = getString(R.string.ride_list_mergeDialog_message, quantity);
+
+        AlertDialogFragment.newInstance(DIALOG_CONFIRM_MERGE, null, message, 0, getString(android.R.string.ok), getString(android.R.string.cancel),
+                checkedItemIds).show(getSupportFragmentManager());
+    }
+
+    private void merge(final long[] ids) {
+        new TaskFragment(new Task<RideListActivity>() {
+            @Override
+            protected void doInBackground() throws Throwable {
+                RideManager.get().merge(ids);
+            }
+        }).execute(getSupportFragmentManager());
+    }
+
+
+    /*
+     * Dialog callbacks.
+     */
+
     @Override
     public void onClickPositive(int tag, Object payload) {
+        long[] ids = (long[]) payload;
         switch (tag) {
             case DIALOG_CONFIRM_DELETE:
-                RideManager.get().delete((long[]) payload);
+                delete(ids);
+                break;
+
+            case DIALOG_CONFIRM_MERGE:
+                merge(ids);
                 break;
         }
     }
@@ -195,7 +236,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
 
     @Override
     public void onClickListItem(int tag, int index, Object payload) {
-        Uri rideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, (Long) payload);
+        Uri rideUri = (Uri) payload;
         switch (index) {
             case 0:
                 // Gpx

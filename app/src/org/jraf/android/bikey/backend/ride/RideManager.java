@@ -24,7 +24,6 @@
 package org.jraf.android.bikey.backend.ride;
 
 import java.util.Date;
-import java.util.List;
 
 import android.content.ContentUris;
 import android.content.Context;
@@ -41,9 +40,11 @@ import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
 import org.jraf.android.bikey.backend.provider.LogColumns;
 import org.jraf.android.bikey.backend.provider.LogContentValues;
+import org.jraf.android.bikey.backend.provider.LogSelection;
 import org.jraf.android.bikey.backend.provider.RideColumns;
 import org.jraf.android.bikey.backend.provider.RideContentValues;
 import org.jraf.android.bikey.backend.provider.RideCursorWrapper;
+import org.jraf.android.bikey.backend.provider.RideSelection;
 import org.jraf.android.bikey.backend.provider.RideState;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.collection.CollectionUtil;
@@ -80,33 +81,36 @@ public class RideManager {
 
     @Background
     public int delete(long[] ids) {
-        List<Long> idList = CollectionUtil.asList(ids);
+        Long[] wrappedIds = CollectionUtil.wrap(ids);
 
         // First pause any active rides in the list
         pauseRides(ids);
 
         // Delete rides
-        String where = RideColumns._ID + " in (" + TextUtils.join(",", idList) + ")";
-        int res = mContext.getContentResolver().delete(RideColumns.CONTENT_URI, where, null);
+        RideSelection rideWhere = new RideSelection();
+        rideWhere.id(wrappedIds);
+        int res = mContext.getContentResolver().delete(RideColumns.CONTENT_URI, rideWhere.sel(), rideWhere.args());
 
         // Delete logs
-        where = LogColumns.RIDE_ID + " in (" + TextUtils.join(",", idList) + ")";
-        mContext.getContentResolver().delete(LogColumns.CONTENT_URI, where, null);
+        LogSelection logWhere = new LogSelection();
+        logWhere.rideId(wrappedIds);
+        mContext.getContentResolver().delete(LogColumns.CONTENT_URI, logWhere.sel(), logWhere.args());
         return res;
     }
 
     @Background
     public void merge(long[] ids) {
-        List<Long> idList = CollectionUtil.asList(ids);
+        Long[] wrappedIds = CollectionUtil.wrap(ids);
 
         // First pause any active rides in the list
         pauseRides(ids);
 
         // Choose the master ride (the one with the earliest creation date)
         String[] projection = { RideColumns._ID };
-        String where = RideColumns._ID + " in (" + TextUtils.join(",", idList) + ")";
+        RideSelection rideWhere = new RideSelection();
+        rideWhere.id(wrappedIds);
         String order = RideColumns.CREATED_DATE;
-        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, where, null, order);
+        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), order);
         long masterRideId = 0;
         try {
             c.moveToNext();
@@ -117,7 +121,7 @@ public class RideManager {
 
         // Calculate the total duration
         projection = new String[] { "sum(" + RideColumns.DURATION + ")" };
-        c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, where, null, null);
+        c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), null);
         long totalDuration = 0;
         try {
             if (c.moveToNext()) {
@@ -132,15 +136,17 @@ public class RideManager {
             if (mergedRideId == masterRideId) continue;
 
             // Update logs
-            where = LogColumns.RIDE_ID + "=" + mergedRideId;
+            LogSelection logWhere = new LogSelection();
+            logWhere.rideId(mergedRideId);
             LogContentValues values = new LogContentValues();
             values.putRideId(masterRideId);
-            mContext.getContentResolver().update(LogColumns.CONTENT_URI, values.getContentValues(), where, null);
+            mContext.getContentResolver().update(LogColumns.CONTENT_URI, values.getContentValues(), logWhere.sel(), logWhere.args());
 
             // Delete merged ride
-            where = RideColumns._ID + "=" + mergedRideId;
+            rideWhere = new RideSelection();
+            rideWhere.id(mergedRideId);
             Uri contentUri = BikeyProvider.notify(RideColumns.CONTENT_URI, false);
-            mContext.getContentResolver().delete(contentUri, where, null);
+            mContext.getContentResolver().delete(contentUri, rideWhere.sel(), rideWhere.args());
         }
 
         // Rename master ride
@@ -266,9 +272,9 @@ public class RideManager {
     @Background
     public Uri getActiveRide() {
         String[] projection = { RideColumns._ID };
-        String selection = RideColumns.STATE + "=?";
-        String[] selectionArgs = { RideState.ACTIVE.getValueAsString() };
-        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, selection, selectionArgs, null);
+        RideSelection where = new RideSelection();
+        where.state(RideState.ACTIVE.getValue());
+        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
         try {
             if (!c.moveToNext()) return null;
             long id = c.getLong(0);

@@ -34,6 +34,7 @@ import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationPair;
 import org.jraf.android.bikey.backend.provider.LogColumns;
 import org.jraf.android.bikey.backend.provider.LogContentValues;
+import org.jraf.android.bikey.backend.provider.LogSelection;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.listeners.Listeners;
@@ -95,9 +96,9 @@ public class LogManager {
     public double getTotalDistance(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
-        String selection = LogColumns.RIDE_ID + "=?";
-        String[] selectionArgs = { String.valueOf(rideId) };
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, selection, selectionArgs, null);
+        LogSelection where = new LogSelection();
+        where.rideId(rideId);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
         try {
             if (!c.moveToNext()) {
                 return 0;
@@ -111,9 +112,9 @@ public class LogManager {
     public double getAverageMovingSpeed(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DISTANCE + ")/sum(" + LogColumns.DURATION + ")*1000" };
-        String selection = LogColumns.RIDE_ID + "=? and " + LogColumns.SPEED + ">?";
-        String[] selectionArgs = { String.valueOf(rideId), String.valueOf(LocationManager.SPEED_MIN_THRESHOLD_M_S) };
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, selection, selectionArgs, null);
+        LogSelection where = new LogSelection();
+        where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
         try {
             if (!c.moveToNext()) {
                 return 0;

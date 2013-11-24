@@ -72,6 +72,8 @@ public class HudActivity extends BaseFragmentActivity {
     private Animator mChkRecordTextAnimator;
     private View mConTabsLeft;
     private View mConTabsRight;
+    private View mConFragments;
+    private TextView mTxtTitle;
 
     private boolean mNavigationBarHiding = false;
     private Uri mRideUri;
@@ -98,6 +100,8 @@ public class HudActivity extends BaseFragmentActivity {
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
         mConTabsLeft = findViewById(R.id.conTabsLeft);
         mConTabsRight = findViewById(R.id.conTabsRight);
+        mConFragments = findViewById(R.id.conFragments);
+        mTxtTitle = (TextView) findViewById(R.id.txtTitle);
 
         setupFragments();
 
@@ -105,6 +109,25 @@ public class HudActivity extends BaseFragmentActivity {
             setupNavigationBarHiding();
         }
         scheduleHideControls();
+
+        setupFragmentContainer();
+    }
+
+    private void setupFragmentContainer() {
+        mConFragments.post(new Runnable() {
+            @Override
+            public void run() {
+                int fragmentWidth = mConFragments.getWidth();
+                float percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentWidth;
+                // Remove 5% because it looks better
+                percentX -= .05f;
+                float percentY = percentX + (1f - percentX) / 2f;
+                mConFragments.setScaleX(percentX);
+                mConFragments.setScaleY(percentY);
+
+                mTxtTitle.setAlpha(0);
+            }
+        });
     }
 
     private void toggleRecordingIfActive() {
@@ -160,13 +183,13 @@ public class HudActivity extends BaseFragmentActivity {
     }
 
     private void setupFragments() {
-        mFragmentCycler = new FragmentCycler(R.id.conFragments);
-        mFragmentCycler.add(this, SpeedHudFragment.newInstance(), R.id.chkTabSpeed);
-        mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration);
-        mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance);
-        mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed);
-        mFragmentCycler.add(this, CompassHudFragment.newInstance(), R.id.chkTabCompass);
-        mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime);
+        mFragmentCycler = new FragmentCycler(R.id.conFragments, mTxtTitle);
+        mFragmentCycler.add(this, SpeedHudFragment.newInstance(), R.id.chkTabSpeed, R.string.hud_title_speed);
+        mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration, R.string.hud_title_duration);
+        mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance, R.string.hud_title_distance);
+        mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed, R.string.hud_title_averageMovingSpeed);
+        mFragmentCycler.add(this, CompassHudFragment.newInstance(), R.id.chkTabCompass, R.string.hud_title_compass);
+        mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime, R.string.hud_title_currentTime);
         mFragmentCycler.show(this);
     }
 
@@ -281,7 +304,12 @@ public class HudActivity extends BaseFragmentActivity {
         int duration = getResources().getInteger(R.integer.animation_controls_showHide);
         mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
         mConTabsRight.animate().alpha(0).translationX(mConTabsRight.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+
+        mConFragments.animate().scaleX(1f).scaleY(1f).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+
         mChkRecord.animate().alpha(0).translationY(-mChkRecord.getHeight()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+
+        mTxtTitle.animate().alpha(1f).setDuration(duration).setStartDelay(duration);
     }
 
     private void showControls() {
@@ -290,9 +318,19 @@ public class HudActivity extends BaseFragmentActivity {
         int duration = getResources().getInteger(R.integer.animation_controls_showHide);
         mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
         mConTabsRight.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
-        mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
-    }
 
+        int fragmentWidth = mConFragments.getWidth();
+        float percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentWidth;
+        // Remove 5% because it looks better
+        percentX -= .05f;
+        float percentY = percentX + (1f - percentX) / 2f;
+
+        mConFragments.animate().scaleX(percentX).scaleY(percentY).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+
+        mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+
+        mTxtTitle.animate().alpha(0).setDuration(duration).setStartDelay(0);
+    }
 
     private Runnable mHideControlsRunnable = new Runnable() {
         @Override

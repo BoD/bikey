@@ -33,19 +33,23 @@ import android.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Checkable;
+import android.widget.TextView;
 
 
 public class FragmentCycler {
     private int mContainerResId;
     private List<String> mFragmentTags = new ArrayList<String>(10);
     private List<Checkable> mTabs = new ArrayList<Checkable>(10);
+    private List<Integer> mTitles = new ArrayList<Integer>(10);
     private int mCurrentVisibleIndex = 0;
+    private TextView mTxtTitle;
 
-    public FragmentCycler(int containerResId) {
+    public FragmentCycler(int containerResId, TextView txtTitle) {
         mContainerResId = containerResId;
+        mTxtTitle = txtTitle;
     }
 
-    public void add(Activity activity, Fragment fragment, int tabResId) {
+    public void add(Activity activity, Fragment fragment, int tabResId, int titleResId) {
         String tag = getTag(fragment);
         FragmentManager fragmentManager = activity.getFragmentManager();
         Fragment foundFragment = fragmentManager.findFragmentByTag(tag);
@@ -60,9 +64,10 @@ public class FragmentCycler {
             t.commit();
         }
         mFragmentTags.add(tag);
-        Checkable tab = (Checkable) activity.findViewById(tabResId);
-        mTabs.add(tab);
-        ((View) tab).setOnClickListener(mTabOnClickListener);
+        View tab = activity.findViewById(tabResId);
+        mTabs.add((Checkable) tab);
+        tab.setOnClickListener(mTabOnClickListener);
+        mTitles.add(titleResId);
     }
 
     public void show(Activity activity) {
@@ -74,6 +79,7 @@ public class FragmentCycler {
         t.show(fragment);
         t.commit();
         mTabs.get(mCurrentVisibleIndex).setChecked(true);
+        mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
     }
 
     public void cycle(Activity activity) {
@@ -95,6 +101,7 @@ public class FragmentCycler {
         t.commit();
         mTabs.get(previousVisibleIndex).setChecked(false);
         mTabs.get(mCurrentVisibleIndex).setChecked(true);
+        mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
     }
 
     private String getTag(Fragment fragment) {

@@ -25,7 +25,7 @@
 
     <LinearLayout
         android:id="@+id/conTabsLeft"
-        android:layout_width="100dp"
+        android:layout_width="@dimen/hud_tabs_width"
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:background="@color/tab_bar_bg"
@@ -63,7 +63,7 @@
 
     <LinearLayout
         android:id="@+id/conTabsRight"
-        android:layout_width="100dp"
+        android:layout_width="@dimen/hud_tabs_width"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -99,6 +99,14 @@
             android:layout_weight="1"
             android:text="@string/hud_tab_currentTime" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/txtTitle"
+        style="@style/tab"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:enabled="false"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <org.jraf.android.util.ui.checkable.CheckableRelativeLayout
         android:id="@+id/chkRecord"

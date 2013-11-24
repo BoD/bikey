@@ -51,12 +51,17 @@
     <string name="hud_tab_duration">Dur.</string>
     <string name="hud_tab_distance">Dist.</string>
     <string name="hud_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
-    <string name="hud_tab_slope">Slope</string>
     <string name="hud_tab_compass">Comp.</string>
     <string name="hud_tab_currentTime">Cur. time</string>
+    <string name="hud_title_speed">Speed</string>
+    <string name="hud_title_duration">Duration</string>
+    <string name="hud_title_distance">Distance</string>
+    <string name="hud_title_averageMovingSpeed">Average moving speed</string>
+    <string name="hud_title_compass"></string>
+    <string name="hud_title_currentTime">Current time</string>
     <string name="hud_chkRecord_created">Start</string>
     <string name="hud_chkRecord_active">Recording</string>
-    <string name="hud_chkRecord_paused">Paused</string>
+    <string name="hud_chkRecord_paused">Resume</string>
 
     <!-- Export -->
     <string name="export_failToast">Could not export data. Is external storage available?</string>

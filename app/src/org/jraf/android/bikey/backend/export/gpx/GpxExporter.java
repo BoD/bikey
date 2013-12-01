@@ -40,7 +40,7 @@ import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
 
 public class GpxExporter extends Exporter {
-    private static final long NEW_SEGMENT_DURATION = 2 * 60 * 1000;
+    private static final long NEW_SEGMENT_DURATION = 5 * 60 * 1000;
 
     public GpxExporter(Uri rideUri) {
         super(rideUri);

@@ -21,4 +21,9 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
+    <style name="Widget.ActionBar.Logo" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:displayOptions">useLogo|showHome</item>
+        <item name="android:logo">@drawable/ic_actionbar_logo</item>
+    </style>
+
 </resources>

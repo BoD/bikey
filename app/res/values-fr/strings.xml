@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <!-- Common -->
+    <string name="common_done">Valider</string>
+    <string name="common_discard">Annuler</string>
+    <string name="common_shareWith">Partager avec<xliff:g id="dotdotdot">&#8230;</xliff:g></string>
+
+    <!-- Acra -->
+    <string name="acra_toast">L\'application a rencontré une anomalie.\nDes logs vont être envoyés pour que nous puissions corriger le problème.</string>
+
+    <!-- Service -->
+    <string name="service_notification_ticker">Parcours en cours</string>
+    <string name="service_notification_text">Parcours en cours</string>
+
+    <!-- Ride list -->
+    <string name="ride_list_title">Parcours</string>
+    <string name="ride_list_action_add">Nouveau parcours</string>
+    <string name="ride_list_action_settings">Paramètres</string>
+    <string name="ride_list_action_about">À propos</string>
+    <string name="ride_list_action_share">Partager</string>
+    <string name="ride_list_action_edit">Éditer</string>
+    <string name="ride_list_action_merge">Fusionner</string>
+    <string name="ride_list_action_delete">Supprimer</string>
+    <string name="ride_edit_edtName_hint">Nom du parcours (optionnel)</string>
+    <string name="ride_list_empty">Aucun parcours</string>
+
+    <plurals name="ride_list_cab_subtitle">
+        <item quantity="one">%1$d parcours sélectionné</item>
+        <item quantity="other">%1$d parcours sélectionnés</item>
+    </plurals>
+
+    <string name="ride_list_shareDialog_title">Format du fichier</string>
+
+    <plurals name="ride_list_deleteDialog_message">
+        <item quantity="one">Un élément sera supprimé</item>
+        <item quantity="other">%1$d éléments seront supprimés</item>
+    </plurals>
+
+    <string name="ride_list_notStarted">Pas démarré</string>
+    <string name="ride_list_active">En cours</string>
+    <string name="ride_list_btnQuickStart">Démarrage Rapide</string>
+    <string name="ride_list_mergeDialog_message">%1$d éléments seront fusionnés</string>
+    <string name="ride_list_mergedRide">Parcours fusionné</string>
+    <string name="ride_list_mergedRide_append">%1$s (fusionné)</string>
+
+    <!-- Hud -->
+    <string name="hud_tab_speed">Vit.</string>
+    <string name="hud_tab_duration">Dur.</string>
+    <string name="hud_tab_distance">Dist.</string>
+    <string name="hud_tab_averageMovingSpeed">Vit.\nmoy.</string>
+    <string name="hud_tab_compass">Bouss.</string>
+    <string name="hud_tab_currentTime">Heure</string>
+    <string name="hud_title_speed">Vitesse</string>
+    <string name="hud_title_duration">Durée</string>
+    <string name="hud_title_distance">Distance</string>
+    <string name="hud_title_averageMovingSpeed">Vitesse moyenne</string>
+    <string name="hud_title_compass"></string>
+    <string name="hud_title_currentTime">Heure actuelle</string>
+    <string name="hud_chkRecord_created">Démarrer</string>
+    <string name="hud_chkRecord_active">Enregistrement</string>
+    <string name="hud_chkRecord_paused">Reprendre</string>
+
+    <!-- Export -->
+    <string name="export_failToast">Impossible d\'exporter. Pas de stockage externe ?</string>
+    <string name="export_subject">Parcours à vélo</string>
+    <string name="export_body">Données de parcours enregistrées avec Bikey pour Android.</string>
+    <string name="export_gpx_begin">
+<![CDATA[<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" version=\"1.1\" creator=\"%1$s\">
+<trk>
+<name>%2$s</name>]]>
+    </string>
+    <string name="export_gpx_trackSegment_begin"><![CDATA[<trkseg>]]></string>
+    <string name="export_gpx_trackSegment_end"><![CDATA[</trkseg>]]></string>
+    <string name="export_gpx_trackPoint">
+<![CDATA[
+<trkpt lat=\"%1$s\" lon=\"%2$s\">
+    <ele>%3$s</ele>
+    <time>%4$s</time>
+</trkpt>
+]]>
+    </string>
+    <string name="export_gpx_end">
+<![CDATA[
+</trk>
+</gpx>
+]]>
+    </string>
+
+    <!-- Save to storage -->
+    <string name="saveToStorage_label">Enregistrer sur stockage</string>
+    <string name="saveToStorage_failedToast">Impossible d\'enregistrer le fichier.</string>
+    <string name="saveToStorage_successToast">Fichier enregistré dans %1$s</string>
+
+    <!-- Preferences -->
+    <string name="preference_title">Paramètres</string>
+    <string name="preference_units_title">Unités</string>
+
+    <!-- About -->
+    <string name="about_title">À propos</string>
+    <string name="about_action_sendLogs">Envoyer les logs</string>
+    <string name="about_sendingLogsToast">Logs en cours d\'envoi.</string>
+    <string name="about_txtInfo1"><![CDATA[<b>BoD Bikey</b> v${versionName}<br/>Built on ${buildDate}<font color="#808080"> – ${gitSha1}</font>]]></string>
+    <string name="about_txtInfo2">Copyright 2013–2014 Benoit \'BoD\' Lubek.\nLicensed under the Apache License, Version 2.0.</string>
+    <string name="about_email">→ BoD@JRAF.org</string>
+    <string name="about_web">→ JRAF.org/android</string>
+    <string name="about_btnShare">Partager</string>
+    <string name="about_btnRate">Votre avis</string>
+    <string name="about_btnOtherApps">Autres applis</string>
+    <string name="about_btnDonate">Faire un don</string>
+    <string name="about_shareText_subject">Essayez Bikey !</string>
+    <string name="about_shareText_body">Bikey pour Android est une appli excellente !\nTestez là ici :\nhttp://play.google.com/store/apps/details?id=%s</string>
+
+</resources>

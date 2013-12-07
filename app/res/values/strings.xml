@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">Bikey</string>
+    <string name="app_name" translatable="false">Bikey</string>
 
     <!-- Common -->
     <string name="common_done">Done</string>
@@ -12,8 +12,8 @@
     <string name="acra_toast">The application has crashed.<xliff:g id="new_line">\n</xliff:g>Logs are being sent so the issue can be fixed.</string>
 
     <!-- Service -->
-    <string name="service_notification_ticker">Ongoing ride</string>
-    <string name="service_notification_text">Ongoing ride</string>
+    <string name="service_notification_ticker">Ride in progress</string>
+    <string name="service_notification_text">Ride in progress</string>
 
     <!-- Ride list -->
     <string name="ride_list_title">Rides</string>
@@ -110,9 +110,8 @@
     <string name="about_btnShare">Share app</string>
     <string name="about_btnRate">Rate app</string>
     <string name="about_btnOtherApps">Other apps</string>
-    <string name="about_btnEula"><u>End user license agreement</u></string>
+    <string name="about_btnDonate">Donate</string>
     <string name="about_shareText_subject">Checkout out Bikey!</string>
     <string name="about_shareText_body">Bikey for Android is a most excellent app!\nCheck it out here:\nhttp://play.google.com/store/apps/details?id=%s</string>
-    <string name="about_btnDonate">Donate</string>
 
 </resources>

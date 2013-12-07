@@ -74,9 +74,9 @@ public class LogCollectorService extends Service {
     }
 
     private void startCollecting(final Uri rideUri) {
-        new AsyncTask<Void, Void, Void>() {
+        runOnBackgroundThread(new Runnable() {
             @Override
-            protected Void doInBackground(Void... params) {
+            public void run() {
                 // First, pause current ride if any
                 if (mCollectingRideUri != null) {
                     RideManager.get().pause(mCollectingRideUri);
@@ -84,28 +84,35 @@ public class LogCollectorService extends Service {
                 // Now collect for the new current ride
                 mCollectingRideUri = rideUri;
                 RideManager.get().activate(mCollectingRideUri);
-
-                return null;
             }
-        }.execute();
+        });
         Notification notification = createNotification();
         startForeground(NOTIFICATION_ID, notification);
         LocationManager.get().addLocationListener(mLocationListener);
     }
 
     private void stopCollecting(final Uri rideUri) {
-        new AsyncTask<Void, Void, Void>() {
+        runOnBackgroundThread(new Runnable() {
             @Override
-            protected Void doInBackground(Void... params) {
+            public void run() {
                 RideManager.get().pause(rideUri);
-                return null;
             }
-        }.execute();
+        });
 
         dismissNotification();
         LocationManager.get().removeLocationListener(mLocationListener);
         mCollectingRideUri = null;
         stopSelf();
+    }
+
+    private void runOnBackgroundThread(final Runnable runnable) {
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                runnable.run();
+                return null;
+            }
+        }.execute();
     }
 
 
@@ -115,9 +122,14 @@ public class LogCollectorService extends Service {
 
     private LocationListener mLocationListener = new LocationListener() {
         @Override
-        public void onLocationChanged(Location location) {
-            LogManager.get().add(mCollectingRideUri, location, mLastLocation);
-            mLastLocation = location;
+        public void onLocationChanged(final Location location) {
+            runOnBackgroundThread(new Runnable() {
+                @Override
+                public void run() {
+                    LogManager.get().add(mCollectingRideUri, location, mLastLocation);
+                    mLastLocation = location;
+                }
+            });
         }
 
         @Override
@@ -143,11 +155,15 @@ public class LogCollectorService extends Service {
         builder.setContentTitle(getString(R.string.app_name));
         builder.setContentText(getString(R.string.service_notification_text));
 
+        //        Intent intent = new Intent(this, HudActivity.class).setData(mCollectingRideUri);
+        //        builder.setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
+
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addParentStack(HudActivity.class);
         Intent intent = new Intent(this, HudActivity.class).setData(mCollectingRideUri);
         taskStackBuilder.addNextIntent(intent);
         builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
+
         //TODO
         //        builder.addAction(R.drawable.ic_action_stop, getString(R.string.service_notification_action_stop),
         //                PendingIntent.getBroadcast(this, 0, new Intent(ACTION_DISABLE), PendingIntent.FLAG_CANCEL_CURRENT));

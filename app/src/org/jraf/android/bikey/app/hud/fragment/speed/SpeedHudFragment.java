@@ -26,7 +26,6 @@ package org.jraf.android.bikey.app.hud.fragment.speed;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.fragment.SimpleHudFragment;
@@ -36,7 +35,7 @@ import org.jraf.android.bikey.backend.location.Speedometer;
 import org.jraf.android.bikey.util.UnitUtil;
 
 public class SpeedHudFragment extends SimpleHudFragment {
-    private TextView mTxtDebugLastSpeed;
+    //    private TextView mTxtDebugLastSpeed;
 
     public static SpeedHudFragment newInstance() {
         return new SpeedHudFragment();
@@ -50,7 +49,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mTxtDebugLastSpeed = (TextView) view.findViewById(R.id.txtDebugLastSpeed);
+        //        mTxtDebugLastSpeed = (TextView) view.findViewById(R.id.txtDebugLastSpeed);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class SpeedHudFragment extends SimpleHudFragment {
         public void onLocationChanged(Location location) {
             super.onLocationChanged(location);
             setText(UnitUtil.formatSpeed(getSpeed()));
-            if (mDebugInfo.lastLocationPair != null) mTxtDebugLastSpeed.setText("" + mDebugInfo.lastLocationPair.getSpeed() * 3.6f);
+            //            if (mDebugInfo.lastLocationPair != null) mTxtDebugLastSpeed.setText("" + mDebugInfo.lastLocationPair.getSpeed() * 3.6f);
         }
     };
 

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="export_choices">
+        <item>Fichier GPX</item>
+        <item>Base de données SQLite</item>
+        <item>Script Genymotion</item>
+    </string-array>
+    <string-array name="preferences_units_labels">
+        <item>Métrique (mètres)</item>
+        <item>Impérial (milles)</item>
+    </string-array>
+
+</resources>

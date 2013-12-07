@@ -63,8 +63,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle("");
-        getActionBar().setLogo(R.drawable.ic_actionbar_logo);
         setContentView(R.layout.ride_list);
         findViewById(R.id.btnQuickStart).setOnClickListener(new OnClickListener() {
             @Override

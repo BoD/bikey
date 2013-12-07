@@ -9,4 +9,8 @@
         <item name="android:textAppearanceLarge">@style/TextAppearance.Large</item>
     </style>
 
+    <style name="Theme.ActionBarLogo" parent="Theme">
+        <item name="android:actionBarStyle">@style/Widget.ActionBar.Logo</item>
+    </style>
+
 </resources>

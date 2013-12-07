@@ -30,5 +30,5 @@ public class Constants {
     public static final String PREF_UNITS = "PREF_UNITS";
     public static final String PREF_UNITS_METRIC = "PREF_UNITS_METRIC";
     public static final String PREF_UNITS_IMPERIAL = "PREF_UNITS_IMPERIAL";
-    public static final String PREF_UNITS_DEFAULT = PREF_UNITS_METRIC;
+    public static final String PREF_UNITS_DEFAULT = PREF_UNITS_IMPERIAL;
 }

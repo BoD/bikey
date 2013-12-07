@@ -30,10 +30,14 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Checkable;
 import android.widget.TextView;
+
+import org.jraf.android.bikey.R;
 
 
 public class FragmentCycler {
@@ -43,6 +47,7 @@ public class FragmentCycler {
     private List<Integer> mTitles = new ArrayList<Integer>(10);
     private int mCurrentVisibleIndex = 0;
     private TextView mTxtTitle;
+    private Handler mHandler;
 
     public FragmentCycler(int containerResId, TextView txtTitle) {
         mContainerResId = containerResId;
@@ -79,7 +84,7 @@ public class FragmentCycler {
         t.show(fragment);
         t.commit();
         mTabs.get(mCurrentVisibleIndex).setChecked(true);
-        mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
+        updateTitle();
     }
 
     public void cycle(Activity activity) {
@@ -101,7 +106,24 @@ public class FragmentCycler {
         t.commit();
         mTabs.get(previousVisibleIndex).setChecked(false);
         mTabs.get(mCurrentVisibleIndex).setChecked(true);
-        mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
+        updateTitle();
+    }
+
+    private void updateTitle() {
+        int duration = mTxtTitle.getResources().getInteger(R.integer.animation_controls_showHide);
+        getHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
+            }
+        }, duration);
+    }
+
+    private Handler getHandler() {
+        if (mHandler == null) {
+            mHandler = new Handler(Looper.getMainLooper());
+        }
+        return mHandler;
     }
 
     private String getTag(Fragment fragment) {

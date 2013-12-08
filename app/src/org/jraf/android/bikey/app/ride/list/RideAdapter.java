@@ -68,7 +68,7 @@ public class RideAdapter extends ResourceCursorAdapter {
         if (name == null) {
             txtTitle.setText(createdDateTimeStr);
         } else {
-            txtTitle.setText(name + "  -  " + createdDateTimeStr);
+            txtTitle.setText(name + "\n" + createdDateTimeStr);
         }
 
         // Summary

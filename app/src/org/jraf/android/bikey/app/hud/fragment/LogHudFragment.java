@@ -28,7 +28,7 @@ import android.os.AsyncTask;
 
 import org.jraf.android.bikey.backend.log.LogListener;
 import org.jraf.android.bikey.backend.log.LogManager;
-import org.jraf.android.bikey.backend.provider.RideState;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;

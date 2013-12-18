@@ -30,8 +30,8 @@ import android.content.ContentUris;
 import android.net.Uri;
 
 import org.jraf.android.bikey.backend.export.Exporter;
-import org.jraf.android.bikey.backend.provider.LogColumns;
-import org.jraf.android.bikey.backend.provider.LogCursorWrapper;
+import org.jraf.android.bikey.backend.provider.log.LogColumns;
+import org.jraf.android.bikey.backend.provider.log.LogCursorWrapper;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.file.FileUtil;

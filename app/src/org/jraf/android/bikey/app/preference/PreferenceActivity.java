@@ -31,7 +31,7 @@ import android.preference.PreferenceManager;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.provider.RideColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.util.UnitUtil;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity {

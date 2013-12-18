@@ -21,9 +21,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
+
+import org.jraf.android.bikey.backend.provider.base.AbstractContentValuesWrapper;
 
 /**
  * Content values wrapper for the {@code ride} table.
@@ -43,22 +45,16 @@ public class RideContentValues extends AbstractContentValuesWrapper {
         mContentValues.put(RideColumns.CREATED_DATE, value.getTime());
     }
 
-    public void putCreatedDateNull() {
-        mContentValues.putNull(RideColumns.CREATED_DATE);
-    }
 
     public void putCreatedDate(Long value) {
         mContentValues.put(RideColumns.CREATED_DATE, value);
     }
 
 
-    public void putState(Long value) {
+    public void putState(Integer value) {
         mContentValues.put(RideColumns.STATE, value);
     }
 
-    public void putStateNull() {
-        mContentValues.putNull(RideColumns.STATE);
-    }
 
 
     public void putActivatedDate(Date value) {
@@ -78,17 +74,11 @@ public class RideContentValues extends AbstractContentValuesWrapper {
         mContentValues.put(RideColumns.DURATION, value);
     }
 
-    public void putDurationNull() {
-        mContentValues.putNull(RideColumns.DURATION);
-    }
 
 
     public void putDistance(Double value) {
         mContentValues.put(RideColumns.DISTANCE, value);
     }
 
-    public void putDistanceNull() {
-        mContentValues.putNull(RideColumns.DISTANCE);
-    }
 
 }

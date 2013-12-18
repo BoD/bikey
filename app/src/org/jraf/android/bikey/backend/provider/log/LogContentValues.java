@@ -21,9 +21,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.log;
 
 import java.util.Date;
+
+import org.jraf.android.bikey.backend.provider.base.AbstractContentValuesWrapper;
 
 /**
  * Content values wrapper for the {@code log} table.
@@ -34,18 +36,12 @@ public class LogContentValues extends AbstractContentValuesWrapper {
         mContentValues.put(LogColumns.RIDE_ID, value);
     }
 
-    public void putRideIdNull() {
-        mContentValues.putNull(LogColumns.RIDE_ID);
-    }
 
 
     public void putRecordedDate(Date value) {
         mContentValues.put(LogColumns.RECORDED_DATE, value.getTime());
     }
 
-    public void putRecordedDateNull() {
-        mContentValues.putNull(LogColumns.RECORDED_DATE);
-    }
 
     public void putRecordedDate(Long value) {
         mContentValues.put(LogColumns.RECORDED_DATE, value);
@@ -56,27 +52,18 @@ public class LogContentValues extends AbstractContentValuesWrapper {
         mContentValues.put(LogColumns.LAT, value);
     }
 
-    public void putLatNull() {
-        mContentValues.putNull(LogColumns.LAT);
-    }
 
 
     public void putLon(Double value) {
         mContentValues.put(LogColumns.LON, value);
     }
 
-    public void putLonNull() {
-        mContentValues.putNull(LogColumns.LON);
-    }
 
 
     public void putEle(Double value) {
         mContentValues.put(LogColumns.ELE, value);
     }
 
-    public void putEleNull() {
-        mContentValues.putNull(LogColumns.ELE);
-    }
 
 
     public void putDuration(Long value) {
@@ -88,7 +75,7 @@ public class LogContentValues extends AbstractContentValuesWrapper {
     }
 
 
-    public void putDistance(Double value) {
+    public void putDistance(Float value) {
         mContentValues.put(LogColumns.DISTANCE, value);
     }
 
@@ -97,7 +84,7 @@ public class LogContentValues extends AbstractContentValuesWrapper {
     }
 
 
-    public void putSpeed(Double value) {
+    public void putSpeed(Float value) {
         mContentValues.put(LogColumns.SPEED, value);
     }
 

@@ -35,8 +35,8 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.provider.RideCursorWrapper;
-import org.jraf.android.bikey.backend.provider.RideState;
+import org.jraf.android.bikey.backend.provider.ride.RideCursorWrapper;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.ui.ViewHolder;

@@ -32,9 +32,9 @@ import android.net.Uri;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationPair;
-import org.jraf.android.bikey.backend.provider.LogColumns;
-import org.jraf.android.bikey.backend.provider.LogContentValues;
-import org.jraf.android.bikey.backend.provider.LogSelection;
+import org.jraf.android.bikey.backend.provider.log.LogColumns;
+import org.jraf.android.bikey.backend.provider.log.LogContentValues;
+import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.listeners.Listeners;
@@ -72,8 +72,8 @@ public class LogManager {
                 Log.d("Speed under threshold, not logging it");
             } else {
                 values.putDuration(locationPair.getDuration());
-                values.putDistance((double) locationPair.getDistance());
-                values.putSpeed((double) speed);
+                values.putDistance(locationPair.getDistance());
+                values.putSpeed(speed);
             }
         }
         Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.getContentValues());

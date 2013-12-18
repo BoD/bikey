@@ -32,7 +32,7 @@ import android.widget.Chronometer;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.fragment.SimpleHudFragment;
-import org.jraf.android.bikey.backend.provider.RideState;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 

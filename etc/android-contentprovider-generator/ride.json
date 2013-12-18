@@ -2,27 +2,33 @@
 	"fields": [
 		{
 			"name": "name",
-			"type": "text"
+			"type": "String",
+			"nullable": true,
 		},
 		{
 			"name": "created_date",
-			"type": "date"
+			"type": "Date",
+			"nullable": false,
 		},
 		{
 			"name": "state",
-			"type": "integer"
+			"type": "Integer",
+			"nullable": false,
 		},
 		{
 			"name": "activated_date",
-			"type": "date"
+			"type": "Date",
+			"nullable": true,
 		},
 		{
 			"name": "duration",
-			"type": "integer"
+			"type": "Long",
+			"nullable": false,
 		},
 		{
 			"name": "distance",
-			"type": "float"
+			"type": "Double",
+			"nullable": false,
 		},
 	],
 }

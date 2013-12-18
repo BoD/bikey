@@ -55,7 +55,7 @@ import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFra
 import org.jraf.android.bikey.backend.LogCollectorService;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
-import org.jraf.android.bikey.backend.provider.RideState;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.log.wrapper.Log;

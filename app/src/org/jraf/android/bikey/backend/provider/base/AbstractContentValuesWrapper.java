@@ -21,7 +21,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.base;
 
 import android.content.ContentValues;
 

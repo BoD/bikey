@@ -23,10 +23,14 @@
  */
 package org.jraf.android.bikey.backend.provider;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import android.content.ContentProvider;
+import android.content.ContentProviderOperation;
+import android.content.ContentProviderResult;
 import android.content.ContentValues;
+import android.content.OperationApplicationException;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -34,11 +38,12 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
 
-import org.jraf.android.bikey.Config;
-import org.jraf.android.bikey.Constants;
+import org.jraf.android.bikey.BuildConfig;
+import org.jraf.android.bikey.backend.provider.log.LogColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 
 public class BikeyProvider extends ContentProvider {
-    private static final String TAG = Constants.TAG + BikeyProvider.class.getSimpleName();
+    private static final String TAG = BikeyProvider.class.getSimpleName();
 
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
@@ -62,10 +67,8 @@ public class BikeyProvider extends ContentProvider {
     static {
         URI_MATCHER.addURI(AUTHORITY, LogColumns.TABLE_NAME, URI_TYPE_LOG);
         URI_MATCHER.addURI(AUTHORITY, LogColumns.TABLE_NAME + "/#", URI_TYPE_LOG_ID);
-
         URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME, URI_TYPE_RIDE);
         URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME + "/#", URI_TYPE_RIDE_ID);
-
     }
 
     private BikeySQLiteOpenHelper mBikeySQLiteOpenHelper;
@@ -96,7 +99,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        if (Config.LOGD_PROVIDER) Log.d(TAG, "insert uri=" + uri + " values=" + values);
+        if (BuildConfig.DEBUG) Log.d(TAG, "insert uri=" + uri + " values=" + values);
         final String table = uri.getLastPathSegment();
         final long rowId = mBikeySQLiteOpenHelper.getWritableDatabase().insert(table, null, values);
         String notify;
@@ -108,7 +111,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        if (Config.LOGD_PROVIDER) Log.d(TAG, "bulkInsert uri=" + uri + " values.length=" + values.length);
+        if (BuildConfig.DEBUG) Log.d(TAG, "bulkInsert uri=" + uri + " values.length=" + values.length);
         final String table = uri.getLastPathSegment();
         final SQLiteDatabase db = mBikeySQLiteOpenHelper.getWritableDatabase();
         int res = 0;
@@ -116,6 +119,7 @@ public class BikeyProvider extends ContentProvider {
         try {
             for (final ContentValues v : values) {
                 final long id = db.insert(table, null, v);
+                db.yieldIfContendedSafely();
                 if (id != -1) {
                     res++;
                 }
@@ -134,7 +138,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (Config.LOGD_PROVIDER)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
         final QueryParams queryParams = getQueryParams(uri, selection);
         final int res = mBikeySQLiteOpenHelper.getWritableDatabase().update(queryParams.table, values, queryParams.selection, selectionArgs);
@@ -147,7 +151,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (Config.LOGD_PROVIDER) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
+        if (BuildConfig.DEBUG) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
         final QueryParams queryParams = getQueryParams(uri, selection);
         final int res = mBikeySQLiteOpenHelper.getWritableDatabase().delete(queryParams.table, queryParams.selection, selectionArgs);
         String notify;
@@ -160,7 +164,7 @@ public class BikeyProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         final String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
-        if (Config.LOGD_PROVIDER)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
                     + " groupBy=" + groupBy);
         final QueryParams queryParams = getQueryParams(uri, selection);
@@ -168,6 +172,28 @@ public class BikeyProvider extends ContentProvider {
                 null, sortOrder == null ? queryParams.orderBy : sortOrder);
         res.setNotificationUri(getContext().getContentResolver(), uri);
         return res;
+    }
+
+    @Override
+    public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
+        SQLiteDatabase db = mBikeySQLiteOpenHelper.getWritableDatabase();
+        db.beginTransaction();
+        try {
+            int numOperations = operations.size();
+            ContentProviderResult[] results = new ContentProviderResult[numOperations];
+            int i = 0;
+            for (ContentProviderOperation operation : operations) {
+                results[i] = operation.apply(this, results, i);
+                if (operation.isYieldAllowed()) {
+                    db.yieldIfContendedSafely();
+                }
+                i++;
+            }
+            db.setTransactionSuccessful();
+            return results;
+        } finally {
+            db.endTransaction();
+        }
     }
 
     private static class QueryParams {

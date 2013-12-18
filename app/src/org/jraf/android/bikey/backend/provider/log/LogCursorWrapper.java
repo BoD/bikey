@@ -21,11 +21,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.log;
 
 import java.util.Date;
 
 import android.database.Cursor;
+
+import org.jraf.android.bikey.backend.provider.base.AbstractCursorWrapper;
 
 /**
  * Cursor wrapper for the {@code log} table.
@@ -35,16 +37,12 @@ public class LogCursorWrapper extends AbstractCursorWrapper {
         super(cursor);
     }
 
-    public Long getId() {
-        return getLongOrNull(LogColumns._ID);
-    }
-
     public Long getRideId() {
         return getLongOrNull(LogColumns.RIDE_ID);
     }
 
     public Date getRecordedDate() {
-        return getDateOrNull(LogColumns.RECORDED_DATE);
+        return getDate(LogColumns.RECORDED_DATE);
     }
 
     public Double getLat() {
@@ -63,11 +61,11 @@ public class LogCursorWrapper extends AbstractCursorWrapper {
         return getLongOrNull(LogColumns.DURATION);
     }
 
-    public Double getDistance() {
-        return getDoubleOrNull(LogColumns.DISTANCE);
+    public Float getDistance() {
+        return getFloatOrNull(LogColumns.DISTANCE);
     }
 
-    public Double getSpeed() {
-        return getDoubleOrNull(LogColumns.SPEED);
+    public Float getSpeed() {
+        return getFloatOrNull(LogColumns.SPEED);
     }
 }

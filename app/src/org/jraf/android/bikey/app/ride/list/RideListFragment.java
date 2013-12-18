@@ -41,8 +41,8 @@ import android.widget.AbsListView.MultiChoiceModeListener;
 import android.widget.ListView;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.provider.RideColumns;
-import org.jraf.android.bikey.backend.provider.RideCursorWrapper;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideCursorWrapper;
 
 public class RideListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
     private RideAdapter mAdapter;

@@ -5,4 +5,5 @@
 	"sqliteHelperClassName": "BikeySQLiteOpenHelper",
 	"authority": "org.jraf.android.bikey.backend.provider",
 	"databaseName": "bikey_provider.db",
+	"enableForeignKeys": true,
 }

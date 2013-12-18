@@ -21,7 +21,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.ride;
 
 public enum RideState {
 
@@ -42,13 +42,13 @@ public enum RideState {
     PAUSED(2);
 
 
-    private long mValue;
+    private int mValue;
 
-    RideState(long value) {
+    RideState(int value) {
         mValue = value;
     }
 
-    public long getValue() {
+    public int getValue() {
         return mValue;
     }
 
@@ -56,7 +56,7 @@ public enum RideState {
         return String.valueOf(mValue);
     }
 
-    public static RideState from(long value) {
+    public static RideState from(int value) {
         for (RideState rideState : values()) {
             if (rideState.mValue == value) return rideState;
         }

@@ -2,36 +2,49 @@
 	"fields": [
 		{
 			"name": "ride_id",
-			"type": "integer"
+			"type": "Long",
+			"nullable": false,
 		},
 		{
 			"name": "recorded_date",
-			"type": "date"
+			"type": "Date",
+			"nullable": false,
 		},
 		{
 			"name": "lat",
-			"type": "float"
+			"type": "Double",
+			"nullable": false,
 		},
 		{
 			"name": "lon",
-			"type": "float"
+			"type": "Double",
+			"nullable": false,
 		},
 		{
 			"name": "ele",
-			"type": "float"
+			"type": "Double",
+			"nullable": false,
 		},
 		{
 			"name": "duration",
-			"type": "integer"
+			"type": "Long",
+			"nullable": true,
 		},
 		{
 			"name": "distance",
-			"type": "float"
+			"type": "Float",
+			"nullable": true,
 		},
 		{
 			"name": "speed",
-			"type": "float"
+			"type": "Float",
+			"nullable": true,
 		},
-
+	],
+	"constraints": [
+		{
+			"name": "fk_ride",
+			"definition": "foreign key (ride_id) references ride (_id) on delete cascade",
+		}
 	],
 }

@@ -21,26 +21,43 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.log;
 
 import android.net.Uri;
 import android.provider.BaseColumns;
 
+import org.jraf.android.bikey.backend.provider.BikeyProvider;
+
 /**
- * Columns for the {@code ride} table.
+ * Columns for the {@code log} table.
  */
-public class RideColumns implements BaseColumns {
-    public static final String TABLE_NAME = "ride";
-    public static final Uri CONTENT_URI = Uri.parse(BikeyProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
+public interface LogColumns extends BaseColumns {
+    String TABLE_NAME = "log";
+    Uri CONTENT_URI = Uri.parse(BikeyProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
-    public static final String _ID = BaseColumns._ID;
+    String _ID = BaseColumns._ID;
+    String RIDE_ID = "ride_id";
+    String RECORDED_DATE = "recorded_date";
+    String LAT = "lat";
+    String LON = "lon";
+    String ELE = "ele";
+    String DURATION = "duration";
+    String DISTANCE = "distance";
+    String SPEED = "speed";
 
-    public static final String NAME = "name";
-    public static final String CREATED_DATE = "created_date";
-    public static final String STATE = "state";
-    public static final String ACTIVATED_DATE = "activated_date";
-    public static final String DURATION = "duration";
-    public static final String DISTANCE = "distance";
+    String DEFAULT_ORDER = _ID;
 
-    public static final String DEFAULT_ORDER = _ID;
+	// @formatter:off
+    String[] FULL_PROJECTION = new String[] {
+            _ID,
+            RIDE_ID,
+            RECORDED_DATE,
+            LAT,
+            LON,
+            ELE,
+            DURATION,
+            DISTANCE,
+            SPEED
+    };
+    // @formatter:on
 }

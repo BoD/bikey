@@ -21,11 +21,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jraf.android.bikey.backend.provider;
+package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
 
 import android.database.Cursor;
+
+import org.jraf.android.bikey.backend.provider.base.AbstractCursorWrapper;
 
 /**
  * Cursor wrapper for the {@code ride} table.
@@ -35,25 +37,21 @@ public class RideCursorWrapper extends AbstractCursorWrapper {
         super(cursor);
     }
 
-    public Long getId() {
-        return getLongOrNull(RideColumns._ID);
-    }
-
     public String getName() {
         Integer index = getCachedColumnIndexOrThrow(RideColumns.NAME);
         return getString(index);
     }
 
     public Date getCreatedDate() {
-        return getDateOrNull(RideColumns.CREATED_DATE);
+        return getDate(RideColumns.CREATED_DATE);
     }
 
-    public Long getState() {
-        return getLongOrNull(RideColumns.STATE);
+    public Integer getState() {
+        return getIntegerOrNull(RideColumns.STATE);
     }
 
     public Date getActivatedDate() {
-        return getDateOrNull(RideColumns.ACTIVATED_DATE);
+        return getDate(RideColumns.ACTIVATED_DATE);
     }
 
     public Long getDuration() {

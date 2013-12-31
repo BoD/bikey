@@ -34,7 +34,7 @@ import android.widget.ImageView;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.compass.CompassListener;
 import org.jraf.android.bikey.backend.compass.CompassManager;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.wrapper.Log; 
 
 public class CompassHudFragment extends Fragment {
     private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();

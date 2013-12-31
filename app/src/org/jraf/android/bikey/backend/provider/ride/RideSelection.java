@@ -31,34 +31,34 @@ import org.jraf.android.bikey.backend.provider.base.AbstractSelection;
  * Selection for the {@code ride} table.
  */
 public class RideSelection extends AbstractSelection<RideSelection> {
-    public RideSelection id(Long... value) {
-        addEquals(RideColumns._ID, (Object[]) value);
+    public RideSelection id(long... value) {
+        addEquals(RideColumns._ID, toObjectArray(value));
         return this;
     }
 
     public RideSelection name(String... value) {
-        addEquals(RideColumns.NAME, (Object[]) value);
+        addEquals(RideColumns.NAME, value);
         return this;
     }
     
     public RideSelection nameNot(String... value) {
-        addNotEquals(RideColumns.NAME, (Object[]) value);
+        addNotEquals(RideColumns.NAME, value);
         return this;
     }
 
 
     public RideSelection createdDate(Date... value) {
-        addEquals(RideColumns.CREATED_DATE, (Object[]) value);
+        addEquals(RideColumns.CREATED_DATE, value);
         return this;
     }
     
     public RideSelection createdDateNot(Date... value) {
-        addNotEquals(RideColumns.CREATED_DATE, (Object[]) value);
+        addNotEquals(RideColumns.CREATED_DATE, value);
         return this;
     }
 
-    public RideSelection createdDate(Long... value) {
-        addEquals(RideColumns.CREATED_DATE, (Object[]) value);
+    public RideSelection createdDate(long... value) {
+        addEquals(RideColumns.CREATED_DATE, toObjectArray(value));
         return this;
     }
 
@@ -82,13 +82,13 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         return this;
     }
 
-    public RideSelection state(Integer... value) {
-        addEquals(RideColumns.STATE, (Object[]) value);
+    public RideSelection state(int... value) {
+        addEquals(RideColumns.STATE, toObjectArray(value));
         return this;
     }
     
-    public RideSelection stateNot(Integer... value) {
-        addNotEquals(RideColumns.STATE, (Object[]) value);
+    public RideSelection stateNot(int... value) {
+        addNotEquals(RideColumns.STATE, toObjectArray(value));
         return this;
     }
 
@@ -113,17 +113,17 @@ public class RideSelection extends AbstractSelection<RideSelection> {
     }
 
     public RideSelection activatedDate(Date... value) {
-        addEquals(RideColumns.ACTIVATED_DATE, (Object[]) value);
+        addEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
     }
     
     public RideSelection activatedDateNot(Date... value) {
-        addNotEquals(RideColumns.ACTIVATED_DATE, (Object[]) value);
+        addNotEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
     }
 
     public RideSelection activatedDate(Long... value) {
-        addEquals(RideColumns.ACTIVATED_DATE, (Object[]) value);
+        addEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
     }
 
@@ -147,13 +147,13 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         return this;
     }
 
-    public RideSelection duration(Long... value) {
-        addEquals(RideColumns.DURATION, (Object[]) value);
+    public RideSelection duration(long... value) {
+        addEquals(RideColumns.DURATION, toObjectArray(value));
         return this;
     }
     
-    public RideSelection durationNot(Long... value) {
-        addNotEquals(RideColumns.DURATION, (Object[]) value);
+    public RideSelection durationNot(long... value) {
+        addNotEquals(RideColumns.DURATION, toObjectArray(value));
         return this;
     }
 
@@ -177,13 +177,13 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         return this;
     }
 
-    public RideSelection distance(Double... value) {
-        addEquals(RideColumns.DISTANCE, (Object[]) value);
+    public RideSelection distance(double... value) {
+        addEquals(RideColumns.DISTANCE, toObjectArray(value));
         return this;
     }
     
-    public RideSelection distanceNot(Double... value) {
-        addNotEquals(RideColumns.DISTANCE, (Object[]) value);
+    public RideSelection distanceNot(double... value) {
+        addNotEquals(RideColumns.DISTANCE, toObjectArray(value));
         return this;
     }
 

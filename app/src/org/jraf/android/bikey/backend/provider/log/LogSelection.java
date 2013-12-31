@@ -31,18 +31,18 @@ import org.jraf.android.bikey.backend.provider.base.AbstractSelection;
  * Selection for the {@code log} table.
  */
 public class LogSelection extends AbstractSelection<LogSelection> {
-    public LogSelection id(Long... value) {
-        addEquals(LogColumns._ID, (Object[]) value);
+    public LogSelection id(long... value) {
+        addEquals(LogColumns._ID, toObjectArray(value));
         return this;
     }
 
-    public LogSelection rideId(Long... value) {
-        addEquals(LogColumns.RIDE_ID, (Object[]) value);
+    public LogSelection rideId(long... value) {
+        addEquals(LogColumns.RIDE_ID, toObjectArray(value));
         return this;
     }
     
-    public LogSelection rideIdNot(Long... value) {
-        addNotEquals(LogColumns.RIDE_ID, (Object[]) value);
+    public LogSelection rideIdNot(long... value) {
+        addNotEquals(LogColumns.RIDE_ID, toObjectArray(value));
         return this;
     }
 
@@ -67,17 +67,17 @@ public class LogSelection extends AbstractSelection<LogSelection> {
     }
 
     public LogSelection recordedDate(Date... value) {
-        addEquals(LogColumns.RECORDED_DATE, (Object[]) value);
+        addEquals(LogColumns.RECORDED_DATE, value);
         return this;
     }
     
     public LogSelection recordedDateNot(Date... value) {
-        addNotEquals(LogColumns.RECORDED_DATE, (Object[]) value);
+        addNotEquals(LogColumns.RECORDED_DATE, value);
         return this;
     }
 
-    public LogSelection recordedDate(Long... value) {
-        addEquals(LogColumns.RECORDED_DATE, (Object[]) value);
+    public LogSelection recordedDate(long... value) {
+        addEquals(LogColumns.RECORDED_DATE, toObjectArray(value));
         return this;
     }
 
@@ -101,13 +101,13 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         return this;
     }
 
-    public LogSelection lat(Double... value) {
-        addEquals(LogColumns.LAT, (Object[]) value);
+    public LogSelection lat(double... value) {
+        addEquals(LogColumns.LAT, toObjectArray(value));
         return this;
     }
     
-    public LogSelection latNot(Double... value) {
-        addNotEquals(LogColumns.LAT, (Object[]) value);
+    public LogSelection latNot(double... value) {
+        addNotEquals(LogColumns.LAT, toObjectArray(value));
         return this;
     }
 
@@ -131,13 +131,13 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         return this;
     }
 
-    public LogSelection lon(Double... value) {
-        addEquals(LogColumns.LON, (Object[]) value);
+    public LogSelection lon(double... value) {
+        addEquals(LogColumns.LON, toObjectArray(value));
         return this;
     }
     
-    public LogSelection lonNot(Double... value) {
-        addNotEquals(LogColumns.LON, (Object[]) value);
+    public LogSelection lonNot(double... value) {
+        addNotEquals(LogColumns.LON, toObjectArray(value));
         return this;
     }
 
@@ -161,13 +161,13 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         return this;
     }
 
-    public LogSelection ele(Double... value) {
-        addEquals(LogColumns.ELE, (Object[]) value);
+    public LogSelection ele(double... value) {
+        addEquals(LogColumns.ELE, toObjectArray(value));
         return this;
     }
     
-    public LogSelection eleNot(Double... value) {
-        addNotEquals(LogColumns.ELE, (Object[]) value);
+    public LogSelection eleNot(double... value) {
+        addNotEquals(LogColumns.ELE, toObjectArray(value));
         return this;
     }
 
@@ -192,12 +192,12 @@ public class LogSelection extends AbstractSelection<LogSelection> {
     }
 
     public LogSelection duration(Long... value) {
-        addEquals(LogColumns.DURATION, (Object[]) value);
+        addEquals(LogColumns.DURATION, value);
         return this;
     }
     
     public LogSelection durationNot(Long... value) {
-        addNotEquals(LogColumns.DURATION, (Object[]) value);
+        addNotEquals(LogColumns.DURATION, value);
         return this;
     }
 
@@ -222,12 +222,12 @@ public class LogSelection extends AbstractSelection<LogSelection> {
     }
 
     public LogSelection distance(Float... value) {
-        addEquals(LogColumns.DISTANCE, (Object[]) value);
+        addEquals(LogColumns.DISTANCE, value);
         return this;
     }
     
     public LogSelection distanceNot(Float... value) {
-        addNotEquals(LogColumns.DISTANCE, (Object[]) value);
+        addNotEquals(LogColumns.DISTANCE, value);
         return this;
     }
 
@@ -252,12 +252,12 @@ public class LogSelection extends AbstractSelection<LogSelection> {
     }
 
     public LogSelection speed(Float... value) {
-        addEquals(LogColumns.SPEED, (Object[]) value);
+        addEquals(LogColumns.SPEED, value);
         return this;
     }
     
     public LogSelection speedNot(Float... value) {
-        addNotEquals(LogColumns.SPEED, (Object[]) value);
+        addNotEquals(LogColumns.SPEED, value);
         return this;
     }
 

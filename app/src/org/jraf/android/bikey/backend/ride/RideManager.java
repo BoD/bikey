@@ -47,7 +47,6 @@ import org.jraf.android.bikey.backend.provider.ride.RideCursorWrapper;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.util.annotation.Background;
-import org.jraf.android.util.collection.CollectionUtil;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.wrapper.Log;
@@ -81,34 +80,30 @@ public class RideManager {
 
     @Background
     public int delete(long[] ids) {
-        Long[] wrappedIds = CollectionUtil.wrap(ids);
-
         // First pause any active rides in the list
         pauseRides(ids);
 
         // Delete rides
         RideSelection rideWhere = new RideSelection();
-        rideWhere.id(wrappedIds);
+        rideWhere.id(ids);
         int res = mContext.getContentResolver().delete(RideColumns.CONTENT_URI, rideWhere.sel(), rideWhere.args());
 
         // Delete logs
         LogSelection logWhere = new LogSelection();
-        logWhere.rideId(wrappedIds);
+        logWhere.rideId(ids);
         mContext.getContentResolver().delete(LogColumns.CONTENT_URI, logWhere.sel(), logWhere.args());
         return res;
     }
 
     @Background
     public void merge(long[] ids) {
-        Long[] wrappedIds = CollectionUtil.wrap(ids);
-
         // First pause any active rides in the list
         pauseRides(ids);
 
         // Choose the master ride (the one with the earliest creation date)
         String[] projection = { RideColumns._ID };
         RideSelection rideWhere = new RideSelection();
-        rideWhere.id(wrappedIds);
+        rideWhere.id(ids);
         String order = RideColumns.CREATED_DATE;
         Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), order);
         long masterRideId = 0;

@@ -1,4 +1,5 @@
 {
+	"toolVersion": "1.4",
 	"projectPackage": "org.jraf.android.bikey",
 	"providerPackage": "org.jraf.android.bikey.backend.provider",
 	"providerClassName": "BikeyProvider",

@@ -47,7 +47,7 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
     private StringBuilder mSelection = new StringBuilder();
     private List<String> mSelectionArgs = new ArrayList<String>(5);
 
-    protected void addEquals(String column, Object... value) {
+    protected void addEquals(String column, Object[] value) {
         mSelection.append(column);
 
         if (value == null) {
@@ -57,10 +57,11 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
             // Multiple values ('in' clause)
             mSelection.append(IN);
             for (int i = 0; i < value.length; i++) {
-                mSelection.append(valueOf(value[i]));
+                mSelection.append("?");
                 if (i < value.length - 1) {
                     mSelection.append(COMMA);
                 }
+                mSelectionArgs.add(valueOf(value[i]));
             }
             mSelection.append(PAREN_CLOSE);
         } else {
@@ -70,7 +71,7 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
         }
     }
 
-    protected void addNotEquals(String column, Object... value) {
+    protected void addNotEquals(String column, Object[] value) {
         mSelection.append(column);
 
         if (value == null) {
@@ -80,10 +81,11 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
             // Multiple values ('in' clause)
             mSelection.append(NOT_IN);
             for (int i = 0; i < value.length; i++) {
-                mSelection.append(valueOf(value[i]));
+                mSelection.append("?");
                 if (i < value.length - 1) {
                     mSelection.append(COMMA);
                 }
+                mSelectionArgs.add(valueOf(value[i]));
             }
             mSelection.append(PAREN_CLOSE);
         } else {
@@ -149,6 +151,40 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
         mSelection.append(OR);
         return (T) this;
     }
+    
+    
+    protected Object[] toObjectArray(int... array) {
+        Object[] res = new Object[array.length];
+        for (int i = 0; i < array.length; i++) {
+            res[i] = array[i];
+        }
+        return res;
+    }
+
+    protected Object[] toObjectArray(long... array) {
+        Object[] res = new Object[array.length];
+        for (int i = 0; i < array.length; i++) {
+            res[i] = array[i];
+        }
+        return res;
+    }
+
+    protected Object[] toObjectArray(float... array) {
+        Object[] res = new Object[array.length];
+        for (int i = 0; i < array.length; i++) {
+            res[i] = array[i];
+        }
+        return res;
+    }
+
+    protected Object[] toObjectArray(double... array) {
+        Object[] res = new Object[array.length];
+        for (int i = 0; i < array.length; i++) {
+            res[i] = array[i];
+        }
+        return res;
+    }
+
 
     /**
      * Returns the selection produced by this object.

@@ -78,7 +78,7 @@ public class RideAdapter extends ResourceCursorAdapter {
         // Cancel the animation / reset the alpha in any case
         if (animator != null) animator.cancel();
         txtSummary.setAlpha(1);
-        RideState rideState = RideState.from(c.getState().intValue());
+        RideState rideState = RideState.from(c.getState());
         switch (rideState) {
             case CREATED:
                 details = context.getString(R.string.ride_list_notStarted);

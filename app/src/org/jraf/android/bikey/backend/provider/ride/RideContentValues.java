@@ -32,52 +32,63 @@ import org.jraf.android.bikey.backend.provider.base.AbstractContentValuesWrapper
  */
 public class RideContentValues extends AbstractContentValuesWrapper {
 
-    public void putName(String value) {
+    public RideContentValues putName(String value) {
         mContentValues.put(RideColumns.NAME, value);
+        return this;
     }
 
-    public void putNameNull() {
+    public RideContentValues putNameNull() {
         mContentValues.putNull(RideColumns.NAME);
+        return this;
     }
 
 
-    public void putCreatedDate(Date value) {
+    public RideContentValues putCreatedDate(Date value) {
+        if (value == null) throw new IllegalArgumentException("value for createdDate must not be null");
         mContentValues.put(RideColumns.CREATED_DATE, value.getTime());
+        return this;
     }
 
 
-    public void putCreatedDate(Long value) {
+    public RideContentValues putCreatedDate(long value) {
         mContentValues.put(RideColumns.CREATED_DATE, value);
+        return this;
     }
 
 
-    public void putState(Integer value) {
+    public RideContentValues putState(int value) {
         mContentValues.put(RideColumns.STATE, value);
+        return this;
     }
 
 
 
-    public void putActivatedDate(Date value) {
-        mContentValues.put(RideColumns.ACTIVATED_DATE, value.getTime());
+    public RideContentValues putActivatedDate(Date value) {
+        mContentValues.put(RideColumns.ACTIVATED_DATE, value == null ? null : value.getTime());
+        return this;
     }
 
-    public void putActivatedDateNull() {
+    public RideContentValues putActivatedDateNull() {
         mContentValues.putNull(RideColumns.ACTIVATED_DATE);
+        return this;
     }
 
-    public void putActivatedDate(Long value) {
+    public RideContentValues putActivatedDate(Long value) {
         mContentValues.put(RideColumns.ACTIVATED_DATE, value);
+        return this;
     }
 
 
-    public void putDuration(Long value) {
+    public RideContentValues putDuration(long value) {
         mContentValues.put(RideColumns.DURATION, value);
+        return this;
     }
 
 
 
-    public void putDistance(Double value) {
+    public RideContentValues putDistance(double value) {
         mContentValues.put(RideColumns.DISTANCE, value);
+        return this;
     }
 
 

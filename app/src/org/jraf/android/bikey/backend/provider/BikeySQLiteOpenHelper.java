@@ -67,8 +67,6 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
             + RideColumns.DISTANCE + " REAL NOT NULL "
             + " );";
 
-    private static final String SQL_CREATE_INDEX_RIDE_STATE = "CREATE INDEX IDX_RIDE_STATE "
-            + " ON " + RideColumns.TABLE_NAME + " ( " + RideColumns.STATE + " );";
     // @formatter:on
 
     public BikeySQLiteOpenHelper(Context context) {
@@ -85,7 +83,6 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
         db.execSQL(SQL_CREATE_TABLE_LOG);
         db.execSQL(SQL_CREATE_TABLE_RIDE);
-        db.execSQL(SQL_CREATE_INDEX_RIDE_STATE);
     }
 
     @Override

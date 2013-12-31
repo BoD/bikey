@@ -37,28 +37,49 @@ public class RideCursorWrapper extends AbstractCursorWrapper {
         super(cursor);
     }
 
+    /**
+     * Get the {@code name} value.
+     * Can be {@code null}.
+     */
     public String getName() {
         Integer index = getCachedColumnIndexOrThrow(RideColumns.NAME);
         return getString(index);
     }
 
+    /**
+     * Get the {@code created_date} value.
+     * Cannot be {@code null}.
+     */
     public Date getCreatedDate() {
         return getDate(RideColumns.CREATED_DATE);
     }
 
-    public Integer getState() {
+    /**
+     * Get the {@code state} value.
+     */
+    public int getState() {
         return getIntegerOrNull(RideColumns.STATE);
     }
 
+    /**
+     * Get the {@code activated_date} value.
+     * Can be {@code null}.
+     */
     public Date getActivatedDate() {
         return getDate(RideColumns.ACTIVATED_DATE);
     }
 
-    public Long getDuration() {
+    /**
+     * Get the {@code duration} value.
+     */
+    public long getDuration() {
         return getLongOrNull(RideColumns.DURATION);
     }
 
-    public Double getDistance() {
+    /**
+     * Get the {@code distance} value.
+     */
+    public double getDistance() {
         return getDoubleOrNull(RideColumns.DISTANCE);
     }
 }

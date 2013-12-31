@@ -37,34 +37,62 @@ public class LogCursorWrapper extends AbstractCursorWrapper {
         super(cursor);
     }
 
-    public Long getRideId() {
+    /**
+     * Get the {@code ride_id} value.
+     */
+    public long getRideId() {
         return getLongOrNull(LogColumns.RIDE_ID);
     }
 
+    /**
+     * Get the {@code recorded_date} value.
+     * Cannot be {@code null}.
+     */
     public Date getRecordedDate() {
         return getDate(LogColumns.RECORDED_DATE);
     }
 
-    public Double getLat() {
+    /**
+     * Get the {@code lat} value.
+     */
+    public double getLat() {
         return getDoubleOrNull(LogColumns.LAT);
     }
 
-    public Double getLon() {
+    /**
+     * Get the {@code lon} value.
+     */
+    public double getLon() {
         return getDoubleOrNull(LogColumns.LON);
     }
 
-    public Double getEle() {
+    /**
+     * Get the {@code ele} value.
+     */
+    public double getEle() {
         return getDoubleOrNull(LogColumns.ELE);
     }
 
+    /**
+     * Get the {@code duration} value.
+     * Can be {@code null}.
+     */
     public Long getDuration() {
         return getLongOrNull(LogColumns.DURATION);
     }
 
+    /**
+     * Get the {@code distance} value.
+     * Can be {@code null}.
+     */
     public Float getDistance() {
         return getFloatOrNull(LogColumns.DISTANCE);
     }
 
+    /**
+     * Get the {@code speed} value.
+     * Can be {@code null}.
+     */
     public Float getSpeed() {
         return getFloatOrNull(LogColumns.SPEED);
     }

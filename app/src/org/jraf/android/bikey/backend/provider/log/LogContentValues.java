@@ -32,64 +32,77 @@ import org.jraf.android.bikey.backend.provider.base.AbstractContentValuesWrapper
  */
 public class LogContentValues extends AbstractContentValuesWrapper {
 
-    public void putRideId(Long value) {
+    public LogContentValues putRideId(long value) {
         mContentValues.put(LogColumns.RIDE_ID, value);
+        return this;
     }
 
 
 
-    public void putRecordedDate(Date value) {
+    public LogContentValues putRecordedDate(Date value) {
+        if (value == null) throw new IllegalArgumentException("value for recordedDate must not be null");
         mContentValues.put(LogColumns.RECORDED_DATE, value.getTime());
+        return this;
     }
 
 
-    public void putRecordedDate(Long value) {
+    public LogContentValues putRecordedDate(long value) {
         mContentValues.put(LogColumns.RECORDED_DATE, value);
+        return this;
     }
 
 
-    public void putLat(Double value) {
+    public LogContentValues putLat(double value) {
         mContentValues.put(LogColumns.LAT, value);
+        return this;
     }
 
 
 
-    public void putLon(Double value) {
+    public LogContentValues putLon(double value) {
         mContentValues.put(LogColumns.LON, value);
+        return this;
     }
 
 
 
-    public void putEle(Double value) {
+    public LogContentValues putEle(double value) {
         mContentValues.put(LogColumns.ELE, value);
+        return this;
     }
 
 
 
-    public void putDuration(Long value) {
+    public LogContentValues putDuration(Long value) {
         mContentValues.put(LogColumns.DURATION, value);
+        return this;
     }
 
-    public void putDurationNull() {
+    public LogContentValues putDurationNull() {
         mContentValues.putNull(LogColumns.DURATION);
+        return this;
     }
 
 
-    public void putDistance(Float value) {
+    public LogContentValues putDistance(Float value) {
         mContentValues.put(LogColumns.DISTANCE, value);
+        return this;
     }
 
-    public void putDistanceNull() {
+    public LogContentValues putDistanceNull() {
         mContentValues.putNull(LogColumns.DISTANCE);
+        return this;
     }
 
 
-    public void putSpeed(Float value) {
+    public LogContentValues putSpeed(Float value) {
         mContentValues.put(LogColumns.SPEED, value);
+        return this;
     }
 
-    public void putSpeedNull() {
+    public LogContentValues putSpeedNull() {
         mContentValues.putNull(LogColumns.SPEED);
+        return this;
     }
 
 }

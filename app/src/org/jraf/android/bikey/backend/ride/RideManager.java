@@ -257,6 +257,7 @@ public class RideManager {
      * Do not forget to call {@link Cursor#close()} on the returned Cursor.
      */
     private RideCursorWrapper query(Uri rideUri) {
+        if (rideUri == null) throw new IllegalArgumentException("null rideUri");
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         if (!c.moveToNext()) {
             throw new IllegalArgumentException(rideUri + " not found");

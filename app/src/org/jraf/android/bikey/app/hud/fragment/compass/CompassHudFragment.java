@@ -23,7 +23,6 @@
  */
 package org.jraf.android.bikey.app.hud.fragment.compass;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,11 +31,13 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.backend.compass.CompassListener;
 import org.jraf.android.bikey.backend.compass.CompassManager;
-import org.jraf.android.util.log.wrapper.Log; 
+import org.jraf.android.util.app.base.BaseFragment;
+import org.jraf.android.util.log.wrapper.Log;
 
-public class CompassHudFragment extends Fragment {
+public class CompassHudFragment extends BaseFragment<HudActivity> {
     private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
     public static CompassHudFragment newInstance() {

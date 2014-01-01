@@ -26,12 +26,12 @@ package org.jraf.android.bikey.app.hud;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Activity;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Checkable;
@@ -54,9 +54,9 @@ public class FragmentCycler {
         mTxtTitle = txtTitle;
     }
 
-    public void add(Activity activity, Fragment fragment, int tabResId, int titleResId) {
+    public void add(FragmentActivity activity, Fragment fragment, int tabResId, int titleResId) {
         String tag = getTag(fragment);
-        FragmentManager fragmentManager = activity.getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         Fragment foundFragment = fragmentManager.findFragmentByTag(tag);
         if (foundFragment == null) {
             FragmentTransaction t = fragmentManager.beginTransaction();
@@ -75,9 +75,9 @@ public class FragmentCycler {
         mTitles.add(titleResId);
     }
 
-    public void show(Activity activity) {
+    public void show(FragmentActivity activity) {
         String tag = mFragmentTags.get(mCurrentVisibleIndex);
-        FragmentManager fragmentManager = activity.getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.executePendingTransactions();
         Fragment fragment = fragmentManager.findFragmentByTag(tag);
         FragmentTransaction t = fragmentManager.beginTransaction();
@@ -87,17 +87,17 @@ public class FragmentCycler {
         updateTitle();
     }
 
-    public void cycle(Activity activity) {
+    public void cycle(FragmentActivity activity) {
         int newIndex = (mCurrentVisibleIndex + 1) % mFragmentTags.size();
         setCurrentVisibleIndex(activity, newIndex);
     }
 
-    private void setCurrentVisibleIndex(Activity activity, int newIndex) {
+    private void setCurrentVisibleIndex(FragmentActivity activity, int newIndex) {
         int previousVisibleIndex = mCurrentVisibleIndex;
         mCurrentVisibleIndex = newIndex;
         String hideTag = mFragmentTags.get(previousVisibleIndex);
         String showTag = mFragmentTags.get(mCurrentVisibleIndex);
-        FragmentManager fragmentManager = activity.getFragmentManager();
+        FragmentManager fragmentManager = activity.getSupportFragmentManager();
         Fragment showFragment = fragmentManager.findFragmentByTag(showTag);
         Fragment hideFragment = fragmentManager.findFragmentByTag(hideTag);
         FragmentTransaction t = fragmentManager.beginTransaction();
@@ -138,7 +138,7 @@ public class FragmentCycler {
             if (!checkable.isChecked()) checkable.setChecked(true);
             int newIndex = mTabs.indexOf(checkable);
             if (mCurrentVisibleIndex == newIndex) return;
-            setCurrentVisibleIndex((Activity) v.getContext(), newIndex);
+            setCurrentVisibleIndex((FragmentActivity) v.getContext(), newIndex);
         }
     };
 

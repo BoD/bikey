@@ -23,7 +23,6 @@
  */
 package org.jraf.android.bikey.app.hud.fragment;
 
-import android.app.Fragment;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,8 +32,9 @@ import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.util.app.base.BaseFragment;
 
-public abstract class SimpleHudFragment extends Fragment {
+public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
     private TextView mTxtValue;
 
     public SimpleHudFragment() {
@@ -61,6 +61,7 @@ public abstract class SimpleHudFragment extends Fragment {
     }
 
     protected Uri getRideUri() {
-        return ((HudActivity) getActivity()).getRideUri();
+        if (getCallbacks() == null) return null;
+        return getCallbacks().getRideUri();
     }
 }

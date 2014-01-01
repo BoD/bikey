@@ -1,4 +1,4 @@
-bikey
+Bikey
 =====
 
 Bikey is a bike computer for Android.

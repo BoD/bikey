@@ -27,6 +27,8 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.annotation.TargetApi;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.graphics.PointF;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -70,8 +72,8 @@ public class HudActivity extends BaseFragmentActivity {
     private CheckableRelativeLayout mChkRecord;
     private TextView mChkRecordText;
     private Animator mChkRecordTextAnimator;
-    private View mConTabsLeft;
-    private View mConTabsRight;
+    private View mConTabsA;
+    private View mConTabsB;
     private View mConFragments;
     private TextView mTxtTitle;
 
@@ -98,12 +100,12 @@ public class HudActivity extends BaseFragmentActivity {
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
         ((AnimationDrawable) mImgGpsStatus.getDrawable()).start();
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
-        mConTabsLeft = findViewById(R.id.conTabsLeft);
-        mConTabsRight = findViewById(R.id.conTabsRight);
+        mConTabsA = findViewById(R.id.conTabsA);
+        mConTabsB = findViewById(R.id.conTabsB);
         mConFragments = findViewById(R.id.conFragments);
         mTxtTitle = (TextView) findViewById(R.id.txtTitle);
 
-        setupFragments();
+        setupFragments(savedInstanceState == null ? 0 : savedInstanceState.getInt("mFragmentCycler.currentVisibleIndex"));
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setupNavigationBarHiding();
@@ -117,13 +119,9 @@ public class HudActivity extends BaseFragmentActivity {
         mConFragments.post(new Runnable() {
             @Override
             public void run() {
-                int fragmentWidth = mConFragments.getWidth();
-                float percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentWidth;
-                // Remove 5% because it looks better
-                percentX -= .05f;
-                float percentY = percentX + (1f - percentX) / 2f;
-                mConFragments.setScaleX(percentX);
-                mConFragments.setScaleY(percentY);
+                PointF shrinkPercents = getShrinkPercents();
+                mConFragments.setScaleX(shrinkPercents.x);
+                mConFragments.setScaleY(shrinkPercents.y);
 
                 mTxtTitle.setAlpha(0);
             }
@@ -182,8 +180,9 @@ public class HudActivity extends BaseFragmentActivity {
         super.onStop();
     }
 
-    private void setupFragments() {
+    private void setupFragments(int currentVisibleIndex) {
         mFragmentCycler = new FragmentCycler(R.id.conFragments, mTxtTitle);
+        mFragmentCycler.setCurrentVisibleIndex(currentVisibleIndex);
         mFragmentCycler.add(this, SpeedHudFragment.newInstance(), R.id.chkTabSpeed, R.string.hud_title_speed);
         mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration, R.string.hud_title_duration);
         mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance, R.string.hud_title_distance);
@@ -191,6 +190,12 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, CompassHudFragment.newInstance(), R.id.chkTabCompass, R.string.hud_title_compass);
         mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime, R.string.hud_title_currentTime);
         mFragmentCycler.show(this);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putInt("mFragmentCycler.currentVisibleIndex", mFragmentCycler.getCurrentVisibleIndex());
+        super.onSaveInstanceState(outState);
     }
 
     private OnTouchListener mFragmentCycleOnTouchListener = new OnTouchListener() {
@@ -302,31 +307,64 @@ public class HudActivity extends BaseFragmentActivity {
     private void hideControls() {
         mControlsVisible = false;
         int duration = getResources().getInteger(R.integer.animation_controls_showHide);
-        mConTabsLeft.animate().alpha(0).translationX(-mConTabsLeft.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
-        mConTabsRight.animate().alpha(0).translationX(mConTabsRight.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Landscape: tab containers slide to left / right
+            mConTabsA.animate().alpha(0).translationX(-mConTabsA.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+            mConTabsB.animate().alpha(0).translationX(mConTabsB.getWidth()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+        } else {
+            // Portrait: tab containers slide to top / bottom
+            mConTabsA.animate().alpha(0).translationY(-mConTabsA.getHeight()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+            mConTabsB.animate().alpha(0).translationY(mConTabsB.getHeight()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
+        }
 
+        // 'Uncompress' the main fragment
         mConFragments.animate().scaleX(1f).scaleY(1f).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
 
+        // Record button
         mChkRecord.animate().alpha(0).translationY(-mChkRecord.getHeight()).setInterpolator(new AccelerateInterpolator()).setDuration(duration);
 
+        // Show the title
         mTxtTitle.animate().alpha(1f).setDuration(duration).setStartDelay(duration);
+    }
+
+    private PointF getShrinkPercents() {
+        float percentX;
+        float percentY;
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            int fragmentWidth = mConFragments.getWidth();
+            percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentWidth;
+            // Remove 5% because it looks better
+            percentX -= .05f;
+            percentY = percentX + (1f - percentX) / 2f;
+        } else {
+            int fragmentHeight = mConFragments.getHeight();
+            percentY = (fragmentHeight - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentHeight;
+            // Remove 5% because it looks better
+            percentY -= .05f;
+            percentX = percentY + (1f - percentY) / 2f;
+        }
+        return new PointF(percentX, percentY);
     }
 
     private void showControls() {
         if (mControlsVisible) return;
         mControlsVisible = true;
         int duration = getResources().getInteger(R.integer.animation_controls_showHide);
-        mConTabsLeft.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
-        mConTabsRight.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Landscape: tab containers slide from left / right
+            mConTabsA.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+            mConTabsB.animate().alpha(1).translationX(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+        } else {
+            // Portrait: tab containers slide from top / bottom
+            mConTabsA.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+            mConTabsB.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
+        }
 
-        int fragmentWidth = mConFragments.getWidth();
-        float percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentWidth;
-        // Remove 5% because it looks better
-        percentX -= .05f;
-        float percentY = percentX + (1f - percentX) / 2f;
+        // 'Compress' the main fragment, to make space for the tab containers
+        PointF shrinkPercents = getShrinkPercents();
+        mConFragments.animate().scaleX(shrinkPercents.x).scaleY(shrinkPercents.y).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
 
-        mConFragments.animate().scaleX(percentX).scaleY(percentY).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
-
+        // Record button
         mChkRecord.animate().alpha(1).translationY(0).setInterpolator(new DecelerateInterpolator()).setDuration(duration);
 
         mTxtTitle.animate().alpha(0).setDuration(duration).setStartDelay(0);

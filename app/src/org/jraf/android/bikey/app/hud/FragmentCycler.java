@@ -142,4 +142,11 @@ public class FragmentCycler {
         }
     };
 
+    public int getCurrentVisibleIndex() {
+        return mCurrentVisibleIndex;
+    }
+
+    public void setCurrentVisibleIndex(int currentVisibleIndex) {
+        mCurrentVisibleIndex = currentVisibleIndex;
+    }
 }

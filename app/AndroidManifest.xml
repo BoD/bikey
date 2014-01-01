@@ -54,7 +54,6 @@
         <!-- Hud -->
         <activity
             android:name="org.jraf.android.bikey.app.hud.HudActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
             android:exported="true"
             android:parentActivityName="org.jraf.android.bikey.app.ride.list.RideListActivity"
             android:theme="@style/Theme.Hud" >

@@ -33,6 +33,7 @@ import android.widget.TextView;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.util.app.base.BaseFragment;
+import org.jraf.android.util.log.wrapper.Log;
 
 public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
     private TextView mTxtValue;
@@ -61,7 +62,10 @@ public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
     }
 
     protected Uri getRideUri() {
-        if (getCallbacks() == null) return null;
+        if (getCallbacks() == null) {
+            Log.w("null callbacks");
+            return null;
+        }
         return getCallbacks().getRideUri();
     }
 }

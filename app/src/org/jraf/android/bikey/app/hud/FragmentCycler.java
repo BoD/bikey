@@ -26,8 +26,6 @@ package org.jraf.android.bikey.app.hud;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -38,6 +36,7 @@ import android.widget.Checkable;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
+import org.jraf.android.util.handler.HandlerUtil;
 
 
 public class FragmentCycler {
@@ -47,7 +46,6 @@ public class FragmentCycler {
     private List<Integer> mTitles = new ArrayList<Integer>(10);
     private int mCurrentVisibleIndex = 0;
     private TextView mTxtTitle;
-    private Handler mHandler;
 
     public FragmentCycler(int containerResId, TextView txtTitle) {
         mContainerResId = containerResId;
@@ -111,19 +109,12 @@ public class FragmentCycler {
 
     private void updateTitle() {
         int duration = mTxtTitle.getResources().getInteger(R.integer.animation_controls_showHide);
-        getHandler().postDelayed(new Runnable() {
+        HandlerUtil.getMainHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
             }
         }, duration);
-    }
-
-    private Handler getHandler() {
-        if (mHandler == null) {
-            mHandler = new Handler(Looper.getMainLooper());
-        }
-        return mHandler;
     }
 
     private String getTag(Fragment fragment) {

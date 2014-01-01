@@ -94,6 +94,7 @@ public abstract class LogHudFragment extends SimpleHudFragment {
         @Override
         public void onLogAdded(final Uri rideUri) {
             if (!rideUri.equals(getRideUri())) return;
+            if (!isAdded()) return;
 
             new AsyncTask<Void, Void, Void>() {
                 private CharSequence mValue;

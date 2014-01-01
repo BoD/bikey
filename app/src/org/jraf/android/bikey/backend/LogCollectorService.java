@@ -84,11 +84,11 @@ public class LogCollectorService extends Service {
                 // Now collect for the new current ride
                 mCollectingRideUri = rideUri;
                 RideManager.get().activate(mCollectingRideUri);
+                Notification notification = createNotification();
+                startForeground(NOTIFICATION_ID, notification);
+                LocationManager.get().addLocationListener(mLocationListener);
             }
         });
-        Notification notification = createNotification();
-        startForeground(NOTIFICATION_ID, notification);
-        LocationManager.get().addLocationListener(mLocationListener);
     }
 
     private void stopCollecting(final Uri rideUri) {
@@ -160,6 +160,7 @@ public class LogCollectorService extends Service {
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
         taskStackBuilder.addParentStack(HudActivity.class);
+        Log.d("mCollectingRideUri=" + mCollectingRideUri);
         Intent intent = new Intent(this, HudActivity.class).setData(mCollectingRideUri);
         taskStackBuilder.addNextIntent(intent);
         builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));

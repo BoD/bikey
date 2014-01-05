@@ -63,9 +63,22 @@ public class UnitUtil {
         } else {
             converted = metersPerSecond * M_S_TO_MPH;
         }
+        if (converted >= 20) {
+            // Round to remove fraction
+            return String.valueOf(Math.round(converted));
+        } else if (converted >= 5) {
+            // Round to closest .5
+            int truncated = (int) converted;
+            float fraction = converted - truncated;
+            if (fraction < .5) {
+                converted = truncated;
+            } else {
+                converted = truncated + .5f;
+            }
+        }
         String speedStr = FORMAT_SPEED.format(converted);
         SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(.4f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
         return builder;
     }
 
@@ -82,7 +95,7 @@ public class UnitUtil {
         if (meters == 0f) return "0" + unit;
         String distStr = FORMAT_DISTANCE.format(converted) + unit;
         SpannableString builder = new SpannableString(distStr);
-        builder.setSpan(new RelativeSizeSpan(.5f), distStr.indexOf(sDecimalSeparator), distStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(.4f), distStr.indexOf(sDecimalSeparator), distStr.length(), 0);
         return builder;
     }
 

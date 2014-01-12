@@ -36,9 +36,9 @@ import android.view.View.OnClickListener;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
-import org.jraf.android.bikey.backend.LogCollectorService;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
@@ -51,6 +51,9 @@ import org.jraf.android.util.dialog.AlertDialogListener;
 
 public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListCallbacks {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
+
+    private static final String PREFIX = RideListActivity.class.getName() + ".";
+    public static final String ACTION_QUICK_START = PREFIX + "ACTION_QUICK_START";
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
     private static final int DIALOG_SHARE = 1;
@@ -71,6 +74,11 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         });
         restoreState();
+
+        // Quick start
+        if (ACTION_QUICK_START.equals(getIntent().getAction())) {
+            quickStart();
+        }
     }
 
     private void restoreState() {

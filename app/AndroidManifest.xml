@@ -31,7 +31,7 @@
             android:exported="false" />
 
         <!-- Data collecting service -->
-        <service android:name="org.jraf.android.bikey.backend.LogCollectorService" />
+        <service android:name="org.jraf.android.bikey.app.logcollectservice.LogCollectorService" />
 
         <!-- Ride list -->
 
@@ -89,6 +89,18 @@
         <activity
             android:name="org.jraf.android.bikey.app.about.AboutActivity"
             android:label="@string/about_title" />
+
+        <!-- Home screen shortcut -->
+        <activity
+            android:name="org.jraf.android.bikey.app.shortcut.ShortcutActivity"
+            android:label="@string/shortcut_title"
+            android:theme="@android:style/Theme.NoDisplay" >
+            <intent-filter>
+                <action android:name="android.intent.action.CREATE_SHORTCUT" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

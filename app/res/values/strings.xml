@@ -114,4 +114,7 @@
     <string name="about_shareText_subject">Checkout out Bikey!</string>
     <string name="about_shareText_body">Bikey for Android is a most excellent app!\nCheck it out here:\nhttp://play.google.com/store/apps/details?id=%s</string>
 
+    <!-- Quick start -->
+    <string name="shortcut_title">Bikey: Quick Start</string>
+
 </resources>

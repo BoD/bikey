@@ -112,4 +112,7 @@
     <string name="about_shareText_subject">Essayez Bikey !</string>
     <string name="about_shareText_body">Bikey pour Android est une appli excellente !\nTestez là ici :\nhttp://play.google.com/store/apps/details?id=%s</string>
 
+    <!-- Quick start -->
+    <string name="shortcut_title">Bikey: Démarrage Rapide</string>
+
 </resources>

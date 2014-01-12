@@ -54,7 +54,7 @@ import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragmen
 import org.jraf.android.bikey.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
-import org.jraf.android.bikey.backend.LogCollectorService;
+import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.ride.RideState;

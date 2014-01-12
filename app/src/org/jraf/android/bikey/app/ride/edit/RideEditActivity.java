@@ -27,6 +27,7 @@ import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -36,6 +37,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.TextView.OnEditorActionListener;
 
+import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.async.Task;
@@ -112,6 +114,10 @@ public class RideEditActivity extends FragmentActivity {
                 if (rideUri == null) {
                     // Create
                     mRideUri = RideManager.get().create(name);
+
+                    // Save the new ride as the current one
+                    PreferenceManager.getDefaultSharedPreferences(RideEditActivity.this).edit().putString(Constants.PREF_CURRENT_RIDE_URI, mRideUri.toString())
+                            .commit();
                 } else {
                     mRideUri = rideUri;
                     RideManager.get().updateName(rideUri, name);

@@ -98,6 +98,8 @@
     <!-- Preferences -->
     <string name="preference_title">Settings</string>
     <string name="preference_units_title">Units</string>
+    <string name="preference_listenToHeadsetButton_title">Use headset button</string>
+    <string name="preference_listenToHeadsetButton_summary">Stop / resume the current ride when pressing the button</string>
 
     <!-- About -->
     <string name="about_title">About</string>

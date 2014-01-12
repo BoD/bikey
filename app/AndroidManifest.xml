@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.jraf.android.bikey"
-    android:sharedUserId="org.jraf.android"
     android:versionName="${versionName}"
     tools:ignore="MissingVersion" >
 
@@ -101,6 +100,13 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+
+        <!-- Media button -->
+        <receiver android:name="org.jraf.android.bikey.app.mediabutton.MediaButtonReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

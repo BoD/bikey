@@ -7,4 +7,10 @@
         android:key="PREF_UNITS"
         android:title="@string/preference_units_title" />
 
+    <SwitchPreference
+        android:defaultValue="false"
+        android:key="PREF_LISTEN_TO_HEADSET_BUTTON"
+        android:summary="@string/preference_listenToHeadsetButton_summary"
+        android:title="@string/preference_listenToHeadsetButton_title" />
+
 </PreferenceScreen>

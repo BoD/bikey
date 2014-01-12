@@ -336,6 +336,15 @@ public class RideManager {
         }
     }
 
+    @Background
+    public boolean isExistingRide(Uri rideUri) {
+        Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
+        try {
+            return c.moveToNext();
+        } finally {
+            c.close();
+        }
+    }
 
 
     /*

@@ -58,6 +58,7 @@ import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
+import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.log.wrapper.Log;
@@ -96,7 +97,6 @@ public class HudActivity extends BaseFragmentActivity {
         mChkRecordText = (TextView) findViewById(R.id.chkRecord_text);
         mChkRecordTextAnimator = AnimatorInflater.loadAnimator(this, R.animator.blink);
         mChkRecordTextAnimator.setTarget(mChkRecordText);
-        toggleRecordingIfActive();
         mImgGpsStatus = (ImageView) findViewById(R.id.imgGpsStatus);
         ((AnimationDrawable) mImgGpsStatus.getDrawable()).start();
         findViewById(R.id.vieFragmentCycle).setOnTouchListener(mFragmentCycleOnTouchListener);
@@ -142,19 +142,22 @@ public class HudActivity extends BaseFragmentActivity {
             protected void onPostExecute(Void result) {
                 switch (mRideState) {
                     case CREATED:
-                        mChkRecord.setChecked(false);
+                        mChkRecord.setChecked(false, false);
                         mChkRecordText.setText(R.string.hud_chkRecord_created);
                         break;
 
                     case ACTIVE:
-                        mChkRecord.setChecked(true);
+                        mChkRecord.setChecked(true, false);
                         mChkRecordText.setText(R.string.hud_chkRecord_active);
-                        mChkRecordTextAnimator.start();
+                        if (!mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.start();
                         break;
 
                     case PAUSED:
-                        mChkRecord.setChecked(false);
+                        mChkRecord.setChecked(false, false);
                         mChkRecordText.setText(R.string.hud_chkRecord_paused);
+                        if (mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.cancel();
+                        mChkRecordText.setAlpha(1f);
+
                         break;
                 }
 
@@ -168,14 +171,22 @@ public class HudActivity extends BaseFragmentActivity {
     protected void onStart() {
         super.onStart();
 
+        toggleRecordingIfActive();
+
         // GPS status
         LocationManager.get().addStatusListener(mGpsStatusListener);
+
+        // Ride
+        RideManager.get().addListener(mRideListener);
     }
 
     @Override
     protected void onStop() {
         // GPS status
         LocationManager.get().removeStatusListener(mGpsStatusListener);
+
+        // Ride
+        RideManager.get().removeListener(mRideListener);
 
         super.onStop();
     }
@@ -274,12 +285,12 @@ public class HudActivity extends BaseFragmentActivity {
             if (isChecked) {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, thiz, LogCollectorService.class));
                 mChkRecordText.setText(R.string.hud_chkRecord_active);
-                mChkRecordTextAnimator.start();
+                //                mChkRecordTextAnimator.start();
             } else {
                 startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, thiz, LogCollectorService.class));
                 mChkRecordText.setText(R.string.hud_chkRecord_paused);
-                mChkRecordTextAnimator.cancel();
-                mChkRecordText.setAlpha(1f);
+                //                mChkRecordTextAnimator.cancel();
+                //                mChkRecordText.setAlpha(1f);
             }
         }
     };
@@ -298,6 +309,30 @@ public class HudActivity extends BaseFragmentActivity {
     public Uri getRideUri() {
         return mRideUri;
     }
+
+
+    /*
+     * Ride listener.
+     */
+
+    private RideListener mRideListener = new RideListener() {
+        @Override
+        public void onActivated(Uri rideUri) {
+            if (!rideUri.equals(mRideUri)) return;
+            mChkRecord.setChecked(true, false);
+            mChkRecordText.setText(R.string.hud_chkRecord_active);
+            if (!mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.start();
+        }
+
+        @Override
+        public void onPaused(Uri rideUri) {
+            if (!rideUri.equals(mRideUri)) return;
+            mChkRecord.setChecked(false, false);
+            mChkRecordText.setText(R.string.hud_chkRecord_paused);
+            if (mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.cancel();
+            mChkRecordText.setAlpha(1f);
+        }
+    };
 
 
     /*

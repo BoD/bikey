@@ -25,6 +25,7 @@ package org.jraf.android.bikey.app.hud.fragment;
 
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 
 import org.jraf.android.bikey.backend.log.LogListener;
 import org.jraf.android.bikey.backend.log.LogManager;
@@ -34,16 +35,14 @@ import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 
 public abstract class LogHudFragment extends SimpleHudFragment {
+
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
         // Ride updates
         final RideManager rideManager = RideManager.get();
         rideManager.addListener(mRideListener);
-
-        // Log updates
-        final LogManager logManager = LogManager.get();
-        logManager.addListener(mLogListener);
 
         final Uri rideUri = getRideUri();
 
@@ -67,12 +66,27 @@ public abstract class LogHudFragment extends SimpleHudFragment {
     }
 
     @Override
-    public void onStop() {
+    public void onDestroy() {
         // Ride updates
         RideManager.get().removeListener(mRideListener);
 
+        super.onDestroy();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // Log updates
+        final LogManager logManager = LogManager.get();
+        logManager.addListener(mLogListener);
+    }
+
+    @Override
+    public void onStop() {
         // Log updates
         LogManager.get().removeListener(mLogListener);
+
         super.onStop();
     }
 

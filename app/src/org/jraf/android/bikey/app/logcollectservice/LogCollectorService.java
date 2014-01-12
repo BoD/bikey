@@ -35,9 +35,11 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.backend.location.LocationManager;
@@ -81,6 +83,19 @@ public class LogCollectorService extends Service {
                 if (mCollectingRideUri != null) {
                     RideManager.get().pause(mCollectingRideUri);
                 }
+
+                // Check if the ride still exists (it may have been deleted)
+                boolean rideExists = RideManager.get().isExistingRide(rideUri);
+                Log.d("rideExists=" + rideExists);
+                if (!rideExists) {
+                    stopSelf();
+                    return;
+                }
+
+                // Save the ride as the current one
+                PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).edit().putString(Constants.PREF_CURRENT_RIDE_URI, rideUri.toString())
+                        .commit();
+
                 // Now collect for the new current ride
                 mCollectingRideUri = rideUri;
                 RideManager.get().activate(mCollectingRideUri);

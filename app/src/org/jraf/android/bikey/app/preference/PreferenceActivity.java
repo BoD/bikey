@@ -32,6 +32,7 @@ import android.preference.PreferenceManager;
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.bikey.util.UnitUtil;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity {
@@ -60,16 +61,27 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             updateListPreferenceSummary(key);
-            UnitUtil.readPreferences(PreferenceActivity.this);
+            if (Constants.PREF_UNITS.equals(key)) {
+                UnitUtil.readPreferences(PreferenceActivity.this);
 
-            // Notify observers of rides since they display distances using a conversion depending on the preference
-            getContentResolver().notifyChange(RideColumns.CONTENT_URI, null);
+                // Notify observers of rides since they display distances using a conversion depending on the preference
+                getContentResolver().notifyChange(RideColumns.CONTENT_URI, null);
+            } else if (Constants.PREF_LISTEN_TO_HEADSET_BUTTON.equals(key)) {
+                if (sharedPreferences.getBoolean(key, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) {
+                    MediaButtonUtil.registerMediaButtonEventReceiver(PreferenceActivity.this);
+                } else {
+                    MediaButtonUtil.unregisterMediaButtonEventReceiver(PreferenceActivity.this);
+                }
+            }
         }
     };
 
     private void updateListPreferenceSummary(String key) {
-        ListPreference pref = (ListPreference) getPreferenceManager().findPreference(key);
-        CharSequence entry = pref.getEntry();
-        pref.setSummary(entry);
+        if (Constants.PREF_UNITS.equals(key)) {
+            @SuppressWarnings("deprecation")
+            ListPreference pref = (ListPreference) getPreferenceManager().findPreference(key);
+            CharSequence entry = pref.getEntry();
+            pref.setSummary(entry);
+        }
     }
 }

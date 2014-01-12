@@ -31,4 +31,9 @@ public class Constants {
     public static final String PREF_UNITS_METRIC = "PREF_UNITS_METRIC";
     public static final String PREF_UNITS_IMPERIAL = "PREF_UNITS_IMPERIAL";
     public static final String PREF_UNITS_DEFAULT = PREF_UNITS_IMPERIAL;
+
+    public static final String PREF_LISTEN_TO_HEADSET_BUTTON = "PREF_LISTEN_TO_HEADSET_BUTTON";
+    public static final boolean PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT = false;
+
+    public static final String PREF_CURRENT_RIDE_URI = "PREF_CURRENT_RIDE_URI";
 }

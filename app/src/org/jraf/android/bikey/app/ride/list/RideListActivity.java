@@ -43,6 +43,7 @@ import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -74,6 +75,8 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         });
         restoreState();
+
+        MediaButtonUtil.registerMediaButtonEventReceiverAccordingToPreferences(this);
 
         // Quick start
         if (ACTION_QUICK_START.equals(getIntent().getAction())) {

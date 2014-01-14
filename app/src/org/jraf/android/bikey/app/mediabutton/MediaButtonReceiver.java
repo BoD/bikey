@@ -33,6 +33,7 @@ import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
 import org.jraf.android.bikey.Constants;
+import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -78,10 +79,12 @@ public class MediaButtonReceiver extends BroadcastReceiver {
                     case CREATED:
                     case PAUSED:
                         context.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, context, LogCollectorService.class));
+                        TTS.get().speak(R.string.speak_activate_ride);
                         return RESULT_RIDE_ACTIVATED;
 
                     case ACTIVE:
                         context.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, context, LogCollectorService.class));
+                        TTS.get().speak(R.string.speak_pause_ride);
                         return RESULT_RIDE_PAUSED;
                 }
 

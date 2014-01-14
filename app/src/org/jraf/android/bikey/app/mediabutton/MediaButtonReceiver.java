@@ -27,6 +27,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.media.AudioManager;
+import android.media.ToneGenerator;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
@@ -74,14 +76,17 @@ public class MediaButtonReceiver extends BroadcastReceiver {
                 }
 
                 RideState state = RideManager.get().getState(currentRideUri);
+                ToneGenerator toneGenerator = new ToneGenerator(AudioManager.STREAM_NOTIFICATION, 60);
                 switch (state) {
                     case CREATED:
                     case PAUSED:
                         context.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, context, LogCollectorService.class));
+                        toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP);
                         return RESULT_RIDE_ACTIVATED;
 
                     case ACTIVE:
                         context.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, context, LogCollectorService.class));
+                        toneGenerator.startTone(ToneGenerator.TONE_PROP_BEEP2);
                         return RESULT_RIDE_PAUSED;
                 }
 

@@ -30,9 +30,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
+import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
@@ -92,6 +94,16 @@ public class RideManager {
         LogSelection logWhere = new LogSelection();
         logWhere.rideId(ids);
         mContext.getContentResolver().delete(LogColumns.CONTENT_URI, logWhere.sel(), logWhere.args());
+
+        // If we just deleted the current ride, select another ride to be the current ride (if any).
+        Uri currentRideUri = getCurrentRide();
+        long currentRideId = Long.valueOf(currentRideUri.getLastPathSegment());
+        for (long id : ids) {
+            if (currentRideId == id) {
+                Uri nextRideUri = getNextRide();
+                setCurrentRide(nextRideUri);
+            }
+        }
         return res;
     }
 
@@ -266,11 +278,26 @@ public class RideManager {
     }
 
     @Background
-    public Uri getActiveRide() {
+    public Uri getCurrentRide() {
+        String currentRideUriStr = PreferenceManager.getDefaultSharedPreferences(mContext).getString(Constants.PREF_CURRENT_RIDE_URI, null);
+        if (!TextUtils.isEmpty(currentRideUriStr)) {
+            Uri currentRideUri = Uri.parse(currentRideUriStr);
+            return currentRideUri;
+        }
+        return null;
+    }
+
+    @Background
+    public void setCurrentRide(Uri rideUri) {
+        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString(Constants.PREF_CURRENT_RIDE_URI, rideUri.toString()).commit();
+    }
+
+    @Background
+    private Uri getNextRide() {
         String[] projection = { RideColumns._ID };
-        RideSelection where = new RideSelection();
-        where.state(RideState.ACTIVE.getValue());
-        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        // Return a ride, prioritizing ACTIVE ones first, then sorting by creation date.
+        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, null, null,
+                RideColumns.STATE + ", " + RideColumns.CREATED_DATE + " DESC");
         try {
             if (!c.moveToNext()) return null;
             long id = c.getLong(0);

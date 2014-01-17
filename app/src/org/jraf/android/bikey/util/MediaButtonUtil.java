@@ -31,6 +31,7 @@ import android.preference.PreferenceManager;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.app.mediabutton.MediaButtonReceiver;
+import org.jraf.android.bikey.app.mediabutton.TTS;
 
 public class MediaButtonUtil {
     public static void registerMediaButtonEventReceiverAccordingToPreferences(Context context) {
@@ -49,11 +50,13 @@ public class MediaButtonUtil {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         ComponentName mediaButtonReceiverComponentName = new ComponentName(context.getPackageName(), MediaButtonReceiver.class.getName());
         audioManager.registerMediaButtonEventReceiver(mediaButtonReceiverComponentName);
+        TTS.get().start();
     }
 
     public static void unregisterMediaButtonEventReceiver(Context context) {
         AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         ComponentName mediaButtonReceiverComponentName = new ComponentName(context.getPackageName(), MediaButtonReceiver.class.getName());
         audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiverComponentName);
+        TTS.get().stop();
     }
 }

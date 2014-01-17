@@ -101,6 +101,10 @@
     <string name="preference_listenToHeadsetButton_title">Use headset button</string>
     <string name="preference_listenToHeadsetButton_summary">Stop / resume the current ride when pressing the button</string>
 
+    <!-- TTS -->
+    <string name="speak_activate_ride">Ride started</string>
+    <string name="speak_pause_ride">Ride paused</string>
+
     <!-- About -->
     <string name="about_title">About</string>
     <string name="about_action_sendLogs">Send logs</string>

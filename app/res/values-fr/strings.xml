@@ -99,10 +99,6 @@
     <string name="preference_listenToHeadsetButton_title">Bouton d\'écouteurs</string>
     <string name="preference_listenToHeadsetButton_summary">Arrêter / reprendre le parcours en cours avec le bouton</string>
 
-    <!-- TTS -->
-    <string name="speak_activate_ride">parkour demarré.</string>
-    <string name="speak_pause_ride">parkour en pose.</string>
-
     <!-- About -->
     <string name="about_title">À propos</string>
     <string name="about_action_sendLogs">Envoyer les logs</string>

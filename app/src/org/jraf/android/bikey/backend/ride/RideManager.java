@@ -100,8 +100,9 @@ public class RideManager {
         long currentRideId = Long.valueOf(currentRideUri.getLastPathSegment());
         for (long id : ids) {
             if (currentRideId == id) {
-                Uri nextRideUri = getNextRide();
+                Uri nextRideUri = getMostRecentRide();
                 setCurrentRide(nextRideUri);
+                break;
             }
         }
         return res;
@@ -293,7 +294,7 @@ public class RideManager {
     }
 
     @Background
-    private Uri getNextRide() {
+    private Uri getMostRecentRide() {
         String[] projection = { RideColumns._ID };
         // Return a ride, prioritizing ACTIVE ones first, then sorting by creation date.
         Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, null, null,

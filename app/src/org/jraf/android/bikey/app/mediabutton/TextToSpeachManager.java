@@ -33,44 +33,59 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class TTS {
-    private static final String[] SUPPORTED_LANGUAGES = new String[] { "en" };
-    private static TTS INSTANCE = new TTS();
-    private TextToSpeech mTts;
-    private final Context mContext;
-    private int mTtsStatus = TextToSpeech.ERROR;
+public class TextToSpeachManager {
+    private static final TextToSpeachManager INSTANCE = new TextToSpeachManager();
 
-    public static TTS get() {
+    public static TextToSpeachManager get() {
         return INSTANCE;
     }
 
-    private TTS() {
+    private static final String[] SUPPORTED_LANGUAGES = new String[] { "en" };
+
+    private TextToSpeech mTextToSpeech;
+    private final Context mContext;
+    private int mStatus = TextToSpeech.ERROR;
+
+    private TextToSpeachManager() {
         mContext = Application.getApplication();
     }
 
     public void start() {
-        Log.d("start");
-        if (mTts == null || mTtsStatus == TextToSpeech.ERROR) mTts = new TextToSpeech(mContext, mOnInitListener);
+        Log.d();
+        if (mTextToSpeech == null || mStatus == TextToSpeech.ERROR) {
+            mTextToSpeech = new TextToSpeech(mContext, mOnInitListener);
+        }
     }
 
+    private OnInitListener mOnInitListener = new OnInitListener() {
+        @Override
+        public void onInit(int status) {
+            Log.d("status=" + status);
+            mStatus = status;
+            mTextToSpeech.addEarcon(mContext.getString(R.string.speak_activate_ride), mContext.getPackageName(), R.raw.start);
+            mTextToSpeech.addEarcon(mContext.getString(R.string.speak_pause_ride), mContext.getPackageName(), R.raw.stop);
+        }
+    };
+
     public void stop() {
-        Log.d("stop");
-        if (mTts != null) {
-            mTts.shutdown();
-            mTts = null;
+        Log.d();
+        if (mTextToSpeech != null) {
+            mTextToSpeech.shutdown();
+            mTextToSpeech = null;
         }
     }
 
     public boolean speak(int stringId) {
+        start();
         String string = mContext.getString(stringId);
-        Log.d("speak " + string);
-        if (mTtsStatus == TextToSpeech.SUCCESS) {
-            final int result;
+        Log.d("string=" + string);
+        if (mStatus == TextToSpeech.SUCCESS) {
+            int result;
             if (isDeviceLanguageSupported()) {
-                result = mTts.speak(string, TextToSpeech.QUEUE_FLUSH, null);
+                result = mTextToSpeech.speak(string, TextToSpeech.QUEUE_FLUSH, null);
                 Log.d("spoke, result=" + result);
             } else {
-                result = mTts.playEarcon(string, TextToSpeech.QUEUE_FLUSH, null);
+                result = mTextToSpeech.playEarcon(string, TextToSpeech.QUEUE_FLUSH, null);
                 Log.d("played earcon, result=" + result);
             }
             return result == TextToSpeech.SUCCESS;
@@ -81,18 +96,9 @@ public class TTS {
     private boolean isDeviceLanguageSupported() {
         Locale userLocale = mContext.getResources().getConfiguration().locale;
         String userLanguage = userLocale.getLanguage();
-        for (String supportedLanguage : SUPPORTED_LANGUAGES)
+        for (String supportedLanguage : SUPPORTED_LANGUAGES) {
             if (supportedLanguage.equals(userLanguage)) return true;
+        }
         return false;
     }
-
-    private OnInitListener mOnInitListener = new OnInitListener() {
-        @Override
-        public void onInit(int status) {
-            Log.d("onInit: status = " + status);
-            mTtsStatus = status;
-            mTts.addEarcon(mContext.getString(R.string.speak_activate_ride), mContext.getPackageName(), R.raw.start);
-            mTts.addEarcon(mContext.getString(R.string.speak_pause_ride), mContext.getPackageName(), R.raw.stop);
-        }
-    };
 }

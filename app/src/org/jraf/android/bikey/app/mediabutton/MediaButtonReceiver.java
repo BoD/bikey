@@ -51,14 +51,13 @@ public class MediaButtonReceiver extends BroadcastReceiver {
         if (!sharedPreferences.getBoolean(Constants.PREF_LISTEN_TO_HEADSET_BUTTON, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) return;
 
         // Only care if there is a current ride
-        String currentRideUriStr = sharedPreferences.getString(Constants.PREF_CURRENT_RIDE_URI, null);
-        if (currentRideUriStr == null) return;
+        final Uri currentRideUri = RideManager.get().getCurrentRide();
+        if (currentRideUri == null) return;
 
         // Only care about key down
         KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
         if (keyEvent != null && keyEvent.getAction() != KeyEvent.ACTION_DOWN) return;
 
-        final Uri currentRideUri = Uri.parse(currentRideUriStr);
         new AsyncTask<Void, Void, Integer>() {
             private static final int RESULT_RIDE_DOES_NOT_EXIST = 0;
             private static final int RESULT_RIDE_ACTIVATED = 1;

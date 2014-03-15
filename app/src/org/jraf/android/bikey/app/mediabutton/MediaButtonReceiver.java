@@ -78,12 +78,12 @@ public class MediaButtonReceiver extends BroadcastReceiver {
                     case CREATED:
                     case PAUSED:
                         context.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, context, LogCollectorService.class));
-                        TextToSpeachManager.get().speak(R.string.speak_activate_ride);
+                        TextToSpeechManager.get().speak(R.string.speak_activate_ride);
                         return RESULT_RIDE_ACTIVATED;
 
                     case ACTIVE:
                         context.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, context, LogCollectorService.class));
-                        TextToSpeachManager.get().speak(R.string.speak_pause_ride);
+                        TextToSpeechManager.get().speak(R.string.speak_pause_ride);
                         return RESULT_RIDE_PAUSED;
                 }
 

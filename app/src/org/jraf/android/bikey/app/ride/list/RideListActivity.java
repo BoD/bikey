@@ -25,14 +25,6 @@ package org.jraf.android.bikey.app.ride.list;
 
 import java.io.File;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.hud.HudActivity;
@@ -42,6 +34,7 @@ import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
+import org.jraf.android.bikey.backend.export.kml.KmlExporter;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
@@ -49,6 +42,14 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
+
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 
 public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListCallbacks {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
@@ -252,10 +253,14 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 mState.mExporter = new GpxExporter(rideUri);
                 break;
             case 1:
+                // Kml 
+                mState.mExporter = new KmlExporter(rideUri);
+                break;
+            case 2:
                 // Database
                 mState.mExporter = new DbExporter(rideUri);
                 break;
-            case 2:
+            case 3:
                 // Genymotion script
                 mState.mExporter = new GenymotionExporter(rideUri);
                 break;

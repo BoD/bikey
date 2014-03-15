@@ -3,6 +3,7 @@
 
     <string-array name="export_choices">
         <item>GPX file</item>
+        <item>KML file</item>
         <item>SQLite database</item>
         <item>Genymotion script</item>
     </string-array>

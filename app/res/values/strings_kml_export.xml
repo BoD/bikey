@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <string name="export_kml_name"><![CDATA[<name>%s</name>]]></string>
+    <string name="export_kml_timestamp">
+<![CDATA[
+        <open>1</open>
+        <snippet>Created %s</snippet>
+]]>
+    </string>
+    <string name="export_kml_document_begin"><![CDATA[
+<kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">
+<Document>
+]]></string>
+    <string name="export_kml_document_end"><![CDATA[
+</Document>
+</kml>
+]]></string>
+    <string name="export_kml_folder_begin"><![CDATA[<Folder><name>Tracks</name>]]></string>
+    <string name="export_kml_folder_end"><![CDATA[</Folder>]]></string>
+    <string name="export_kml_placemark_begin"><![CDATA[<Placemark>]]></string>
+    <string name="export_kml_placemark_end"><![CDATA[</Placemark>]]></string>
+    <string name="export_kml_style_url"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
+    <string name="export_kml_track_begin"><![CDATA[<gx:Track>]]></string>
+    <string name="export_kml_track_end"><![CDATA[</gx:Track>]]></string>
+    <string name="export_kml_when"><![CDATA[<when>%s</when>]]></string>
+    <string name="export_kml_coord"><![CDATA[<gx:coord>%1$s %2$s %3$s</gx:coord>]]></string>
+    <string name="export_kml_look_at">
+<![CDATA[
+        <LookAt>\n
+                <gx:TimeSpan>\n
+                        <begin>%1$s</begin>\n
+                        <end>%2$s</end>\n
+                </gx:TimeSpan>\n
+                <longitude>%3$s</longitude>\n
+                <latitude>%4$s</latitude>\n
+                <altitude>0</altitude>\n
+                <heading>0</heading>\n
+                <tilt>0</tilt>\n
+                <range>%5$s</range>\n
+        </LookAt>\n
+]]>
+    </string>
+    <string name="export_kml_style">
+<![CDATA[
+        <Style id=\"multiTrack_n\">\n
+                <IconStyle>\n
+                        <Icon>\n
+                                <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>\n
+                        </Icon>\n
+                </IconStyle>\n
+                <LineStyle>\n
+                        <color>99ffac59</color>\n
+                        <width>6</width>\n
+                </LineStyle>\n
+        </Style>\n
+        <StyleMap id=\"multiTrack\">\n
+                <Pair>\n
+                        <key>normal</key>\n
+                        <styleUrl>#multiTrack_n</styleUrl>\n
+                </Pair>\n
+                <Pair>\n
+                        <key>highlight</key>\n
+                        <styleUrl>#multiTrack_h</styleUrl>\n
+                </Pair>\n
+        </StyleMap>\n
+        <Style id=\"multiTrack_h\">\n
+                <IconStyle>\n
+                        <scale>1.2</scale>\n
+                        <Icon>\n
+                                <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>\n
+                        </Icon>\n
+                </IconStyle>\n
+                <LineStyle>\n
+                        <color>99ffac59</color>\n
+                        <width>8</width>\n
+                </LineStyle>\n
+        </Style>\n
+]]>
+    </string>
+
+</resources>

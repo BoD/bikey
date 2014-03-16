@@ -27,6 +27,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
+import android.content.ContentUris;
+import android.net.Uri;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.export.Exporter;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
@@ -36,9 +39,6 @@ import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
-
-import android.content.ContentUris;
-import android.net.Uri;
 
 public class KmlExporter extends Exporter {
 

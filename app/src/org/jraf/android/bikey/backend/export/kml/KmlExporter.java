@@ -48,12 +48,12 @@ public class KmlExporter extends Exporter {
     }
 
     @Override
-    @Background
     protected String getExportedFileName() {
         return FileUtil.getValidFileName(RideManager.get().getDisplayName(getRideUri()) + ".kml");
     }
 
     @Override
+    @Background
     public void export() throws IOException {
         PrintWriter out = new PrintWriter(getExportFile());
         Uri rideUri = getRideUri();

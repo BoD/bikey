@@ -41,12 +41,12 @@ public class DbExporter extends Exporter {
     }
 
     @Override
-    @Background
     protected String getExportedFileName() {
         return FileUtil.getValidFileName(RideManager.get().getDisplayName(getRideUri()) + ".db");
     }
 
     @Override
+    @Background
     public void export() throws IOException {
         File dbFile = getContext().getDatabasePath(BikeySQLiteOpenHelper.DATABASE_NAME);
         FileUtil.copy(dbFile, getExportFile());

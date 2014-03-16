@@ -48,12 +48,12 @@ public class GpxExporter extends Exporter {
     }
 
     @Override
-    @Background
     protected String getExportedFileName() {
         return FileUtil.getValidFileName(RideManager.get().getDisplayName(getRideUri()) + ".gpx");
     }
 
     @Override
+    @Background
     public void export() throws IOException {
         PrintWriter out = new PrintWriter(getExportFile());
         // Header

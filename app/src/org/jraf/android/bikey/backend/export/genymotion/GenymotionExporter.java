@@ -44,12 +44,12 @@ public class GenymotionExporter extends Exporter {
     }
 
     @Override
-    @Background
     protected String getExportedFileName() {
         return FileUtil.getValidFileName(RideManager.get().getDisplayName(getRideUri()) + ".gm");
     }
 
     @Override
+    @Background
     public void export() throws IOException {
         PrintWriter out = new PrintWriter(getExportFile());
         long rideId = ContentUris.parseId(getRideUri());

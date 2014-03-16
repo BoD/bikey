@@ -25,6 +25,14 @@ package org.jraf.android.bikey.app.ride.list;
 
 import java.io.File;
 
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.hud.HudActivity;
@@ -42,14 +50,6 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
-
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListCallbacks {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";

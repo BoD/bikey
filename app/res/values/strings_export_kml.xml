@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <string name="export_kml_name"><![CDATA[<name>%s</name>]]></string>
-    <string name="export_kml_timestamp">
+    <string name="export_kml_name" translatable="false"><![CDATA[<name>%s</name>]]></string>
+    <string name="export_kml_timestamp" translatable="false">
 <![CDATA[
         <open>1</open>
         <snippet>Created %s</snippet>
 ]]>
     </string>
-    <string name="export_kml_document_begin"><![CDATA[
+    <string name="export_kml_document_begin" translatable="false">
+<![CDATA[
 <kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">
 <Document>
-]]></string>
-    <string name="export_kml_document_end"><![CDATA[
+]]>
+    </string>
+    <string name="export_kml_document_end" translatable="false">
+<![CDATA[
 </Document>
 </kml>
-]]></string>
-    <string name="export_kml_folder_begin"><![CDATA[<Folder><name>Tracks</name>]]></string>
-    <string name="export_kml_folder_end"><![CDATA[</Folder>]]></string>
-    <string name="export_kml_placemark_begin"><![CDATA[<Placemark>]]></string>
-    <string name="export_kml_placemark_end"><![CDATA[</Placemark>]]></string>
-    <string name="export_kml_style_url"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
-    <string name="export_kml_track_begin"><![CDATA[<gx:Track>]]></string>
-    <string name="export_kml_track_end"><![CDATA[</gx:Track>]]></string>
-    <string name="export_kml_when"><![CDATA[<TimeStamp><when>%s</when></TimeStamp>]]></string>
-    <string name="export_kml_coord"><![CDATA[<gx:coord>%1$s %2$s %3$s</gx:coord>]]></string>
-    <string name="export_kml_look_at">
+]]>
+    </string>
+    <string name="export_kml_folder_begin" translatable="false"><![CDATA[<Folder><name>Tracks</name>]]></string>
+    <string name="export_kml_folder_end" translatable="false"><![CDATA[</Folder>]]></string>
+    <string name="export_kml_placemark_begin" translatable="false"><![CDATA[<Placemark>]]></string>
+    <string name="export_kml_placemark_end" translatable="false"><![CDATA[</Placemark>]]></string>
+    <string name="export_kml_style_url" translatable="false"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
+    <string name="export_kml_track_begin" translatable="false"><![CDATA[<gx:Track>]]></string>
+    <string name="export_kml_track_end" translatable="false"><![CDATA[</gx:Track>]]></string>
+    <string name="export_kml_when" translatable="false"><![CDATA[<TimeStamp><when>%s</when></TimeStamp>]]></string>
+    <string name="export_kml_coord" translatable="false"><![CDATA[<gx:coord>%1$s %2$s %3$s</gx:coord>]]></string>
+    <string name="export_kml_look_at" translatable="false">
 <![CDATA[
         <LookAt>\n
                 <gx:TimeSpan>\n
@@ -41,7 +45,7 @@
         </LookAt>\n
 ]]>
     </string>
-    <string name="export_kml_style">
+    <string name="export_kml_style" translatable="false">
 <![CDATA[
         <Style id=\"multiTrack_n\">\n
                 <IconStyle>\n

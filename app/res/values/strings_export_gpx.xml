@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <string name="export_gpx_begin" translatable="false">
+<![CDATA[<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<gpx xmlns=\"http://www.topografix.com/GPX/1/1\" version=\"1.1\" creator=\"%1$s\">
+<trk>
+<name>%2$s</name>]]>
+    </string>
+    <string name="export_gpx_trackSegment_begin" translatable="false"><![CDATA[<trkseg>]]></string>
+    <string name="export_gpx_trackSegment_end" translatable="false"><![CDATA[</trkseg>]]></string>
+    <string name="export_gpx_trackPoint" translatable="false">
+<![CDATA[
+<trkpt lat=\"%1$s\" lon=\"%2$s\">
+    <ele>%3$s</ele>
+    <time>%4$s</time>
+</trkpt>
+]]>
+    </string>
+    <string name="export_gpx_end" translatable="false">
+<![CDATA[
+</trk>
+</gpx>
+]]>
+    </string>
+
+</resources>

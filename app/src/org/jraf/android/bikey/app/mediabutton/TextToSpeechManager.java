@@ -33,10 +33,10 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class TextToSpeachManager {
-    private static final TextToSpeachManager INSTANCE = new TextToSpeachManager();
+public class TextToSpeechManager {
+    private static final TextToSpeechManager INSTANCE = new TextToSpeechManager();
 
-    public static TextToSpeachManager get() {
+    public static TextToSpeechManager get() {
         return INSTANCE;
     }
 
@@ -46,7 +46,7 @@ public class TextToSpeachManager {
     private final Context mContext;
     private int mStatus = TextToSpeech.ERROR;
 
-    private TextToSpeachManager() {
+    private TextToSpeechManager() {
         mContext = Application.getApplication();
     }
 

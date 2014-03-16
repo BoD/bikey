@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name" translatable="false">Bikey</string>
 
@@ -87,10 +87,12 @@
     <string name="about_title">About</string>
     <string name="about_action_sendLogs">Send logs</string>
     <string name="about_sendingLogsToast">Logs are being sent.</string>
-    <string name="about_txtInfo1"><![CDATA[<b>BoD Bikey</b> v${versionName}<br/>Built on ${buildDate}<font color="#808080"> – ${gitSha1}</font>]]></string>
-    <string name="about_txtInfo2">Copyright 2013–2014 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).\nLicensed under the Apache License, Version 2.0.</string>
-    <string name="about_email">→ BoD@JRAF.org</string>
-    <string name="about_web">→ JRAF.org/android</string>
+    <string name="about_txtInfo1" translatable="false"><![CDATA[<b>BoD Bikey</b> v${versionName}<br/>Built on ${buildDate}<font color="#808080"> – ${gitSha1}</font>]]></string>
+    <string name="about_txtInfo2" tools:ignore="TypographyOther">Copyright (C) 2013–2014 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).</string>
+    <string name="about_txtInfo3" translatable="false">Licensed under the terms of the GNU General Public License.</string>
+    <string name="about_email" translatable="false">→ BoD@JRAF.org</string>
+    <string name="about_web" translatable="false">→ JRAF.org/android</string>
+    <string name="about_sources" translatable="false">→ github.com/BoD/bikey</string>
     <string name="about_btnShare">Share app</string>
     <string name="about_btnRate">Rate app</string>
     <string name="about_btnOtherApps">Other apps</string>

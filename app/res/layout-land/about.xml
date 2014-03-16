@@ -40,6 +40,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/about_txtInfo3"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#888" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:layout_marginTop="8dp"
             android:autoLink="all"
             android:text="@string/about_email"
@@ -57,10 +67,16 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColorLink="#33b5e5" />
 
-        <View
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android:text="@string/about_sources"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColorLink="#33b5e5" />
     </LinearLayout>
 
     <LinearLayout

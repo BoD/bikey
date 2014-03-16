@@ -37,7 +37,21 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="3dp"
+            android:text="@string/about_txtInfo3"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:textColor="#888" />
+
+        <View
+            android:layout_width="1px"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:autoLink="all"
             android:text="@string/about_email"
             android:textAppearance="?android:attr/textAppearanceMedium"
@@ -54,8 +68,19 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColorLink="#33b5e5" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android:text="@string/about_sources"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColorLink="#33b5e5" />
+
         <View
-            android:layout_width="0dp"
+            android:layout_width="0px"
             android:layout_height="0dp"
             android:layout_weight="1" />
 
@@ -64,7 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            android:layout_marginTop="4dp" >
+            android:layout_marginTop="8dp" >
 
             <Button
                 android:id="@+id/btnShare"
@@ -72,7 +97,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_share"
-                android:text="@string/about_btnShare" />
+                android:text="@string/about_btnShare"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/btnRate"
@@ -80,7 +106,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_rate"
-                android:text="@string/about_btnRate" />
+                android:text="@string/about_btnRate"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
 
         <LinearLayout
@@ -96,7 +123,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_other_apps"
-                android:text="@string/about_btnOtherApps" />
+                android:text="@string/about_btnOtherApps"
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/btnDonate"
@@ -104,7 +132,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:drawableLeft="@drawable/ic_donate"
-                android:text="@string/about_btnDonate" />
+                android:text="@string/about_btnDonate"
+                tools:ignore="ButtonStyle" />
         </LinearLayout>
     </LinearLayout>
 

@@ -27,7 +27,17 @@
     <string name="export_kml_style_url" translatable="false"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
     <string name="export_kml_track_begin" translatable="false"><![CDATA[<gx:Track>]]></string>
     <string name="export_kml_track_end" translatable="false"><![CDATA[</gx:Track>]]></string>
-    <string name="export_kml_when" translatable="false"><![CDATA[<TimeStamp><when>%s</when></TimeStamp>]]></string>
+    <string name="export_kml_linestring_begin" translatable="false"><![CDATA[
+<LineString>
+  <extrude>1</extrude>
+  <tessellate>1</tessellate>
+  <coordinates>
+]]></string>
+    <string name="export_kml_linestring_end" translatable="false"><![CDATA[
+  </coordinates>
+</LineString>
+]]></string>
+    <string name="export_kml_when" translatable="false"><![CDATA[<when>%s</when>]]></string>
     <string name="export_kml_coord" translatable="false"><![CDATA[<gx:coord>%1$s %2$s %3$s</gx:coord>]]></string>
     <string name="export_kml_look_at" translatable="false">
 <![CDATA[

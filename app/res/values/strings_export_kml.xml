@@ -1,11 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!--  BEGIN translatable strings -->
+    <string name="export_kml_created">Created: %s</string>
+    <string name="export_kml_folder_name">Placemarks</string>
+    <string name="export_kml_track_name">Track: %s</string>
+    <string name="export_kml_linestring_name">LineString: %s</string>
+    <!--  END translatable strings -->
+
     <string name="export_kml_name" translatable="false"><![CDATA[<name>%s</name>]]></string>
     <string name="export_kml_timestamp" translatable="false">
 <![CDATA[
         <open>1</open>
-        <snippet>Created %s</snippet>
+        <snippet>%s</snippet>
 ]]>
     </string>
     <string name="export_kml_document_begin" translatable="false">
@@ -20,7 +27,7 @@
 </kml>
 ]]>
     </string>
-    <string name="export_kml_folder_begin" translatable="false"><![CDATA[<Folder><name>Tracks</name>]]></string>
+    <string name="export_kml_folder_begin" translatable="false"><![CDATA[<Folder><name>%s</name>]]></string>
     <string name="export_kml_folder_end" translatable="false"><![CDATA[</Folder>]]></string>
     <string name="export_kml_placemark_begin" translatable="false"><![CDATA[<Placemark>]]></string>
     <string name="export_kml_placemark_end" translatable="false"><![CDATA[</Placemark>]]></string>

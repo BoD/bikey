@@ -65,7 +65,8 @@ public class KmlExporter extends Exporter {
         out.println(getString(R.string.export_kml_name, appName + ": " + rideName));
 
         String timestampNow = new Date().toString();
-        out.println(getString(R.string.export_kml_timestamp, timestampNow));
+        String created = getString(R.string.export_kml_created, timestampNow);
+        out.println(getString(R.string.export_kml_timestamp, created));
         long rideId = ContentUris.parseId(rideUri);
         String selection = LogColumns.RIDE_ID + "=?";
         String[] selectionArgs = { String.valueOf(rideId) };
@@ -84,7 +85,7 @@ public class KmlExporter extends Exporter {
 
             // Write the KML elements leading up to the list of track points.
             out.println(getString(R.string.export_kml_style));
-            out.println(getString(R.string.export_kml_folder_begin));
+            out.println(getString(R.string.export_kml_folder_begin, getString(R.string.export_kml_folder_name)));
 
             // Write out the Placemark for the track.
             c.moveToPosition(-1);
@@ -92,7 +93,7 @@ public class KmlExporter extends Exporter {
 
             // Write out the Placemark for the LineString.
             c.moveToPosition(-1);
-            writeLineStringPlacemark(c, out);
+            writeLineStringPlacemark(c, out, timestampBegin);
 
             // Write the KML elements to close the document.
             out.println(getString(R.string.export_kml_folder_end));
@@ -109,7 +110,8 @@ public class KmlExporter extends Exporter {
     private void writeTrackPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
-        out.println(getString(R.string.export_kml_name, timestampBegin));
+        String trackName = getString(R.string.export_kml_track_name, timestampBegin);
+        out.println(getString(R.string.export_kml_name, trackName));
         out.println(getString(R.string.export_kml_style_url));
         out.println(getString(R.string.export_kml_track_begin));
 
@@ -136,9 +138,12 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a LineString element.
      */
-    private void writeLineStringPlacemark(LogCursorWrapper c, PrintWriter out) {
+    private void writeLineStringPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
+        String linestringName = getString(R.string.export_kml_linestring_name, timestampBegin);
+        out.println(getString(R.string.export_kml_name, linestringName));
+        out.println(getString(R.string.export_kml_style_url));
         out.println(getString(R.string.export_kml_linestring_begin));
         c.moveToPosition(-1);
         while (c.moveToNext()) {

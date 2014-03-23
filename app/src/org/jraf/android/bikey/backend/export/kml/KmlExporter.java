@@ -91,7 +91,7 @@ public class KmlExporter extends Exporter {
 
             // Write out the Placemark for the track.
             c.moveToPosition(-1);
-            writeTrackPlacemark(c, out, timestampBegin);
+            writeTrackPlacemark(rideUri, c, out, timestampBegin);
 
             // Write out the Placemark for the LineString.
             c.moveToPosition(-1);
@@ -109,7 +109,7 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a gx:Track element
      */
-    private void writeTrackPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writeTrackPlacemark(Uri rideUri, LogCursorWrapper c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String trackName = getString(R.string.export_kml_track_name, timestampBegin);
@@ -134,6 +134,7 @@ public class KmlExporter extends Exporter {
         }
 
         out.println(getString(R.string.export_kml_track_end));
+        writeExtendedData(rideUri, out);
         out.println(getString(R.string.export_kml_placemark_end));
     }
 

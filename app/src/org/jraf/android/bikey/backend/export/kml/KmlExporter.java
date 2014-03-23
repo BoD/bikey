@@ -91,11 +91,15 @@ public class KmlExporter extends Exporter {
 
             // Write out the Placemark for the track.
             c.moveToPosition(-1);
-            writeTrackPlacemark(rideUri, c, out, timestampBegin);
+            writeTrackPlacemark(c, out, timestampBegin);
 
             // Write out the Placemark for the LineString.
             c.moveToPosition(-1);
-            writeLineStringPlacemark(rideUri, c, out, timestampBegin);
+            writeLineStringPlacemark(c, out, timestampBegin);
+
+            // Write out the Placemark for the end Point.
+            c.moveToPosition(-1);
+            writePointPlacemark(rideUri, c, out, timestampBegin);
 
             // Write the KML elements to close the document.
             out.println(getString(R.string.export_kml_folder_end));
@@ -109,7 +113,7 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a gx:Track element
      */
-    private void writeTrackPlacemark(Uri rideUri, LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writeTrackPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String trackName = getString(R.string.export_kml_track_name, timestampBegin);
@@ -134,14 +138,13 @@ public class KmlExporter extends Exporter {
         }
 
         out.println(getString(R.string.export_kml_track_end));
-        writeExtendedData(rideUri, out);
         out.println(getString(R.string.export_kml_placemark_end));
     }
 
     /**
      * Write a Placemark which contains a LineString element.
      */
-    private void writeLineStringPlacemark(Uri rideUri, LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writeLineStringPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String linestringName = getString(R.string.export_kml_linestring_name, timestampBegin);
@@ -156,6 +159,24 @@ public class KmlExporter extends Exporter {
             out.println(longitude + "," + latitude + "," + elevation + " ");
         }
         out.println(getString(R.string.export_kml_linestring_end));
+        out.println(getString(R.string.export_kml_placemark_end));
+    }
+
+    /**
+     * Write a Placemark which contains a Point element corresponding to the last track point.
+     */
+    private void writePointPlacemark(Uri rideUri, LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+        Log.d();
+        out.println(getString(R.string.export_kml_placemark_begin));
+        String pointName = getString(R.string.export_kml_point_name);
+        out.println(getString(R.string.export_kml_name, pointName));
+        out.println(getString(R.string.export_kml_point_begin));
+        c.moveToLast();
+        double latitude = c.getLat();
+        double longitude = c.getLon();
+        double elevation = c.getEle();
+        out.println(longitude + "," + latitude + "," + elevation + " ");
+        out.println(getString(R.string.export_kml_point_end));
         writeExtendedData(rideUri, out);
         out.println(getString(R.string.export_kml_placemark_end));
     }

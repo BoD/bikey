@@ -7,6 +7,7 @@
     <string name="export_kml_track_name">Tracé : %s</string>
     <string name="export_kml_linestring_name">Segment : %s</string>
     <string name="export_kml_ride">Parcours</string>
+    <string name="export_kml_point_name">Fin</string>
     <!--  END translatable strings -->
 
 </resources>

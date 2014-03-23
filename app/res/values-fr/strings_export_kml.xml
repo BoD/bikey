@@ -6,6 +6,7 @@
     <string name="export_kml_folder_name">Repères</string>
     <string name="export_kml_track_name">Tracé : %s</string>
     <string name="export_kml_linestring_name">Segment : %s</string>
+    <string name="export_kml_ride">Parcours</string>
     <!--  END translatable strings -->
 
 </resources>

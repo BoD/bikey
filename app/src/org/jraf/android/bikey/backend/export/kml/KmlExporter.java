@@ -30,9 +30,11 @@ import java.util.Date;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.export.Exporter;
+import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.log.LogCursorWrapper;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.file.FileUtil;
@@ -93,7 +95,7 @@ public class KmlExporter extends Exporter {
 
             // Write out the Placemark for the LineString.
             c.moveToPosition(-1);
-            writeLineStringPlacemark(c, out, timestampBegin);
+            writeLineStringPlacemark(rideUri, c, out, timestampBegin);
 
             // Write the KML elements to close the document.
             out.println(getString(R.string.export_kml_folder_end));
@@ -138,7 +140,7 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a LineString element.
      */
-    private void writeLineStringPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writeLineStringPlacemark(Uri rideUri, LogCursorWrapper c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String linestringName = getString(R.string.export_kml_linestring_name, timestampBegin);
@@ -153,6 +155,41 @@ public class KmlExporter extends Exporter {
             out.println(longitude + "," + latitude + "," + elevation + " ");
         }
         out.println(getString(R.string.export_kml_linestring_end));
+        writeExtendedData(rideUri, out);
         out.println(getString(R.string.export_kml_placemark_end));
     }
+
+    /**
+     * Write the ExtendedData element, which allows the user to tap on
+     * a PlaceMark to bring up a popup with info about the ride.
+     */
+    private void writeExtendedData(Uri rideUri, PrintWriter out) {
+        Log.d();
+        out.println(getString(R.string.export_kml_extended_data_begin));
+        // The ride name
+        String displayName = RideManager.get().getDisplayName(rideUri);
+        writeExtendedDataValue(out, R.string.export_kml_ride, displayName);
+
+        // The distance
+        double totalDistance = LogManager.get().getTotalDistance(rideUri);
+        writeExtendedDataValue(out, R.string.hud_title_distance, UnitUtil.formatDistance((float) totalDistance, true));
+
+        // The duration
+        long duration = RideManager.get().getDuration(rideUri);
+        writeExtendedDataValue(out, R.string.hud_title_duration, DateTimeUtil.formatDuration(getContext(), duration));
+
+        // Average moving speed.
+        double avgMovingSpeed = LogManager.get().getAverageMovingSpeed(rideUri);
+        writeExtendedDataValue(out, R.string.hud_title_averageMovingSpeed, UnitUtil.formatSpeed((float) avgMovingSpeed));
+        out.println(getString(R.string.export_kml_extended_data_end));
+    }
+
+    /**
+     * Write a single value for the ExtendedData element.
+     */
+    private void writeExtendedDataValue(PrintWriter out, int nameStringId, Object value) {
+        String nameString = getString(nameStringId);
+        out.println(getString(R.string.export_kml_extended_data_value, nameString, value));
+    }
+
 }

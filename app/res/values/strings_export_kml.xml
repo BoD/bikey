@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!--  BEGIN translatable strings -->
+    <!-- BEGIN translatable strings -->
     <string name="export_kml_created">Created: %s</string>
     <string name="export_kml_folder_name">Placemarks</string>
     <string name="export_kml_track_name">Track: %s</string>
     <string name="export_kml_linestring_name">LineString: %s</string>
-    <!--  END translatable strings -->
+    <string name="export_kml_ride">Ride</string>
+    <!-- END translatable strings -->
 
     <string name="export_kml_name" translatable="false"><![CDATA[<name>%s</name>]]></string>
     <string name="export_kml_timestamp" translatable="false">
@@ -17,6 +18,7 @@
     </string>
     <string name="export_kml_document_begin" translatable="false">
 <![CDATA[
+<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <kml xmlns=\"http://www.opengis.net/kml/2.2\" xmlns:gx=\"http://www.google.com/kml/ext/2.2\" xmlns:kml=\"http://www.opengis.net/kml/2.2\" xmlns:atom=\"http://www.w3.org/2005/Atom\">
 <Document>
 ]]>
@@ -34,16 +36,20 @@
     <string name="export_kml_style_url" translatable="false"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
     <string name="export_kml_track_begin" translatable="false"><![CDATA[<gx:Track>]]></string>
     <string name="export_kml_track_end" translatable="false"><![CDATA[</gx:Track>]]></string>
-    <string name="export_kml_linestring_begin" translatable="false"><![CDATA[
+    <string name="export_kml_linestring_begin" translatable="false">
+<![CDATA[
 <LineString>
   <extrude>1</extrude>
   <tessellate>1</tessellate>
   <coordinates>
-]]></string>
-    <string name="export_kml_linestring_end" translatable="false"><![CDATA[
+]]>
+    </string>
+    <string name="export_kml_linestring_end" translatable="false">
+<![CDATA[
   </coordinates>
 </LineString>
-]]></string>
+]]>
+    </string>
     <string name="export_kml_when" translatable="false"><![CDATA[<when>%s</when>]]></string>
     <string name="export_kml_coord" translatable="false"><![CDATA[<gx:coord>%1$s %2$s %3$s</gx:coord>]]></string>
     <string name="export_kml_look_at" translatable="false">
@@ -99,5 +105,14 @@
         </Style>\n
 ]]>
     </string>
+    <string name="export_kml_extended_data_begin" translatable="false"><![CDATA[<ExtendedData>]]></string>
+    <string name="export_kml_extended_data_value" translatable="false">
+<![CDATA[
+        <Data name=\"%1$s\">
+          <value>%2$s</value>
+        </Data>
+]]>
+    </string>
+    <string name="export_kml_extended_data_end" translatable="false"><![CDATA[</ExtendedData>]]></string>
 
 </resources>

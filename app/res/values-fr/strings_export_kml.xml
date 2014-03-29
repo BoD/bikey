@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--  BEGIN translatable strings -->
+    <string name="export_kml_created">Crée : %s</string>
+    <string name="export_kml_folder_name">Repères</string>
+    <string name="export_kml_track_name">Tracé : %s</string>
+    <string name="export_kml_linestring_name">Segment : %s</string>
+    <string name="export_kml_ride">Parcours</string>
+    <string name="export_kml_point_name">Fin</string>
+    <!--  END translatable strings -->
+
+</resources>

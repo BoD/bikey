@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:enabled="false"
     android:gravity="center"
+    android:maxLines="1"
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:textSize="100sp"
     android:textStyle="bold" />

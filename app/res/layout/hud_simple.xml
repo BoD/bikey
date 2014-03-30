@@ -7,7 +7,6 @@
     android:enabled="false"
     android:gravity="center"
     android:maxLines="1"
-    android:singleLine="true"
     android:text="0"
     android:textAppearance="?android:attr/textAppearanceLarge"
     android:textStyle="bold"

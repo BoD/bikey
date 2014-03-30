@@ -41,6 +41,8 @@ import android.support.v4.app.TaskStackBuilder;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.backend.cadence.CadenceListener;
+import org.jraf.android.bikey.backend.cadence.CadenceManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -100,6 +102,9 @@ public class LogCollectorService extends Service {
                 Notification notification = createNotification();
                 startForeground(NOTIFICATION_ID, notification);
                 LocationManager.get().addLocationListener(mLocationListener);
+
+                // Start monitoring cadence
+                CadenceManager.get().addListener(mCadenceListener);
             }
         });
     }
@@ -114,6 +119,8 @@ public class LogCollectorService extends Service {
 
         dismissNotification();
         LocationManager.get().removeLocationListener(mLocationListener);
+        CadenceManager.get().removeListener(mCadenceListener);
+
         mCollectingRideUri = null;
         stopSelf();
     }
@@ -130,7 +137,7 @@ public class LogCollectorService extends Service {
 
 
     /*
-     * Listener.
+     * Location listener.
      */
 
     private LocationListener mLocationListener = new LocationListener() {
@@ -139,7 +146,8 @@ public class LogCollectorService extends Service {
             runOnBackgroundThread(new Runnable() {
                 @Override
                 public void run() {
-                    LogManager.get().add(mCollectingRideUri, location, mLastLocation);
+                    Float cadence = CadenceManager.get().getCurrentCadence();
+                    LogManager.get().add(mCollectingRideUri, location, mLastLocation, cadence);
                     mLastLocation = location;
                 }
             });
@@ -153,6 +161,16 @@ public class LogCollectorService extends Service {
 
         @Override
         public void onProviderDisabled(String provider) {}
+    };
+
+
+    /*
+     * Cadence listener.
+     */
+
+    private CadenceListener mCadenceListener = new CadenceListener() {
+        @Override
+        public void onCadenceChanged(Float cadence) {}
     };
 
 

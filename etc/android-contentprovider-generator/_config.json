@@ -1,10 +1,12 @@
 {
-	"toolVersion": "1.4",
-	"projectPackage": "org.jraf.android.bikey",
-	"providerPackage": "org.jraf.android.bikey.backend.provider",
+	"toolVersion": "1.6",
+	"projectPackageId": "org.jraf.android.bikey",
+	"providerJavaPackage": "org.jraf.android.bikey.backend.provider",
 	"providerClassName": "BikeyProvider",
-	"sqliteHelperClassName": "BikeySQLiteOpenHelper",
+	"sqliteOpenHelperClassName": "BikeySQLiteOpenHelper",
+	"sqliteUpgradeHelperClassName": "BikeySQLiteUpgradeHelper",
 	"authority": "org.jraf.android.bikey.backend.provider",
-	"databaseName": "bikey_provider.db",
+	"databaseFileName": "bikey_provider.db",
+	"databaseVersion": 2,
 	"enableForeignKeys": true,
 }

@@ -40,6 +40,11 @@
 			"type": "Float",
 			"nullable": true,
 		},
+		{
+			"name": "cadence",
+			"type": "Float",
+			"nullable": true,
+		},
 	],
 	"constraints": [
 		{

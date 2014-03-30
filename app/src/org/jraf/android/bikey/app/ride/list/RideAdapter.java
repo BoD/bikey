@@ -36,7 +36,7 @@ import android.widget.ResourceCursorAdapter;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.provider.ride.RideCursorWrapper;
+import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.datetime.DateTimeUtil;
@@ -59,7 +59,7 @@ public class RideAdapter extends ResourceCursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-        RideCursorWrapper c = (RideCursorWrapper) cursor;
+        RideCursor c = (RideCursor) cursor;
 
         // Title (name / date)
         TextView txtTitle = ViewHolder.get(view, R.id.txtTitle);
@@ -79,7 +79,7 @@ public class RideAdapter extends ResourceCursorAdapter {
         // Cancel the animation / reset the alpha in any case
         if (animator != null) animator.cancel();
         txtSummary.setAlpha(1);
-        RideState rideState = RideState.from(c.getState());
+        RideState rideState = c.getState();
         switch (rideState) {
             case CREATED:
                 details = context.getString(R.string.ride_list_notStarted);

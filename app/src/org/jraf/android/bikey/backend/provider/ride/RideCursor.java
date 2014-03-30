@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,13 @@ import java.util.Date;
 
 import android.database.Cursor;
 
-import org.jraf.android.bikey.backend.provider.base.AbstractCursorWrapper;
+import org.jraf.android.bikey.backend.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code ride} table.
  */
-public class RideCursorWrapper extends AbstractCursorWrapper {
-    public RideCursorWrapper(Cursor cursor) {
+public class RideCursor extends AbstractCursor {
+    public RideCursor(Cursor cursor) {
         super(cursor);
     }
 
@@ -57,9 +57,12 @@ public class RideCursorWrapper extends AbstractCursorWrapper {
 
     /**
      * Get the {@code state} value.
+     * Cannot be {@code null}.
      */
-    public int getState() {
-        return getIntegerOrNull(RideColumns.STATE);
+    public RideState getState() {
+        Integer intValue = getIntegerOrNull(RideColumns.STATE);
+        if (intValue == null) return null;
+        return RideState.values()[intValue];
     }
 
     /**

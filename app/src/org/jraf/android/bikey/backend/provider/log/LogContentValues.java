@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,29 @@ package org.jraf.android.bikey.backend.provider.log;
 
 import java.util.Date;
 
-import org.jraf.android.bikey.backend.provider.base.AbstractContentValuesWrapper;
+import android.content.ContentResolver;
+import android.net.Uri;
+
+import org.jraf.android.bikey.backend.provider.base.AbstractContentValues;
 
 /**
  * Content values wrapper for the {@code log} table.
  */
-public class LogContentValues extends AbstractContentValuesWrapper {
+public class LogContentValues extends AbstractContentValues {
+    @Override
+    public Uri uri() {
+        return LogColumns.CONTENT_URI;
+    }
+
+    /**
+     * Update row(s) using the values stored by this object and the given selection.
+     * 
+     * @param contentResolver The content resolver to use.
+     * @param where The selection to use (can be {@code null}).
+     */
+    public int update(ContentResolver contentResolver, LogSelection where) {
+        return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
+    }
 
     public LogContentValues putRideId(long value) {
         mContentValues.put(LogColumns.RIDE_ID, value);
@@ -103,6 +120,17 @@ public class LogContentValues extends AbstractContentValuesWrapper {
 
     public LogContentValues putSpeedNull() {
         mContentValues.putNull(LogColumns.SPEED);
+        return this;
+    }
+
+
+    public LogContentValues putCadence(Float value) {
+        mContentValues.put(LogColumns.CADENCE, value);
+        return this;
+    }
+
+    public LogContentValues putCadenceNull() {
+        mContentValues.putNull(LogColumns.CADENCE);
         return this;
     }
 

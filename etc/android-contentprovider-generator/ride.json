@@ -12,7 +12,13 @@
 		},
 		{
 			"name": "state",
-			"type": "Integer",
+			"type": "enum",
+			"enumName": "RideState",
+			"enumValues": [
+				{"CREATED": "Initial state: the ride has been created but has not started yet."},
+				{"ACTIVE": "The ride is currently active and being recorded.<br/>\nOnly one ride can be active at any time."},
+				{"PAUSED": "The ride has been started but recording is currently paused."},
+			],
 			"nullable": false,
 		},
 		{

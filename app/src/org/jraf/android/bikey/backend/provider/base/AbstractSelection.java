@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,7 +28,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public abstract class AbstractSelection<T extends AbstractSelection<?>> {
+import android.content.ContentResolver;
+import android.net.Uri;
+
+public abstract class AbstractSelection <T extends AbstractSelection<?>> {
     private static final String EQ = "=?";
     private static final String PAREN_OPEN = "(";
     private static final String PAREN_CLOSE = ")";
@@ -67,8 +70,14 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
             mSelection.append(PAREN_CLOSE);
         } else {
             // Single value
-            mSelection.append(EQ);
-            mSelectionArgs.add(valueOf(value[0]));
+            if (value[0] == null) {
+                // Single null value
+                mSelection.append(IS_NULL);
+            } else {
+                // Single not null value
+                mSelection.append(EQ);
+                mSelectionArgs.add(valueOf(value[0]));
+            }
         }
     }
 
@@ -91,8 +100,14 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
             mSelection.append(PAREN_CLOSE);
         } else {
             // Single value
-            mSelection.append(NOT_EQ);
-            mSelectionArgs.add(valueOf(value[0]));
+            if (value[0] == null) {
+                // Single null value
+                mSelection.append(IS_NOT_NULL);
+            } else {
+                // Single not null value
+                mSelection.append(NOT_EQ);
+                mSelectionArgs.add(valueOf(value[0]));
+            }
         }
     }
 
@@ -125,6 +140,8 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
             return String.valueOf(((Date) obj).getTime());
         } else if (obj instanceof Boolean) {
             return (Boolean) obj ? "1" : "0";
+        } else if (obj instanceof Enum) {
+            return String.valueOf(((Enum) obj).ordinal());
         }
         return String.valueOf(obj);
     }
@@ -152,8 +169,8 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
         mSelection.append(OR);
         return (T) this;
     }
-
-
+    
+    
     protected Object[] toObjectArray(int... array) {
         Object[] res = new Object[array.length];
         for (int i = 0; i < array.length; i++) {
@@ -201,5 +218,21 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
         int size = mSelectionArgs.size();
         if (size == 0) return null;
         return mSelectionArgs.toArray(new String[size]);
+    }
+    
+    
+    /**
+     * Returns the {@code uri} argument to pass to the {@code ContentResolver} methods.
+     */
+    public abstract Uri uri();
+    
+    /**
+     * Deletes row(s) specified by this selection.
+     * 
+     * @param contentResolver The content resolver to use.
+     * @return The number of rows deleted.
+     */
+    public int delete(ContentResolver contentResolver) {
+        return contentResolver.delete(uri(), sel(), args());
     }
 }

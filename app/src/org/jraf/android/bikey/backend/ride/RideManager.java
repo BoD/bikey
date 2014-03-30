@@ -46,7 +46,7 @@ import org.jraf.android.bikey.backend.provider.log.LogContentValues;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideContentValues;
-import org.jraf.android.bikey.backend.provider.ride.RideCursorWrapper;
+import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.util.annotation.Background;
@@ -75,10 +75,10 @@ public class RideManager {
         if (!TextUtils.isEmpty(name)) {
             values.putName(name);
         }
-        values.putState(RideState.CREATED.getValue());
+        values.putState(RideState.CREATED);
         values.putDuration(0l);
         values.putDistance(0d);
-        return mContext.getContentResolver().insert(RideColumns.CONTENT_URI, values.getContentValues());
+        return mContext.getContentResolver().insert(RideColumns.CONTENT_URI, values.values());
     }
 
     @Background
@@ -149,7 +149,7 @@ public class RideManager {
             logWhere.rideId(mergedRideId);
             LogContentValues values = new LogContentValues();
             values.putRideId(masterRideId);
-            mContext.getContentResolver().update(LogColumns.CONTENT_URI, values.getContentValues(), logWhere.sel(), logWhere.args());
+            mContext.getContentResolver().update(LogColumns.CONTENT_URI, values.values(), logWhere.sel(), logWhere.args());
 
             // Delete merged ride
             rideWhere = new RideSelection();
@@ -168,7 +168,7 @@ public class RideManager {
         }
         RideContentValues values = new RideContentValues();
         values.putName(name);
-        mContext.getContentResolver().update(masterRideUri, values.getContentValues(), null, null);
+        mContext.getContentResolver().update(masterRideUri, values.values(), null, null);
 
         // Update master ride total distance
         double distance = LogManager.get().getTotalDistance(masterRideUri);
@@ -193,10 +193,10 @@ public class RideManager {
     public void activate(final Uri rideUri) {
         // Update state 
         RideContentValues values = new RideContentValues();
-        values.putState(RideState.ACTIVE.getValue());
+        values.putState(RideState.ACTIVE);
         // Update activated date
         values.putActivatedDate(new Date());
-        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
+        mContext.getContentResolver().update(rideUri, values.values(), null, null);
 
         // Dispatch to listeners
         mListeners.dispatch(new Dispatcher<RideListener>() {
@@ -211,14 +211,14 @@ public class RideManager {
     public void updateTotalDistance(Uri rideUri, double distance) {
         RideContentValues values = new RideContentValues();
         values.putDistance(distance);
-        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
+        mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
     @Background
     private void updateDuration(Uri rideUri, long duration) {
         RideContentValues values = new RideContentValues();
         values.putDuration(duration);
-        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
+        mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
     @Background
@@ -229,14 +229,14 @@ public class RideManager {
         } else {
             values.putName(name);
         }
-        mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
+        mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
     @Background
     public void pause(final Uri rideUri) {
         // Get current activated date / duration
         String[] projection = { RideColumns.ACTIVATED_DATE, RideColumns.DURATION };
-        RideCursorWrapper c = new RideCursorWrapper(mContext.getContentResolver().query(rideUri, projection, null, null, null));
+        RideCursor c = new RideCursor(mContext.getContentResolver().query(rideUri, projection, null, null, null));
         try {
             if (!c.moveToNext()) {
                 Log.w("Could not pause ride, uri " + rideUri + " not found");
@@ -249,10 +249,10 @@ public class RideManager {
             duration += System.currentTimeMillis() - activatedDate;
 
             RideContentValues values = new RideContentValues();
-            values.putState(RideState.PAUSED.getValue());
+            values.putState(RideState.PAUSED);
             values.putDuration(duration);
             values.putActivatedDate(0l);
-            mContext.getContentResolver().update(rideUri, values.getContentValues(), null, null);
+            mContext.getContentResolver().update(rideUri, values.values(), null, null);
 
             // Dispatch to listeners
             mListeners.dispatch(new Dispatcher<RideListener>() {
@@ -270,13 +270,13 @@ public class RideManager {
      * Queries all the columns for the given ride.
      * Do not forget to call {@link Cursor#close()} on the returned Cursor.
      */
-    private RideCursorWrapper query(Uri rideUri) {
+    private RideCursor query(Uri rideUri) {
         if (rideUri == null) throw new IllegalArgumentException("null rideUri");
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         if (!c.moveToNext()) {
             throw new IllegalArgumentException(rideUri + " not found");
         }
-        return new RideCursorWrapper(c);
+        return new RideCursor(c);
     }
 
     @Background
@@ -311,7 +311,7 @@ public class RideManager {
 
     @Background
     public Date getActivatedDate(Uri rideUri) {
-        RideCursorWrapper c = query(rideUri);
+        RideCursor c = query(rideUri);
         try {
             return c.getActivatedDate();
         } finally {
@@ -321,7 +321,7 @@ public class RideManager {
 
     @Background
     public long getDuration(Uri rideUri) {
-        RideCursorWrapper c = query(rideUri);
+        RideCursor c = query(rideUri);
         try {
             return c.getDuration();
         } finally {
@@ -331,9 +331,9 @@ public class RideManager {
 
     @Background
     public RideState getState(Uri rideUri) {
-        RideCursorWrapper c = query(rideUri);
+        RideCursor c = query(rideUri);
         try {
-            return RideState.from(c.getState());
+            return c.getState();
         } finally {
             c.close();
         }
@@ -341,7 +341,7 @@ public class RideManager {
 
     @Background
     public String getDisplayName(Uri rideUri) {
-        RideCursorWrapper c = query(rideUri);
+        RideCursor c = query(rideUri);
         try {
             String name = c.getName();
             long createdDateLong = c.getCreatedDate().getTime();
@@ -357,7 +357,7 @@ public class RideManager {
 
     @Background
     public String getName(Uri rideUri) {
-        RideCursorWrapper c = query(rideUri);
+        RideCursor c = query(rideUri);
         try {
             return c.getName();
         } finally {

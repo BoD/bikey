@@ -48,7 +48,7 @@ public class DbExporter extends Exporter {
     @Override
     @Background
     public void export() throws IOException {
-        File dbFile = getContext().getDatabasePath(BikeySQLiteOpenHelper.DATABASE_NAME);
+        File dbFile = getContext().getDatabasePath(BikeySQLiteOpenHelper.DATABASE_FILE_NAME);
         FileUtil.copy(dbFile, getExportFile());
     }
 }

@@ -32,7 +32,7 @@ import android.net.Uri;
 
 import org.jraf.android.bikey.backend.export.Exporter;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
-import org.jraf.android.bikey.backend.provider.log.LogCursorWrapper;
+import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.file.FileUtil;
@@ -55,7 +55,7 @@ public class GenymotionExporter extends Exporter {
         long rideId = ContentUris.parseId(getRideUri());
         String selection = LogColumns.RIDE_ID + "=?";
         String[] selectionArgs = { String.valueOf(rideId) };
-        LogCursorWrapper c = new LogCursorWrapper(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
+        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
         try {
             while (c.moveToNext()) {
                 String lat = String.valueOf(c.getLat());

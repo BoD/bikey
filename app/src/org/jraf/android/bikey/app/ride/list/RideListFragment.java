@@ -43,7 +43,7 @@ import android.widget.ListView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
-import org.jraf.android.bikey.backend.provider.ride.RideCursorWrapper;
+import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 
 public class RideListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
     private RideAdapter mAdapter;
@@ -144,7 +144,7 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
         return new CursorLoader(getActivity(), RideColumns.CONTENT_URI, null, null, null, RideColumns.CREATED_DATE + " desc") {
             @Override
             public Cursor loadInBackground() {
-                return new RideCursorWrapper(super.loadInBackground());
+                return new RideCursor(super.loadInBackground());
             }
         };
     }

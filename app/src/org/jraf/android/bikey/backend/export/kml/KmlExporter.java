@@ -28,11 +28,14 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Date;
 
+import android.content.ContentUris;
+import android.net.Uri;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.export.Exporter;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
-import org.jraf.android.bikey.backend.provider.log.LogCursorWrapper;
+import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.annotation.Background;
@@ -40,9 +43,6 @@ import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
 import org.jraf.android.util.log.wrapper.Log;
-
-import android.content.ContentUris;
-import android.net.Uri;
 
 public class KmlExporter extends Exporter {
 
@@ -72,7 +72,7 @@ public class KmlExporter extends Exporter {
         long rideId = ContentUris.parseId(rideUri);
         String selection = LogColumns.RIDE_ID + "=?";
         String[] selectionArgs = { String.valueOf(rideId) };
-        LogCursorWrapper c = new LogCursorWrapper(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
+        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
         try {
             c.moveToFirst();
             // Write the LookAt element, which contains the start and end timestamps, and the first coordinate.
@@ -113,7 +113,7 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a gx:Track element
      */
-    private void writeTrackPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writeTrackPlacemark(LogCursor c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String trackName = getString(R.string.export_kml_track_name, timestampBegin);
@@ -144,7 +144,7 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a LineString element.
      */
-    private void writeLineStringPlacemark(LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writeLineStringPlacemark(LogCursor c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String linestringName = getString(R.string.export_kml_linestring_name, timestampBegin);
@@ -165,7 +165,7 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a Point element corresponding to the last track point.
      */
-    private void writePointPlacemark(Uri rideUri, LogCursorWrapper c, PrintWriter out, String timestampBegin) {
+    private void writePointPlacemark(Uri rideUri, LogCursor c, PrintWriter out, String timestampBegin) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         String pointName = getString(R.string.export_kml_point_name);

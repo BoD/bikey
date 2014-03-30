@@ -22,26 +22,33 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.backend.provider.ride;
+package org.jraf.android.bikey.backend.provider.base;
 
-/**
- * Possible values for the {@code state} column of the {@code ride} table.
- */
-public enum RideState {
-    /**
-     * Initial state: the ride has been created but has not started yet.
-     */
-    CREATED,
+import android.content.ContentResolver;
+import android.content.ContentValues;
+import android.net.Uri;
+
+public abstract class AbstractContentValues {
+    protected ContentValues mContentValues = new ContentValues();
 
     /**
-     * The ride is currently active and being recorded.<br/>
-Only one ride can be active at any time.
+     * Returns the {@code uri} argument to pass to the {@code ContentResolver} methods.
      */
-    ACTIVE,
+    public abstract Uri uri();
 
     /**
-     * The ride has been started but recording is currently paused.
+     * Returns the {@code ContentValues} wrapped by this object.
      */
-    PAUSED,
+    public ContentValues values() {
+        return mContentValues;
+    }
 
+    /**
+     * Inserts a row into a table using the values stored by this object.
+     * 
+     * @param contentResolver The content resolver to use.
+     */
+    public Uri insert(ContentResolver contentResolver) {
+        return contentResolver.insert(uri(), values());
+    }
 }

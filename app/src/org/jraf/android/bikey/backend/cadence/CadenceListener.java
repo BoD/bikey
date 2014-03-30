@@ -6,9 +6,9 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- *
+ * 
+ * Copyright (C) 2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -22,14 +22,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.backend.provider.base;
+package org.jraf.android.bikey.backend.cadence;
 
-import android.content.ContentValues;
-
-public abstract class AbstractContentValuesWrapper {
-    protected ContentValues mContentValues = new ContentValues();
-
-    public ContentValues getContentValues() {
-        return mContentValues;
-    }
+public interface CadenceListener {
+    /**
+     * @param cadence The cadence, in revolutions per minute.
+     */
+    void onCadenceChanged(Float cadence);
 }

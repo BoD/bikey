@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,12 +26,51 @@ package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
+
 import org.jraf.android.bikey.backend.provider.base.AbstractSelection;
 
 /**
  * Selection for the {@code ride} table.
  */
 public class RideSelection extends AbstractSelection<RideSelection> {
+    @Override
+    public Uri uri() {
+        return RideColumns.CONTENT_URI;
+    }
+    
+    /**
+     * Query the given content resolver using this selection.
+     * 
+     * @param contentResolver The content resolver to query.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
+     * @return A {@code RideCursor} object, which is positioned before the first entry, or null.
+     */
+    public RideCursor query(ContentResolver contentResolver, String[] projection, String sortOrder) {
+        Cursor cursor = contentResolver.query(uri(), projection, sel(), args(), sortOrder);
+        if (cursor == null) return null;
+        return new RideCursor(cursor);
+    }
+
+    /**
+     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     */
+    public RideCursor query(ContentResolver contentResolver, String[] projection) {
+        return query(contentResolver, projection, null);
+    }
+
+    /**
+     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     */
+    public RideCursor query(ContentResolver contentResolver) {
+        return query(contentResolver, null, null);
+    }
+    
+    
     public RideSelection id(long... value) {
         addEquals(RideColumns._ID, toObjectArray(value));
         return this;
@@ -41,7 +80,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.NAME, value);
         return this;
     }
-
+    
     public RideSelection nameNot(String... value) {
         addNotEquals(RideColumns.NAME, value);
         return this;
@@ -52,7 +91,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.CREATED_DATE, value);
         return this;
     }
-
+    
     public RideSelection createdDateNot(Date... value) {
         addNotEquals(RideColumns.CREATED_DATE, value);
         return this;
@@ -83,41 +122,22 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         return this;
     }
 
-    public RideSelection state(int... value) {
-        addEquals(RideColumns.STATE, toObjectArray(value));
+    public RideSelection state(RideState... value) {
+        addEquals(RideColumns.STATE, value);
+        return this;
+    }
+    
+    public RideSelection stateNot(RideState... value) {
+        addNotEquals(RideColumns.STATE, value);
         return this;
     }
 
-    public RideSelection stateNot(int... value) {
-        addNotEquals(RideColumns.STATE, toObjectArray(value));
-        return this;
-    }
-
-    public RideSelection stateGt(int value) {
-        addGreaterThan(RideColumns.STATE, value);
-        return this;
-    }
-
-    public RideSelection stateGtEq(int value) {
-        addGreaterThanOrEquals(RideColumns.STATE, value);
-        return this;
-    }
-
-    public RideSelection stateLt(int value) {
-        addLessThan(RideColumns.STATE, value);
-        return this;
-    }
-
-    public RideSelection stateLtEq(int value) {
-        addLessThanOrEquals(RideColumns.STATE, value);
-        return this;
-    }
 
     public RideSelection activatedDate(Date... value) {
         addEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
     }
-
+    
     public RideSelection activatedDateNot(Date... value) {
         addNotEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
@@ -152,7 +172,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.DURATION, toObjectArray(value));
         return this;
     }
-
+    
     public RideSelection durationNot(long... value) {
         addNotEquals(RideColumns.DURATION, toObjectArray(value));
         return this;
@@ -182,7 +202,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.DISTANCE, toObjectArray(value));
         return this;
     }
-
+    
     public RideSelection distanceNot(double... value) {
         addNotEquals(RideColumns.DISTANCE, toObjectArray(value));
         return this;

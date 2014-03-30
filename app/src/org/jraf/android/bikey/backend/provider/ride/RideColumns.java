@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -46,7 +46,7 @@ public interface RideColumns extends BaseColumns {
 
     String DEFAULT_ORDER = _ID;
 
-    // @formatter:off
+	// @formatter:off
     String[] FULL_PROJECTION = new String[] {
             _ID,
             NAME,

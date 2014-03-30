@@ -33,7 +33,7 @@ import android.net.Uri;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.export.Exporter;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
-import org.jraf.android.bikey.backend.provider.log.LogCursorWrapper;
+import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.datetime.DateTimeUtil;
@@ -65,7 +65,7 @@ public class GpxExporter extends Exporter {
         String selection = LogColumns.RIDE_ID + "=?";
         String[] selectionArgs = { String.valueOf(rideId) };
         Long previousRecordedDate = null;
-        LogCursorWrapper c = new LogCursorWrapper(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
+        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
         try {
             while (c.moveToNext()) {
                 long recordedDate = c.getRecordedDate().getTime();

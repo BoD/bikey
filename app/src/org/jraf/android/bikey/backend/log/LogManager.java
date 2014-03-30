@@ -57,7 +57,7 @@ public class LogManager {
     }
 
     @Background
-    public Uri add(final Uri rideUri, Location location, Location previousLocation) {
+    public Uri add(final Uri rideUri, Location location, Location previousLocation, Float cadence) {
         // Add a log
         LogContentValues values = new LogContentValues();
         long rideId = ContentUris.parseId(rideUri);
@@ -77,7 +77,9 @@ public class LogManager {
                 values.putSpeed(speed);
             }
         }
-        Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.getContentValues());
+        values.putCadence(cadence);
+
+        Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.values());
 
         // Update total distance for ride
         double totalDistance = getTotalDistance(rideUri);

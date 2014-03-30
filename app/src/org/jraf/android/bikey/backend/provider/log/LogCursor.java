@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,13 +28,13 @@ import java.util.Date;
 
 import android.database.Cursor;
 
-import org.jraf.android.bikey.backend.provider.base.AbstractCursorWrapper;
+import org.jraf.android.bikey.backend.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code log} table.
  */
-public class LogCursorWrapper extends AbstractCursorWrapper {
-    public LogCursorWrapper(Cursor cursor) {
+public class LogCursor extends AbstractCursor {
+    public LogCursor(Cursor cursor) {
         super(cursor);
     }
 
@@ -96,5 +96,13 @@ public class LogCursorWrapper extends AbstractCursorWrapper {
      */
     public Float getSpeed() {
         return getFloatOrNull(LogColumns.SPEED);
+    }
+
+    /**
+     * Get the {@code cadence} value.
+     * Can be {@code null}.
+     */
+    public Float getCadence() {
+        return getFloatOrNull(LogColumns.CADENCE);
     }
 }

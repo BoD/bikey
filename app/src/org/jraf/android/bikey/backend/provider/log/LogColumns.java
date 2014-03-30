@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -45,10 +45,11 @@ public interface LogColumns extends BaseColumns {
     String DURATION = "duration";
     String DISTANCE = "distance";
     String SPEED = "speed";
+    String CADENCE = "cadence";
 
     String DEFAULT_ORDER = _ID;
 
-    // @formatter:off
+	// @formatter:off
     String[] FULL_PROJECTION = new String[] {
             _ID,
             RIDE_ID,
@@ -58,7 +59,8 @@ public interface LogColumns extends BaseColumns {
             ELE,
             DURATION,
             DISTANCE,
-            SPEED
+            SPEED,
+            CADENCE
     };
     // @formatter:on
 }

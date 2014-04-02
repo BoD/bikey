@@ -35,18 +35,18 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.util.app.base.BaseFragment;
 import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.ui.graph.GraphView;
 
 public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
     private TextView mTxtValue;
-
-    public SimpleHudFragment() {
-        super();
-    }
+    private GraphView mGraValues;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View res = inflater.inflate(getLayoutResId(), container, false);
         mTxtValue = (TextView) res.findViewById(R.id.txtValue);
+        mGraValues = (GraphView) res.findViewById(R.id.graValues);
+        if (mGraValues != null) mGraValues.setType(GraphView.Type.LINES);
         return res;
     }
 
@@ -56,6 +56,10 @@ public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
 
     protected void setTextEnabled(boolean enabled) {
         mTxtValue.setEnabled(enabled);
+    }
+
+    protected void setValues(float[] values) {
+        mGraValues.setValues(values);
     }
 
     protected int getLayoutResId() {

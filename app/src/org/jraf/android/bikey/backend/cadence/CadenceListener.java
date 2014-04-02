@@ -27,6 +27,7 @@ package org.jraf.android.bikey.backend.cadence;
 public interface CadenceListener {
     /**
      * @param cadence The cadence, in revolutions per minute.
+     * @param rawData The rotations values that were used to calculate the cadence.
      */
-    void onCadenceChanged(Float cadence);
+    void onCadenceChanged(Float cadence, float[] rawData);
 }

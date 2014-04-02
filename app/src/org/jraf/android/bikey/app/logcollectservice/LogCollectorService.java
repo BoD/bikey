@@ -57,6 +57,7 @@ public class LogCollectorService extends Service {
     private static final int NOTIFICATION_ID = 1;
     private Uri mCollectingRideUri;
     protected Location mLastLocation;
+    private Float mLastCadence;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -146,7 +147,7 @@ public class LogCollectorService extends Service {
             runOnBackgroundThread(new Runnable() {
                 @Override
                 public void run() {
-                    Float cadence = CadenceManager.get().getCurrentCadence();
+                    Float cadence = mLastCadence;
                     LogManager.get().add(mCollectingRideUri, location, mLastLocation, cadence);
                     mLastLocation = location;
                 }
@@ -170,7 +171,9 @@ public class LogCollectorService extends Service {
 
     private CadenceListener mCadenceListener = new CadenceListener() {
         @Override
-        public void onCadenceChanged(Float cadence) {}
+        public void onCadenceChanged(Float cadence, float[] rawData) {
+            mLastCadence = cadence;
+        }
     };
 
 

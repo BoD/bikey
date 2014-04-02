@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.jraf.android.util.ui.fitsize.FitSizeTextView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/txtValue"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:enabled="false"
-    android:gravity="center"
-    android:maxLines="1"
-    android:text="0"
-    android:textAppearance="?android:attr/textAppearanceLarge"
-    android:textStyle="bold"
-    tools:ignore="HardcodedText" />
+    android:layout_height="match_parent" >
+
+    <org.jraf.android.util.ui.graph.GraphView
+        android:id="@+id/graValues"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <org.jraf.android.util.ui.fitsize.FitSizeTextView
+        android:id="@+id/txtValue"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:enabled="false"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="0"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        tools:ignore="HardcodedText" />
+
+</RelativeLayout>

@@ -44,7 +44,7 @@ import org.jraf.android.util.math.MathUtil;
 public class CadenceManager {
     private static final CadenceManager INSTANCE = new CadenceManager();
 
-    private static final int LOG_SIZE = 1000;
+    private static final int LOG_SIZE = 200;
     private static final long BROADCAST_CURRENT_VALUE_RATE_S = 2;
 
     private static class Entry {
@@ -65,6 +65,7 @@ public class CadenceManager {
     private ArrayDeque<Entry> mValues = new ArrayDeque<Entry>(LOG_SIZE);
     private ScheduledExecutorService mScheduledExecutorService;
     protected Float mLastValue;
+    private float[] mLastRawData;
 
     private Listeners<CadenceListener> mListeners = new Listeners<CadenceListener>() {
         @Override
@@ -142,9 +143,11 @@ public class CadenceManager {
     }
 
     /**
-     * Return the current cadence, in revolutions per minute.
+     * Get the current cadence.
+     * 
+     * @return The current cadence in revolutions per minute, or {@code null} if the information is not available.
      */
-    public Float getCurrentCadence() {
+    private Float getCurrentCadence() {
         if (mListeners.size() == 0) throw new IllegalStateException("There must be at least one listener prior to calling getCurrentCadence");
         float[] valuesAsFloats;
         long durationMs;
@@ -155,6 +158,7 @@ public class CadenceManager {
             valuesAsFloats = getValuesAsFloatArray();
             durationMs = mValues.peekLast().timestamp - mValues.peekFirst().timestamp;
         }
+        mLastRawData = valuesAsFloats;
 
         float average = MathUtil.getAverage(valuesAsFloats);
         int count = 0;
@@ -169,6 +173,8 @@ public class CadenceManager {
 
         // TODO: sanity checks
 
+        Log.d("durationMs=" + durationMs + " count=" + count + " revPerMin=" + revPerMin);
+
         return revPerMin;
     }
 
@@ -181,7 +187,7 @@ public class CadenceManager {
                 mListeners.dispatch(new Dispatcher<CadenceListener>() {
                     @Override
                     public void dispatch(CadenceListener listener) {
-                        listener.onCadenceChanged(value);
+                        listener.onCadenceChanged(value, mLastRawData);
                     }
                 });
             }

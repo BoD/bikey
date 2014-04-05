@@ -50,8 +50,8 @@ import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
-import org.jraf.android.bikey.app.hud.fragment.cadence.CadenceHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.compass.CompassHudFragment;
+import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
@@ -200,8 +200,7 @@ public class HudActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance, R.string.hud_title_distance);
         mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed, R.string.hud_title_averageMovingSpeed);
         mFragmentCycler.add(this, CompassHudFragment.newInstance(), R.id.chkTabCompass, R.string.hud_title_compass);
-        //        mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime, R.string.hud_title_currentTime);
-        mFragmentCycler.add(this, CadenceHudFragment.newInstance(), R.id.chkTabCurrentTime, R.string.hud_title_currentTime);
+        mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime, R.string.hud_title_currentTime);
         mFragmentCycler.show(this);
     }
 

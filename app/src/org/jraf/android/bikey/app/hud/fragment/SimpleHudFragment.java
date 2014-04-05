@@ -46,7 +46,16 @@ public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
         View res = inflater.inflate(getLayoutResId(), container, false);
         mTxtValue = (TextView) res.findViewById(R.id.txtValue);
         mGraValues = (GraphView) res.findViewById(R.id.graValues);
-        if (mGraValues != null) mGraValues.setType(GraphView.Type.LINES);
+        if (mGraValues != null) {
+            mGraValues.setType(0, GraphView.Type.LINES);
+            mGraValues.setColor(0, 0xFFFF0000);
+            mGraValues.setType(1, GraphView.Type.LINES);
+            mGraValues.setColor(1, 0xFF00FF00);
+            mGraValues.setType(2, GraphView.Type.LINES);
+            mGraValues.setColor(2, 0xFF0000FF);
+            mGraValues.setType(3, GraphView.Type.LINES);
+            mGraValues.setColor(3, 0xFFFFFF00);
+        }
         return res;
     }
 
@@ -58,8 +67,8 @@ public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
         mTxtValue.setEnabled(enabled);
     }
 
-    protected void setValues(float[] values) {
-        mGraValues.setValues(values);
+    protected void setValues(int index, float[] values) {
+        mGraValues.setValues(index, values);
     }
 
     protected int getLayoutResId() {

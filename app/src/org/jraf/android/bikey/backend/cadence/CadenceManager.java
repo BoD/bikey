@@ -44,15 +44,15 @@ import org.jraf.android.util.math.MathUtil;
 public class CadenceManager {
     private static final CadenceManager INSTANCE = new CadenceManager();
 
-    private static final int LOG_SIZE = 200;
     private static final long BROADCAST_CURRENT_VALUE_RATE_S = 2;
+    protected static final long LOG_SIZE_MS = 5 * 1000;
 
     private static class Entry {
         long timestamp;
-        float value;
+        float[] values;
 
-        Entry(float value) {
-            this.value = value;
+        Entry(float[] values) {
+            this.values = values;
             timestamp = System.currentTimeMillis();
         }
     }
@@ -62,10 +62,10 @@ public class CadenceManager {
     }
 
     private Context mContext;
-    private ArrayDeque<Entry> mValues = new ArrayDeque<Entry>(LOG_SIZE);
+    private ArrayDeque<Entry> mValues = new ArrayDeque<Entry>(200);
     private ScheduledExecutorService mScheduledExecutorService;
     protected Float mLastValue;
-    private float[] mLastRawData;
+    private float[][] mLastRawData;
 
     private Listeners<CadenceListener> mListeners = new Listeners<CadenceListener>() {
         @Override
@@ -118,13 +118,13 @@ public class CadenceManager {
     private SensorEventListener mRotationSensorEventListener = new SensorEventListener() {
         @Override
         public void onSensorChanged(SensorEvent event) {
-            if (mValues.size() >= LOG_SIZE) {
-                // Make room for the new value
+            // Keep only logs for a specific duration (discard old logs)
+            while (mValues.size() >= 2 && mValues.peekLast().timestamp - mValues.peekFirst().timestamp >= LOG_SIZE_MS) {
                 mValues.removeFirst();
             }
-            float value = event.values[0]; // XXX: using this value and not the other ones is arbitrary
+            float[] values = event.values.clone();
             synchronized (mValues) {
-                mValues.add(new Entry(value));
+                mValues.add(new Entry(values));
             }
         }
 
@@ -132,12 +132,17 @@ public class CadenceManager {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
-    private float[] getValuesAsFloatArray() {
-        float[] res = new float[mValues.size()];
+    private float[][] getValuesAsFloatArray() {
+        float[][] res = new float[4][mValues.size()];
         int i = 0;
 
         for (Entry e : mValues) {
-            res[i++] = e.value;
+            res[0][i] = e.values[0];
+            res[1][i] = e.values[1];
+            res[2][i] = e.values[2];
+            // Distance to 0, 0, 0
+            res[3][i] = (float) Math.sqrt(e.values[0] * e.values[0] + e.values[1] * e.values[1] + e.values[2] * e.values[2]);
+            i++;
         }
         return res;
     }
@@ -149,7 +154,7 @@ public class CadenceManager {
      */
     private Float getCurrentCadence() {
         if (mListeners.size() == 0) throw new IllegalStateException("There must be at least one listener prior to calling getCurrentCadence");
-        float[] valuesAsFloats;
+        float[][] valuesAsFloats;
         long durationMs;
         int len;
         synchronized (mValues) {
@@ -160,15 +165,24 @@ public class CadenceManager {
         }
         mLastRawData = valuesAsFloats;
 
-        float average = MathUtil.getAverage(valuesAsFloats);
-        int count = 0;
+        float[] distanceValues = valuesAsFloats[3];
+        // Average
+        float average = MathUtil.getAverage(distanceValues);
+        float count = 0;
         for (int i = 1; i < len; i++) {
-            if (valuesAsFloats[i - 1] < average && valuesAsFloats[i] >= average) {
+
+            if (distanceValues[i - 1] < average && distanceValues[i] >= average) {
+                // Going up
+                count++;
+            } else if (distanceValues[i - 1] > average && distanceValues[i] <= average) {
+                // Going down
                 count++;
             }
         }
 
-        float revPerMs = count / (float) durationMs;
+        // We counted up AND down so we must divide by two
+        count /= 2f;
+        float revPerMs = count / durationMs;
         float revPerMin = revPerMs * 60000f;
 
         // TODO: sanity checks

@@ -50,9 +50,12 @@ public class CadenceHudFragment extends SimpleHudFragment {
 
     private CadenceListener mCadenceListener = new CadenceListener() {
         @Override
-        public void onCadenceChanged(Float cadence, float[] rawData) {
+        public void onCadenceChanged(Float cadence, float[][] rawData) {
             setText(UnitUtil.formatCadence(cadence));
-            setValues(rawData);
+            setValues(0, rawData[0]);
+            setValues(1, rawData[1]);
+            setValues(2, rawData[2]);
+            setValues(3, rawData[3]);
         }
     };
 }

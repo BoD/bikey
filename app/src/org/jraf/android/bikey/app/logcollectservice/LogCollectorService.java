@@ -171,7 +171,7 @@ public class LogCollectorService extends Service {
 
     private CadenceListener mCadenceListener = new CadenceListener() {
         @Override
-        public void onCadenceChanged(Float cadence, float[] rawData) {
+        public void onCadenceChanged(Float cadence, float[][] rawData) {
             mLastCadence = cadence;
         }
     };

@@ -107,7 +107,7 @@ public class UnitUtil {
     }
 
     public static CharSequence formatCadence(Float cadence) {
-        if (cadence == null) return "--";
+        if (cadence == null) return "?";
         return FORMAT_CADENCE.format(cadence);
 
     }

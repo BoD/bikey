@@ -25,6 +25,7 @@
 package org.jraf.android.bikey.backend.cadence;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -40,12 +41,16 @@ import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.math.MathUtil;
+import org.jraf.android.util.object.ObjectUtil;
 
 public class CadenceManager {
     private static final CadenceManager INSTANCE = new CadenceManager();
 
     private static final long BROADCAST_CURRENT_VALUE_RATE_S = 2;
     protected static final long LOG_SIZE_MS = 5 * 1000;
+
+    private static final float SANITY_CHECK_MAX = 170;
+    private static final float SANITY_CHECK_MIN = 30;
 
     private static class Entry {
         long timestamp;
@@ -64,7 +69,7 @@ public class CadenceManager {
     private Context mContext;
     private ArrayDeque<Entry> mValues = new ArrayDeque<Entry>(200);
     private ScheduledExecutorService mScheduledExecutorService;
-    protected Float mLastValue;
+    protected Float mLastValue = -1f;
     private float[][] mLastRawData;
 
     private Listeners<CadenceListener> mListeners = new Listeners<CadenceListener>() {
@@ -132,18 +137,34 @@ public class CadenceManager {
         public void onAccuracyChanged(Sensor sensor, int accuracy) {}
     };
 
-    private float[][] getValuesAsFloatArray() {
-        float[][] res = new float[4][mValues.size()];
+    private static class ValuesAsArray {
+        float[][] values;
+        long[] times;
+    }
+
+    private ValuesAsArray getValuesAsFloatArray() {
+        float[][] values = new float[4][mValues.size()];
+        long[] timestamps = new long[mValues.size()];
         int i = 0;
 
         for (Entry e : mValues) {
-            res[0][i] = e.values[0];
-            res[1][i] = e.values[1];
-            res[2][i] = e.values[2];
-            // Distance to 0, 0, 0
-            res[3][i] = (float) Math.sqrt(e.values[0] * e.values[0] + e.values[1] * e.values[1] + e.values[2] * e.values[2]);
+            float val0 = e.values[0];
+            float val1 = e.values[1];
+            float val2 = e.values[2];
+
+            values[1][i] = val1;
+            values[0][i] = val0;
+            values[2][i] = val2;
+            // Distance from 0, 0, 0
+            values[3][i] = (float) Math.sqrt(val0 * val0 + val1 * val1 + val2 * val2);
+
+            timestamps[i] = e.timestamp;
+
             i++;
         }
+        ValuesAsArray res = new ValuesAsArray();
+        res.values = values;
+        res.times = timestamps;
         return res;
     }
 
@@ -154,40 +175,54 @@ public class CadenceManager {
      */
     private Float getCurrentCadence() {
         if (mListeners.size() == 0) throw new IllegalStateException("There must be at least one listener prior to calling getCurrentCadence");
-        float[][] valuesAsFloats;
+        ValuesAsArray valuesAsArrays;
         long durationMs;
         int len;
         synchronized (mValues) {
             len = mValues.size();
             if (len < 2) return null;
-            valuesAsFloats = getValuesAsFloatArray();
+            valuesAsArrays = getValuesAsFloatArray();
             durationMs = mValues.peekLast().timestamp - mValues.peekFirst().timestamp;
         }
-        mLastRawData = valuesAsFloats;
+        mLastRawData = valuesAsArrays.values;
 
-        float[] distanceValues = valuesAsFloats[3];
+        float[] distanceValues = valuesAsArrays.values[3];
         // Average
         float average = MathUtil.getAverage(distanceValues);
-        float count = 0;
+        ArrayList<Long> periods = new ArrayList<Long>();
+        long lastTime = -1;
         for (int i = 1; i < len; i++) {
-
             if (distanceValues[i - 1] < average && distanceValues[i] >= average) {
                 // Going up
-                count++;
-            } else if (distanceValues[i - 1] > average && distanceValues[i] <= average) {
-                // Going down
-                count++;
+                if (lastTime != -1) {
+                    long duration = valuesAsArrays.times[i] - lastTime;
+                    periods.add(duration);
+                }
+                lastTime = valuesAsArrays.times[i];
             }
         }
+        int periodCount = periods.size();
+        if (periodCount == 0) {
+            Log.d("No periods: returning null");
+            return null;
+        }
 
-        // We counted up AND down so we must divide by two
-        count /= 2f;
-        float revPerMs = count / durationMs;
+        // Average of the rev per ms for each period
+        float revPerMs = 0;
+        for (Long t : periods) {
+            revPerMs += 1f / t;
+        }
+        revPerMs /= periodCount;
+
         float revPerMin = revPerMs * 60000f;
 
-        // TODO: sanity checks
+        // Sanity checks
+        if (revPerMin > SANITY_CHECK_MAX || revPerMin < SANITY_CHECK_MIN) {
+            Log.d("Invalid value " + revPerMin + ": returning null");
+            return null;
+        }
 
-        Log.d("durationMs=" + durationMs + " count=" + count + " revPerMin=" + revPerMin);
+        Log.d("durationMs=" + durationMs + " revPerMin=" + revPerMin + " periods=" + periods);
 
         return revPerMin;
     }
@@ -196,15 +231,18 @@ public class CadenceManager {
         @Override
         public void run() {
             final Float value = getCurrentCadence();
-            if (value != null && !value.equals(mLastValue)) {
+            if (ObjectUtil.equals(mLastValue, value)) {
+                // Skip if the value was the same
                 mLastValue = value;
-                mListeners.dispatch(new Dispatcher<CadenceListener>() {
-                    @Override
-                    public void dispatch(CadenceListener listener) {
-                        listener.onCadenceChanged(value, mLastRawData);
-                    }
-                });
+                return;
             }
+            mLastValue = value;
+            mListeners.dispatch(new Dispatcher<CadenceListener>() {
+                @Override
+                public void dispatch(CadenceListener listener) {
+                    listener.onCadenceChanged(value, mLastRawData);
+                }
+            });
         }
     };
 }

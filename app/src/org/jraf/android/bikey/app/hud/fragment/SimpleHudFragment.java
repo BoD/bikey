@@ -53,8 +53,6 @@ public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
             mGraValues.setColor(1, 0xFF00FF00);
             mGraValues.setType(2, GraphView.Type.LINES);
             mGraValues.setColor(2, 0xFF0000FF);
-            mGraValues.setType(3, GraphView.Type.LINES);
-            mGraValues.setColor(3, 0xFFFFFF00);
         }
         return res;
     }

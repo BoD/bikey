@@ -52,6 +52,8 @@ public class CadenceManager {
     private static final float SANITY_CHECK_MAX = 170;
     private static final float SANITY_CHECK_MIN = 30;
 
+    private static final float MIN_AMPLITUDE = .3f;
+
     private static class Entry {
         long timestamp;
         float[] values;
@@ -143,20 +145,18 @@ public class CadenceManager {
     }
 
     private ValuesAsArray getValuesAsFloatArray() {
-        float[][] values = new float[4][mValues.size()];
+        float[][] values = new float[3][mValues.size()];
         long[] timestamps = new long[mValues.size()];
         int i = 0;
 
         for (Entry e : mValues) {
-            float val0 = e.values[0];
-            float val1 = e.values[1];
-            float val2 = e.values[2];
+            float valX = e.values[0];
+            float valY = e.values[1];
+            float valZ = e.values[2];
 
-            values[1][i] = val1;
-            values[0][i] = val0;
-            values[2][i] = val2;
-            // Distance from 0, 0, 0
-            values[3][i] = (float) Math.sqrt(val0 * val0 + val1 * val1 + val2 * val2);
+            values[0][i] = valX;
+            values[1][i] = valY;
+            values[2][i] = valZ;
 
             timestamps[i] = e.timestamp;
 
@@ -186,13 +186,41 @@ public class CadenceManager {
         }
         mLastRawData = valuesAsArrays.values;
 
-        float[] distanceValues = valuesAsArrays.values[3];
+        float[] vX = valuesAsArrays.values[0];
+        float[] vY = valuesAsArrays.values[1];
+        float[] vZ = valuesAsArrays.values[2];
+
+        float amplitudeX = MathUtil.getAmplitude(vX);
+        float amplitudeY = MathUtil.getAmplitude(vY);
+        float amplitudeZ = MathUtil.getAmplitude(vZ);
+
+        // Use the values with the highest amplitude
+        float maxAmplitude = MathUtil.getMinMax(amplitudeX, amplitudeY, amplitudeZ)[1];
+
+        if (maxAmplitude < MIN_AMPLITUDE) {
+            Log.d("Amplitude to small: returning null");
+            return null;
+        }
+
+        float[] values;
+        String logValues;
+        if (maxAmplitude == amplitudeX) {
+            values = vX;
+            logValues = "x";
+        } else if (maxAmplitude == amplitudeY) {
+            values = vY;
+            logValues = "y";
+        } else {
+            values = vZ;
+            logValues = "z";
+        }
+
         // Average
-        float average = MathUtil.getAverage(distanceValues);
+        float average = MathUtil.getAverage(values);
         ArrayList<Long> periods = new ArrayList<Long>();
         long lastTime = -1;
         for (int i = 1; i < len; i++) {
-            if (distanceValues[i - 1] < average && distanceValues[i] >= average) {
+            if (values[i - 1] < average && values[i] >= average) {
                 // Going up
                 if (lastTime != -1) {
                     long duration = valuesAsArrays.times[i] - lastTime;
@@ -216,13 +244,13 @@ public class CadenceManager {
 
         float revPerMin = revPerMs * 60000f;
 
+        Log.d("durationMs=" + durationMs + " revPerMin=" + revPerMin + " periods=" + periods + " values=" + logValues + " maxAmplitude=" + maxAmplitude);
+
         // Sanity checks
         if (revPerMin > SANITY_CHECK_MAX || revPerMin < SANITY_CHECK_MIN) {
             Log.d("Invalid value " + revPerMin + ": returning null");
             return null;
         }
-
-        Log.d("durationMs=" + durationMs + " revPerMin=" + revPerMin + " periods=" + periods);
 
         return revPerMin;
     }

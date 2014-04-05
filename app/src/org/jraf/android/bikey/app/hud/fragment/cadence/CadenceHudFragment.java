@@ -55,7 +55,6 @@ public class CadenceHudFragment extends SimpleHudFragment {
             setValues(0, rawData[0]);
             setValues(1, rawData[1]);
             setValues(2, rawData[2]);
-            setValues(3, rawData[3]);
         }
     };
 }

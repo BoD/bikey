@@ -25,7 +25,6 @@
 package org.jraf.android.bikey.backend.dbimport;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -43,6 +42,7 @@ import android.os.RemoteException;
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
 import org.jraf.android.util.log.wrapper.Log;
 
@@ -50,22 +50,22 @@ import org.jraf.android.util.log.wrapper.Log;
  * Replace the contents of the current database with the contents of another database.
  * This is based on DBImport from the scrum chatter project.
  */
-public class DBImport {
+public class DatabaseImporter {
 
     /**
      * Replace the database of our app with the contents of the database found at the given uri.
      */
-    public static void importDB(Context context, Uri uri) throws RemoteException, OperationApplicationException, IOException {
+    public static void importDatabase(Context context, Uri uri) throws RemoteException, OperationApplicationException, IOException {
         Log.d();
         if (uri.getScheme().equals("file")) {
             File db = new File(uri.getPath());
-            importDB(context, db);
+            importDatabase(context, db);
         } else {
             InputStream is = context.getContentResolver().openInputStream(uri);
-            File tempDb = new File(context.getCacheDir(), "temp" + System.currentTimeMillis() + ".db");
+            File tempDb = FileUtil.newTemporaryFile(context, ".db");
             FileOutputStream os = new FileOutputStream(tempDb);
             if (IoUtil.copy(is, os) > 0) {
-                importDB(context, tempDb);
+                importDatabase(context, tempDb);
                 tempDb.delete();
             }
         }
@@ -75,7 +75,7 @@ public class DBImport {
      * In a single database transaction, delete all the cells from the current database, read the data from the given importDb file, create a batch of
      * corresponding insert operations, and execute the inserts.
      */
-    private static void importDB(Context context, File importDb) throws RemoteException, OperationApplicationException, FileNotFoundException {
+    private static void importDatabase(Context context, File importDb) throws RemoteException, OperationApplicationException {
         Log.d();
         SQLiteDatabase dbImport = SQLiteDatabase.openDatabase(importDb.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();

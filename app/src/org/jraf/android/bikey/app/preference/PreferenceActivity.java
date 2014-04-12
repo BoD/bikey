@@ -50,7 +50,7 @@ import android.widget.Toast;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.dbimport.DBImport;
+import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.bikey.util.UnitUtil;
@@ -143,7 +143,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
             @Override
             protected Boolean doInBackground(Void... params) {
                 try {
-                    DBImport.importDB(getApplicationContext(), ridesFile);
+                    DatabaseImporter.importDatabase(getApplicationContext(), ridesFile);
                     return true;
                 } catch (Exception e) {
                     Log.e(e.getMessage(), e);

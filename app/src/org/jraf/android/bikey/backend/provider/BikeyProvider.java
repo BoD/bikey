@@ -26,6 +26,8 @@ package org.jraf.android.bikey.backend.provider;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -60,8 +62,6 @@ public class BikeyProvider extends ContentProvider {
 
     private static final int URI_TYPE_RIDE = 2;
     private static final int URI_TYPE_RIDE_ID = 3;
-
-
 
     private static final UriMatcher URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
@@ -177,6 +177,9 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
+        Set<Uri> urisToNotify = new HashSet<Uri>();
+        for (ContentProviderOperation operation : operations)
+            urisToNotify.add(operation.getUri());
         SQLiteDatabase db = mBikeySQLiteOpenHelper.getWritableDatabase();
         db.beginTransaction();
         try {
@@ -191,6 +194,8 @@ public class BikeyProvider extends ContentProvider {
                 i++;
             }
             db.setTransactionSuccessful();
+            for (Uri uri : urisToNotify)
+                getContext().getContentResolver().notifyChange(uri, null);
             return results;
         } finally {
             db.endTransaction();

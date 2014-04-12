@@ -2,7 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.jraf.android.bikey"
-    android:sharedUserId="org.jraf.android"
     android:versionName="${versionName}"
     tools:ignore="MissingVersion" >
 
@@ -50,6 +49,9 @@
         <activity
             android:name="org.jraf.android.bikey.app.ride.edit.RideEditActivity"
             android:windowSoftInputMode="stateVisible" />
+
+        <!-- Ride detail -->
+        <activity android:name="org.jraf.android.bikey.app.ride.detail.RideDetailActivity" />
 
         <!-- Hud -->
         <activity

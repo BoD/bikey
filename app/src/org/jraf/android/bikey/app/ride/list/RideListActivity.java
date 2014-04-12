@@ -37,8 +37,8 @@ import android.view.View.OnClickListener;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
-import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
+import org.jraf.android.bikey.app.ride.detail.RideDetailActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
@@ -124,7 +124,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
 
     @Override
     public void onRideSelected(Uri rideUri) {
-        startActivity(new Intent(null, rideUri, this, HudActivity.class));
+        startActivity(new Intent(null, rideUri, this, RideDetailActivity.class));
     }
 
     /*

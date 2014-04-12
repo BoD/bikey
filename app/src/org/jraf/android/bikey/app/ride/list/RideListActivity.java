@@ -40,6 +40,7 @@ import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
+import org.jraf.android.bikey.backend.dbimport.DBImport;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
@@ -63,6 +64,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
     private static final int DIALOG_CONFIRM_MERGE = 2;
 
     private static final int REQUEST_ADD_RIDE = 0;
+    private static final int REQUEST_IMPORT = 1;
 
     private RideListStateFragment mState;
 
@@ -107,6 +109,12 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 startActivityForResult(new Intent(this, RideEditActivity.class), REQUEST_ADD_RIDE);
                 return true;
 
+            case R.id.action_import:
+                Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                importIntent.setType("file/*");
+                startActivityForResult(Intent.createChooser(importIntent, getResources().getText(R.string.ride_list_importDialog_title)), REQUEST_IMPORT);
+                return true;
+
             case R.id.action_about:
                 startActivity(new Intent(this, AboutActivity.class));
                 return true;
@@ -118,7 +126,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         return super.onOptionsItemSelected(item);
     }
 
-
     /*
      * Ride selected.
      */
@@ -128,6 +135,18 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         startActivity(new Intent(null, rideUri, this, HudActivity.class));
     }
 
+    /*
+     * Import rides from a file
+     */
+
+    private void importRides(final Uri ridesFile) {
+        new TaskFragment(new Task<RideListActivity>() {
+            @Override
+            protected void doInBackground() throws Throwable {
+                DBImport.importDB(getActivity(), ridesFile);
+            }
+        }.toastFail(R.string.import_failToast)).execute(getSupportFragmentManager());
+    }
 
     /*
      * Ride added.
@@ -141,9 +160,12 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 if (resultCode != RESULT_OK) return;
                 onRideSelected(data.getData());
                 break;
+            case REQUEST_IMPORT:
+                if (resultCode != RESULT_OK) return;
+                importRides(data.getData());
+                break;
         }
     }
-
 
     /*
      * Delete.
@@ -167,7 +189,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         }).execute(getSupportFragmentManager());
     }
 
-
     /*
      * Merge.
      */
@@ -190,7 +211,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         }).execute(getSupportFragmentManager());
     }
 
-
     /*
      * Dialog callbacks.
      */
@@ -212,7 +232,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
     @Override
     public void onClickNegative(int tag, Object payload) {}
 
-
     /*
      * Quick start.
      */
@@ -233,7 +252,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         }).execute(getSupportFragmentManager());
     }
-
 
     /*
      * Share.
@@ -293,7 +311,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         }.toastFail(R.string.export_failToast)).execute(getSupportFragmentManager());
     }
-
 
     /*
      * Edit

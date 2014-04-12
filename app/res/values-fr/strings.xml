@@ -19,6 +19,7 @@
     <string name="ride_list_title">Parcours</string>
     <string name="ride_list_action_add">Nouveau parcours</string>
     <string name="ride_list_action_settings">Paramètres</string>
+    <string name="ride_list_action_import">Importer des parcours</string>
     <string name="ride_list_action_about">À propos</string>
     <string name="ride_list_action_share">Partager</string>
     <string name="ride_list_action_edit">Éditer</string>
@@ -89,6 +90,10 @@
 </gpx>
 ]]>
     </string>
+
+    <!-- Import  -->
+    <string name="ride_list_importDialog_title">Sélectionner le fichier à importer</string>
+    <string name="import_failToast">Échec de l\'importation des parcours.</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Enregistrer sur stockage</string>

@@ -10,6 +10,10 @@
         android:showAsAction="never"
         android:title="@string/ride_list_action_settings"/>
     <item
+        android:id="@+id/action_import"
+        android:showAsAction="never"
+        android:title="@string/ride_list_action_import"/>
+    <item
         android:id="@+id/action_about"
         android:showAsAction="never"
         android:title="@string/ride_list_action_about"/>

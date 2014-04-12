@@ -38,6 +38,7 @@ import org.jraf.android.util.datetime.DateTimeUtil;
  * a PlaceMark to bring up a popup with info about the ride.
  */
 class RideExtendedData {
+
     private final String displayName;
     private final double totalDistance;
     private final long duration;
@@ -56,8 +57,10 @@ class RideExtendedData {
     public String toString() {
         StringBuilder result = new StringBuilder();
         result.append(context.getString(R.string.export_kml_extended_data_begin)).append("\n");
+
         // The ride name
         result.append(context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.export_kml_ride), displayName)).append("\n");
+
         // The distance
         result.append(
                 context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_distance),

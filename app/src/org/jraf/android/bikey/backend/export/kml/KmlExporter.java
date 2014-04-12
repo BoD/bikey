@@ -75,7 +75,6 @@ public class KmlExporter extends Exporter {
             c.moveToFirst();
             // Write the LookAt element, which contains the start and end timestamps, and the first coordinate.
             long rideBeginDate = c.getRecordedDate().getTime();
-            Float cadence = c.getCadence();
             long rideEndDate = rideBeginDate + RideManager.get().getDuration(rideUri);
             String timestampBegin = DateTimeUtil.toIso8601(rideBeginDate, false);
             String timestampEnd = DateTimeUtil.toIso8601(rideEndDate, false);
@@ -101,7 +100,7 @@ public class KmlExporter extends Exporter {
             String placemarkName = getString(R.string.export_kml_point_name);
             RideExtendedData rideExtendedData = new RideExtendedData(getContext(), rideUri);
             c.moveToLast();
-            writePointPlacemark(rideExtendedData, c, out, placemarkName);
+            writePointPlacemark(rideExtendedData, c, out, placemarkName, Style.DEFAULT);
 
             // Write out the cadence as a set of Placemarks
             writeCadence(rideId, out);
@@ -123,7 +122,7 @@ public class KmlExporter extends Exporter {
         out.println(getString(R.string.export_kml_placemark_begin));
         String trackName = getString(R.string.export_kml_track_name, timestampBegin);
         out.println(getString(R.string.export_kml_name, trackName));
-        out.println(getString(R.string.export_kml_style_url));
+        out.println(getString(R.string.export_kml_track_style_url));
         out.println(getString(R.string.export_kml_track_begin));
 
         // Write the timestamps for each track point
@@ -154,7 +153,7 @@ public class KmlExporter extends Exporter {
         out.println(getString(R.string.export_kml_placemark_begin));
         String linestringName = getString(R.string.export_kml_linestring_name, timestampBegin);
         out.println(getString(R.string.export_kml_name, linestringName));
-        out.println(getString(R.string.export_kml_style_url));
+        out.println(getString(R.string.export_kml_track_style_url));
         out.println(getString(R.string.export_kml_linestring_begin));
         c.moveToPosition(-1);
         while (c.moveToNext()) {
@@ -170,10 +169,11 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a Point element corresponding to the last track point.
      */
-    private void writePointPlacemark(RideExtendedData rideExtendedData, LogCursor c, PrintWriter out, String placemarkName) {
+    private void writePointPlacemark(RideExtendedData rideExtendedData, LogCursor c, PrintWriter out, String placemarkName, Style style) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
         out.println(getString(R.string.export_kml_name, placemarkName));
+        if (style != Style.DEFAULT) out.println(getString(style.getResId()));
         out.println(getString(R.string.export_kml_point_begin));
         double latitude = c.getLat();
         double longitude = c.getLon();
@@ -199,7 +199,10 @@ public class KmlExporter extends Exporter {
                 out.println(getString(R.string.export_kml_folder_begin, getString(R.string.export_kml_cadence_folder_name)));
                 while (c.moveToNext()) {
                     Float cadence = c.getCadence();
-                    writePointPlacemark(null, c, out, String.valueOf(cadence.intValue()));
+                    Style style = Style.RED;
+                    if (cadence > 80) style = Style.GREEN;
+                    else if (cadence >= 60) style = Style.YELLOW;
+                    writePointPlacemark(null, c, out, String.valueOf(cadence.intValue()), style);
                 }
                 out.println(getString(R.string.export_kml_folder_end));
             } finally {

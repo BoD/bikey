@@ -36,5 +36,8 @@ public class Constants {
     public static final String PREF_LISTEN_TO_HEADSET_BUTTON = "PREF_LISTEN_TO_HEADSET_BUTTON";
     public static final boolean PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT = false;
 
+    public static final String PREF_RECORD_CADENCE = "PREF_RECORD_CADENCE";
+    public static final boolean PREF_RECORD_CADENCE_DEFAULT = false;
+
     public static final String PREF_CURRENT_RIDE_URI = "PREF_CURRENT_RIDE_URI";
 }

@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.logcollectservice;
+package org.jraf.android.bikey.app.collect;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -30,15 +30,19 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
@@ -104,8 +108,15 @@ public class LogCollectorService extends Service {
                 startForeground(NOTIFICATION_ID, notification);
                 LocationManager.get().addLocationListener(mLocationListener);
 
-                // Start monitoring cadence
-                CadenceManager.get().addListener(mCadenceListener);
+                // Start monitoring cadence (if enabled in the prefs)
+                if (PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).getBoolean(Constants.PREF_RECORD_CADENCE,
+                        Constants.PREF_RECORD_CADENCE_DEFAULT)) {
+                    CadenceManager.get().addListener(mCadenceListener);
+                }
+
+                // Start listening to pref changes (to enable / disable cadence recording accordingly)
+                PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).registerOnSharedPreferenceChangeListener(
+                        mOnSharedPreferenceChangeListener);
             }
         });
     }
@@ -178,6 +189,25 @@ public class LogCollectorService extends Service {
 
 
     /*
+     * Pref listener.
+     */
+
+    protected OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
+        @Override
+        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+            if (PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).getBoolean(Constants.PREF_RECORD_CADENCE,
+                    Constants.PREF_RECORD_CADENCE_DEFAULT)) {
+                // Start monitoring cadence
+                CadenceManager.get().addListener(mCadenceListener);
+            } else {
+                // Stop monitoring cadence
+                CadenceManager.get().removeListener(mCadenceListener);
+            }
+        }
+    };
+
+
+    /*
      * Notification.
      */
 
@@ -211,5 +241,13 @@ public class LogCollectorService extends Service {
     private void dismissNotification() {
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.cancel(NOTIFICATION_ID);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        // Unregister pref listener
+        PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+        super.onDestroy();
     }
 }

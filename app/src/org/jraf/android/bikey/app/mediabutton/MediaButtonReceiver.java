@@ -35,7 +35,7 @@ import android.view.KeyEvent;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
+import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.log.wrapper.Log;

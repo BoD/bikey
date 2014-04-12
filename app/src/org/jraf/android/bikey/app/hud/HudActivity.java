@@ -49,13 +49,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.compass.CompassHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
 import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
-import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.ride.RideState;

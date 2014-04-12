@@ -38,7 +38,7 @@ import android.text.format.DateUtils;
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
-import org.jraf.android.bikey.app.logcollectservice.LogCollectorService;
+import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;

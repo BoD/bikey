@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.jraf.android.bikey"
+    android:sharedUserId="org.jraf.android"
     android:versionName="${versionName}"
     tools:ignore="MissingVersion" >
 
@@ -30,7 +31,7 @@
             android:exported="false" />
 
         <!-- Data collecting service -->
-        <service android:name="org.jraf.android.bikey.app.logcollectservice.LogCollectorService" />
+        <service android:name="org.jraf.android.bikey.app.collect.LogCollectorService" />
 
         <!-- Ride list -->
 

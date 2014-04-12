@@ -270,7 +270,7 @@ public class RideManager {
      * Queries all the columns for the given ride.
      * Do not forget to call {@link Cursor#close()} on the returned Cursor.
      */
-    private RideCursor query(Uri rideUri) {
+    public RideCursor query(Uri rideUri) {
         if (rideUri == null) throw new IllegalArgumentException("null rideUri");
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         if (!c.moveToNext()) {

@@ -118,6 +118,7 @@
     <string name="shortcut_title">Bikey: Quick Start</string>
 
     <!-- Ride detail -->
+    <string name="ride_detail_title">Ride</string>
     <string name="ride_detail_dateTime_section">Date &amp; Time</string>
     <string name="ride_detail_dateTime_date_label">Date</string>
     <string name="ride_detail_dateTime_start_label">Start</string>
@@ -130,5 +131,8 @@
     <string name="ride_detail_speed_section">Speed</string>
     <string name="ride_detail_speed_average_label">Average moving</string>
     <string name="ride_detail_speed_max_label">Max</string>
+    <string name="ride_detail_cadence_section">Cadence</string>
+    <string name="ride_detail_cadence_average_label">Average</string>
+    <string name="ride_detail_cadence_max_label">Max</string>
 
 </resources>

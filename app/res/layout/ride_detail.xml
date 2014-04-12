@@ -25,12 +25,12 @@
             android:layout_marginTop="@dimen/detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtDateTimeDate"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:label="@string/ride_detail_dateTime_date_label"
-                android:paddingRight="8dp"
-                android:text="Mon April 12th 2014" />
+                android:paddingRight="8dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -41,43 +41,20 @@
             android:layout_marginTop="@dimen/detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtDateTimeStart"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="@integer/ride_detail_leftColumn_weight"
                 android:label="@string/ride_detail_dateTime_start_label"
-                android:paddingRight="8dp"
-                android:text="9:14" />
+                android:paddingRight="8dp" />
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtDateTimeFinish"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:label="@string/ride_detail_dateTime_finish_label"
-                android:paddingRight="8dp"
-                android:text="16:21" />
-        </LinearLayout>
-
-        <TextView
-            style="?android:attr/listSeparatorTextViewStyle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/detail_title_marginTop"
-            android:text="@string/ride_detail_distance_section" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
-
-            <org.jraf.android.bikey.widget.LabelTextView
-                android:layout_width="0px"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:label="@string/ride_detail_distance_total_label"
-                android:paddingRight="8dp"
-                android:text="12.3 km" />
+                android:paddingRight="8dp" />
         </LinearLayout>
 
         <TextView
@@ -95,20 +72,45 @@
             android:layout_marginTop="@dimen/detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtDurationMoving"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="@integer/ride_detail_leftColumn_weight"
                 android:label="@string/ride_detail_duration_moving_label"
-                android:paddingRight="8dp"
-                android:text="1:58:02" />
+                android:paddingRight="8dp" >
+            </org.jraf.android.bikey.widget.LabelTextView>
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtDurationTotal"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:label="@string/ride_detail_duration_total_label"
-                android:paddingRight="8dp"
-                android:text="2:16:52" />
+                android:paddingRight="8dp" >
+            </org.jraf.android.bikey.widget.LabelTextView>
+        </LinearLayout>
+
+        <TextView
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_title_marginTop"
+            android:text="@string/ride_detail_distance_section" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="@dimen/detail_content_marginTop" >
+
+            <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtDistanceTotal"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:label="@string/ride_detail_distance_total_label"
+                android:paddingRight="8dp" />
         </LinearLayout>
 
         <TextView
@@ -126,20 +128,52 @@
             android:layout_marginTop="@dimen/detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtSpeedAverage"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="@integer/ride_detail_leftColumn_weight"
                 android:label="@string/ride_detail_speed_average_label"
-                android:paddingRight="8dp"
-                android:text="27 mph" />
+                android:paddingRight="8dp" />
 
             <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtSpeedMax"
                 android:layout_width="0px"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:label="@string/ride_detail_speed_max_label"
-                android:paddingRight="8dp"
-                android:text="38 mph" />
+                android:paddingRight="8dp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/txtCadenceSectionTitle"
+            style="?android:attr/listSeparatorTextViewStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/detail_title_marginTop"
+            android:text="@string/ride_detail_cadence_section" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="@dimen/detail_content_marginTop" >
+
+            <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtCadenceAverage"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="@integer/ride_detail_leftColumn_weight"
+                android:label="@string/ride_detail_cadence_average_label"
+                android:paddingRight="8dp" />
+
+            <org.jraf.android.bikey.widget.LabelTextView
+                android:id="@+id/txtCadenceMax"
+                android:layout_width="0px"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:label="@string/ride_detail_cadence_max_label"
+                android:paddingRight="8dp" />
         </LinearLayout>
     </LinearLayout>
 

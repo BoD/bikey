@@ -128,6 +128,106 @@ public class LogManager {
         }
     }
 
+    public Double getTotalMovingDuration(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "sum(" + LogColumns.DURATION + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) {
+                return null;
+            }
+            if (c.isNull(0)) return null;
+            return c.getDouble(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    public double getMaxSpeed(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "max(" + LogColumns.SPEED + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) {
+                return 0;
+            }
+            return c.getDouble(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    public Long getFirstLogDate(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "min(" + LogColumns.RECORDED_DATE + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) {
+                return null;
+            }
+            if (c.isNull(0)) return null;
+            return c.getLong(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    public Long getLastLogDate(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "max(" + LogColumns.RECORDED_DATE + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) {
+                return null;
+            }
+            if (c.isNull(0)) return null;
+            return c.getLong(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    public Float getAverageCadence(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "avg(" + LogColumns.CADENCE + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) {
+                return null;
+            }
+            if (c.isNull(0)) return null;
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    public Float getMaxCadence(Uri rideUri) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "max(" + LogColumns.CADENCE + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) {
+                return null;
+            }
+            if (c.isNull(0)) return null;
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
 
     /*
      * Listeners.

@@ -30,6 +30,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.view.View;
 import android.widget.ResourceCursorAdapter;
@@ -74,7 +75,7 @@ public class RideAdapter extends ResourceCursorAdapter {
 
         // Summary
         TextView txtSummary = ViewHolder.get(view, R.id.txtSummary);
-        String details = null;
+        CharSequence details = null;
         Animator animator = (Animator) view.getTag(R.id.animator);
         // Cancel the animation / reset the alpha in any case
         if (animator != null) animator.cancel();
@@ -102,11 +103,11 @@ public class RideAdapter extends ResourceCursorAdapter {
             case PAUSED:
                 // Distance
                 double distance = c.getDistance();
-                details = UnitUtil.formatDistance((float) distance, true) + "  -  ";
+                details = TextUtils.concat(UnitUtil.formatDistance((float) distance, true, .85f), "  -  ");
 
                 // Duration
                 long duration = c.getDuration();
-                details += DateTimeUtil.formatDuration(context, duration);
+                details = TextUtils.concat(details, DateTimeUtil.formatDuration(context, duration));
                 txtSummary.setTextColor(mColorDefault);
                 txtSummary.setEnabled(true);
                 break;

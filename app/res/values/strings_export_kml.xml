@@ -8,6 +8,7 @@
     <string name="export_kml_linestring_name">LineString: %s</string>
     <string name="export_kml_ride">Ride</string>
     <string name="export_kml_point_name">End</string>
+    <string name="export_kml_cadence_folder_name">Cadence</string>
     <!-- END translatable strings -->
 
     <string name="export_kml_name" translatable="false"><![CDATA[<name>%s</name>]]></string>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <string name="export_kml_track_style_url" translatable="false"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
+    <string name="export_kml_red_style_url" translatable="false"><![CDATA[<styleUrl>#stylemap_red</styleUrl>]]></string>
+    <string name="export_kml_yellow_style_url" translatable="false"><![CDATA[<styleUrl>#stylemap_yellow</styleUrl>]]></string>
+    <string name="export_kml_green_style_url" translatable="false"><![CDATA[<styleUrl>#stylemap_green</styleUrl>]]></string>
+    <string name="export_kml_style" translatable="false">
+<![CDATA[
+  <Style id=\"multiTrack_n\">\n
+    <IconStyle>\n
+      <Icon>\n
+        <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>\n
+      </Icon>\n
+    </IconStyle>\n
+    <LineStyle>\n
+      <color>99ffac59</color>\n
+      <width>6</width>\n
+    </LineStyle>\n
+  </Style>\n
+  <StyleMap id=\"multiTrack\">\n
+    <Pair>\n
+      <key>normal</key>\n
+      <styleUrl>#multiTrack_n</styleUrl>\n
+    </Pair>\n
+    <Pair>\n
+      <key>highlight</key>\n
+      <styleUrl>#multiTrack_h</styleUrl>\n
+    </Pair>\n
+  </StyleMap>\n
+  <Style id=\"multiTrack_h\">\n
+    <IconStyle>\n
+      <scale>1.2</scale>\n
+      <Icon>\n
+        <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>\n
+      </Icon>\n
+    </IconStyle>\n
+    <LineStyle>\n
+      <color>99ffac59</color>\n
+      <width>8</width>\n
+    </LineStyle>\n
+  </Style>\n
+  <StyleMap id=\"stylemap_red\">\n
+    <Pair>\n
+      <key>normal</key>\n
+      <styleUrl>#style_red</styleUrl>\n
+    </Pair>\n
+    <Pair>\n
+      <key>highlight</key>\n
+      <styleUrl>#style_red</styleUrl>\n
+    </Pair>\n
+  </StyleMap>\n
+  <Style id=\"style_red\">\n
+    <IconStyle>\n
+      <color>ff0000ff</color>\n
+      <Icon>\n
+        <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>\n
+      </Icon>\n
+    </IconStyle>\n
+    <LabelStyle>\n
+      <scale>1.0</scale>\n
+    </LabelStyle>\n
+  </Style>\n
+  <StyleMap id=\"stylemap_green\">\n
+    <Pair>\n
+      <key>normal</key>\n
+      <styleUrl>#style_green</styleUrl>\n
+    </Pair>\n
+    <Pair>\n
+      <key>highlight</key>\n
+      <styleUrl>#style_green</styleUrl>\n
+    </Pair>\n
+  </StyleMap>\n
+  <Style id=\"style_green\">\n
+    <IconStyle>\n
+      <color>ff00ff00</color>\n
+      <Icon>\n
+        <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>\n
+      </Icon>\n
+    </IconStyle>\n
+    <LabelStyle>\n
+      <scale>1.0</scale>\n
+    </LabelStyle>\n
+  </Style>\n
+  <StyleMap id=\"stylemap_yellow\">\n
+    <Pair>\n
+      <key>normal</key>\n
+      <styleUrl>#style_yellow</styleUrl>\n
+    </Pair>\n
+    <Pair>\n
+      <key>highlight</key>\n
+      <styleUrl>#style_yellow</styleUrl>\n
+    </Pair>\n
+  </StyleMap>\n
+  <Style id=\"style_yellow\">\n
+    <IconStyle>\n
+      <color>ff00ffff</color>\n
+      <Icon>\n
+        <href>http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png</href>\n
+      </Icon>\n
+    </IconStyle>\n
+    <LabelStyle>\n
+      <scale>1.0</scale>\n
+    </LabelStyle>\n
+  </Style>\n
+]]>
+    </string>
+</resources>

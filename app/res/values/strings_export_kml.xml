@@ -8,6 +8,7 @@
     <string name="export_kml_linestring_name">LineString: %s</string>
     <string name="export_kml_ride">Ride</string>
     <string name="export_kml_point_name">End</string>
+    <string name="export_kml_cadence_folder_name">Cadence</string>
     <!-- END translatable strings -->
 
     <string name="export_kml_name" translatable="false"><![CDATA[<name>%s</name>]]></string>
@@ -34,7 +35,6 @@
     <string name="export_kml_folder_end" translatable="false"><![CDATA[</Folder>]]></string>
     <string name="export_kml_placemark_begin" translatable="false"><![CDATA[<Placemark>]]></string>
     <string name="export_kml_placemark_end" translatable="false"><![CDATA[</Placemark>]]></string>
-    <string name="export_kml_style_url" translatable="false"><![CDATA[<styleUrl>#multiTrack</styleUrl>]]></string>
     <string name="export_kml_track_begin" translatable="false"><![CDATA[<gx:Track>]]></string>
     <string name="export_kml_track_end" translatable="false"><![CDATA[</gx:Track>]]></string>
     <string name="export_kml_linestring_begin" translatable="false">
@@ -69,43 +69,6 @@
                 <tilt>0</tilt>\n
                 <range>%5$s</range>\n
         </LookAt>\n
-]]>
-    </string>
-    <string name="export_kml_style" translatable="false">
-<![CDATA[
-        <Style id=\"multiTrack_n\">\n
-                <IconStyle>\n
-                        <Icon>\n
-                                <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>\n
-                        </Icon>\n
-                </IconStyle>\n
-                <LineStyle>\n
-                        <color>99ffac59</color>\n
-                        <width>6</width>\n
-                </LineStyle>\n
-        </Style>\n
-        <StyleMap id=\"multiTrack\">\n
-                <Pair>\n
-                        <key>normal</key>\n
-                        <styleUrl>#multiTrack_n</styleUrl>\n
-                </Pair>\n
-                <Pair>\n
-                        <key>highlight</key>\n
-                        <styleUrl>#multiTrack_h</styleUrl>\n
-                </Pair>\n
-        </StyleMap>\n
-        <Style id=\"multiTrack_h\">\n
-                <IconStyle>\n
-                        <scale>1.2</scale>\n
-                        <Icon>\n
-                                <href>http://earth.google.com/images/kml-icons/track-directional/track-0.png</href>\n
-                        </Icon>\n
-                </IconStyle>\n
-                <LineStyle>\n
-                        <color>99ffac59</color>\n
-                        <width>8</width>\n
-                </LineStyle>\n
-        </Style>\n
 ]]>
     </string>
     <string name="export_kml_extended_data_begin" translatable="false"><![CDATA[<ExtendedData>]]></string>

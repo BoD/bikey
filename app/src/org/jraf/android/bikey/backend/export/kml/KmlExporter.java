@@ -33,11 +33,9 @@ import android.net.Uri;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.export.Exporter;
-import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.file.FileUtil;
@@ -99,7 +97,13 @@ public class KmlExporter extends Exporter {
 
             // Write out the Placemark for the end Point.
             c.moveToPosition(-1);
-            writePointPlacemark(rideUri, c, out, timestampBegin);
+            String placemarkName = getString(R.string.export_kml_point_name);
+            RideExtendedData rideExtendedData = new RideExtendedData(getContext(), rideUri);
+            c.moveToLast();
+            writePointPlacemark(rideExtendedData, c, out, placemarkName, Style.DEFAULT);
+
+            // Write out the cadence as a set of Placemarks
+            writeCadence(rideId, out);
 
             // Write the KML elements to close the document.
             out.println(getString(R.string.export_kml_folder_end));
@@ -118,7 +122,7 @@ public class KmlExporter extends Exporter {
         out.println(getString(R.string.export_kml_placemark_begin));
         String trackName = getString(R.string.export_kml_track_name, timestampBegin);
         out.println(getString(R.string.export_kml_name, trackName));
-        out.println(getString(R.string.export_kml_style_url));
+        out.println(getString(R.string.export_kml_track_style_url));
         out.println(getString(R.string.export_kml_track_begin));
 
         // Write the timestamps for each track point
@@ -149,7 +153,7 @@ public class KmlExporter extends Exporter {
         out.println(getString(R.string.export_kml_placemark_begin));
         String linestringName = getString(R.string.export_kml_linestring_name, timestampBegin);
         out.println(getString(R.string.export_kml_name, linestringName));
-        out.println(getString(R.string.export_kml_style_url));
+        out.println(getString(R.string.export_kml_track_style_url));
         out.println(getString(R.string.export_kml_linestring_begin));
         c.moveToPosition(-1);
         while (c.moveToNext()) {
@@ -165,53 +169,46 @@ public class KmlExporter extends Exporter {
     /**
      * Write a Placemark which contains a Point element corresponding to the last track point.
      */
-    private void writePointPlacemark(Uri rideUri, LogCursor c, PrintWriter out, String timestampBegin) {
+    private void writePointPlacemark(RideExtendedData rideExtendedData, LogCursor c, PrintWriter out, String placemarkName, Style style) {
         Log.d();
         out.println(getString(R.string.export_kml_placemark_begin));
-        String pointName = getString(R.string.export_kml_point_name);
-        out.println(getString(R.string.export_kml_name, pointName));
+        out.println(getString(R.string.export_kml_name, placemarkName));
+        if (style != Style.DEFAULT) out.println(getString(style.getResId()));
         out.println(getString(R.string.export_kml_point_begin));
-        c.moveToLast();
         double latitude = c.getLat();
         double longitude = c.getLon();
         double elevation = c.getEle();
         out.println(longitude + "," + latitude + "," + elevation + " ");
         out.println(getString(R.string.export_kml_point_end));
-        writeExtendedData(rideUri, out);
+        if (rideExtendedData != null) out.println(rideExtendedData.toString());
         out.println(getString(R.string.export_kml_placemark_end));
     }
 
     /**
-     * Write the ExtendedData element, which allows the user to tap on
-     * a PlaceMark to bring up a popup with info about the ride.
+     * Write a folder containing all the cadence points
      */
-    private void writeExtendedData(Uri rideUri, PrintWriter out) {
+    private void writeCadence(long rideId, PrintWriter out) {
         Log.d();
-        out.println(getString(R.string.export_kml_extended_data_begin));
-        // The ride name
-        String displayName = RideManager.get().getDisplayName(rideUri);
-        writeExtendedDataValue(out, R.string.export_kml_ride, displayName);
+        String selection = LogColumns.RIDE_ID + "=? AND " + LogColumns.CADENCE + " NOT NULL";
+        String[] selectionArgs = { String.valueOf(rideId) };
+        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
+        if (c != null) {
+            try {
+                // Only write out cadence if we have enough values.
+                if (c.getCount() < 5) return;
+                out.println(getString(R.string.export_kml_folder_begin, getString(R.string.export_kml_cadence_folder_name)));
+                while (c.moveToNext()) {
+                    Float cadence = c.getCadence();
+                    Style style = Style.RED;
+                    if (cadence > 80) style = Style.GREEN;
+                    else if (cadence >= 60) style = Style.YELLOW;
+                    writePointPlacemark(null, c, out, String.valueOf(cadence.intValue()), style);
+                }
+                out.println(getString(R.string.export_kml_folder_end));
+            } finally {
+                c.close();
+            }
+        }
 
-        // The distance
-        double totalDistance = LogManager.get().getTotalDistance(rideUri);
-        writeExtendedDataValue(out, R.string.hud_title_distance, UnitUtil.formatDistance((float) totalDistance, true));
-
-        // The duration
-        long duration = RideManager.get().getDuration(rideUri);
-        writeExtendedDataValue(out, R.string.hud_title_duration, DateTimeUtil.formatDuration(getContext(), duration));
-
-        // Average moving speed.
-        double avgMovingSpeed = LogManager.get().getAverageMovingSpeed(rideUri);
-        writeExtendedDataValue(out, R.string.hud_title_averageMovingSpeed, UnitUtil.formatSpeed((float) avgMovingSpeed));
-        out.println(getString(R.string.export_kml_extended_data_end));
     }
-
-    /**
-     * Write a single value for the ExtendedData element.
-     */
-    private void writeExtendedDataValue(PrintWriter out, int nameStringId, Object value) {
-        String nameString = getString(nameStringId);
-        out.println(getString(R.string.export_kml_extended_data_value, nameString, value));
-    }
-
 }

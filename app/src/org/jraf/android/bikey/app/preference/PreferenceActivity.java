@@ -28,23 +28,39 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.FragmentManager;
+import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.support.v4.content.LocalBroadcastManager;
+import android.widget.Toast;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.backend.dbimport.DBImport;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.bikey.util.UnitUtil;
 import org.jraf.android.util.dialog.AlertDialogListener;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class PreferenceActivity extends android.preference.PreferenceActivity implements AlertDialogListener {
+    private static final int REQUEST_IMPORT = 1;
+    private static final String ACTION_IMPORT_COMPLETE = "action_import_complete";
+
     @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,17 +68,22 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
         addPreferencesFromResource(R.xml.preferences);
         updateListPreferenceSummary(Constants.PREF_UNITS);
+        Preference prefImport = findPreference(Constants.PREF_IMPORT);
+        prefImport.setOnPreferenceClickListener(mOnPreferenceClickListener);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         PreferenceManager.getDefaultSharedPreferences(this).registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+        IntentFilter filter = new IntentFilter(ACTION_IMPORT_COMPLETE);
+        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mBroadcastReceiver, filter);
     }
 
     @Override
     protected void onStop() {
         PreferenceManager.getDefaultSharedPreferences(this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mBroadcastReceiver);
         super.onStop();
     }
 
@@ -101,6 +122,68 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
             ListPreference pref = (ListPreference) getPreferenceManager().findPreference(key);
             CharSequence entry = pref.getEntry();
             pref.setSummary(entry);
+        }
+    }
+
+    /*
+     * Import rides from a file
+     */
+
+    private void importRides(final Uri ridesFile) {
+
+        new AsyncTask<Void, Void, Boolean>() {
+
+            @Override
+            protected void onPreExecute() {
+                ProgressDialogFragment progressDialogFragment = new ProgressDialogFragment();
+                progressDialogFragment.setCancelable(false);
+                progressDialogFragment.show(getFragmentManager());
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                try {
+                    DBImport.importDB(getApplicationContext(), ridesFile);
+                    return true;
+                } catch (Exception e) {
+                    Log.e(e.getMessage(), e);
+                    return false;
+                }
+            }
+
+            @Override
+            protected void onPostExecute(Boolean result) {
+                if (result) Toast.makeText(getApplicationContext(), R.string.import_successToast, Toast.LENGTH_LONG).show();
+                else
+                    Toast.makeText(getApplicationContext(), R.string.import_failToast, Toast.LENGTH_LONG).show();
+                // Notify ourselves with a broadcast.  If the user rotated the device, this activity
+                // won't be visible any more. The new activity will receive the broadcast and update
+                // the UI.
+                Intent intent = new Intent(ACTION_IMPORT_COMPLETE);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(intent);
+            }
+        }.execute();
+    }
+
+    /**
+     * A progress dialog for the DB import.
+     */
+    public static class ProgressDialogFragment extends DialogFragment {
+        private static final String PREFIX = ProgressDialogFragment.class.getName() + ".";
+        public static final String FRAGMENT_TAG = PREFIX + "FRAGMENT_TAG";
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            ProgressDialog dialog = new ProgressDialog(getActivity());
+            dialog.setMessage(getString(R.string.common_pleaseWait));
+            return dialog;
+        }
+
+        /**
+         * Show this {@link ProgressDialogFragment}.
+         */
+        public void show(FragmentManager manager) {
+            show(manager, FRAGMENT_TAG);
         }
     }
 
@@ -161,5 +244,42 @@ public class PreferenceActivity extends android.preference.PreferenceActivity im
 
     @Override
     public void onClickListItem(int tag, int index, Object payload) {}
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_IMPORT:
+                if (resultCode != RESULT_OK) return;
+                importRides(data.getData());
+                break;
+        }
+    }
+
+    private OnPreferenceClickListener mOnPreferenceClickListener = new OnPreferenceClickListener() {
+
+        @Override
+        public boolean onPreferenceClick(Preference preference) {
+            if (Constants.PREF_IMPORT.equals(preference.getKey())) {
+                Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
+                importIntent.setType("file/*");
+                startActivityForResult(Intent.createChooser(importIntent, getResources().getText(R.string.ride_list_importDialog_title)), REQUEST_IMPORT);
+                return true;
+            }
+            return false;
+        }
+    };
+
+    private BroadcastReceiver mBroadcastReceiver = new BroadcastReceiver() {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // The DB import has completed.  Dismiss the progress dialog.
+            if (ACTION_IMPORT_COMPLETE.equals(intent.getAction())) {
+                ProgressDialogFragment dialogFragment = (ProgressDialogFragment) getFragmentManager().findFragmentByTag(ProgressDialogFragment.FRAGMENT_TAG);
+                if (dialogFragment != null) dialogFragment.dismiss();
+            }
+        }
+    };
 
 }

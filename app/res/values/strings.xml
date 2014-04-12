@@ -69,6 +69,11 @@
     <string name="export_failToast">Could not export data. Is external storage available?</string>
     <string name="export_subject">Bike ride</string>
     <string name="export_body">Ride data recorded with Bikey for Android.</string>
+    
+    <!-- Import  -->
+    <string name="ride_list_importDialog_title">Choose ride file to import</string>
+    <string name="import_failToast">Could not import the rides.</string>
+    <string name="import_successToast">Successfully imported the rides.</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Save to storage</string>
@@ -83,6 +88,9 @@
     <string name="preference_recordCadence_title">Record cadence</string>
     <string name="preference_recordCadence_confirmDialog_title">Cadence</string>
     <string name="preference_recordCadence_confirmDialog_message">Cadence recording only works when the device is placed in your pocket (using movement detection).\n\nThis feature consumes more battery.\n\nAre you sure you want to enable it?</string>
+    <string name="preference_advanced_title">Advanced settings</string>
+    <string name="preference_import_title">Import rides</string>
+    <string name="preference_import_summary">Import rides from a database file exported from Bikey</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride">Ride started</string>

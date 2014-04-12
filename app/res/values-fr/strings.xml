@@ -90,6 +90,11 @@
 ]]>
     </string>
 
+    <!-- Import  -->
+    <string name="ride_list_importDialog_title">Sélectionner le fichier à importer</string>
+    <string name="import_failToast">Échec de l\'importation des parcours.</string>
+    <string name="import_successToast">Succès de l\'importation des parcours.</string>
+
     <!-- Save to storage -->
     <string name="saveToStorage_label">Enregistrer sur stockage</string>
     <string name="saveToStorage_failedToast">Impossible d\'enregistrer le fichier.</string>
@@ -103,6 +108,9 @@
     <string name="preference_recordCadence_title">Enregistrer la cadence</string>
     <string name="preference_recordCadence_confirmDialog_title">Cadence</string>
     <string name="preference_recordCadence_confirmDialog_message">L\'enregistrement de la cadence ne fonctionne que si l\'appareil est placé dans votre poche (par détection des mouvements).\n\nCette fonction consomme plus de batterie.\n\nÊtes-vous sûr de vouloir l\'activer?</string>
+    <string name="preference_advanced_title">Préférences avancées</string>
+    <string name="preference_import_title">Importer des parcours</string>
+    <string name="preference_import_summary">Importer des parcours depuis un fichier de base de données exporté depuis Bikey</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>

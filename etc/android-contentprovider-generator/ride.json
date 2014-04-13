@@ -22,6 +22,11 @@
 			"nullable": false,
 		},
 		{
+			"name": "first_activated_date",
+			"type": "Date",
+			"nullable": true,
+		},
+		{
 			"name": "activated_date",
 			"type": "Date",
 			"nullable": true,

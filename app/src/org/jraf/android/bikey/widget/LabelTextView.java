@@ -68,7 +68,7 @@ public class LabelTextView extends LinearLayout {
     }
 
     public final void setLabel(CharSequence text) {
-        mTxtLabel.setText(text);
+        if (mTxtLabel != null) mTxtLabel.setText(text);
     }
 
     public void setText(int resid) {
@@ -76,6 +76,6 @@ public class LabelTextView extends LinearLayout {
     }
 
     public final void setText(CharSequence text) {
-        mTxtText.setText(text);
+        if (mTxtText != null) mTxtText.setText(text);
     }
 }

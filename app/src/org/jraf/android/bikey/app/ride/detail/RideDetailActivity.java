@@ -103,9 +103,8 @@ public class RideDetailActivity extends FragmentActivity {
             private double mDistance;
             private double mAverageMovingSpeed;
             private double mMaxSpeed;
-            private Long mFirstLogDate;
-            private Long mLastLogDate;
-            private Double mTotalMovingDuration;
+            private Date mFirstActivatedDate;
+            private Double mMovingDuration;
             private Float mAverageCadence;
             private Float mMaxCadence;
 
@@ -116,19 +115,18 @@ public class RideDetailActivity extends FragmentActivity {
                 RideCursor rideCursor = rideManager.query(rideUri);
                 mName = rideCursor.getName();
                 mCreatedDate = rideCursor.getCreatedDate();
+                mFirstActivatedDate = rideCursor.getFirstActivatedDate();
                 mDuration = rideCursor.getDuration();
                 mDistance = rideCursor.getDistance();
+                rideCursor.close();
 
                 LogManager logManager = LogManager.get();
-                mFirstLogDate = logManager.getFirstLogDate(rideUri);
-                mLastLogDate = logManager.getLastLogDate(rideUri);
                 mAverageMovingSpeed = logManager.getAverageMovingSpeed(rideUri);
                 mMaxSpeed = logManager.getMaxSpeed(rideUri);
-                mTotalMovingDuration = logManager.getTotalMovingDuration(rideUri);
+                mMovingDuration = logManager.getMovingDuration(rideUri);
                 mAverageCadence = logManager.getAverageCadence(rideUri);
                 mMaxCadence = logManager.getMaxCadence(rideUri);
 
-                rideCursor.close();
             }
 
             @Override
@@ -137,9 +135,11 @@ public class RideDetailActivity extends FragmentActivity {
                 if (mName != null) a.setTitle(mName);
                 a.mTxtDateTimeDate.setText(DateUtils.formatDateTime(a, mCreatedDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
                         | DateUtils.FORMAT_SHOW_YEAR));
-                if (mFirstLogDate != null) a.mTxtDateTimeStart.setText(DateUtils.formatDateTime(a, mFirstLogDate, DateUtils.FORMAT_SHOW_TIME));
-                if (mLastLogDate != null) a.mTxtDateTimeFinish.setText(DateUtils.formatDateTime(a, mLastLogDate + mDuration, DateUtils.FORMAT_SHOW_TIME));
-                if (mTotalMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mTotalMovingDuration.longValue()));
+                if (mFirstActivatedDate != null)
+                    a.mTxtDateTimeStart.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime(), DateUtils.FORMAT_SHOW_TIME));
+                if (mFirstActivatedDate != null)
+                    a.mTxtDateTimeFinish.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime() + mDuration, DateUtils.FORMAT_SHOW_TIME));
+                if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration.longValue()));
                 a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
                 a.mTxtDistanceTotal.setText(UnitUtil.formatDistance((float) mDistance, true, .85f));
 

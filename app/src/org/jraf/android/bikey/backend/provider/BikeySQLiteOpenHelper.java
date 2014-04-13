@@ -42,7 +42,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = BikeySQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "bikey_provider.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     // @formatter:off
     private static final String SQL_CREATE_TABLE_LOG = "CREATE TABLE IF NOT EXISTS "
@@ -66,6 +66,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
             + RideColumns.NAME + " TEXT, "
             + RideColumns.CREATED_DATE + " INTEGER NOT NULL, "
             + RideColumns.STATE + " INTEGER NOT NULL, "
+            + RideColumns.FIRST_ACTIVATED_DATE + " INTEGER, "
             + RideColumns.ACTIVATED_DATE + " INTEGER, "
             + RideColumns.DURATION + " INTEGER NOT NULL, "
             + RideColumns.DISTANCE + " REAL NOT NULL "

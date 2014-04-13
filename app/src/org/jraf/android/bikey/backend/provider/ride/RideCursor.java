@@ -66,6 +66,14 @@ public class RideCursor extends AbstractCursor {
     }
 
     /**
+     * Get the {@code first_activated_date} value.
+     * Can be {@code null}.
+     */
+    public Date getFirstActivatedDate() {
+        return getDate(RideColumns.FIRST_ACTIVATED_DATE);
+    }
+
+    /**
      * Get the {@code activated_date} value.
      * Can be {@code null}.
      */

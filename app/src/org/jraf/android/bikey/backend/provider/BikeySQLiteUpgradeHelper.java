@@ -29,17 +29,39 @@ import android.util.Log;
 
 import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 
 public class BikeySQLiteUpgradeHelper {
     private static final String TAG = BikeySQLiteUpgradeHelper.class.getSimpleName();
 
     // @formatter:off
+    // 1 -> 2
     private static final String SQL_UPGRADE_TABLE_LOG_2 = "ALTER TABLE "
             + LogColumns.TABLE_NAME
             + " ADD COLUMN "
             + LogColumns.CADENCE + " REAL "
             + " ;";
 
+    // 2 -> 3
+    private static final String SQL_UPGRADE_TABLE_RIDE_3 = "ALTER TABLE "
+            + RideColumns.TABLE_NAME
+            + " ADD COLUMN "
+            + RideColumns.FIRST_ACTIVATED_DATE + " REAL "
+            + " ;";
+    private static final String SQL_POPULATE_TABLE_RIDE_3 = "UPDATE "
+            + RideColumns.TABLE_NAME
+            + " SET " 
+            + RideColumns.FIRST_ACTIVATED_DATE
+            + " = ("
+            + " SELECT MIN ( " + LogColumns.RECORDED_DATE + " ) "
+            + " FROM "
+            + LogColumns.TABLE_NAME
+            + " WHERE "
+            + LogColumns.TABLE_NAME + "." + LogColumns.RIDE_ID
+            + " = "
+            + RideColumns.TABLE_NAME + "." + RideColumns._ID
+            + ")"
+            + " ;";
     // @formatter:on
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -50,8 +72,18 @@ public class BikeySQLiteUpgradeHelper {
             switch (curVersion) {
                 case 1:
                     // 1 -> 2
+                    // Add new CADENCE column
                     db.execSQL(SQL_UPGRADE_TABLE_LOG_2);
                     curVersion = 2;
+                    break;
+
+                case 2:
+                    // 2 -> 3
+                    // Add new FIRST_ACTIVATED_DATE column
+                    db.execSQL(SQL_UPGRADE_TABLE_RIDE_3);
+                    // Populate it with the first RECORDED_DATE of the corresponding Logs
+                    db.execSQL(SQL_POPULATE_TABLE_RIDE_3);
+                    curVersion = 3;
                     break;
             }
         }

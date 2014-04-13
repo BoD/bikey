@@ -128,7 +128,7 @@ public class LogManager {
         }
     }
 
-    public Double getTotalMovingDuration(Uri rideUri) {
+    public Double getMovingDuration(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DURATION + ")" };
         LogSelection where = new LogSelection();

@@ -56,7 +56,7 @@ public class DatabaseImporter {
      * Replace the database of our app with the contents of the database found at the given uri.
      */
     public static void importDatabase(Context context, Uri uri) throws RemoteException, OperationApplicationException, IOException {
-        Log.d();
+        Log.d("uri=" + uri);
         if (uri.getScheme().equals("file")) {
             File db = new File(uri.getPath());
             importDatabase(context, db);
@@ -76,7 +76,7 @@ public class DatabaseImporter {
      * corresponding insert operations, and execute the inserts.
      */
     private static void importDatabase(Context context, File importDb) throws RemoteException, OperationApplicationException {
-        Log.d();
+        Log.d("importDb=" + importDb);
         SQLiteDatabase dbImport = SQLiteDatabase.openDatabase(importDb.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
         ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
         operations.add(ContentProviderOperation.newDelete(LogColumns.CONTENT_URI).build());

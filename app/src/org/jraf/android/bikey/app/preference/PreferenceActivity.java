@@ -40,7 +40,7 @@ import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 
 public class PreferenceActivity extends BaseFragmentActivity implements PreferenceCallbacks, AlertDialogListener {
-    private static final int REQUEST_IMPORT = 0;
+    private static final int REQUEST_PICK_FILE = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,8 +80,17 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
     @Override
     public void startPickFileActivity() {
         Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        importIntent.setType("file/*");
-        startActivityForResult(Intent.createChooser(importIntent, getString(R.string.ride_list_importDialog_title)), REQUEST_IMPORT);
+        String contentType = "application/octet-stream";
+        importIntent.setType(contentType);
+        importIntent.addCategory(Intent.CATEGORY_OPENABLE);
+
+        if (getPackageManager().resolveActivity(importIntent, 0) == null) {
+            // No file manager found, try the Samsung specific one.
+            importIntent = new Intent("com.sec.android.app.myfiles.PICK_DATA");
+            importIntent.putExtra("CONTENT_TYPE", contentType);
+        }
+
+        startActivityForResult(Intent.createChooser(importIntent, getString(R.string.ride_list_importDialog_title)), REQUEST_PICK_FILE);
     }
 
     private void importRides(final Uri ridesFile) {
@@ -97,7 +106,7 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_IMPORT:
+            case REQUEST_PICK_FILE:
                 if (resultCode != RESULT_OK) return;
                 importRides(data.getData());
                 break;

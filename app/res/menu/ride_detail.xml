@@ -1,0 +1,8 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_hud"
+        android:showAsAction="always|withText"
+        android:title="@string/ride_detail_action_hud"/>
+
+</menu>

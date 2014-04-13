@@ -134,5 +134,6 @@
     <string name="ride_detail_cadence_section">Cadence</string>
     <string name="ride_detail_cadence_average_label">Average</string>
     <string name="ride_detail_cadence_max_label">Max</string>
+    <string name="ride_detail_action_hud">HUD</string>
 
 </resources>

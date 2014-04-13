@@ -26,10 +26,13 @@ package org.jraf.android.bikey.app.ride.detail;
 
 import java.util.Date;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,6 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.app.hud.HudActivity;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -93,6 +97,25 @@ public class RideDetailActivity extends FragmentActivity {
         ButterKnife.inject(this);
 
         loadData();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ride_detail, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_hud:
+                finish();
+                Intent intent = new Intent(this, HudActivity.class);
+                intent.setData(mRideUri);
+                startActivity(intent);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadData() {

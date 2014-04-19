@@ -83,7 +83,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        final int match = URI_MATCHER.match(uri);
+        int match = URI_MATCHER.match(uri);
         switch (match) {
             case URI_TYPE_LOG:
                 return TYPE_CURSOR_DIR + LogColumns.TABLE_NAME;
@@ -102,8 +102,9 @@ public class BikeyProvider extends ContentProvider {
     @Override
     public Uri insert(Uri uri, ContentValues values) {
         if (BuildConfig.DEBUG) Log.d(TAG, "insert uri=" + uri + " values=" + values);
-        final String table = uri.getLastPathSegment();
-        final long rowId = mBikeySQLiteOpenHelper.getWritableDatabase().insert(table, null, values);
+        String table = uri.getLastPathSegment();
+        long rowId = mBikeySQLiteOpenHelper.getWritableDatabase().insertOrThrow(table, null, values);
+        if (rowId == -1) return null;
         String notify;
         if (rowId != -1 && ((notify = uri.getQueryParameter(QUERY_NOTIFY)) == null || "true".equals(notify))) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -114,13 +115,13 @@ public class BikeyProvider extends ContentProvider {
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
         if (BuildConfig.DEBUG) Log.d(TAG, "bulkInsert uri=" + uri + " values.length=" + values.length);
-        final String table = uri.getLastPathSegment();
-        final SQLiteDatabase db = mBikeySQLiteOpenHelper.getWritableDatabase();
+        String table = uri.getLastPathSegment();
+        SQLiteDatabase db = mBikeySQLiteOpenHelper.getWritableDatabase();
         int res = 0;
         db.beginTransaction();
         try {
-            for (final ContentValues v : values) {
-                final long id = db.insert(table, null, v);
+            for (ContentValues v : values) {
+                long id = db.insert(table, null, v);
                 db.yieldIfContendedSafely();
                 if (id != -1) {
                     res++;
@@ -142,8 +143,8 @@ public class BikeyProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
-        final QueryParams queryParams = getQueryParams(uri, selection);
-        final int res = mBikeySQLiteOpenHelper.getWritableDatabase().update(queryParams.table, values, queryParams.selection, selectionArgs);
+        QueryParams queryParams = getQueryParams(uri, selection);
+        int res = mBikeySQLiteOpenHelper.getWritableDatabase().update(queryParams.table, values, queryParams.selection, selectionArgs);
         String notify;
         if (res != 0 && ((notify = uri.getQueryParameter(QUERY_NOTIFY)) == null || "true".equals(notify))) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -154,8 +155,8 @@ public class BikeyProvider extends ContentProvider {
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         if (BuildConfig.DEBUG) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
-        final QueryParams queryParams = getQueryParams(uri, selection);
-        final int res = mBikeySQLiteOpenHelper.getWritableDatabase().delete(queryParams.table, queryParams.selection, selectionArgs);
+        QueryParams queryParams = getQueryParams(uri, selection);
+        int res = mBikeySQLiteOpenHelper.getWritableDatabase().delete(queryParams.table, queryParams.selection, selectionArgs);
         String notify;
         if (res != 0 && ((notify = uri.getQueryParameter(QUERY_NOTIFY)) == null || "true".equals(notify))) {
             getContext().getContentResolver().notifyChange(uri, null);
@@ -165,12 +166,12 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        final String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
+        String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
         if (BuildConfig.DEBUG)
             Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
                     + " groupBy=" + groupBy);
-        final QueryParams queryParams = getQueryParams(uri, selection);
-        final Cursor res = mBikeySQLiteOpenHelper.getReadableDatabase().query(queryParams.table, projection, queryParams.selection, selectionArgs, groupBy,
+        QueryParams queryParams = getQueryParams(uri, selection);
+        Cursor res = mBikeySQLiteOpenHelper.getReadableDatabase().query(queryParams.table, projection, queryParams.selection, selectionArgs, groupBy,
                 null, sortOrder == null ? queryParams.orderBy : sortOrder);
         res.setNotificationUri(getContext().getContentResolver(), uri);
         return res;

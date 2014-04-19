@@ -41,4 +41,11 @@ public class Constants {
     public static final boolean PREF_RECORD_CADENCE_DEFAULT = false;
 
     public static final String PREF_CURRENT_RIDE_URI = "PREF_CURRENT_RIDE_URI";
+
+    public static final String PREF_RIDE_MAP_TYPE = "PREF_RIDE_MAP_TYPE";
+    public static final String PREF_RIDE_MAP_TYPE_NORMAL = "PREF_RIDE_MAP_TYPE_NORMAL";
+    public static final String PREF_RIDE_MAP_TYPE_SATELLITE = "PREF_RIDE_MAP_TYPE_SATELLITE";
+    public static final String PREF_RIDE_MAP_TYPE_TERRAIN = "PREF_RIDE_MAP_TYPE_TERRAIN";
+
+
 }

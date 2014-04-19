@@ -138,5 +138,9 @@
 
     <!-- Ride map -->
     <string name="ride_map_title">Ride</string>
+    <string name="ride_map_action_map">Map type</string>
+    <string name="ride_map_action_map_normal">Normal</string>
+    <string name="ride_map_action_map_satellite">Satellite</string>
+    <string name="ride_map_action_map_terrain">Terrain</string>
 
 </resources>

@@ -26,19 +26,24 @@ package org.jraf.android.bikey.app.ride.map;
 
 import java.util.List;
 
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
+import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
@@ -65,7 +70,6 @@ public class RideMapActivity extends FragmentActivity {
 
     private GoogleMap mMap;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,22 +81,84 @@ public class RideMapActivity extends FragmentActivity {
         ButterKnife.inject(this);
         tintedStatusBarHack();
 
-        // Add a padding since the map is below the action bar (and status bar on >= kitkat)
+        // Add a padding since the map is below the action bar (and status bar / nav bar on >= kitkat)
         int statusBarHeight = 0;
+        int navigationBarHeight = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             statusBarHeight = getStatusBarHeight();
+            navigationBarHeight = getNavigationBarHeight();
         }
-        getMap().setPadding(0, getActioBarHeight() + statusBarHeight, 0, 0);
+        getMap().setPadding(0, getActioBarHeight() + statusBarHeight, 0, navigationBarHeight);
+
+        updateMapType();
 
         loadData();
     }
 
+    private void updateMapType() {
+        String mapType = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.PREF_RIDE_MAP_TYPE, Constants.PREF_RIDE_MAP_TYPE_NORMAL);
+        switch (mapType) {
+            case Constants.PREF_RIDE_MAP_TYPE_NORMAL:
+                getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
+                break;
+            case Constants.PREF_RIDE_MAP_TYPE_SATELLITE:
+                getMap().setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                break;
+            case Constants.PREF_RIDE_MAP_TYPE_TERRAIN:
+                getMap().setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                break;
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ride_map, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        String mapType = PreferenceManager.getDefaultSharedPreferences(this).getString(Constants.PREF_RIDE_MAP_TYPE, Constants.PREF_RIDE_MAP_TYPE_NORMAL);
+        switch (mapType) {
+            case Constants.PREF_RIDE_MAP_TYPE_NORMAL:
+                menu.findItem(R.id.action_map_normal).setChecked(true);
+                break;
+            case Constants.PREF_RIDE_MAP_TYPE_SATELLITE:
+                menu.findItem(R.id.action_map_satellite).setChecked(true);
+                break;
+            case Constants.PREF_RIDE_MAP_TYPE_TERRAIN:
+                menu.findItem(R.id.action_map_terrain).setChecked(true);
+                break;
+        }
+        return super.onPrepareOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                return true;
+
+            case R.id.action_map_normal:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString(Constants.PREF_RIDE_MAP_TYPE, Constants.PREF_RIDE_MAP_TYPE_NORMAL)
+                        .commit();
+                invalidateOptionsMenu();
+                updateMapType();
+                return true;
+
+            case R.id.action_map_satellite:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString(Constants.PREF_RIDE_MAP_TYPE, Constants.PREF_RIDE_MAP_TYPE_SATELLITE)
+                        .commit();
+                invalidateOptionsMenu();
+                updateMapType();
+                return true;
+
+            case R.id.action_map_terrain:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putString(Constants.PREF_RIDE_MAP_TYPE, Constants.PREF_RIDE_MAP_TYPE_TERRAIN)
+                        .commit();
+                invalidateOptionsMenu();
+                updateMapType();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -110,21 +176,43 @@ public class RideMapActivity extends FragmentActivity {
     }
 
     private int getActioBarHeight() {
-        int paddingTop;
+        int res;
         // Retrieve the action bar height from the theme
         TypedArray a = getTheme().obtainStyledAttributes(R.style.Theme_Bikey_Map, new int[] { android.R.attr.actionBarSize });
-        paddingTop = a.getDimensionPixelSize(0, 0);
+        res = a.getDimensionPixelSize(0, 0);
         a.recycle();
-        return paddingTop;
+        return res;
     }
 
     private int getStatusBarHeight() {
-        int result = 0;
+        int res = 0;
         int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
+            res = getResources().getDimensionPixelSize(resourceId);
         }
-        return result;
+        return res;
+    }
+
+    private int getNavigationBarHeight() {
+        int res = 0;
+        if (!hasNavigationBar()) return 0;
+        int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            res = getResources().getDimensionPixelSize(resourceId);
+        }
+        return res;
+    }
+
+    private boolean hasNavigationBar() {
+        Resources res = getResources();
+        int resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
+        if (resourceId != 0) {
+            boolean hasNav = res.getBoolean(resourceId);
+
+            return hasNav;
+        }
+        // Fallback
+        return !ViewConfiguration.get(this).hasPermanentMenuKey();
     }
 
     //

@@ -51,7 +51,7 @@ public class RideAdapter extends ResourceCursorAdapter {
         super(context, R.layout.ride_list_item, null, 0);
 
         // Retrieve the default text secondary color from the theme
-        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.Theme, new int[] { android.R.attr.textColorSecondary });
+        TypedArray a = context.getTheme().obtainStyledAttributes(R.style.Theme_Bikey, new int[] { android.R.attr.textColorSecondary });
         int resId = a.getResourceId(0, 0);
         a.recycle();
         mColorDefault = context.getResources().getColorStateList(resId);

@@ -27,7 +27,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_actionbar_icon"
         android:label="@string/app_name"
-        android:theme="@style/Theme" >
+        android:theme="@style/Theme.Bikey" >
 
         <!-- Meta data for Maps api -->
         <meta-data
@@ -50,7 +50,7 @@
         <activity
             android:name="org.jraf.android.bikey.app.ride.list.RideListActivity"
             android:icon="@drawable/ic_launcher"
-            android:theme="@style/Theme.ActionBarLogo" >
+            android:theme="@style/Theme.Bikey.ActionBarLogo" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -68,12 +68,19 @@
             android:name="org.jraf.android.bikey.app.ride.detail.RideDetailActivity"
             android:label="@string/ride_detail_title" />
 
+        <!-- Ride map -->
+        <activity
+            android:name="org.jraf.android.bikey.app.ride.map.RideMapActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/ride_detail_title"
+            android:theme="@style/Theme.Bikey.Map" />
+
         <!-- Hud -->
         <activity
             android:name="org.jraf.android.bikey.app.hud.HudActivity"
             android:exported="true"
             android:parentActivityName="org.jraf.android.bikey.app.ride.list.RideListActivity"
-            android:theme="@style/Theme.Hud" >
+            android:theme="@style/Theme.Bikey.Hud" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.jraf.android.bikey.app.ride.list.RideListActivity" />

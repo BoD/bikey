@@ -44,6 +44,7 @@ import butterknife.OnClick;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.ride.map.RideMapActivity;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -108,6 +109,7 @@ public class RideDetailActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_detail);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRideUri = getIntent().getData();
 
@@ -125,6 +127,10 @@ public class RideDetailActivity extends FragmentActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
             case R.id.action_hud:
                 finish();
                 Intent intent = new Intent(this, HudActivity.class);
@@ -234,5 +240,8 @@ public class RideDetailActivity extends FragmentActivity {
     @OnClick(R.id.vieMapClickLayer)
     protected void onMapClicked() {
         Log.d();
+        Intent intent = new Intent(this, RideMapActivity.class);
+        intent.setData(mRideUri);
+        startActivity(intent);
     }
 }

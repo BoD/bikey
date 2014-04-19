@@ -24,6 +24,7 @@
  */
 package org.jraf.android.bikey.backend.provider;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -77,6 +78,23 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public boolean onCreate() {
+        if (BuildConfig.DEBUG) {
+            // Enable logging of SQL statements as they are executed.
+            try {
+                Class<?> sqliteDebugClass = Class.forName("android.database.sqlite.SQLiteDebug");
+                Field field = sqliteDebugClass.getDeclaredField("DEBUG_SQL_STATEMENTS");
+                field.setAccessible(true);
+                field.set(null, true);
+
+                // Uncomment the following block if you also want logging of execution time (more verbose)
+                // field = sqliteDebugClass.getDeclaredField("DEBUG_SQL_TIME");
+                // field.setAccessible(true);
+                // field.set(null, true);
+            } catch (Throwable t) {
+                if (BuildConfig.DEBUG) Log.w(TAG, "Could not enable SQLiteDebug logging", t);
+            }
+        }
+        
         mBikeySQLiteOpenHelper = BikeySQLiteOpenHelper.newInstance(getContext());
         return true;
     }

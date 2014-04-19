@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -11,10 +12,37 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin" >
 
+        <FrameLayout
+            android:id="@+id/conMap"
+            android:layout_width="match_parent"
+            android:layout_height="192dp"
+            android:layout_marginTop="@dimen/ride_detail_title_marginTop"
+            android:visibility="invisible" >
+
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:uiRotateGestures="false"
+                app:uiScrollGestures="false"
+                app:uiTiltGestures="false"
+                app:uiZoomControls="false"
+                app:uiZoomGestures="false" />
+
+            <View
+                android:id="@+id/vieMapClickLayer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground"
+                android:clickable="true" />
+        </FrameLayout>
+
         <TextView
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/ride_detail_title_marginTop"
             android:text="@string/ride_detail_dateTime_section" />
 
         <LinearLayout
@@ -22,7 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
+            android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
                 android:id="@+id/txtDateTimeDate"
@@ -38,7 +66,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
+            android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
                 android:id="@+id/txtDateTimeStart"
@@ -61,7 +89,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/detail_title_marginTop"
+            android:layout_marginTop="@dimen/ride_detail_title_marginTop"
             android:text="@string/ride_detail_duration_section" />
 
         <LinearLayout
@@ -69,7 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
+            android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
                 android:id="@+id/txtDurationMoving"
@@ -94,7 +122,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/detail_title_marginTop"
+            android:layout_marginTop="@dimen/ride_detail_title_marginTop"
             android:text="@string/ride_detail_distance_section" />
 
         <LinearLayout
@@ -102,7 +130,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
+            android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
                 android:id="@+id/txtDistanceTotal"
@@ -117,7 +145,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/detail_title_marginTop"
+            android:layout_marginTop="@dimen/ride_detail_title_marginTop"
             android:text="@string/ride_detail_speed_section" />
 
         <LinearLayout
@@ -125,7 +153,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
+            android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
                 android:id="@+id/txtSpeedAverage"
@@ -149,7 +177,7 @@
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/detail_title_marginTop"
+            android:layout_marginTop="@dimen/ride_detail_title_marginTop"
             android:text="@string/ride_detail_cadence_section" />
 
         <LinearLayout
@@ -157,7 +185,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="@dimen/detail_content_marginTop" >
+            android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
 
             <org.jraf.android.bikey.widget.LabelTextView
                 android:id="@+id/txtCadenceAverage"

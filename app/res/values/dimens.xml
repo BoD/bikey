@@ -3,8 +3,13 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- Hud -->
     <dimen name="hud_tabs_width">100dp</dimen>
-    <dimen name="detail_title_marginTop">16dp</dimen>
-    <dimen name="detail_content_marginTop">8dp</dimen>
+
+    <!-- Ride detail -->
+    <dimen name="ride_detail_title_marginTop">16dp</dimen>
+    <dimen name="ride_detail_content_marginTop">8dp</dimen>
+    <dimen name="ride_detail_map_padding">16dp</dimen>
 
 </resources>

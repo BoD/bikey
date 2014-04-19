@@ -25,6 +25,7 @@
 package org.jraf.android.bikey.app.ride.detail;
 
 import java.util.Date;
+import java.util.List;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -34,10 +35,12 @@ import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.hud.HudActivity;
@@ -49,6 +52,15 @@ import org.jraf.android.bikey.widget.LabelTextView;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.datetime.DateTimeUtil;
+import org.jraf.android.util.log.wrapper.Log;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 public class RideDetailActivity extends FragmentActivity {
     private Uri mRideUri;
@@ -85,6 +97,11 @@ public class RideDetailActivity extends FragmentActivity {
 
     @InjectView(R.id.txtCadenceMax)
     protected LabelTextView mTxtCadenceMax;
+
+    @InjectView(R.id.conMap)
+    protected FrameLayout mConMap;
+
+    private GoogleMap mMap;
 
 
     @Override
@@ -130,6 +147,7 @@ public class RideDetailActivity extends FragmentActivity {
             private Double mMovingDuration;
             private Float mAverageCadence;
             private Float mMaxCadence;
+            private List<LatLng> mLatLngArray;
 
             @Override
             protected void doInBackground() throws Throwable {
@@ -150,6 +168,7 @@ public class RideDetailActivity extends FragmentActivity {
                 mAverageCadence = logManager.getAverageCadence(rideUri);
                 mMaxCadence = logManager.getMaxCadence(rideUri);
 
+                mLatLngArray = logManager.getLatLngArray(rideUri, 100);
             }
 
             @Override
@@ -180,7 +199,40 @@ public class RideDetailActivity extends FragmentActivity {
                     a.mTxtCadenceMax.setVisibility(View.VISIBLE);
                     a.mTxtCadenceMax.setText(UnitUtil.formatCadence(mMaxCadence, true));
                 }
+
+                // Map
+                if (mLatLngArray.size() > 0) {
+                    PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
+                    polylineOptions.color(getResources().getColor(R.color.map_polyline));
+                    Polyline polyline = getMap().addPolyline(polylineOptions);
+                    // Calculate bounds
+                    LatLngBounds bounds = new LatLngBounds(mLatLngArray.get(0), mLatLngArray.get(0));
+                    for (LatLng latLng : mLatLngArray) {
+                        bounds = bounds.including(latLng);
+                    }
+                    int padding = getResources().getDimensionPixelSize(R.dimen.ride_detail_map_padding);
+                    getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
+
+                    mConMap.setVisibility(View.VISIBLE);
+                }
             }
         }).execute(getSupportFragmentManager());
+    }
+
+
+    /*
+     * Map.
+     */
+
+    private GoogleMap getMap() {
+        if (mMap == null) {
+            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+        }
+        return mMap;
+    }
+
+    @OnClick(R.id.vieMapClickLayer)
+    protected void onMapClicked() {
+        Log.d();
     }
 }

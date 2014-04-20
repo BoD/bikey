@@ -44,6 +44,7 @@ import android.widget.ListView;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 
 public class RideListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
     private RideAdapter mAdapter;
@@ -127,7 +128,10 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        getCallbacks().onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id));
+        RideCursor rideCursor = (RideCursor) mAdapter.getCursor();
+        rideCursor.moveToPosition(position);
+        RideState state = rideCursor.getState();
+        getCallbacks().onRideSelected(ContentUris.withAppendedId(RideColumns.CONTENT_URI, id), state);
     }
 
     private RideListCallbacks getCallbacks() {

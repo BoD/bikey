@@ -45,6 +45,7 @@ import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.export.kml.KmlExporter;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
@@ -124,8 +125,19 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
      */
 
     @Override
-    public void onRideSelected(Uri rideUri) {
-        startActivity(new Intent(null, rideUri, this, RideDetailActivity.class));
+    public void onRideSelected(Uri rideUri, RideState state) {
+        switch (state) {
+            case CREATED:
+            case ACTIVE:
+                // Go to the hud
+                startActivity(new Intent(null, rideUri, this, HudActivity.class));
+                break;
+
+            default:
+                // Go to detail
+                startActivity(new Intent(null, rideUri, this, RideDetailActivity.class));
+                break;
+        }
     }
 
 
@@ -234,7 +246,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             @Override
             protected void onPostExecuteOk() {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mCreatedRideUri, thiz, LogCollectorService.class));
-                onRideSelected(mCreatedRideUri);
+                startActivity(new Intent(null, mCreatedRideUri, thiz, HudActivity.class));
             }
         }).execute(getSupportFragmentManager());
     }

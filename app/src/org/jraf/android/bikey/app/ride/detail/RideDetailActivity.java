@@ -102,6 +102,12 @@ public class RideDetailActivity extends FragmentActivity {
     @InjectView(R.id.conMap)
     protected FrameLayout mConMap;
 
+    @InjectView(R.id.conDetailedInfo)
+    protected View mConDetailedInfo;
+
+    @InjectView(R.id.txtEmpty)
+    protected View mTxtEmpty;
+
     private GoogleMap mMap;
 
 
@@ -183,10 +189,19 @@ public class RideDetailActivity extends FragmentActivity {
                 if (mName != null) a.setTitle(mName);
                 a.mTxtDateTimeDate.setText(DateUtils.formatDateTime(a, mCreatedDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
                         | DateUtils.FORMAT_SHOW_YEAR));
-                if (mFirstActivatedDate != null)
+
+                if (mLatLngArray.isEmpty()) {
+                    // Special case: we have no points. Show empty screen.
+                    a.mConMap.setVisibility(View.GONE);
+                    a.mConDetailedInfo.setVisibility(View.GONE);
+                    a.mTxtEmpty.setVisibility(View.VISIBLE);
+                    return;
+                }
+
+                if (mFirstActivatedDate != null) {
                     a.mTxtDateTimeStart.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime(), DateUtils.FORMAT_SHOW_TIME));
-                if (mFirstActivatedDate != null)
                     a.mTxtDateTimeFinish.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime() + mDuration, DateUtils.FORMAT_SHOW_TIME));
+                }
                 if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration.longValue()));
                 a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
                 a.mTxtDistanceTotal.setText(UnitUtil.formatDistance((float) mDistance, true, .85f));
@@ -210,16 +225,16 @@ public class RideDetailActivity extends FragmentActivity {
                 if (mLatLngArray.size() > 0) {
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
                     polylineOptions.color(getResources().getColor(R.color.map_polyline));
-                    Polyline polyline = getMap().addPolyline(polylineOptions);
+                    Polyline polyline = a.getMap().addPolyline(polylineOptions);
                     // Calculate bounds
                     LatLngBounds bounds = new LatLngBounds(mLatLngArray.get(0), mLatLngArray.get(0));
                     for (LatLng latLng : mLatLngArray) {
                         bounds = bounds.including(latLng);
                     }
                     int padding = getResources().getDimensionPixelSize(R.dimen.ride_detail_map_padding);
-                    getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
+                    a.getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
 
-                    mConMap.setVisibility(View.VISIBLE);
+                    a.mConMap.setVisibility(View.VISIBLE);
                 }
             }
         }).execute(getSupportFragmentManager());

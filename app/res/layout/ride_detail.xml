@@ -194,6 +194,15 @@
                     android:paddingRight="8dp" />
             </LinearLayout>
 
+            <org.jraf.android.util.ui.graph.GraphView
+                android:id="@+id/grpSpeed"
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/ride_detail_content_marginTop"
+                android:background="#1000" />
+
             <TextView
                 android:id="@+id/txtCadenceSectionTitle"
                 style="?android:attr/listSeparatorTextViewStyle"
@@ -225,6 +234,15 @@
                     android:label="@string/ride_detail_cadence_max_label"
                     android:paddingRight="8dp" />
             </LinearLayout>
+
+            <org.jraf.android.util.ui.graph.GraphView
+                android:id="@+id/grpCadence"
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/ride_detail_content_marginTop"
+                android:background="#1000" />
         </LinearLayout>
     </LinearLayout>
 

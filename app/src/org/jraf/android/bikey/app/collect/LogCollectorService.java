@@ -39,6 +39,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.preview.support.wearable.notifications.WearableNotifications;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
@@ -246,12 +247,12 @@ public class LogCollectorService extends Service {
      */
 
     private Notification createNotification() {
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
-        builder.setOngoing(true);
-        builder.setSmallIcon(R.drawable.ic_stat_collecting);
-        builder.setTicker(getString(R.string.service_notification_ticker));
-        builder.setContentTitle(getString(R.string.app_name));
-        builder.setContentText(getString(R.string.service_notification_text));
+        NotificationCompat.Builder mainNotifBuilder = new NotificationCompat.Builder(this);
+        mainNotifBuilder.setOngoing(true);
+        mainNotifBuilder.setSmallIcon(R.drawable.ic_stat_collecting);
+        mainNotifBuilder.setTicker(getString(R.string.service_notification_ticker));
+        mainNotifBuilder.setContentTitle(getString(R.string.app_name));
+        mainNotifBuilder.setContentText(getString(R.string.service_notification_text));
 
         //        Intent intent = new Intent(this, DisplayActivity.class).setData(mCollectingRideUri);
         //        builder.setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
@@ -261,15 +262,25 @@ public class LogCollectorService extends Service {
         Log.d("mCollectingRideUri=" + mCollectingRideUri);
         Intent intent = new Intent(this, DisplayActivity.class).setData(mCollectingRideUri);
         taskStackBuilder.addNextIntent(intent);
-        builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
+        mainNotifBuilder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
 
         //TODO
         //        builder.addAction(R.drawable.ic_action_stop, getString(R.string.service_notification_action_stop),
         //                PendingIntent.getBroadcast(this, 0, new Intent(ACTION_DISABLE), PendingIntent.FLAG_CANCEL_CURRENT));
         //        builder.addAction(R.drawable.ic_action_logs, getString(R.string.service_notification_action_logs),
         //                PendingIntent.getActivity(this, 0, new Intent(this, LogActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
-        Notification notification = builder.build();
-        return notification;
+
+
+        // Android Wear
+
+        // Speed page
+        NotificationCompat.Builder speedNotifBuilder = new NotificationCompat.Builder(this);
+        speedNotifBuilder.setContentText("14.5 Km/h");
+
+        WearableNotifications.Builder wearableNotificationBuilder = new WearableNotifications.Builder(mainNotifBuilder);
+        //        wearableNotificationBuilder.addPage(speedNotifBuilder.build()).build();
+
+        return wearableNotificationBuilder.build();
     }
 
     private void dismissNotification() {

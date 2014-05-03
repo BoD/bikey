@@ -101,8 +101,9 @@
     <string name="saveToStorage_successToast">Fichier enregistré dans %1$s</string>
 
     <!-- Preferences -->
-    <string name="preference_title">Paramètres</string><string name="preference_category_general_title">Général</string>
-<string name="preference_units_title">Unités</string>
+    <string name="preference_title">Paramètres</string>
+    <string name="preference_category_general_title">Général</string>
+    <string name="preference_units_title">Unités</string>
     <string name="preference_listenToHeadsetButton_title">Bouton d\'écouteurs</string>
     <string name="preference_listenToHeadsetButton_summary">Arrêter / reprendre le parcours en cours avec le bouton</string>
     <string name="preference_recordCadence_title">Enregistrer la cadence</string>
@@ -126,5 +127,32 @@
 
     <!-- Quick start -->
     <string name="shortcut_title">Bikey: Démarrage Rapide</string>
+
+    <!-- Ride detail -->
+    <string name="ride_detail_title">Parcours</string>
+    <string name="ride_detail_dateTime_section">Date &amp; Heure</string>
+    <string name="ride_detail_dateTime_date_label">Date</string>
+    <string name="ride_detail_dateTime_start_label">Début</string>
+    <string name="ride_detail_dateTime_finish_label">Fin</string>
+    <string name="ride_detail_distance_section">Distance</string>
+    <string name="ride_detail_distance_total_label">Totale</string>
+    <string name="ride_detail_duration_section">Durée</string>
+    <string name="ride_detail_duration_moving_label">En mouvement</string>
+    <string name="ride_detail_duration_total_label">Totale</string>
+    <string name="ride_detail_speed_section">Vitesse</string>
+    <string name="ride_detail_speed_average_label">Moyenne en mouv.</string>
+    <string name="ride_detail_speed_max_label">Max</string>
+    <string name="ride_detail_cadence_section">Cadence</string>
+    <string name="ride_detail_cadence_average_label">Moyenne</string>
+    <string name="ride_detail_cadence_max_label">Max</string>
+    <string name="ride_detail_action_hud">AFFICHEUR</string>
+    <string name="ride_detail_empty">Ce parcours n\`a aucune donnée.</string>
+
+    <!-- Ride map -->
+    <string name="ride_map_title">Parcours</string>
+    <string name="ride_map_action_map">Type de carte</string>
+    <string name="ride_map_action_map_normal">Normale</string>
+    <string name="ride_map_action_map_satellite">Satellite</string>
+    <string name="ride_map_action_map_terrain">Physique</string>
 
 </resources>

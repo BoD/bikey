@@ -77,6 +77,15 @@
             android:autoLink="all"
             android:text="@string/about_sources"
             android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColorLink="#33b5e5" /><TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:autoLink="all"
+            android:text="@string/about_gplusCommunity"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColorLink="#33b5e5" />
 
         <View

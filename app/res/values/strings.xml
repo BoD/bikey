@@ -107,6 +107,7 @@
     <string name="about_email" translatable="false">→ BoD@JRAF.org</string>
     <string name="about_web" translatable="false">→ JRAF.org/android</string>
     <string name="about_sources" translatable="false">→ github.com/BoD/bikey</string>
+    <string name="about_gplusCommunity" translatable="false">→ plus.google.com/communities/112883758989838442968</string>
     <string name="about_btnShare">Share app</string>
     <string name="about_btnRate">Rate app</string>
     <string name="about_btnOtherApps">Other apps</string>

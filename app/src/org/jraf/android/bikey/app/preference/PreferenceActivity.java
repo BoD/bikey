@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
+import android.view.MenuItem;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
@@ -48,8 +49,20 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
         PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
 
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
+
+        getActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     /*
      * Cadence confirmation.

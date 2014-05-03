@@ -44,6 +44,7 @@ public class AboutActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         ((TextView) findViewById(R.id.txtInfo1)).setText(Html.fromHtml(getString(R.string.about_txtInfo1)));
         findViewById(R.id.btnShare).setOnClickListener(mShareOnClickListener);
         findViewById(R.id.btnRate).setOnClickListener(mRateOnClickListener);
@@ -60,6 +61,10 @@ public class AboutActivity extends Activity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+
             case R.id.menu_sendLogs:
                 ACRA.getErrorReporter().handleSilentException(new Exception("User clicked on 'Send logs'"));
                 Toast.makeText(this, R.string.about_sendingLogsToast, Toast.LENGTH_SHORT).show();

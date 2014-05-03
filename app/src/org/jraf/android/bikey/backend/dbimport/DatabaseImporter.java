@@ -83,18 +83,18 @@ public class DatabaseImporter {
         operations.add(ContentProviderOperation.newDelete(RideColumns.CONTENT_URI).build());
         Uri insertUri = new Uri.Builder().authority(BikeyProvider.AUTHORITY).appendPath(RideColumns.TABLE_NAME)
                 .appendQueryParameter(BikeyProvider.QUERY_NOTIFY, "false").build();
-        buildInsertOperations(dbImport, insertUri, RideColumns.TABLE_NAME, operations);
+        buildInsertOperations(context, dbImport, insertUri, RideColumns.TABLE_NAME, operations);
         insertUri = new Uri.Builder().authority(BikeyProvider.AUTHORITY).appendPath(LogColumns.TABLE_NAME)
                 .appendQueryParameter(BikeyProvider.QUERY_NOTIFY, "false").build();
-        buildInsertOperations(dbImport, insertUri, LogColumns.TABLE_NAME, operations);
-        context.getContentResolver().applyBatch(BikeyProvider.AUTHORITY, operations);
+        buildInsertOperations(context, dbImport, insertUri, LogColumns.TABLE_NAME, operations);
         dbImport.close();
     }
 
     /**
      * Read all cells from the given table from the dbImport database, and add corresponding insert operations to the operations parameter.
      */
-    private static void buildInsertOperations(SQLiteDatabase dbImport, Uri uri, String table, ArrayList<ContentProviderOperation> operations) {
+    private static void buildInsertOperations(Context context, SQLiteDatabase dbImport, Uri uri, String table, ArrayList<ContentProviderOperation> operations)
+            throws RemoteException, OperationApplicationException {
         Log.d();
         Cursor c = dbImport.query(false, table, null, null, null, null, null, null, null);
         if (c != null) {
@@ -109,7 +109,14 @@ public class DatabaseImporter {
                             builder.withValue(columnName, value);
                         }
                         operations.add(builder.build());
+                        if (operations.size() >= 100) {
+                            context.getContentResolver().applyBatch(BikeyProvider.AUTHORITY, operations);
+                            operations.clear();
+                        }
+
                     } while (c.moveToNext());
+                    if (operations.size() > 0) context.getContentResolver().applyBatch(BikeyProvider.AUTHORITY, operations);
+
                 }
             } finally {
                 c.close();

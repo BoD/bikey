@@ -24,7 +24,6 @@
  */
 package org.jraf.android.bikey.app.ride.detail;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -68,6 +67,8 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class RideDetailActivity extends FragmentActivity {
+    private static final int POINTS_TO_GRAPH = 100;
+
     private Uri mRideUri;
 
     @InjectView(R.id.txtDateTimeDate)
@@ -163,12 +164,12 @@ public class RideDetailActivity extends FragmentActivity {
             private Date mCreatedDate;
             private long mDuration;
             private double mDistance;
-            private double mAverageMovingSpeed;
-            private double mMaxSpeed;
+            private float mAverageMovingSpeed;
+            private float mMaxSpeed;
             private Date mFirstActivatedDate;
             private Double mMovingDuration;
             private Float mAverageCadence;
-            private Float mMaxCadence;
+            private double mMaxCadence;
             private List<LatLng> mLatLngArray;
             private float[] mSpeedArray;
             private float[] mCadenceArray;
@@ -192,23 +193,15 @@ public class RideDetailActivity extends FragmentActivity {
                 mAverageCadence = logManager.getAverageCadence(rideUri);
                 mMaxCadence = logManager.getMaxCadence(rideUri);
 
-                mLatLngArray = logManager.getLatLngArray(rideUri, 100);
+                mLatLngArray = logManager.getLatLngArray(rideUri, POINTS_TO_GRAPH);
 
-                List<Float> speedList = logManager.getSpeedArray(rideUri, 500); //TODO find a better number 
+                List<Float> speedList = logManager.getSpeedArray(rideUri, POINTS_TO_GRAPH);
                 mSpeedArray = CollectionUtil.unwrap(speedList.toArray(new Float[speedList.size()]));
-                mSpeedArray = MathUtil.getMovingAverage(mSpeedArray, 50);
-                // Forget the 10 first speeds (to smooth the graph)
-                if (mSpeedArray.length >= 10) {
-                    mSpeedArray = Arrays.copyOfRange(mSpeedArray, 10, mSpeedArray.length);
-                }
+                mSpeedArray = MathUtil.getMovingAverage(mSpeedArray, mSpeedArray.length / 10);
 
-                List<Float> cadenceList = logManager.getCadenceArray(rideUri, 500); //TODO find a better number 
+                List<Float> cadenceList = logManager.getCadenceArray(rideUri, POINTS_TO_GRAPH);
                 mCadenceArray = CollectionUtil.unwrap(cadenceList.toArray(new Float[cadenceList.size()]));
-                mCadenceArray = MathUtil.getMovingAverage(mCadenceArray, 50);
-                // Forget the 10 first speeds (to smooth the graph)
-                if (mCadenceArray.length >= 10) {
-                    mCadenceArray = Arrays.copyOfRange(mCadenceArray, 10, mCadenceArray.length);
-                }
+                mCadenceArray = MathUtil.getMovingAverage(mCadenceArray, mCadenceArray.length / 10);
             }
 
             @Override
@@ -234,8 +227,8 @@ public class RideDetailActivity extends FragmentActivity {
                 a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
                 a.mTxtDistanceTotal.setText(UnitUtil.formatDistance((float) mDistance, true, .85f));
 
-                a.mTxtSpeedAverage.setText(UnitUtil.formatSpeed((float) mAverageMovingSpeed, true, .85f));
-                a.mTxtSpeedMax.setText(UnitUtil.formatSpeed((float) mMaxSpeed, true, .85f));
+                a.mTxtSpeedAverage.setText(UnitUtil.formatSpeed(mAverageMovingSpeed, true, .85f));
+                a.mTxtSpeedMax.setText(UnitUtil.formatSpeed(mMaxSpeed, true, .85f));
 
                 // Cadence
                 if (mAverageCadence == null) {
@@ -248,8 +241,9 @@ public class RideDetailActivity extends FragmentActivity {
                     a.mTxtCadenceAverage.setVisibility(View.VISIBLE);
                     a.mTxtCadenceAverage.setText(UnitUtil.formatCadence(mAverageCadence, true));
                     a.mTxtCadenceMax.setVisibility(View.VISIBLE);
-                    a.mTxtCadenceMax.setText(UnitUtil.formatCadence(mMaxCadence, true));
+                    a.mTxtCadenceMax.setText(UnitUtil.formatCadence((float) mMaxCadence, true));
                     a.mGrpCadence.setVisibility(View.VISIBLE);
+                    a.mGrpCadence.setColor(0, a.getResources().getColor(R.color.graph_line));
                     a.mGrpCadence.setValues(0, mCadenceArray);
                 }
 
@@ -270,6 +264,7 @@ public class RideDetailActivity extends FragmentActivity {
                 }
 
                 // Speed graph
+                a.mGrpSpeed.setColor(0, a.getResources().getColor(R.color.graph_line));
                 a.mGrpSpeed.setValues(0, mSpeedArray);
             }
         }).execute(getSupportFragmentManager());

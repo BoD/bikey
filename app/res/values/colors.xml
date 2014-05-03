@@ -10,6 +10,7 @@
     <color name="tab_bg_pressed">#DD33b5e5</color>
     <color name="tab_bg_checked">#D09c</color>
     <color name="map_polyline">@android:color/holo_blue_dark</color>
+    <color name="graph_line">@android:color/holo_blue_dark</color>
     <color name="action_bar_translucent_bg">#cddd</color>
 
 </resources>

@@ -116,16 +116,44 @@ public class LogManager {
         }
     }
 
+    /**
+     * Note: the top 10% points are discarded to account for imprecise values.
+     */
     @Background
-    public double getAverageMovingSpeed(Uri rideUri) {
+    public float getAverageMovingSpeed(Uri rideUri) {
+        // First get the max
+        float max = getMaxSpeed(rideUri);
+
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DISTANCE + ")/sum(" + LogColumns.DURATION + ")*1000" };
         LogSelection where = new LogSelection();
-        where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S);
+        where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S).and().speedLtEq(max);
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
         try {
             if (!c.moveToNext()) return 0;
-            return c.getDouble(0);
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    /**
+     * Note: the top 10% points are discarded to account for imprecise values.
+     */
+    @Background
+    public Float getAverageCadence(Uri rideUri) {
+        // First get the max
+        float max = getMaxCadence(rideUri);
+
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "avg(" + LogColumns.CADENCE + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId).and().cadenceLtEq(max);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) return null;
+            if (c.isNull(0)) return null;
+            return c.getFloat(0);
         } finally {
             c.close();
         }
@@ -147,20 +175,38 @@ public class LogManager {
         }
     }
 
+    /**
+     * Note: the top 10% points are discarded to account for imprecise values.
+     */
     @Background
-    public double getMaxSpeed(Uri rideUri) {
+    public float getMax(Uri rideUri, String column) {
+        // Get the point count to discard the fastest 10% speed
+        Integer count = getLogCount(rideUri);
+        if (count == null) return 0;
+
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { LogColumns.SPEED };
+        String[] projection = { column };
         LogSelection where = new LogSelection();
-        where.rideId(rideId);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), LogColumns.SPEED + " DESC LIMIT 30");
+        where.rideId(rideId).and().addRaw(column + " IS NOT NULL");
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), column + " DESC LIMIT " + count / 10);
         try {
             if (!c.moveToLast()) return 0;
-            return c.getDouble(0);
+            return c.getFloat(0);
         } finally {
             c.close();
         }
     }
+
+    @Background
+    public float getMaxSpeed(Uri rideUri) {
+        return getMax(rideUri, LogColumns.SPEED);
+    }
+
+    @Background
+    public float getMaxCadence(Uri rideUri) {
+        return getMax(rideUri, LogColumns.CADENCE);
+    }
+
 
     @Background
     public Long getFirstLogDate(Uri rideUri) {
@@ -189,37 +235,6 @@ public class LogManager {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
             return c.getLong(0);
-        } finally {
-            c.close();
-        }
-    }
-
-    @Background
-    public Float getAverageCadence(Uri rideUri) {
-        long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "avg(" + LogColumns.CADENCE + ")" };
-        LogSelection where = new LogSelection();
-        where.rideId(rideId);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
-        try {
-            if (!c.moveToNext()) return null;
-            if (c.isNull(0)) return null;
-            return c.getFloat(0);
-        } finally {
-            c.close();
-        }
-    }
-
-    @Background
-    public Float getMaxCadence(Uri rideUri) {
-        long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { LogColumns.CADENCE };
-        LogSelection where = new LogSelection();
-        where.rideId(rideId);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), LogColumns.CADENCE + " DESC LIMIT 30");
-        try {
-            if (!c.moveToLast()) return 0f;
-            return c.getFloat(0);
         } finally {
             c.close();
         }

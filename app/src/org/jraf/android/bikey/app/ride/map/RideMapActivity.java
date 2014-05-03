@@ -215,26 +215,6 @@ public class RideMapActivity extends FragmentActivity {
         return !ViewConfiguration.get(this).hasPermanentMenuKey();
     }
 
-    //
-    //    @Override
-    //    public boolean onCreateOptionsMenu(Menu menu) {
-    //        getMenuInflater().inflate(R.menu.ride_detail, menu);
-    //        return true;
-    //    }
-    //
-    //    @Override
-    //    public boolean onOptionsItemSelected(MenuItem item) {
-    //        switch (item.getItemId()) {
-    //            case R.id.action_hud:
-    //                finish();
-    //                Intent intent = new Intent(this, HudActivity.class);
-    //                intent.setData(mRideUri);
-    //                startActivity(intent);
-    //                return true;
-    //        }
-    //        return super.onOptionsItemSelected(item);
-    //    }
-    //
     private void loadData() {
         new TaskFragment(new Task<RideMapActivity>() {
             private String mName;

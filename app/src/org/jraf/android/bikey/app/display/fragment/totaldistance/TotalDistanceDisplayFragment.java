@@ -22,15 +22,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment.totaldistance;
+package org.jraf.android.bikey.app.display.fragment.totaldistance;
 
-import org.jraf.android.bikey.app.hud.fragment.LogHudFragment;
+import org.jraf.android.bikey.app.display.fragment.LogDisplayFragment;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.util.UnitUtil;
 
-public class TotalDistanceHudFragment extends LogHudFragment {
-    public static TotalDistanceHudFragment newInstance() {
-        return new TotalDistanceHudFragment();
+public class TotalDistanceDisplayFragment extends LogDisplayFragment {
+    public static TotalDistanceDisplayFragment newInstance() {
+        return new TotalDistanceDisplayFragment();
     }
 
     @Override

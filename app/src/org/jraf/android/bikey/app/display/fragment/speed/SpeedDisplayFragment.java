@@ -22,21 +22,21 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment.speed;
+package org.jraf.android.bikey.app.display.fragment.speed;
 
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
 
-import org.jraf.android.bikey.app.hud.fragment.SimpleHudFragment;
+import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.location.Speedometer;
 import org.jraf.android.bikey.util.UnitUtil;
 
-public class SpeedHudFragment extends SimpleHudFragment {
-    public static SpeedHudFragment newInstance() {
-        return new SpeedHudFragment();
+public class SpeedDisplayFragment extends SimpleDisplayFragment {
+    public static SpeedDisplayFragment newInstance() {
+        return new SpeedDisplayFragment();
     }
 
     @Override

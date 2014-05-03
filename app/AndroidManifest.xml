@@ -75,12 +75,12 @@
             android:label="@string/ride_detail_title"
             android:theme="@style/Theme.Bikey.Map" />
 
-        <!-- Hud -->
+        <!-- Display -->
         <activity
-            android:name="org.jraf.android.bikey.app.hud.HudActivity"
+            android:name="org.jraf.android.bikey.app.display.DisplayActivity"
             android:exported="true"
             android:parentActivityName="org.jraf.android.bikey.app.ride.list.RideListActivity"
-            android:theme="@style/Theme.Bikey.Hud" >
+            android:theme="@style/Theme.Bikey.Display" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="org.jraf.android.bikey.app.ride.list.RideListActivity" />

@@ -48,22 +48,22 @@
     <string name="ride_list_mergedRide">Merged ride</string>
     <string name="ride_list_mergedRide_append">%1$s (merged)</string>
 
-    <!-- Hud -->
-    <string name="hud_tab_speed">Speed</string>
-    <string name="hud_tab_duration">Dur.</string>
-    <string name="hud_tab_distance">Dist.</string>
-    <string name="hud_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
-    <string name="hud_tab_compass">Comp.</string>
-    <string name="hud_tab_currentTime">Cur. time</string>
-    <string name="hud_title_speed">Speed</string>
-    <string name="hud_title_duration">Duration</string>
-    <string name="hud_title_distance">Distance</string>
-    <string name="hud_title_averageMovingSpeed">Average moving speed</string>
-    <string name="hud_title_compass"></string>
-    <string name="hud_title_currentTime">Current time</string>
-    <string name="hud_chkRecord_created">Start</string>
-    <string name="hud_chkRecord_active">Recording</string>
-    <string name="hud_chkRecord_paused">Resume</string>
+    <!-- Display -->
+    <string name="display_tab_speed">Speed</string>
+    <string name="display_tab_duration">Dur.</string>
+    <string name="display_tab_distance">Dist.</string>
+    <string name="display_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
+    <string name="display_tab_compass">Comp.</string>
+    <string name="display_tab_currentTime">Cur. time</string>
+    <string name="display_title_speed">Speed</string>
+    <string name="display_title_duration">Duration</string>
+    <string name="display_title_distance">Distance</string>
+    <string name="display_title_averageMovingSpeed">Average moving speed</string>
+    <string name="display_title_compass"></string>
+    <string name="display_title_currentTime">Current time</string>
+    <string name="display_chkRecord_created">Start</string>
+    <string name="display_chkRecord_active">Recording</string>
+    <string name="display_chkRecord_paused">Resume</string>
 
     <!-- Export -->
     <string name="export_failToast">Could not export data. Is external storage available?</string>
@@ -135,7 +135,7 @@
     <string name="ride_detail_cadence_section">Cadence</string>
     <string name="ride_detail_cadence_average_label">Average</string>
     <string name="ride_detail_cadence_max_label">Max</string>
-    <string name="ride_detail_action_hud">DISPLAY</string>
+    <string name="ride_detail_action_display">DISPLAY</string>
     <string name="ride_detail_empty">This ride has no data.</string>
 
     <!-- Ride map -->

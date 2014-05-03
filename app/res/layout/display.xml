@@ -3,7 +3,7 @@
     android:id="@+id/conRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="org.jraf.android.bikey.app.hud.HudActivity" >
+    tools:context="org.jraf.android.bikey.app.display.DisplayActivity" >
 
     <FrameLayout
         android:id="@+id/conFragments"
@@ -25,79 +25,78 @@
 
     <LinearLayout
         android:id="@+id/conTabsA"
-        android:layout_width="@dimen/hud_tabs_width"
-        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/display_tabs_width"
         android:layout_alignParentTop="true"
         android:background="@color/tab_bar_bg"
         android:divider="?android:attr/dividerHorizontal"
         android:dividerPadding="12dp"
         android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:showDividers="middle"
         android:weightSum="3" >
 
         <CheckBox
             android:id="@+id/chkTabSpeed"
             style="@style/tab"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/hud_tab_speed" />
+            android:text="@string/display_tab_speed" />
 
         <CheckBox
             android:id="@+id/chkTabDuration"
             style="@style/tab"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/hud_tab_duration" />
+            android:text="@string/display_tab_duration" />
 
         <CheckBox
             android:id="@+id/chkTabDistance"
             style="@style/tab"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/hud_tab_distance" />
+            android:text="@string/display_tab_distance" />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/conTabsB"
-        android:layout_width="@dimen/hud_tabs_width"
-        android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/display_tabs_width"
+        android:layout_alignParentBottom="true"
         android:background="@color/tab_bar_bg"
         android:divider="?android:attr/dividerHorizontal"
         android:dividerPadding="12dp"
         android:gravity="center_vertical"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:showDividers="middle"
         android:weightSum="3" >
 
         <CheckBox
             android:id="@+id/chkTabAverageMovingSpeed"
             style="@style/tab"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/hud_tab_averageMovingSpeed" />
+            android:text="@string/display_tab_averageMovingSpeed" />
 
         <CheckBox
             android:id="@+id/chkTabCompass"
             style="@style/tab"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/hud_tab_compass" />
+            android:text="@string/display_tab_compass" />
 
         <CheckBox
             android:id="@+id/chkTabCurrentTime"
             style="@style/tab"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
+            android:layout_width="0px"
+            android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/hud_tab_currentTime" />
+            android:text="@string/display_tab_currentTime" />
     </LinearLayout>
 
     <TextView
@@ -111,13 +110,11 @@
     <org.jraf.android.util.ui.checkable.CheckableRelativeLayout
         android:id="@+id/chkRecord"
         style="@style/tab"
-        android:layout_width="0px"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@+id/conTabsB"
-        android:layout_toRightOf="@+id/conTabsA"
+        android:layout_below="@+id/conTabsA"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="8dp"
         android:background="@drawable/record_bg"
         android:clickable="true" >
 
@@ -127,7 +124,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:text="@string/hud_chkRecord_created"
+            android:text="@string/display_chkRecord_created"
             android:textAppearance="?android:attr/textAppearanceLarge" />
     </org.jraf.android.util.ui.checkable.CheckableRelativeLayout>
 

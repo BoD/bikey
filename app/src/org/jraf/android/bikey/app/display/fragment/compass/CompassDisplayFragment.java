@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment.compass;
+package org.jraf.android.bikey.app.display.fragment.compass;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -32,24 +32,24 @@ import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.backend.compass.CompassListener;
 import org.jraf.android.bikey.backend.compass.CompassManager;
 import org.jraf.android.util.app.base.BaseFragment;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class CompassHudFragment extends BaseFragment<HudActivity> {
+public class CompassDisplayFragment extends BaseFragment<DisplayActivity> {
     private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
 
-    public static CompassHudFragment newInstance() {
-        return new CompassHudFragment();
+    public static CompassDisplayFragment newInstance() {
+        return new CompassDisplayFragment();
     }
 
     private ImageView mImgCompass;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View res = inflater.inflate(R.layout.hud_compass, container, false);
+        View res = inflater.inflate(R.layout.display_compass, container, false);
         mImgCompass = (ImageView) res.findViewById(R.id.imgCompass);
         return res;
     }

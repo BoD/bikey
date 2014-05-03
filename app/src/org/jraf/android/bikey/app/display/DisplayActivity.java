@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud;
+package org.jraf.android.bikey.app.display;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
@@ -50,12 +50,12 @@ import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
-import org.jraf.android.bikey.app.hud.fragment.averagemovingspeed.AverageMovingSpeedHudFragment;
-import org.jraf.android.bikey.app.hud.fragment.compass.CompassHudFragment;
-import org.jraf.android.bikey.app.hud.fragment.currenttime.CurrentTimeHudFragment;
-import org.jraf.android.bikey.app.hud.fragment.elapsedtime.ElapsedTimeHudFragment;
-import org.jraf.android.bikey.app.hud.fragment.speed.SpeedHudFragment;
-import org.jraf.android.bikey.app.hud.fragment.totaldistance.TotalDistanceHudFragment;
+import org.jraf.android.bikey.app.display.fragment.averagemovingspeed.AverageMovingSpeedDisplayFragment;
+import org.jraf.android.bikey.app.display.fragment.compass.CompassDisplayFragment;
+import org.jraf.android.bikey.app.display.fragment.currenttime.CurrentTimeDisplayFragment;
+import org.jraf.android.bikey.app.display.fragment.elapsedtime.ElapsedTimeDisplayFragment;
+import org.jraf.android.bikey.app.display.fragment.speed.SpeedDisplayFragment;
+import org.jraf.android.bikey.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
@@ -65,7 +65,7 @@ import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
 
-public class HudActivity extends BaseFragmentActivity {
+public class DisplayActivity extends BaseFragmentActivity {
     private static final long DELAY_HIDE_CONTROLS = 4500;
 
     private Handler mHandler = new Handler();
@@ -91,7 +91,7 @@ public class HudActivity extends BaseFragmentActivity {
 
         mRideUri = getIntent().getData();
 
-        setContentView(R.layout.hud);
+        setContentView(R.layout.display);
 
         mChkRecord = (CheckableRelativeLayout) findViewById(R.id.chkRecord);
         mChkRecord.setEnabled(false);
@@ -144,18 +144,18 @@ public class HudActivity extends BaseFragmentActivity {
                 switch (mRideState) {
                     case CREATED:
                         mChkRecord.setChecked(false, false);
-                        mChkRecordText.setText(R.string.hud_chkRecord_created);
+                        mChkRecordText.setText(R.string.display_chkRecord_created);
                         break;
 
                     case ACTIVE:
                         mChkRecord.setChecked(true, false);
-                        mChkRecordText.setText(R.string.hud_chkRecord_active);
+                        mChkRecordText.setText(R.string.display_chkRecord_active);
                         if (!mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.start();
                         break;
 
                     case PAUSED:
                         mChkRecord.setChecked(false, false);
-                        mChkRecordText.setText(R.string.hud_chkRecord_paused);
+                        mChkRecordText.setText(R.string.display_chkRecord_paused);
                         if (mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.cancel();
                         mChkRecordText.setAlpha(1f);
 
@@ -195,12 +195,12 @@ public class HudActivity extends BaseFragmentActivity {
     private void setupFragments(int currentVisibleIndex) {
         mFragmentCycler = new FragmentCycler(R.id.conFragments, mTxtTitle);
         mFragmentCycler.setCurrentVisibleIndex(currentVisibleIndex);
-        mFragmentCycler.add(this, SpeedHudFragment.newInstance(), R.id.chkTabSpeed, R.string.hud_title_speed);
-        mFragmentCycler.add(this, ElapsedTimeHudFragment.newInstance(), R.id.chkTabDuration, R.string.hud_title_duration);
-        mFragmentCycler.add(this, TotalDistanceHudFragment.newInstance(), R.id.chkTabDistance, R.string.hud_title_distance);
-        mFragmentCycler.add(this, AverageMovingSpeedHudFragment.newInstance(), R.id.chkTabAverageMovingSpeed, R.string.hud_title_averageMovingSpeed);
-        mFragmentCycler.add(this, CompassHudFragment.newInstance(), R.id.chkTabCompass, R.string.hud_title_compass);
-        mFragmentCycler.add(this, CurrentTimeHudFragment.newInstance(), R.id.chkTabCurrentTime, R.string.hud_title_currentTime);
+        mFragmentCycler.add(this, SpeedDisplayFragment.newInstance(), R.id.chkTabSpeed, R.string.display_title_speed);
+        mFragmentCycler.add(this, ElapsedTimeDisplayFragment.newInstance(), R.id.chkTabDuration, R.string.display_title_duration);
+        mFragmentCycler.add(this, TotalDistanceDisplayFragment.newInstance(), R.id.chkTabDistance, R.string.display_title_distance);
+        mFragmentCycler.add(this, AverageMovingSpeedDisplayFragment.newInstance(), R.id.chkTabAverageMovingSpeed, R.string.display_title_averageMovingSpeed);
+        mFragmentCycler.add(this, CompassDisplayFragment.newInstance(), R.id.chkTabCompass, R.string.display_title_compass);
+        mFragmentCycler.add(this, CurrentTimeDisplayFragment.newInstance(), R.id.chkTabCurrentTime, R.string.display_title_currentTime);
         mFragmentCycler.show(this);
     }
 
@@ -285,11 +285,11 @@ public class HudActivity extends BaseFragmentActivity {
             Log.d("isChecked=" + isChecked);
             if (isChecked) {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mRideUri, thiz, LogCollectorService.class));
-                mChkRecordText.setText(R.string.hud_chkRecord_active);
+                mChkRecordText.setText(R.string.display_chkRecord_active);
                 //                mChkRecordTextAnimator.start();
             } else {
                 startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, mRideUri, thiz, LogCollectorService.class));
-                mChkRecordText.setText(R.string.hud_chkRecord_paused);
+                mChkRecordText.setText(R.string.display_chkRecord_paused);
                 //                mChkRecordTextAnimator.cancel();
                 //                mChkRecordText.setAlpha(1f);
             }
@@ -321,7 +321,7 @@ public class HudActivity extends BaseFragmentActivity {
         public void onActivated(Uri rideUri) {
             if (!rideUri.equals(mRideUri)) return;
             mChkRecord.setChecked(true, false);
-            mChkRecordText.setText(R.string.hud_chkRecord_active);
+            mChkRecordText.setText(R.string.display_chkRecord_active);
             if (!mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.start();
         }
 
@@ -329,7 +329,7 @@ public class HudActivity extends BaseFragmentActivity {
         public void onPaused(Uri rideUri) {
             if (!rideUri.equals(mRideUri)) return;
             mChkRecord.setChecked(false, false);
-            mChkRecordText.setText(R.string.hud_chkRecord_paused);
+            mChkRecordText.setText(R.string.display_chkRecord_paused);
             if (mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.cancel();
             mChkRecordText.setAlpha(1f);
         }
@@ -368,13 +368,13 @@ public class HudActivity extends BaseFragmentActivity {
         float percentY;
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             int fragmentWidth = mConFragments.getWidth();
-            percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentWidth;
+            percentX = (fragmentWidth - 2 * getResources().getDimension(R.dimen.display_tabs_width)) / fragmentWidth;
             // Remove 5% because it looks better
             percentX -= .05f;
             percentY = percentX + (1f - percentX) / 2f;
         } else {
             int fragmentHeight = mConFragments.getHeight();
-            percentY = (fragmentHeight - 2 * getResources().getDimension(R.dimen.hud_tabs_width)) / fragmentHeight;
+            percentY = (fragmentHeight - 2 * getResources().getDimension(R.dimen.display_tabs_width)) / fragmentHeight;
             // Remove 5% because it looks better
             percentY -= .05f;
             percentX = percentY + (1f - percentY) / 2f;

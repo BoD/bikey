@@ -4,8 +4,8 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- Hud -->
-    <dimen name="hud_tabs_width">100dp</dimen>
+    <!-- Display -->
+    <dimen name="display_tabs_width">100dp</dimen>
 
     <!-- Ride detail -->
     <dimen name="ride_detail_title_marginTop">16dp</dimen>

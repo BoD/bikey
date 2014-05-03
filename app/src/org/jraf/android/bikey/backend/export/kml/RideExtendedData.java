@@ -63,15 +63,15 @@ class RideExtendedData {
 
         // The distance
         result.append(
-                context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_distance),
+                context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.display_title_distance),
                         UnitUtil.formatDistance(totalDistance, true))).append("\n");
         // The duration
         result.append(
-                context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_duration),
+                context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.display_title_duration),
                         DateTimeUtil.formatDuration(context, duration))).append("\n");
         // Average moving speed.
         result.append(
-                context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_averageMovingSpeed),
+                context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.display_title_averageMovingSpeed),
                         UnitUtil.formatSpeed(avgMovingSpeed))).append("\n");
         result.append(context.getString(R.string.export_kml_extended_data_end)).append("\n");
         return result.toString();

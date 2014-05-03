@@ -43,7 +43,7 @@ import butterknife.InjectView;
 import butterknife.OnClick;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.ride.map.RideMapActivity;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
@@ -148,9 +148,9 @@ public class RideDetailActivity extends FragmentActivity {
                 finish();
                 return true;
 
-            case R.id.action_hud:
+            case R.id.action_display:
                 finish();
-                Intent intent = new Intent(this, HudActivity.class);
+                Intent intent = new Intent(this, DisplayActivity.class);
                 intent.setData(mRideUri);
                 startActivity(intent);
                 return true;

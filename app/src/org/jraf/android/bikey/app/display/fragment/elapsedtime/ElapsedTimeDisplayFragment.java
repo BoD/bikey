@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment.elapsedtime;
+package org.jraf.android.bikey.app.display.fragment.elapsedtime;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -32,21 +32,21 @@ import android.view.View;
 import android.widget.Chronometer;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.hud.fragment.SimpleHudFragment;
+import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 
-public class ElapsedTimeHudFragment extends SimpleHudFragment {
+public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
     private Chronometer mChronometer;
 
-    public static ElapsedTimeHudFragment newInstance() {
-        return new ElapsedTimeHudFragment();
+    public static ElapsedTimeDisplayFragment newInstance() {
+        return new ElapsedTimeDisplayFragment();
     }
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.hud_elapsed_time;
+        return R.layout.display_elapsed_time;
     }
 
     @Override

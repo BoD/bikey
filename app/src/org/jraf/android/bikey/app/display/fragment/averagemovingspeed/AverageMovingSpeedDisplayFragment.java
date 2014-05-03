@@ -22,15 +22,15 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment.averagemovingspeed;
+package org.jraf.android.bikey.app.display.fragment.averagemovingspeed;
 
-import org.jraf.android.bikey.app.hud.fragment.LogHudFragment;
+import org.jraf.android.bikey.app.display.fragment.LogDisplayFragment;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.util.UnitUtil;
 
-public class AverageMovingSpeedHudFragment extends LogHudFragment {
-    public static AverageMovingSpeedHudFragment newInstance() {
-        return new AverageMovingSpeedHudFragment();
+public class AverageMovingSpeedDisplayFragment extends LogDisplayFragment {
+    public static AverageMovingSpeedDisplayFragment newInstance() {
+        return new AverageMovingSpeedDisplayFragment();
     }
 
     @Override

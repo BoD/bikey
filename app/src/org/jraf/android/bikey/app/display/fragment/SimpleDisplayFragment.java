@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment;
+package org.jraf.android.bikey.app.display.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,12 +32,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.util.app.base.BaseFragment;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.ui.graph.GraphView;
 
-public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
+public abstract class SimpleDisplayFragment extends BaseFragment<DisplayActivity> {
     private TextView mTxtValue;
     private GraphView mGraValues;
 
@@ -70,7 +70,7 @@ public abstract class SimpleHudFragment extends BaseFragment<HudActivity> {
     }
 
     protected int getLayoutResId() {
-        return R.layout.hud_simple;
+        return R.layout.display_simple;
     }
 
     protected Uri getRideUri() {

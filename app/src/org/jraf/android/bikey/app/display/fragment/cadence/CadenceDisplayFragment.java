@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  * 
- * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,43 +22,39 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment.currenttime;
+package org.jraf.android.bikey.app.display.fragment.cadence;
 
-import java.text.DateFormat;
-import java.util.Date;
+import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
+import org.jraf.android.bikey.backend.cadence.CadenceListener;
+import org.jraf.android.bikey.backend.cadence.CadenceManager;
+import org.jraf.android.bikey.util.UnitUtil;
 
-import android.os.Handler;
-
-import org.jraf.android.bikey.app.hud.fragment.SimpleHudFragment;
-
-public class CurrentTimeHudFragment extends SimpleHudFragment {
-    protected static final long REFRESH_RATE = 30 * 1000;
-    private Handler mHandler = new Handler();
-    private DateFormat mTimeFormat;
-
-    public static CurrentTimeHudFragment newInstance() {
-        return new CurrentTimeHudFragment();
+public class CadenceDisplayFragment extends SimpleDisplayFragment {
+    public static CadenceDisplayFragment newInstance() {
+        return new CadenceDisplayFragment();
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        mTimeFormat = android.text.format.DateFormat.getTimeFormat(getActivity());
-        setTextEnabled(true);
-        mHandler.post(mShowTimeRunnable);
+        // Cadence
+        CadenceManager.get().addListener(mCadenceListener);
     }
 
     @Override
     public void onStop() {
-        mHandler.removeCallbacks(mShowTimeRunnable);
+        // Cadence
+        CadenceManager.get().removeListener(mCadenceListener);
         super.onStop();
     }
 
-    private Runnable mShowTimeRunnable = new Runnable() {
+    private CadenceListener mCadenceListener = new CadenceListener() {
         @Override
-        public void run() {
-            setText(mTimeFormat.format(new Date()));
-            mHandler.postDelayed(mShowTimeRunnable, REFRESH_RATE);
+        public void onCadenceChanged(Float cadence, float[][] rawData) {
+            setText(UnitUtil.formatCadence(cadence));
+            setValues(0, rawData[0]);
+            setValues(1, rawData[1]);
+            setValues(2, rawData[2]);
         }
     };
 }

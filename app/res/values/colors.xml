@@ -3,8 +3,8 @@
 
     <color name="bright_foreground_dark">#FFF</color>
     <color name="bright_foreground_disabled_dark">#8FFF</color>
-    <color name="hud_gps_first_fix">#0F0</color>
-    <color name="hud_gps_stopped">#F00</color>
+    <color name="display_gps_first_fix">#0F0</color>
+    <color name="display_gps_stopped">#F00</color>
     <color name="tab_bar_bg">#D444</color>
     <color name="ride_list_item_active">#309600</color>
     <color name="tab_bg_pressed">#DD33b5e5</color>

@@ -44,7 +44,7 @@ import android.support.v4.app.TaskStackBuilder;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
 import org.jraf.android.bikey.backend.cadence.CadenceManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
@@ -219,13 +219,13 @@ public class LogCollectorService extends Service {
         builder.setContentTitle(getString(R.string.app_name));
         builder.setContentText(getString(R.string.service_notification_text));
 
-        //        Intent intent = new Intent(this, HudActivity.class).setData(mCollectingRideUri);
+        //        Intent intent = new Intent(this, DisplayActivity.class).setData(mCollectingRideUri);
         //        builder.setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(this);
-        taskStackBuilder.addParentStack(HudActivity.class);
+        taskStackBuilder.addParentStack(DisplayActivity.class);
         Log.d("mCollectingRideUri=" + mCollectingRideUri);
-        Intent intent = new Intent(this, HudActivity.class).setData(mCollectingRideUri);
+        Intent intent = new Intent(this, DisplayActivity.class).setData(mCollectingRideUri);
         taskStackBuilder.addNextIntent(intent);
         builder.setContentIntent(taskStackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT));
 

@@ -37,7 +37,7 @@ import android.view.View.OnClickListener;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
-import org.jraf.android.bikey.app.hud.HudActivity;
+import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.detail.RideDetailActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
@@ -129,8 +129,8 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         switch (state) {
             case CREATED:
             case ACTIVE:
-                // Go to the hud
-                startActivity(new Intent(null, rideUri, this, HudActivity.class));
+                // Go to the display
+                startActivity(new Intent(null, rideUri, this, DisplayActivity.class));
                 break;
 
             default:
@@ -142,11 +142,11 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
 
 
     /*
-     * Hud.
+     * Display.
      */
 
-    public void startHud(Uri rideUri) {
-        startActivity(new Intent(null, rideUri, this, HudActivity.class));
+    public void startDisplay(Uri rideUri) {
+        startActivity(new Intent(null, rideUri, this, DisplayActivity.class));
     }
 
 
@@ -160,7 +160,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         switch (requestCode) {
             case REQUEST_ADD_RIDE:
                 if (resultCode != RESULT_OK) return;
-                startHud(data.getData());
+                startDisplay(data.getData());
                 break;
         }
     }
@@ -246,7 +246,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             @Override
             protected void onPostExecuteOk() {
                 startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, mCreatedRideUri, thiz, LogCollectorService.class));
-                startActivity(new Intent(null, mCreatedRideUri, thiz, HudActivity.class));
+                startActivity(new Intent(null, mCreatedRideUri, thiz, DisplayActivity.class));
             }
         }).execute(getSupportFragmentManager());
     }

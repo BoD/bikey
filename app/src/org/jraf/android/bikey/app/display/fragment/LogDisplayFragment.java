@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.hud.fragment;
+package org.jraf.android.bikey.app.display.fragment;
 
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -35,7 +35,7 @@ import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 
-public abstract class LogHudFragment extends SimpleHudFragment {
+public abstract class LogDisplayFragment extends SimpleDisplayFragment {
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {

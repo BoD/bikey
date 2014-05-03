@@ -121,7 +121,7 @@ public class RideContentValues extends AbstractContentValues {
 
 
 
-    public RideContentValues putDistance(double value) {
+    public RideContentValues putDistance(float value) {
         mContentValues.put(RideColumns.DISTANCE, value);
         return this;
     }

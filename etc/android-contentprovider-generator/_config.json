@@ -1,9 +1,10 @@
 {
-	"toolVersion": "1.6",
+	"toolVersion": "1.7",
 	"projectPackageId": "org.jraf.android.bikey",
 	"providerJavaPackage": "org.jraf.android.bikey.backend.provider",
 	"providerClassName": "BikeyProvider",
 	"sqliteOpenHelperClassName": "BikeySQLiteOpenHelper",
+	"sqliteOpenHelperCallbacksClassName": "BikeySQLiteOpenHelperCallbacks",
 	"sqliteUpgradeHelperClassName": "BikeySQLiteUpgradeHelper",
 	"authority": "org.jraf.android.bikey.backend.provider",
 	"databaseFileName": "bikey_provider.db",

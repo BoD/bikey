@@ -88,7 +88,7 @@ public class LogManager {
         Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.values());
 
         // Update total distance for ride
-        double totalDistance = getTotalDistance(rideUri);
+        float totalDistance = getTotalDistance(rideUri);
         RideManager.get().updateTotalDistance(rideUri, totalDistance);
 
         // Dispatch to listeners
@@ -102,7 +102,7 @@ public class LogManager {
     }
 
     @Background
-    public double getTotalDistance(Uri rideUri) {
+    public float getTotalDistance(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
         LogSelection where = new LogSelection();
@@ -110,7 +110,7 @@ public class LogManager {
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
         try {
             if (!c.moveToNext()) return 0;
-            return c.getDouble(0);
+            return c.getFloat(0);
         } finally {
             c.close();
         }
@@ -160,7 +160,7 @@ public class LogManager {
     }
 
     @Background
-    public Double getMovingDuration(Uri rideUri) {
+    public Long getMovingDuration(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.DURATION + ")" };
         LogSelection where = new LogSelection();
@@ -169,7 +169,7 @@ public class LogManager {
         try {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
-            return c.getDouble(0);
+            return c.getLong(0);
         } finally {
             c.close();
         }

@@ -40,10 +40,10 @@ public class RideSelection extends AbstractSelection<RideSelection> {
     public Uri uri() {
         return RideColumns.CONTENT_URI;
     }
-    
+
     /**
      * Query the given content resolver using this selection.
-     * 
+     *
      * @param contentResolver The content resolver to query.
      * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
      * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
@@ -69,29 +69,34 @@ public class RideSelection extends AbstractSelection<RideSelection> {
     public RideCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
     }
-    
-    
+
+
     public RideSelection id(long... value) {
         addEquals(RideColumns._ID, toObjectArray(value));
         return this;
     }
 
+
     public RideSelection name(String... value) {
         addEquals(RideColumns.NAME, value);
         return this;
     }
-    
+
     public RideSelection nameNot(String... value) {
         addNotEquals(RideColumns.NAME, value);
         return this;
     }
 
+    public RideSelection nameLike(String... value) {
+        addLike(RideColumns.NAME, value);
+        return this;
+    }
 
     public RideSelection createdDate(Date... value) {
         addEquals(RideColumns.CREATED_DATE, value);
         return this;
     }
-    
+
     public RideSelection createdDateNot(Date... value) {
         addNotEquals(RideColumns.CREATED_DATE, value);
         return this;
@@ -126,7 +131,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.STATE, value);
         return this;
     }
-    
+
     public RideSelection stateNot(RideState... value) {
         addNotEquals(RideColumns.STATE, value);
         return this;
@@ -137,7 +142,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
         return this;
     }
-    
+
     public RideSelection firstActivatedDateNot(Date... value) {
         addNotEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
         return this;
@@ -172,7 +177,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
     }
-    
+
     public RideSelection activatedDateNot(Date... value) {
         addNotEquals(RideColumns.ACTIVATED_DATE, value);
         return this;
@@ -207,7 +212,7 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         addEquals(RideColumns.DURATION, toObjectArray(value));
         return this;
     }
-    
+
     public RideSelection durationNot(long... value) {
         addNotEquals(RideColumns.DURATION, toObjectArray(value));
         return this;
@@ -233,32 +238,32 @@ public class RideSelection extends AbstractSelection<RideSelection> {
         return this;
     }
 
-    public RideSelection distance(double... value) {
+    public RideSelection distance(float... value) {
         addEquals(RideColumns.DISTANCE, toObjectArray(value));
         return this;
     }
-    
-    public RideSelection distanceNot(double... value) {
+
+    public RideSelection distanceNot(float... value) {
         addNotEquals(RideColumns.DISTANCE, toObjectArray(value));
         return this;
     }
 
-    public RideSelection distanceGt(double value) {
+    public RideSelection distanceGt(float value) {
         addGreaterThan(RideColumns.DISTANCE, value);
         return this;
     }
 
-    public RideSelection distanceGtEq(double value) {
+    public RideSelection distanceGtEq(float value) {
         addGreaterThanOrEquals(RideColumns.DISTANCE, value);
         return this;
     }
 
-    public RideSelection distanceLt(double value) {
+    public RideSelection distanceLt(float value) {
         addLessThan(RideColumns.DISTANCE, value);
         return this;
     }
 
-    public RideSelection distanceLtEq(double value) {
+    public RideSelection distanceLtEq(float value) {
         addLessThanOrEquals(RideColumns.DISTANCE, value);
         return this;
     }

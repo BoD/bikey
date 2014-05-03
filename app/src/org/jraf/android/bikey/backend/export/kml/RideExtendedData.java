@@ -40,9 +40,9 @@ import org.jraf.android.util.datetime.DateTimeUtil;
 class RideExtendedData {
 
     private final String displayName;
-    private final double totalDistance;
+    private final float totalDistance;
     private final long duration;
-    private final double avgMovingSpeed;
+    private final float avgMovingSpeed;
     private final Context context;
 
     RideExtendedData(Context context, Uri rideUri) {
@@ -64,7 +64,7 @@ class RideExtendedData {
         // The distance
         result.append(
                 context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_distance),
-                        UnitUtil.formatDistance((float) totalDistance, true))).append("\n");
+                        UnitUtil.formatDistance(totalDistance, true))).append("\n");
         // The duration
         result.append(
                 context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_duration),
@@ -72,7 +72,7 @@ class RideExtendedData {
         // Average moving speed.
         result.append(
                 context.getString(R.string.export_kml_extended_data_value, context.getString(R.string.hud_title_averageMovingSpeed),
-                        UnitUtil.formatSpeed((float) avgMovingSpeed))).append("\n");
+                        UnitUtil.formatSpeed(avgMovingSpeed))).append("\n");
         result.append(context.getString(R.string.export_kml_extended_data_end)).append("\n");
         return result.toString();
     }

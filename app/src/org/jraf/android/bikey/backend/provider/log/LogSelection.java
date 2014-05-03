@@ -40,10 +40,10 @@ public class LogSelection extends AbstractSelection<LogSelection> {
     public Uri uri() {
         return LogColumns.CONTENT_URI;
     }
-    
+
     /**
      * Query the given content resolver using this selection.
-     * 
+     *
      * @param contentResolver The content resolver to query.
      * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
      * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
@@ -69,18 +69,19 @@ public class LogSelection extends AbstractSelection<LogSelection> {
     public LogCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
     }
-    
-    
+
+
     public LogSelection id(long... value) {
         addEquals(LogColumns._ID, toObjectArray(value));
         return this;
     }
 
+
     public LogSelection rideId(long... value) {
         addEquals(LogColumns.RIDE_ID, toObjectArray(value));
         return this;
     }
-    
+
     public LogSelection rideIdNot(long... value) {
         addNotEquals(LogColumns.RIDE_ID, toObjectArray(value));
         return this;
@@ -110,7 +111,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.RECORDED_DATE, value);
         return this;
     }
-    
+
     public LogSelection recordedDateNot(Date... value) {
         addNotEquals(LogColumns.RECORDED_DATE, value);
         return this;
@@ -145,7 +146,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.LAT, toObjectArray(value));
         return this;
     }
-    
+
     public LogSelection latNot(double... value) {
         addNotEquals(LogColumns.LAT, toObjectArray(value));
         return this;
@@ -175,7 +176,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.LON, toObjectArray(value));
         return this;
     }
-    
+
     public LogSelection lonNot(double... value) {
         addNotEquals(LogColumns.LON, toObjectArray(value));
         return this;
@@ -205,7 +206,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.ELE, toObjectArray(value));
         return this;
     }
-    
+
     public LogSelection eleNot(double... value) {
         addNotEquals(LogColumns.ELE, toObjectArray(value));
         return this;
@@ -235,7 +236,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.DURATION, value);
         return this;
     }
-    
+
     public LogSelection durationNot(Long... value) {
         addNotEquals(LogColumns.DURATION, value);
         return this;
@@ -265,7 +266,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.DISTANCE, value);
         return this;
     }
-    
+
     public LogSelection distanceNot(Float... value) {
         addNotEquals(LogColumns.DISTANCE, value);
         return this;
@@ -295,7 +296,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.SPEED, value);
         return this;
     }
-    
+
     public LogSelection speedNot(Float... value) {
         addNotEquals(LogColumns.SPEED, value);
         return this;
@@ -325,7 +326,7 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addEquals(LogColumns.CADENCE, value);
         return this;
     }
-    
+
     public LogSelection cadenceNot(Float... value) {
         addNotEquals(LogColumns.CADENCE, value);
         return this;

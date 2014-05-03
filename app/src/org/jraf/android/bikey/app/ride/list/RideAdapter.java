@@ -102,8 +102,8 @@ public class RideAdapter extends ResourceCursorAdapter {
 
             case PAUSED:
                 // Distance
-                double distance = c.getDistance();
-                details = TextUtils.concat(UnitUtil.formatDistance((float) distance, true, .85f), "  -  ");
+                float distance = c.getDistance();
+                details = TextUtils.concat(UnitUtil.formatDistance(distance, true, .85f), "  -  ");
 
                 // Duration
                 long duration = c.getDuration();

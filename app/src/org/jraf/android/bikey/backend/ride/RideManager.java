@@ -77,7 +77,7 @@ public class RideManager {
         }
         values.putState(RideState.CREATED);
         values.putDuration(0l);
-        values.putDistance(0d);
+        values.putDistance(0f);
         return values.insert(mContext.getContentResolver());
     }
 
@@ -173,7 +173,7 @@ public class RideManager {
         contentResolver.update(masterRideUri, values.values(), null, null);
 
         // Update master ride total distance
-        double distance = LogManager.get().getTotalDistance(masterRideUri);
+        float distance = LogManager.get().getTotalDistance(masterRideUri);
         updateTotalDistance(masterRideUri, distance);
 
         // Update master ride total duration
@@ -218,7 +218,7 @@ public class RideManager {
     }
 
     @Background
-    public void updateTotalDistance(Uri rideUri, double distance) {
+    public void updateTotalDistance(Uri rideUri, float distance) {
         RideContentValues values = new RideContentValues();
         values.putDistance(distance);
         mContext.getContentResolver().update(rideUri, values.values(), null, null);

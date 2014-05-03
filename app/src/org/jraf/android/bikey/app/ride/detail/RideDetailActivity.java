@@ -163,13 +163,13 @@ public class RideDetailActivity extends FragmentActivity {
             private String mName;
             private Date mCreatedDate;
             private long mDuration;
-            private double mDistance;
+            private float mDistance;
             private float mAverageMovingSpeed;
             private float mMaxSpeed;
             private Date mFirstActivatedDate;
-            private Double mMovingDuration;
+            private Long mMovingDuration;
             private Float mAverageCadence;
-            private double mMaxCadence;
+            private float mMaxCadence;
             private List<LatLng> mLatLngArray;
             private float[] mSpeedArray;
             private float[] mCadenceArray;
@@ -225,7 +225,7 @@ public class RideDetailActivity extends FragmentActivity {
                 }
                 if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration.longValue()));
                 a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
-                a.mTxtDistanceTotal.setText(UnitUtil.formatDistance((float) mDistance, true, .85f));
+                a.mTxtDistanceTotal.setText(UnitUtil.formatDistance(mDistance, true, .85f));
 
                 a.mTxtSpeedAverage.setText(UnitUtil.formatSpeed(mAverageMovingSpeed, true, .85f));
                 a.mTxtSpeedMax.setText(UnitUtil.formatSpeed(mMaxSpeed, true, .85f));
@@ -241,7 +241,7 @@ public class RideDetailActivity extends FragmentActivity {
                     a.mTxtCadenceAverage.setVisibility(View.VISIBLE);
                     a.mTxtCadenceAverage.setText(UnitUtil.formatCadence(mAverageCadence, true));
                     a.mTxtCadenceMax.setVisibility(View.VISIBLE);
-                    a.mTxtCadenceMax.setText(UnitUtil.formatCadence((float) mMaxCadence, true));
+                    a.mTxtCadenceMax.setText(UnitUtil.formatCadence(mMaxCadence, true));
                     a.mGrpCadence.setVisibility(View.VISIBLE);
                     a.mGrpCadence.setColor(0, a.getResources().getColor(R.color.graph_line));
                     a.mGrpCadence.setValues(0, mCadenceArray);

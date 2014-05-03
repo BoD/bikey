@@ -43,6 +43,8 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_FILE_NAME = "bikey_provider.db";
     private static final int DATABASE_VERSION = 3;
+    private final Context mContext;
+    private final BikeySQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
     private static final String SQL_CREATE_TABLE_LOG = "CREATE TABLE IF NOT EXISTS "
@@ -92,6 +94,8 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
 
     private BikeySQLiteOpenHelper(Context context, String name, CursorFactory factory, int version) {
         super(context, name, factory, version);
+        mContext = context;
+        mOpenHelperCallbacks = new BikeySQLiteOpenHelperCallbacks();
     }
 
 
@@ -107,14 +111,18 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private BikeySQLiteOpenHelper(Context context, String name, CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
         super(context, name, factory, version, errorHandler);
+        mContext = context;
+        mOpenHelperCallbacks = new BikeySQLiteOpenHelperCallbacks();
     }
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         if (BuildConfig.DEBUG) Log.d(TAG, "onCreate");
+        mOpenHelperCallbacks.onPreCreate(mContext, db);
         db.execSQL(SQL_CREATE_TABLE_LOG);
         db.execSQL(SQL_CREATE_TABLE_RIDE);
+        mOpenHelperCallbacks.onPostCreate(mContext, db);
     }
 
     @Override
@@ -123,10 +131,11 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
         if (!db.isReadOnly()) {
             db.execSQL("PRAGMA foreign_keys=ON;");
         }
+        mOpenHelperCallbacks.onOpen(mContext, db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        new BikeySQLiteUpgradeHelper().onUpgrade(db, oldVersion, newVersion);
+        mOpenHelperCallbacks.onUpgrade(mContext, db, oldVersion, newVersion);
     }
 }

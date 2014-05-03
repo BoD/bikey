@@ -91,7 +91,7 @@ public class RideCursor extends AbstractCursor {
     /**
      * Get the {@code distance} value.
      */
-    public double getDistance() {
-        return getDoubleOrNull(RideColumns.DISTANCE);
+    public float getDistance() {
+        return getFloatOrNull(RideColumns.DISTANCE);
     }
 }

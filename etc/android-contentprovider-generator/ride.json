@@ -38,7 +38,7 @@
 		},
 		{
 			"name": "distance",
-			"type": "Double",
+			"type": "Float",
 			"nullable": false,
 		},
 	],

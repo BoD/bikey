@@ -27,5 +27,7 @@ package org.jraf.android.bikey.app.preference;
 public interface PreferenceCallbacks {
     void showRecordCadenceConfirmDialog();
 
-    void startPickFileActivity();
+    void startExport();
+
+    void startImport();
 }

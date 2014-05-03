@@ -89,7 +89,9 @@
     <string name="preference_recordCadence_title">Record cadence</string>
     <string name="preference_recordCadence_confirmDialog_title">Cadence</string>
     <string name="preference_recordCadence_confirmDialog_message">Cadence recording only works when the device is placed in your pocket (using movement detection).\n\nThis feature consumes more battery.\n\nAre you sure you want to enable it?</string>
-    <string name="preference_advanced_title">Advanced settings</string>
+    <string name="preference_importExport_title">Export &amp; import</string>
+    <string name="preference_export_title">Export rides</string>
+    <string name="preference_export_summary">Export rides to a Bikey database file</string>
     <string name="preference_import_title">Import rides</string>
     <string name="preference_import_summary">Import rides from a Bikey database file</string>
 

@@ -50,8 +50,8 @@ public class MainPreferenceFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
         updateListPreferenceSummary(Constants.PREF_UNITS);
 
-        Preference prefImport = findPreference(Constants.PREF_IMPORT);
-        prefImport.setOnPreferenceClickListener(mOnPreferenceClickListener);
+        findPreference(Constants.PREF_EXPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
+        findPreference(Constants.PREF_IMPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
     }
 
     @Override
@@ -127,8 +127,11 @@ public class MainPreferenceFragment extends PreferenceFragment {
     private OnPreferenceClickListener mOnPreferenceClickListener = new OnPreferenceClickListener() {
         @Override
         public boolean onPreferenceClick(Preference preference) {
-            if (Constants.PREF_IMPORT.equals(preference.getKey())) {
-                getCallbacks().startPickFileActivity();
+            if (Constants.PREF_EXPORT.equals(preference.getKey())) {
+                getCallbacks().startExport();
+                return true;
+            } else if (Constants.PREF_IMPORT.equals(preference.getKey())) {
+                getCallbacks().startImport();
                 return true;
             }
             return false;

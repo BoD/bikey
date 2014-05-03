@@ -109,7 +109,9 @@
     <string name="preference_recordCadence_title">Enregistrer la cadence</string>
     <string name="preference_recordCadence_confirmDialog_title">Cadence</string>
     <string name="preference_recordCadence_confirmDialog_message">L\'enregistrement de la cadence ne fonctionne que si l\'appareil est placé dans votre poche (par détection des mouvements).\n\nCette fonction consomme plus de batterie.\n\nÊtes-vous sûr de vouloir l\'activer?</string>
-    <string name="preference_advanced_title">Préférences avancées</string>
+    <string name="preference_importExport_title">Export &amp; import</string>
+    <string name="preference_export_title">Exporter les parcours</string>
+    <string name="preference_export_summary">Exporter les parcours vers un fichier de base de données Bikey</string>
     <string name="preference_import_title">Importer des parcours</string>
     <string name="preference_import_summary">Importer des parcours depuis un fichier de base de données Bikey</string>
 

@@ -26,23 +26,21 @@ package org.jraf.android.bikey.backend.export.db;
 
 import java.io.File;
 import java.io.IOException;
-
-import android.net.Uri;
+import java.util.Date;
 
 import org.jraf.android.bikey.backend.export.Exporter;
 import org.jraf.android.bikey.backend.provider.BikeySQLiteOpenHelper;
-import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.file.FileUtil;
 
 public class DbExporter extends Exporter {
-    public DbExporter(Uri rideUri) {
-        super(rideUri);
+    public DbExporter() {
+        super(null);
     }
 
     @Override
     protected String getExportedFileName() {
-        return FileUtil.getValidFileName(RideManager.get().getDisplayName(getRideUri()) + ".db");
+        return FileUtil.getValidFileName("Bikey export " + new Date() + ".db");
     }
 
     @Override

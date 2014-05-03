@@ -41,7 +41,6 @@ import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.detail.RideDetailActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
-import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.export.kml.KmlExporter;
@@ -272,10 +271,6 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             case 1:
                 // Kml 
                 mState.mExporter = new KmlExporter(rideUri);
-                break;
-            case 2:
-                // Database
-                mState.mExporter = new DbExporter(rideUri);
                 break;
             case 3:
                 // Genymotion script

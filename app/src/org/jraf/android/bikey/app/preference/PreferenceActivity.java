@@ -24,6 +24,8 @@
  */
 package org.jraf.android.bikey.app.preference;
 
+import java.io.File;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +36,7 @@ import android.view.MenuItem;
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
+import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -41,7 +44,7 @@ import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 
 public class PreferenceActivity extends BaseFragmentActivity implements PreferenceCallbacks, AlertDialogListener {
-    private static final int REQUEST_PICK_FILE = 0;
+    private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,11 +90,38 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
 
 
     /*
-     * Database import.
+     * Database import / export.
      */
 
     @Override
-    public void startPickFileActivity() {
+    public void startExport() {
+        new TaskFragment(new Task<PreferenceActivity>() {
+            DbExporter mExporter = new DbExporter();
+
+            @Override
+            protected void doInBackground() throws Throwable {
+                mExporter.export();
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                File exportedFile = mExporter.getExportFile();
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_subject));
+                String messageBody = getString(R.string.export_body);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + exportedFile.getAbsolutePath()));
+                sendIntent.setType("application/bikey");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, messageBody);
+
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.preference_export_title)));
+            }
+        }.toastFail(R.string.export_failToast)).execute(getSupportFragmentManager());
+    }
+
+    @Override
+    public void startImport() {
         Intent importIntent = new Intent(Intent.ACTION_GET_CONTENT);
         String contentType = "application/octet-stream";
         importIntent.setType(contentType);
@@ -103,7 +133,18 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
             importIntent.putExtra("CONTENT_TYPE", contentType);
         }
 
-        startActivityForResult(Intent.createChooser(importIntent, getString(R.string.ride_list_importDialog_title)), REQUEST_PICK_FILE);
+        startActivityForResult(Intent.createChooser(importIntent, getString(R.string.ride_list_importDialog_title)), REQUEST_PICK_FILE_FOR_IMPORT);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_PICK_FILE_FOR_IMPORT:
+                if (resultCode != RESULT_OK) return;
+                importRides(data.getData());
+                break;
+        }
     }
 
     private void importRides(final Uri ridesFile) {
@@ -113,16 +154,5 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
                 DatabaseImporter.importDatabase(thiz, ridesFile);
             }
         }.toastFail(R.string.import_failToast).toastOk(R.string.import_successToast)).execute(getSupportFragmentManager());
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_PICK_FILE:
-                if (resultCode != RESULT_OK) return;
-                importRides(data.getData());
-                break;
-        }
     }
 }

@@ -4,7 +4,6 @@
     <string-array name="export_choices">
         <item>Fichier GPX</item>
         <item>Fichier KML</item>
-        <item>Base de données SQLite</item>
         <item>Script Genymotion</item>
     </string-array>
     <string-array name="preferences_units_labels">

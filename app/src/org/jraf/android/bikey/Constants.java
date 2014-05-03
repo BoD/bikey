@@ -33,6 +33,7 @@ public class Constants {
     public static final String PREF_UNITS_IMPERIAL = "PREF_UNITS_IMPERIAL";
     public static final String PREF_UNITS_DEFAULT = PREF_UNITS_IMPERIAL;
     public static final String PREF_IMPORT = "PREF_IMPORT";
+    public static final String PREF_EXPORT = "PREF_EXPORT";
 
     public static final String PREF_LISTEN_TO_HEADSET_BUTTON = "PREF_LISTEN_TO_HEADSET_BUTTON";
     public static final boolean PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT = false;

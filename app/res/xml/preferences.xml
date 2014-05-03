@@ -18,8 +18,12 @@
             android:key="PREF_RECORD_CADENCE"
             android:title="@string/preference_recordCadence_title" />
     </PreferenceCategory>
-
-    <PreferenceCategory android:title="@string/preference_advanced_title" >
+    <PreferenceCategory android:title="@string/preference_importExport_title" >
+        <Preference
+            android:icon="@drawable/ic_action_export"
+            android:key="PREF_EXPORT"
+            android:summary="@string/preference_export_summary"
+            android:title="@string/preference_export_title" />
         <Preference
             android:icon="@drawable/ic_action_import"
             android:key="PREF_IMPORT"

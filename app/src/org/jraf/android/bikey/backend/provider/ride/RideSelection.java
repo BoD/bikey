@@ -133,6 +133,41 @@ public class RideSelection extends AbstractSelection<RideSelection> {
     }
 
 
+    public RideSelection firstActivatedDate(Date... value) {
+        addEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+    
+    public RideSelection firstActivatedDateNot(Date... value) {
+        addNotEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
+    public RideSelection firstActivatedDate(Long... value) {
+        addEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
+    public RideSelection firstActivatedDateAfter(Date value) {
+        addGreaterThan(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
+    public RideSelection firstActivatedDateAfterEq(Date value) {
+        addGreaterThanOrEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
+    public RideSelection firstActivatedDateBefore(Date value) {
+        addLessThan(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
+    public RideSelection firstActivatedDateBeforeEq(Date value) {
+        addLessThanOrEquals(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
     public RideSelection activatedDate(Date... value) {
         addEquals(RideColumns.ACTIVATED_DATE, value);
         return this;

@@ -26,8 +26,10 @@ package org.jraf.android.bikey.app.ride.list;
 
 import android.net.Uri;
 
+import org.jraf.android.bikey.backend.provider.ride.RideState;
+
 public interface RideListCallbacks {
-    void onRideSelected(Uri rideUri);
+    void onRideSelected(Uri rideUri, RideState state);
 
     void showDeleteDialog(long[] checkedItemIds);
 

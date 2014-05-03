@@ -40,6 +40,7 @@ public interface RideColumns extends BaseColumns {
     String NAME = "name";
     String CREATED_DATE = "created_date";
     String STATE = "state";
+    String FIRST_ACTIVATED_DATE = "first_activated_date";
     String ACTIVATED_DATE = "activated_date";
     String DURATION = "duration";
     String DISTANCE = "distance";
@@ -52,6 +53,7 @@ public interface RideColumns extends BaseColumns {
             NAME,
             CREATED_DATE,
             STATE,
+            FIRST_ACTIVATED_DATE,
             ACTIVATED_DATE,
             DURATION,
             DISTANCE

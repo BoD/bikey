@@ -82,6 +82,7 @@
 
     <!-- Preferences -->
     <string name="preference_title">Settings</string>
+    <string name="preference_category_general_title">General</string>
     <string name="preference_units_title">Units</string>
     <string name="preference_listenToHeadsetButton_title">Use headset button</string>
     <string name="preference_listenToHeadsetButton_summary">Stop / resume the current ride when pressing the button</string>
@@ -115,5 +116,32 @@
 
     <!-- Quick start -->
     <string name="shortcut_title">Bikey: Quick Start</string>
+
+    <!-- Ride detail -->
+    <string name="ride_detail_title">Ride</string>
+    <string name="ride_detail_dateTime_section">Date &amp; Time</string>
+    <string name="ride_detail_dateTime_date_label">Date</string>
+    <string name="ride_detail_dateTime_start_label">Start</string>
+    <string name="ride_detail_dateTime_finish_label">Finish</string>
+    <string name="ride_detail_distance_section">Distance</string>
+    <string name="ride_detail_distance_total_label">Total</string>
+    <string name="ride_detail_duration_section">Duration</string>
+    <string name="ride_detail_duration_moving_label">Moving</string>
+    <string name="ride_detail_duration_total_label">Total</string>
+    <string name="ride_detail_speed_section">Speed</string>
+    <string name="ride_detail_speed_average_label">Average moving</string>
+    <string name="ride_detail_speed_max_label">Max</string>
+    <string name="ride_detail_cadence_section">Cadence</string>
+    <string name="ride_detail_cadence_average_label">Average</string>
+    <string name="ride_detail_cadence_max_label">Max</string>
+    <string name="ride_detail_action_hud">HUD</string>
+    <string name="ride_detail_empty">This ride has no data.</string>
+
+    <!-- Ride map -->
+    <string name="ride_map_title">Ride</string>
+    <string name="ride_map_action_map">Map type</string>
+    <string name="ride_map_action_map_normal">Normal</string>
+    <string name="ride_map_action_map_satellite">Satellite</string>
+    <string name="ride_map_action_map_terrain">Terrain</string>
 
 </resources>

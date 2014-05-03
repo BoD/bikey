@@ -26,6 +26,7 @@ package org.jraf.android.bikey.backend.ride;
 
 import java.util.Date;
 
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +42,6 @@ import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
-import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.log.LogContentValues;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
@@ -78,7 +78,7 @@ public class RideManager {
         values.putState(RideState.CREATED);
         values.putDuration(0l);
         values.putDistance(0d);
-        return mContext.getContentResolver().insert(RideColumns.CONTENT_URI, values.values());
+        return values.insert(mContext.getContentResolver());
     }
 
     @Background
@@ -89,12 +89,12 @@ public class RideManager {
         // Delete rides
         RideSelection rideWhere = new RideSelection();
         rideWhere.id(ids);
-        int res = mContext.getContentResolver().delete(RideColumns.CONTENT_URI, rideWhere.sel(), rideWhere.args());
+        int res = rideWhere.delete(mContext.getContentResolver());
 
         // Delete logs
         LogSelection logWhere = new LogSelection();
         logWhere.rideId(ids);
-        mContext.getContentResolver().delete(LogColumns.CONTENT_URI, logWhere.sel(), logWhere.args());
+        logWhere.delete(mContext.getContentResolver());
 
         // If we just deleted the current ride, select another ride to be the current ride (if any).
         Uri currentRideUri = getCurrentRide();
@@ -119,18 +119,19 @@ public class RideManager {
         RideSelection rideWhere = new RideSelection();
         rideWhere.id(ids);
         String order = RideColumns.CREATED_DATE;
-        Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), order);
+        ContentResolver contentResolver = mContext.getContentResolver();
+        RideCursor rideCursor = rideWhere.query(contentResolver, projection, order);
         long masterRideId = 0;
         try {
-            c.moveToNext();
-            masterRideId = c.getLong(0);
+            rideCursor.moveToNext();
+            masterRideId = rideCursor.getId();
         } finally {
-            c.close();
+            rideCursor.close();
         }
 
         // Calculate the total duration
         projection = new String[] { "sum(" + RideColumns.DURATION + ")" };
-        c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), null);
+        Cursor c = contentResolver.query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), null);
         long totalDuration = 0;
         try {
             if (c.moveToNext()) {
@@ -149,13 +150,14 @@ public class RideManager {
             logWhere.rideId(mergedRideId);
             LogContentValues values = new LogContentValues();
             values.putRideId(masterRideId);
-            mContext.getContentResolver().update(LogColumns.CONTENT_URI, values.values(), logWhere.sel(), logWhere.args());
+            values.update(contentResolver, logWhere);
 
             // Delete merged ride
             rideWhere = new RideSelection();
             rideWhere.id(mergedRideId);
+            // Do not notify yet
             Uri contentUri = BikeyProvider.notify(RideColumns.CONTENT_URI, false);
-            mContext.getContentResolver().delete(contentUri, rideWhere.sel(), rideWhere.args());
+            contentResolver.delete(contentUri, rideWhere.sel(), rideWhere.args());
         }
 
         // Rename master ride
@@ -168,7 +170,7 @@ public class RideManager {
         }
         RideContentValues values = new RideContentValues();
         values.putName(name);
-        mContext.getContentResolver().update(masterRideUri, values.values(), null, null);
+        contentResolver.update(masterRideUri, values.values(), null, null);
 
         // Update master ride total distance
         double distance = LogManager.get().getTotalDistance(masterRideUri);
@@ -191,11 +193,19 @@ public class RideManager {
 
     @Background
     public void activate(final Uri rideUri) {
+        // Get first activated date
+        Date firstActivatedDate = getFirstActivatedDate(rideUri);
+
         // Update state 
         RideContentValues values = new RideContentValues();
         values.putState(RideState.ACTIVE);
         // Update activated date
-        values.putActivatedDate(new Date());
+        Date now = new Date();
+        values.putActivatedDate(now);
+        // Update first activated date, only if first time
+        if (firstActivatedDate == null) {
+            values.putFirstActivatedDate(now);
+        }
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
 
         // Dispatch to listeners
@@ -270,7 +280,7 @@ public class RideManager {
      * Queries all the columns for the given ride.
      * Do not forget to call {@link Cursor#close()} on the returned Cursor.
      */
-    private RideCursor query(Uri rideUri) {
+    public RideCursor query(Uri rideUri) {
         if (rideUri == null) throw new IllegalArgumentException("null rideUri");
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         if (!c.moveToNext()) {
@@ -314,6 +324,16 @@ public class RideManager {
         RideCursor c = query(rideUri);
         try {
             return c.getActivatedDate();
+        } finally {
+            c.close();
+        }
+    }
+
+    @Background
+    public Date getFirstActivatedDate(Uri rideUri) {
+        RideCursor c = query(rideUri);
+        try {
+            return c.getFirstActivatedDate();
         } finally {
             c.close();
         }

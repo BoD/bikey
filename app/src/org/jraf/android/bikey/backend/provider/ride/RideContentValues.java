@@ -82,6 +82,22 @@ public class RideContentValues extends AbstractContentValues {
 
 
 
+    public RideContentValues putFirstActivatedDate(Date value) {
+        mContentValues.put(RideColumns.FIRST_ACTIVATED_DATE, value == null ? null : value.getTime());
+        return this;
+    }
+
+    public RideContentValues putFirstActivatedDateNull() {
+        mContentValues.putNull(RideColumns.FIRST_ACTIVATED_DATE);
+        return this;
+    }
+
+    public RideContentValues putFirstActivatedDate(Long value) {
+        mContentValues.put(RideColumns.FIRST_ACTIVATED_DATE, value);
+        return this;
+    }
+
+
     public RideContentValues putActivatedDate(Date value) {
         mContentValues.put(RideColumns.ACTIVATED_DATE, value == null ? null : value.getTime());
         return this;

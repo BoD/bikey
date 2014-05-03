@@ -58,18 +58,30 @@ public class UnitUtil {
         sUnit = preferences.getString(Constants.PREF_UNITS, Constants.PREF_UNITS_DEFAULT);
     }
 
-    public static CharSequence formatSpeed(float metersPerSecond) {
-        if (metersPerSecond == 0f) return "0";
+
+    /*
+     * Speed.
+     */
+
+    public static CharSequence formatSpeed(float metersPerSecond, boolean withUnit, float fractionRelativeSize) {
+        String unit = "";
         float converted;
         if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
+            if (withUnit) unit = " km/h";
             converted = metersPerSecond * M_S_TO_KM_H;
         } else {
+            if (withUnit) unit = " mph";
             converted = metersPerSecond * M_S_TO_MPH;
         }
+
+        if (metersPerSecond == 0f) return "0" + unit;
+
         if (converted >= 20) {
             // Round to remove fraction
-            return String.valueOf(Math.round(converted));
-        } else if (converted >= 5) {
+            return String.valueOf(Math.round(converted)) + unit;
+        }
+
+        if (converted >= 5) {
             // Round to closest .5
             int truncated = (int) converted;
             float fraction = converted - truncated;
@@ -79,13 +91,26 @@ public class UnitUtil {
                 converted = truncated + .5f;
             }
         }
-        String speedStr = FORMAT_SPEED.format(converted);
+        String speedStr = FORMAT_SPEED.format(converted) + unit;
         SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(.4f), speedStr.indexOf(sDecimalSeparator), speedStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(fractionRelativeSize), speedStr.indexOf(sDecimalSeparator), speedStr.length() - unit.length(), 0);
         return builder;
     }
 
-    public static CharSequence formatDistance(float meters, boolean withUnit) {
+    public static CharSequence formatSpeed(float metersPerSecond, boolean withUnit) {
+        return formatSpeed(metersPerSecond, withUnit, .4f);
+    }
+
+    public static CharSequence formatSpeed(float metersPerSecond) {
+        return formatSpeed(metersPerSecond, false);
+    }
+
+
+    /*
+     * Distance.
+     */
+
+    public static CharSequence formatDistance(float meters, boolean withUnit, float fractionRelativeSize) {
         String unit = "";
         float converted;
         if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
@@ -95,20 +120,38 @@ public class UnitUtil {
             if (withUnit) unit = " miles";
             converted = meters * M_TO_MI;
         }
+
         if (meters == 0f) return "0" + unit;
+
         String distStr = FORMAT_DISTANCE.format(converted) + unit;
         SpannableString builder = new SpannableString(distStr);
-        builder.setSpan(new RelativeSizeSpan(.4f), distStr.indexOf(sDecimalSeparator), distStr.length(), 0);
+        builder.setSpan(new RelativeSizeSpan(fractionRelativeSize), distStr.indexOf(sDecimalSeparator), distStr.length() - unit.length(), 0);
         return builder;
+    }
+
+    public static CharSequence formatDistance(float meters, boolean withUnit) {
+        return formatDistance(meters, withUnit, .4f);
     }
 
     public static CharSequence formatDistance(float meters) {
         return formatDistance(meters, false);
     }
 
+
+    /*
+     * Cadence.
+     */
+
+    public static CharSequence formatCadence(Float cadence, boolean withUnit) {
+        String unit = "";
+        if (withUnit) unit = " rpm";
+
+        if (cadence == null) return "?" + unit;
+        return FORMAT_CADENCE.format(cadence) + unit;
+    }
+
     public static CharSequence formatCadence(Float cadence) {
         if (cadence == null) return "?";
         return FORMAT_CADENCE.format(cadence);
-
     }
 }

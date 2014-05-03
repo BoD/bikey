@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_map"
+        android:showAsAction="always|withText"
+        android:title="@string/ride_map_action_map">
+        <menu>
+            <group android:checkableBehavior="single" >
+                <item
+                    android:id="@+id/action_map_normal"
+                    android:title="@string/ride_map_action_map_normal"/>
+                <item
+                    android:id="@+id/action_map_satellite"
+                    android:title="@string/ride_map_action_map_satellite"/>
+                <item
+                    android:id="@+id/action_map_terrain"
+                    android:title="@string/ride_map_action_map_terrain"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>

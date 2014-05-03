@@ -1,21 +1,23 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <ListPreference
-        android:defaultValue="PREF_UNITS_IMPERIAL"
-        android:entries="@array/preferences_units_labels"
-        android:entryValues="@array/preferences_units_values"
-        android:key="PREF_UNITS"
-        android:title="@string/preference_units_title" />
+    <PreferenceCategory android:title="@string/preference_category_general_title" >
+        <ListPreference
+            android:defaultValue="PREF_UNITS_IMPERIAL"
+            android:entries="@array/preferences_units_labels"
+            android:entryValues="@array/preferences_units_values"
+            android:key="PREF_UNITS"
+            android:title="@string/preference_units_title" />
 
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="PREF_LISTEN_TO_HEADSET_BUTTON"
-        android:summary="@string/preference_listenToHeadsetButton_summary"
-        android:title="@string/preference_listenToHeadsetButton_title" />
-    <SwitchPreference
-        android:defaultValue="false"
-        android:key="PREF_RECORD_CADENCE"
-        android:title="@string/preference_recordCadence_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="PREF_LISTEN_TO_HEADSET_BUTTON"
+            android:summary="@string/preference_listenToHeadsetButton_summary"
+            android:title="@string/preference_listenToHeadsetButton_title" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="PREF_RECORD_CADENCE"
+            android:title="@string/preference_recordCadence_title" />
+    </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/preference_advanced_title" >
         <Preference

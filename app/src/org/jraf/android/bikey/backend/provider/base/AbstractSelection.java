@@ -31,7 +31,7 @@ import java.util.List;
 import android.content.ContentResolver;
 import android.net.Uri;
 
-public abstract class AbstractSelection <T extends AbstractSelection<?>> {
+public abstract class AbstractSelection<T extends AbstractSelection<?>> {
     private static final String EQ = "=?";
     private static final String PAREN_OPEN = "(";
     private static final String PAREN_CLOSE = ")";
@@ -149,10 +149,13 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
         mSelectionArgs.add(valueOf(value));
     }
 
-    public void addRaw(String raw) {
+    public void addRaw(String raw, Object... args) {
         mSelection.append(" ");
         mSelection.append(raw);
         mSelection.append(" ");
+        for (Object arg : args) {
+            mSelectionArgs.add(valueOf(arg));
+        }
     }
 
     private String valueOf(Object obj) {
@@ -161,7 +164,7 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
         } else if (obj instanceof Boolean) {
             return (Boolean) obj ? "1" : "0";
         } else if (obj instanceof Enum) {
-            return String.valueOf(((Enum) obj).ordinal());
+            return String.valueOf(((Enum<?>) obj).ordinal());
         }
         return String.valueOf(obj);
     }
@@ -252,7 +255,7 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
 
     /**
      * Deletes row(s) specified by this selection.
-     *
+     * 
      * @param contentResolver The content resolver to use.
      * @return The number of rows deleted.
      */

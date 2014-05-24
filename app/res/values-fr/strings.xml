@@ -35,8 +35,8 @@
     <string name="ride_list_shareDialog_title">Format du fichier</string>
 
     <plurals name="ride_list_deleteDialog_message">
-        <item quantity="one">Un élément sera supprimé</item>
-        <item quantity="other">%1$d éléments seront supprimés</item>
+        <item quantity="one">Un élément sera supprimé.</item>
+        <item quantity="other">%1$d éléments seront supprimés.</item>
     </plurals>
 
     <string name="ride_list_notStarted">Pas démarré</string>
@@ -149,6 +149,7 @@
     <string name="ride_detail_cadence_max_label">Max</string>
     <string name="ride_detail_action_display">AFFICHEUR</string>
     <string name="ride_detail_empty">Ce parcours n\`a aucune donnée.</string>
+    <string name="ride_detail_deleteDialog_message">Le parcours sera supprimé.</string>
 
     <!-- Ride map -->
     <string name="ride_map_title">Parcours</string>

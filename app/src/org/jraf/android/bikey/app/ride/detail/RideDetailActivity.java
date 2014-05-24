@@ -24,9 +24,11 @@
  */
 package org.jraf.android.bikey.app.ride.detail;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -54,6 +56,8 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.collection.CollectionUtil;
 import org.jraf.android.util.datetime.DateTimeUtil;
+import org.jraf.android.util.dialog.AlertDialogFragment;
+import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.ui.graph.GraphView;
@@ -66,8 +70,10 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class RideDetailActivity extends FragmentActivity {
+public class RideDetailActivity extends FragmentActivity implements AlertDialogListener {
     private static final int POINTS_TO_GRAPH = 100;
+
+    private static final int DIALOG_CONFIRM_DELETE = 0;
 
     private Uri mRideUri;
 
@@ -153,6 +159,10 @@ public class RideDetailActivity extends FragmentActivity {
                 Intent intent = new Intent(this, DisplayActivity.class);
                 intent.setData(mRideUri);
                 startActivity(intent);
+                return true;
+
+            case R.id.action_delete:
+                showDeleteDialog();
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -289,4 +299,49 @@ public class RideDetailActivity extends FragmentActivity {
         intent.setData(mRideUri);
         startActivity(intent);
     }
+
+
+    /*
+     * Delete.
+     */
+
+    private void showDeleteDialog() {
+        AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE, 0, R.string.ride_detail_deleteDialog_message, 0, android.R.string.ok, android.R.string.cancel,
+                (Serializable) null).show(getSupportFragmentManager());
+    }
+
+    private void delete() {
+        final long[] ids = { ContentUris.parseId(mRideUri) };
+        new TaskFragment(new Task<RideDetailActivity>() {
+            @Override
+            protected void doInBackground() throws Throwable {
+                RideManager.get().delete(ids);
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                finish();
+            }
+        }).execute(getSupportFragmentManager());
+    }
+
+
+    /*
+     * Dialog callbacks.
+     */
+
+    @Override
+    public void onClickPositive(int tag, Object payload) {
+        switch (tag) {
+            case DIALOG_CONFIRM_DELETE:
+                delete();
+                break;
+        }
+    }
+
+    @Override
+    public void onClickNegative(int tag, Object payload) {}
+
+    @Override
+    public void onClickListItem(int tag, int index, Object payload) {}
 }

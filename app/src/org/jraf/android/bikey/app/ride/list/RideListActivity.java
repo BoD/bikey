@@ -119,6 +119,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         return super.onOptionsItemSelected(item);
     }
 
+
     /*
      * Ride selected.
      */
@@ -164,6 +165,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         }
     }
 
+
     /*
      * Delete.
      */
@@ -185,6 +187,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         }).execute(getSupportFragmentManager());
     }
+
 
     /*
      * Merge.
@@ -208,6 +211,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         }).execute(getSupportFragmentManager());
     }
 
+
     /*
      * Dialog callbacks.
      */
@@ -229,6 +233,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
     @Override
     public void onClickNegative(int tag, Object payload) {}
 
+
     /*
      * Quick start.
      */
@@ -249,6 +254,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         }).execute(getSupportFragmentManager());
     }
+
 
     /*
      * Share.
@@ -304,6 +310,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
             }
         }.toastFail(R.string.export_failToast)).execute(getSupportFragmentManager());
     }
+
 
     /*
      * Edit

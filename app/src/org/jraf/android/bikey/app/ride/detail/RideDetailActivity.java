@@ -24,6 +24,7 @@
  */
 package org.jraf.android.bikey.app.ride.detail;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -46,7 +47,11 @@ import butterknife.OnClick;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
+import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
 import org.jraf.android.bikey.app.ride.map.RideMapActivity;
+import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
+import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
+import org.jraf.android.bikey.backend.export.kml.KmlExporter;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -71,9 +76,12 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class RideDetailActivity extends FragmentActivity implements AlertDialogListener {
+    private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
+
     private static final int POINTS_TO_GRAPH = 100;
 
     private static final int DIALOG_CONFIRM_DELETE = 0;
+    private static final int DIALOG_SHARE = 1;
 
     private Uri mRideUri;
 
@@ -125,6 +133,7 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
     @InjectView(R.id.grpCadence)
     protected GraphView mGrpCadence;
 
+    private RideDetailStateFragment mState;
     private GoogleMap mMap;
 
 
@@ -138,7 +147,21 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
 
         ButterKnife.inject(this);
 
+        restoreState();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
         loadData();
+    }
+
+    private void restoreState() {
+        mState = (RideDetailStateFragment) getSupportFragmentManager().findFragmentByTag(FRAGMENT_RETAINED_STATE);
+        if (mState == null) {
+            mState = new RideDetailStateFragment();
+            getSupportFragmentManager().beginTransaction().add(mState, FRAGMENT_RETAINED_STATE).commit();
+        }
     }
 
     @Override
@@ -163,6 +186,14 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
 
             case R.id.action_delete:
                 showDeleteDialog();
+                return true;
+
+            case R.id.action_share:
+                showShareDialog();
+                return true;
+
+            case R.id.action_edit:
+                startActivity(new Intent(this, RideEditActivity.class).setData(mRideUri));
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -327,6 +358,60 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
 
 
     /*
+     * Share.
+     */
+
+    public void showShareDialog() {
+        AlertDialogFragment.newInstance(DIALOG_SHARE, R.string.ride_list_shareDialog_title, 0, R.array.export_choices, 0, 0, (Serializable) null).show(
+                getSupportFragmentManager());
+    }
+
+    @Override
+    public void onClickListItem(int tag, int index, Object payload) {
+        switch (index) {
+            case 0:
+                // Gpx
+                mState.mExporter = new GpxExporter(mRideUri);
+                break;
+            case 1:
+                // Kml 
+                mState.mExporter = new KmlExporter(mRideUri);
+                break;
+            case 3:
+                // Genymotion script
+                mState.mExporter = new GenymotionExporter(mRideUri);
+                break;
+        }
+        startExport();
+    }
+
+    private void startExport() {
+        new TaskFragment(new Task<RideDetailActivity>() {
+            @Override
+            protected void doInBackground() throws Throwable {
+                getActivity().mState.mExporter.export();
+            }
+
+            @Override
+            protected void onPostExecuteOk() {
+                File exportedFile = getActivity().mState.mExporter.getExportFile();
+
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.export_subject));
+                String messageBody = getString(R.string.export_body);
+                sendIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + exportedFile.getAbsolutePath()));
+                sendIntent.setType("application/bikey");
+                sendIntent.putExtra(Intent.EXTRA_TEXT, messageBody);
+
+                startActivity(Intent.createChooser(sendIntent, getResources().getText(R.string.ride_list_action_share)));
+
+            }
+        }.toastFail(R.string.export_failToast)).execute(getSupportFragmentManager());
+    }
+
+
+    /*
      * Dialog callbacks.
      */
 
@@ -341,7 +426,4 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
 
     @Override
     public void onClickNegative(int tag, Object payload) {}
-
-    @Override
-    public void onClickListItem(int tag, int index, Object payload) {}
 }

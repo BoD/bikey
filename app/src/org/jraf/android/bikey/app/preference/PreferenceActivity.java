@@ -35,6 +35,7 @@ import android.view.MenuItem;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.app.heart.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
@@ -45,6 +46,7 @@ import org.jraf.android.util.dialog.AlertDialogListener;
 
 public class PreferenceActivity extends BaseFragmentActivity implements PreferenceCallbacks, AlertDialogListener {
     private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
+    private static final int REQUEST_SCAN_HEART_RATE_MONITOR = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,5 +156,16 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
                 DatabaseImporter.importDatabase(thiz, ridesFile);
             }
         }.toastFail(R.string.import_failToast).toastOk(R.string.import_successToast)).execute(getSupportFragmentManager());
+    }
+
+
+    /*
+     * Heart rate monitor.
+     */
+
+    @Override
+    public void startHeartRateMonitorScan() {
+        Intent intent = new Intent(this, HeartRateMonitorScanActivity.class);
+        startActivityForResult(intent, REQUEST_SCAN_HEART_RATE_MONITOR);
     }
 }

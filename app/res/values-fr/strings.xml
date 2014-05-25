@@ -114,6 +114,9 @@
     <string name="preference_export_summary">Exporter les parcours vers un fichier de base de données Bikey</string>
     <string name="preference_import_title">Importer des parcours</string>
     <string name="preference_import_summary">Importer des parcours depuis un fichier de base de données Bikey</string>
+    <string name="preference_heartMonitor_title">Cardiofréquencemètre</string>
+    <string name="preference_heartMonitor_scan_title">Scanner</string>
+    <string name="preference_heartMonitor_scan_summary">Trouver et se connecter à un cardiofréquencemètre</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>
@@ -157,5 +160,8 @@
     <string name="ride_map_action_map_normal">Normale</string>
     <string name="ride_map_action_map_satellite">Satellite</string>
     <string name="ride_map_action_map_terrain">Physique</string>
+
+    <!-- Heart rate monitor scan -->
+    <string name="heartRateMonitorScan_title">Sélectionnez votre cardiofréquencemètre</string>
 
 </resources>

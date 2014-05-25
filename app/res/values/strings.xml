@@ -94,6 +94,9 @@
     <string name="preference_export_summary">Export rides to a Bikey database file</string>
     <string name="preference_import_title">Import rides</string>
     <string name="preference_import_summary">Import rides from a Bikey database file</string>
+    <string name="preference_heartMonitor_title">Heart rate monitor</string>
+    <string name="preference_heartMonitor_scan_title">Scan</string>
+    <string name="preference_heartMonitor_scan_summary">Find and connect to a heart rate monitor</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride">Ride started</string>
@@ -147,5 +150,8 @@
     <string name="ride_map_action_map_normal">Normal</string>
     <string name="ride_map_action_map_satellite">Satellite</string>
     <string name="ride_map_action_map_terrain">Terrain</string>
+
+    <!-- Heart rate monitor scan -->
+    <string name="heartRateMonitorScan_title">Select your heart rate monitor</string>
 
 </resources>

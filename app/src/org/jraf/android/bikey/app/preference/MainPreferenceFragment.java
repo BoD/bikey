@@ -50,6 +50,7 @@ public class MainPreferenceFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
         updateListPreferenceSummary(Constants.PREF_UNITS);
 
+        findPreference(Constants.PREF_HEART_MONITOR_SCAN).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_EXPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_IMPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
     }
@@ -132,6 +133,9 @@ public class MainPreferenceFragment extends PreferenceFragment {
                 return true;
             } else if (Constants.PREF_IMPORT.equals(preference.getKey())) {
                 getCallbacks().startImport();
+                return true;
+            } else if (Constants.PREF_HEART_MONITOR_SCAN.equals(preference.getKey())) {
+                getCallbacks().startHeartRateMonitorScan();
                 return true;
             }
             return false;

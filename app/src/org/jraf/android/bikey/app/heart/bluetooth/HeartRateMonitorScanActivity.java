@@ -22,14 +22,17 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.preference;
+package org.jraf.android.bikey.app.heart.bluetooth;
 
-public interface PreferenceCallbacks {
-    void showRecordCadenceConfirmDialog();
+import android.os.Bundle;
 
-    void startExport();
+import org.jraf.android.bikey.R;
+import org.jraf.android.util.app.base.BaseFragmentActivity;
 
-    void startImport();
-
-    void startHeartRateMonitorScan();
+public class HeartRateMonitorScanActivity extends BaseFragmentActivity {
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.heart_rate_monitor_scan);
+    }
 }

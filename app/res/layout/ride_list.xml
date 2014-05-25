@@ -6,7 +6,7 @@
     tools:context="org.jraf.android.bikey.app.ride.list.RideListActivity" >
 
     <fragment
-        android:id="@+id/fraSessionList"
+        android:id="@+id/fraRideList"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"

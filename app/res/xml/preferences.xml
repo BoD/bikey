@@ -18,6 +18,13 @@
             android:key="PREF_RECORD_CADENCE"
             android:title="@string/preference_recordCadence_title" />
     </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preference_heartMonitor_title" >
+        <Preference
+            android:icon="@drawable/ic_action_scan"
+            android:key="PREF_HEART_MONITOR_SCAN"
+            android:summary="@string/preference_heartMonitor_scan_summary"
+            android:title="@string/preference_heartMonitor_scan_title" />
+    </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_importExport_title" >
         <Preference
             android:icon="@drawable/ic_action_export"

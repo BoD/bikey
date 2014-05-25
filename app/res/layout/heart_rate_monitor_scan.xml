@@ -1,0 +1,16 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="org.jraf.android.bikey.app.heart.bluetooth.HeartRateMonitorScanActivity" >
+
+    <fragment
+        android:id="@+id/fraBleScanList"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        class="org.jraf.android.bikey.app.heart.bluetooth.BleScanListFragment"
+        tools:layout="@android:layout/list_content" />
+
+</LinearLayout>

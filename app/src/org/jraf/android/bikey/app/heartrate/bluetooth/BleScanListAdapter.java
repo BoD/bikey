@@ -22,17 +22,32 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.heart.bluetooth;
+package org.jraf.android.bikey.app.heartrate.bluetooth;
 
-import android.os.Bundle;
+import android.bluetooth.BluetoothDevice;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.TextView;
 
-import org.jraf.android.bikey.R;
-import org.jraf.android.util.app.base.BaseFragmentActivity;
+import org.jraf.android.util.ui.ViewHolder;
 
-public class HeartRateMonitorScanActivity extends BaseFragmentActivity {
+public class BleScanListAdapter extends ArrayAdapter<BluetoothDevice> {
+
+    public BleScanListAdapter(Context context) {
+        super(context, 0);
+    }
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.heart_rate_monitor_scan);
+    public View getView(int position, View convertView, ViewGroup parent) {
+        if (convertView == null) {
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+        }
+        BluetoothDevice bluetoothDevice = getItem(position);
+        TextView text1 = ViewHolder.get(convertView, android.R.id.text1);
+        text1.setText(bluetoothDevice.getName());
+        return convertView;
     }
 }

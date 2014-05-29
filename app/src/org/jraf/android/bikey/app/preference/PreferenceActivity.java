@@ -35,7 +35,7 @@ import android.view.MenuItem;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.heart.bluetooth.HeartRateMonitorScanActivity;
+import org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.util.app.base.BaseFragmentActivity;

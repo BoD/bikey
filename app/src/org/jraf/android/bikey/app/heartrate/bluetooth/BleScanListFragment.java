@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.heart.bluetooth;
+package org.jraf.android.bikey.app.heartrate.bluetooth;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -37,7 +37,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ListFragment;
+import android.view.View;
+import android.widget.ListView;
 
+import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.util.handler.HandlerUtil;
 import org.jraf.android.util.log.wrapper.Log;
 
@@ -127,5 +130,12 @@ public class BleScanListFragment extends ListFragment {
             });
         }
     };
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Log.d();
+        HeartRateManager.get().setBluetoothDevice(mBleScanListAdapter.getItem(position));
+        getActivity().finish();
+    }
 
 }

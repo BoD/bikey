@@ -23,6 +23,9 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="false" />
 
     <application
         android:name="org.jraf.android.bikey.app.Application"
@@ -137,7 +140,7 @@
 
         <!-- Heart rate monitor scan -->
         <activity
-            android:name="org.jraf.android.bikey.app.heart.bluetooth.HeartRateMonitorScanActivity"
+            android:name="org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity"
             android:label="@string/heartRateMonitorScan_title" />
     </application>
 

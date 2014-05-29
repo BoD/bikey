@@ -115,8 +115,8 @@
     <string name="preference_import_title">Importer des parcours</string>
     <string name="preference_import_summary">Importer des parcours depuis un fichier de base de données Bikey</string>
     <string name="preference_heartMonitor_title">Cardiofréquencemètre</string>
-    <string name="preference_heartMonitor_scan_title">Scanner</string>
-    <string name="preference_heartMonitor_scan_summary">Trouver et se connecter à un cardiofréquencemètre</string>
+    <string name="preference_heartMonitor_scan_title">Se connecter</string>
+    <string name="preference_heartMonitor_scan_summary">Se connecter à un cardiofréquencemètre</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>
@@ -162,6 +162,6 @@
     <string name="ride_map_action_map_terrain">Physique</string>
 
     <!-- Heart rate monitor scan -->
-    <string name="heartRateMonitorScan_title">Sélectionnez votre cardiofréquencemètre</string>
+    <string name="heartRateMonitorScan_title">Se connecter à un cardiofréquencemètre</string>
 
 </resources>

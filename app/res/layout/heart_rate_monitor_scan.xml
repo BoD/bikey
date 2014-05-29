@@ -3,14 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="org.jraf.android.bikey.app.heart.bluetooth.HeartRateMonitorScanActivity" >
+    tools:context="org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity" >
 
     <fragment
         android:id="@+id/fraBleScanList"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_weight="1"
-        class="org.jraf.android.bikey.app.heart.bluetooth.BleScanListFragment"
+        class="org.jraf.android.bikey.app.heartrate.bluetooth.BleScanListFragment"
         tools:layout="@android:layout/list_content" />
 
 </LinearLayout>

@@ -50,6 +50,9 @@ public class MainPreferenceFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
         updateListPreferenceSummary(Constants.PREF_UNITS);
 
+        // TODO hide heart monitor if not supported
+        // getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
+
         findPreference(Constants.PREF_HEART_MONITOR_SCAN).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_EXPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_IMPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);

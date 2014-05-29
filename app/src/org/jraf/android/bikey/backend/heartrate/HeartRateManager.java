@@ -146,11 +146,15 @@ public class HeartRateManager {
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
             Log.d("characteristic=" + characteristic.getUuid());
-        }
-
-        @Override
-        public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            Log.d("characteristic=" + characteristic.getUuid() + " status=" + LogUtil.getConstantName(BluetoothGatt.class, status, "GATT_"));
+            int format;
+            int flag = characteristic.getProperties();
+            if ((flag & 0x01) != 0) {
+                format = BluetoothGattCharacteristic.FORMAT_UINT16;
+            } else {
+                format = BluetoothGattCharacteristic.FORMAT_UINT8;
+            }
+            int heartRate = characteristic.getIntValue(format, 1);
+            Log.d("heartRate=" + heartRate);
         }
     };
 

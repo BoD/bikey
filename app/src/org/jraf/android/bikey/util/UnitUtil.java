@@ -44,6 +44,8 @@ public class UnitUtil {
     private static DecimalFormat FORMAT_SPEED = new DecimalFormat("0.0");
     private static DecimalFormat FORMAT_DISTANCE = new DecimalFormat("0.00");
     private static DecimalFormat FORMAT_CADENCE = new DecimalFormat("0");
+    private static DecimalFormat FORMAT_HEART_RATE = new DecimalFormat("0");
+
 
     private static char sDecimalSeparator;
     private static String sUnit;
@@ -153,5 +155,22 @@ public class UnitUtil {
     public static CharSequence formatCadence(Float cadence) {
         if (cadence == null) return "?";
         return FORMAT_CADENCE.format(cadence);
+    }
+
+
+    /*
+     * Heart rate.
+     */
+
+    public static CharSequence formatHeartRate(int bpm, boolean withUnit) {
+        String unit = "";
+        if (withUnit) unit = " bpm";
+
+        return FORMAT_HEART_RATE.format(bpm) + unit;
+    }
+
+
+    public static CharSequence formatHeartRate(int bpm) {
+        return FORMAT_HEART_RATE.format(bpm);
     }
 }

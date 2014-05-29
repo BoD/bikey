@@ -75,12 +75,12 @@
         android:weightSum="3" >
 
         <CheckBox
-            android:id="@+id/chkTabAverageMovingSpeed"
+            android:id="@+id/chkHeartRate"
             style="@style/tab"
             android:layout_width="0px"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:text="@string/display_tab_averageMovingSpeed" />
+            android:text="@string/display_tab_heartRate" />
 
         <CheckBox
             android:id="@+id/chkTabCompass"

@@ -50,10 +50,10 @@ import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
-import org.jraf.android.bikey.app.display.fragment.averagemovingspeed.AverageMovingSpeedDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.compass.CompassDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.currenttime.CurrentTimeDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.elapsedtime.ElapsedTimeDisplayFragment;
+import org.jraf.android.bikey.app.display.fragment.heartrate.HeartRateDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.speed.SpeedDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
 import org.jraf.android.bikey.backend.location.LocationManager;
@@ -198,7 +198,7 @@ public class DisplayActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, SpeedDisplayFragment.newInstance(), R.id.chkTabSpeed, R.string.display_title_speed);
         mFragmentCycler.add(this, ElapsedTimeDisplayFragment.newInstance(), R.id.chkTabDuration, R.string.display_title_duration);
         mFragmentCycler.add(this, TotalDistanceDisplayFragment.newInstance(), R.id.chkTabDistance, R.string.display_title_distance);
-        mFragmentCycler.add(this, AverageMovingSpeedDisplayFragment.newInstance(), R.id.chkTabAverageMovingSpeed, R.string.display_title_averageMovingSpeed);
+        mFragmentCycler.add(this, HeartRateDisplayFragment.newInstance(), R.id.chkHeartRate, R.string.display_title_heartRate);
         mFragmentCycler.add(this, CompassDisplayFragment.newInstance(), R.id.chkTabCompass, R.string.display_title_compass);
         mFragmentCycler.add(this, CurrentTimeDisplayFragment.newInstance(), R.id.chkTabCurrentTime, R.string.display_title_currentTime);
         mFragmentCycler.show(this);

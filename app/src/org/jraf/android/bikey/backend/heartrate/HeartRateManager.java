@@ -78,6 +78,9 @@ public class HeartRateManager {
         }
     };
 
+    private int mLastValue = -1;
+    private boolean mConnected;
+
     private HeartRateManager() {
         mContext = Application.getApplication();
     }
@@ -114,12 +117,7 @@ public class HeartRateManager {
                     break;
 
                 case BluetoothProfile.STATE_DISCONNECTED:
-                    mListeners.dispatch(new Dispatcher<HeartRateListener>() {
-                        @Override
-                        public void dispatch(HeartRateListener listener) {
-                            listener.onDisconnect();
-                        }
-                    });
+                    onDisconnect();
                     break;
             }
         }
@@ -153,10 +151,57 @@ public class HeartRateManager {
             } else {
                 format = BluetoothGattCharacteristic.FORMAT_UINT8;
             }
-            int heartRate = characteristic.getIntValue(format, 1);
-            Log.d("heartRate=" + heartRate);
+            int previousValue = mLastValue;
+
+            int value = characteristic.getIntValue(format, 1);
+            if (value < 50) {
+                // This is probably a false measurement, consider this as a disconnect
+                if (mConnected) {
+                    // Disconnect
+                    onDisconnect();
+                }
+
+                return;
+            }
+
+
+            mLastValue = value;
+            Log.d("heartRate=" + mLastValue);
+
+            if (!mConnected) {
+                mConnected = true;
+
+                // Inform listeners
+                mListeners.dispatch(new Dispatcher<HeartRateListener>() {
+                    @Override
+                    public void dispatch(HeartRateListener listener) {
+                        listener.onConnect();
+                    }
+                });
+            }
+
+            if (previousValue != mLastValue) {
+                // Inform listeners
+                mListeners.dispatch(new Dispatcher<HeartRateListener>() {
+                    @Override
+                    public void dispatch(HeartRateListener listener) {
+                        listener.onHeartRateChange(mLastValue);
+                    }
+                });
+            }
         }
     };
+
+    private void onDisconnect() {
+        mConnected = false;
+        mLastValue = -1;
+        mListeners.dispatch(new Dispatcher<HeartRateListener>() {
+            @Override
+            public void dispatch(HeartRateListener listener) {
+                listener.onDisconnect();
+            }
+        });
+    }
 
 
     /*
@@ -233,5 +278,13 @@ public class HeartRateManager {
     private static int getAssignedNumber(UUID uuid) {
         // Keep only the significant bits of the UUID
         return (int) ((uuid.getMostSignificantBits() & 0x0000FFFF00000000L) >> 32);
+    }
+
+    public boolean isConnected() {
+        return mConnected;
+    }
+
+    public int getLastValue() {
+        return mLastValue;
     }
 }

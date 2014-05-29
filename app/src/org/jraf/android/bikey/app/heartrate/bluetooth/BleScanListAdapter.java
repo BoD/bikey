@@ -43,11 +43,16 @@ public class BleScanListAdapter extends ArrayAdapter<BluetoothDevice> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_1, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(android.R.layout.simple_list_item_2, parent, false);
         }
         BluetoothDevice bluetoothDevice = getItem(position);
+        // Name
         TextView text1 = ViewHolder.get(convertView, android.R.id.text1);
         text1.setText(bluetoothDevice.getName());
+
+        // Address
+        TextView text2 = ViewHolder.get(convertView, android.R.id.text2);
+        text2.setText(bluetoothDevice.getAddress());
         return convertView;
     }
 }

@@ -45,6 +45,11 @@
 			"type": "Float",
 			"nullable": true,
 		},
+		{
+			"name": "heart_rate",
+			"type": "Integer",
+			"nullable": true,
+		},
 	],
 	"constraints": [
 		{

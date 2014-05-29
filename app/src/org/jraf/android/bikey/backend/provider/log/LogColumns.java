@@ -46,6 +46,7 @@ public interface LogColumns extends BaseColumns {
     String DISTANCE = "distance";
     String SPEED = "speed";
     String CADENCE = "cadence";
+    String HEART_RATE = "heart_rate";
 
     String DEFAULT_ORDER = _ID;
 
@@ -60,7 +61,8 @@ public interface LogColumns extends BaseColumns {
             DURATION,
             DISTANCE,
             SPEED,
-            CADENCE
+            CADENCE,
+            HEART_RATE
     };
     // @formatter:on
 }

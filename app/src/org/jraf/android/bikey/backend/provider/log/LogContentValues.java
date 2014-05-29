@@ -134,4 +134,15 @@ public class LogContentValues extends AbstractContentValues {
         return this;
     }
 
+
+    public LogContentValues putHeartRate(Integer value) {
+        mContentValues.put(LogColumns.HEART_RATE, value);
+        return this;
+    }
+
+    public LogContentValues putHeartRateNull() {
+        mContentValues.putNull(LogColumns.HEART_RATE);
+        return this;
+    }
+
 }

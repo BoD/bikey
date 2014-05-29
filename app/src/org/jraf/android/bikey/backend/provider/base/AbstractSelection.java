@@ -31,7 +31,7 @@ import java.util.List;
 import android.content.ContentResolver;
 import android.net.Uri;
 
-public abstract class AbstractSelection<T extends AbstractSelection<?>> {
+public abstract class AbstractSelection <T extends AbstractSelection<?>> {
     private static final String EQ = "=?";
     private static final String PAREN_OPEN = "(";
     private static final String PAREN_CLOSE = ")";
@@ -255,7 +255,7 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
 
     /**
      * Deletes row(s) specified by this selection.
-     * 
+     *
      * @param contentResolver The content resolver to use.
      * @return The number of rows deleted.
      */

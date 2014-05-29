@@ -105,4 +105,12 @@ public class LogCursor extends AbstractCursor {
     public Float getCadence() {
         return getFloatOrNull(LogColumns.CADENCE);
     }
+
+    /**
+     * Get the {@code heart_rate} value.
+     * Can be {@code null}.
+     */
+    public Integer getHeartRate() {
+        return getIntegerOrNull(LogColumns.HEART_RATE);
+    }
 }

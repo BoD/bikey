@@ -42,7 +42,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = BikeySQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "bikey_provider.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
     private final Context mContext;
     private final BikeySQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
@@ -58,7 +58,8 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
             + LogColumns.DURATION + " INTEGER, "
             + LogColumns.DISTANCE + " REAL, "
             + LogColumns.SPEED + " REAL, "
-            + LogColumns.CADENCE + " REAL "
+            + LogColumns.CADENCE + " REAL, "
+            + LogColumns.HEART_RATE + " INTEGER "
             + ", CONSTRAINT FK_RIDE FOREIGN KEY (RIDE_ID) REFERENCES RIDE (_ID) ON DELETE CASCADE"
             + " );";
 

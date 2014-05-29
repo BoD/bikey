@@ -62,6 +62,13 @@ public class BikeySQLiteUpgradeHelper {
             + RideColumns.TABLE_NAME + "." + RideColumns._ID
             + ")"
             + " ;";
+    
+    // 3 -> 4
+    private static final String SQL_UPGRADE_TABLE_LOG_4 = "ALTER TABLE "
+            + LogColumns.TABLE_NAME
+            + " ADD COLUMN "
+            + LogColumns.HEART_RATE + " INTEGER "
+            + " ;";
     // @formatter:on
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -84,6 +91,13 @@ public class BikeySQLiteUpgradeHelper {
                     // Populate it with the first RECORDED_DATE of the corresponding Logs
                     db.execSQL(SQL_POPULATE_TABLE_RIDE_3);
                     curVersion = 3;
+                    break;
+
+                case 3:
+                    // 3 -> 4
+                    // Add new HEART_RATE column
+                    db.execSQL(SQL_UPGRADE_TABLE_LOG_4);
+                    curVersion = 4;
                     break;
             }
         }

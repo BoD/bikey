@@ -351,4 +351,34 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         addLessThanOrEquals(LogColumns.CADENCE, value);
         return this;
     }
+
+    public LogSelection heartRate(Integer... value) {
+        addEquals(LogColumns.HEART_RATE, value);
+        return this;
+    }
+
+    public LogSelection heartRateNot(Integer... value) {
+        addNotEquals(LogColumns.HEART_RATE, value);
+        return this;
+    }
+
+    public LogSelection heartRateGt(int value) {
+        addGreaterThan(LogColumns.HEART_RATE, value);
+        return this;
+    }
+
+    public LogSelection heartRateGtEq(int value) {
+        addGreaterThanOrEquals(LogColumns.HEART_RATE, value);
+        return this;
+    }
+
+    public LogSelection heartRateLt(int value) {
+        addLessThan(LogColumns.HEART_RATE, value);
+        return this;
+    }
+
+    public LogSelection heartRateLtEq(int value) {
+        addLessThanOrEquals(LogColumns.HEART_RATE, value);
+        return this;
+    }
 }

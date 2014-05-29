@@ -63,7 +63,7 @@ public class LogManager {
     }
 
     @Background
-    public Uri add(final Uri rideUri, Location location, Location previousLocation, Float cadence) {
+    public Uri add(final Uri rideUri, Location location, Location previousLocation, Float cadence, Integer heartRate) {
         // Add a log
         LogContentValues values = new LogContentValues();
         long rideId = ContentUris.parseId(rideUri);
@@ -84,6 +84,7 @@ public class LogManager {
             }
         }
         values.putCadence(cadence);
+        values.putHeartRate(heartRate);
 
         Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.values());
 

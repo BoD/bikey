@@ -47,6 +47,8 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
 import org.jraf.android.bikey.backend.cadence.CadenceManager;
+import org.jraf.android.bikey.backend.heartrate.HeartRateListener;
+import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -62,6 +64,7 @@ public class LogCollectorService extends Service {
     private Uri mCollectingRideUri;
     protected Location mLastLocation;
     private Float mLastCadence;
+    private Integer mLastHeartRate;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -117,6 +120,9 @@ public class LogCollectorService extends Service {
                 // Start listening to pref changes (to enable / disable cadence recording accordingly)
                 PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).registerOnSharedPreferenceChangeListener(
                         mOnSharedPreferenceChangeListener);
+
+                // Start recording heart rate
+                HeartRateManager.get().addListener(mHeartRateListener);
             }
         });
     }
@@ -132,6 +138,7 @@ public class LogCollectorService extends Service {
         dismissNotification();
         LocationManager.get().removeLocationListener(mLocationListener);
         CadenceManager.get().removeListener(mCadenceListener);
+        HeartRateManager.get().removeListener(mHeartRateListener);
 
         mCollectingRideUri = null;
         stopSelf();
@@ -158,8 +165,7 @@ public class LogCollectorService extends Service {
             runOnBackgroundThread(new Runnable() {
                 @Override
                 public void run() {
-                    Float cadence = mLastCadence;
-                    LogManager.get().add(mCollectingRideUri, location, mLastLocation, cadence);
+                    LogManager.get().add(mCollectingRideUri, location, mLastLocation, mLastCadence, mLastHeartRate);
                     mLastLocation = location;
                 }
             });
@@ -204,6 +210,26 @@ public class LogCollectorService extends Service {
                 CadenceManager.get().removeListener(mCadenceListener);
             }
         }
+    };
+
+
+    /*
+     * Heart rate listener.
+     */
+
+    private HeartRateListener mHeartRateListener = new HeartRateListener() {
+        @Override
+        public void onHeartRateChange(int bpm) {
+            mLastHeartRate = bpm;
+        }
+
+        @Override
+        public void onDisconnect() {
+            mLastHeartRate = null;
+        }
+
+        @Override
+        public void onConnect() {}
     };
 
 

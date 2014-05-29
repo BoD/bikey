@@ -8,6 +8,6 @@
 	"sqliteUpgradeHelperClassName": "BikeySQLiteUpgradeHelper",
 	"authority": "org.jraf.android.bikey.backend.provider",
 	"databaseFileName": "bikey_provider.db",
-	"databaseVersion": 3,
+	"databaseVersion": 4,
 	"enableForeignKeys": true,
 }

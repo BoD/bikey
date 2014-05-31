@@ -32,7 +32,8 @@ public class Constants {
     public static final String PREF_UNITS_METRIC = "PREF_UNITS_METRIC";
     public static final String PREF_UNITS_IMPERIAL = "PREF_UNITS_IMPERIAL";
     public static final String PREF_UNITS_DEFAULT = PREF_UNITS_IMPERIAL;
-    public static final String PREF_HEART_MONITOR_SCAN = "PREF_HEART_MONITOR_SCAN";
+    public static final String PREF_CATEGORY_HEART_RATE = "PREF_CATEGORY_HEART_RATE";
+    public static final String PREF_HEART_RATE_SCAN = "PREF_HEART_RATE_SCAN";
     public static final String PREF_IMPORT = "PREF_IMPORT";
     public static final String PREF_EXPORT = "PREF_EXPORT";
 

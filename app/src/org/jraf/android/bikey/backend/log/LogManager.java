@@ -143,13 +143,37 @@ public class LogManager {
      */
     @Background
     public Float getAverageCadence(Uri rideUri) {
-        // First get the max
+        // First get the min and max
+        float min = getMinCadence(rideUri);
         float max = getMaxCadence(rideUri);
 
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "avg(" + LogColumns.CADENCE + ")" };
         LogSelection where = new LogSelection();
-        where.rideId(rideId).and().cadenceLtEq(max);
+        where.rideId(rideId).and().cadenceGtEq(min).and().cadenceLtEq(max);
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        try {
+            if (!c.moveToNext()) return null;
+            if (c.isNull(0)) return null;
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
+
+    /**
+     * Note: the top 10% points are discarded to account for imprecise values.
+     */
+    @Background
+    public Float getAverageHeartRate(Uri rideUri) {
+        // First get the min and max
+        float min = getMinHeartRate(rideUri);
+        float max = getMaxHeartRate(rideUri);
+
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { "avg(" + LogColumns.HEART_RATE + ")" };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId).and().heartRateGtEq((int) min).and().heartRateLtEq((int) max);
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
         try {
             if (!c.moveToNext()) return null;
@@ -181,7 +205,7 @@ public class LogManager {
      */
     @Background
     public float getMax(Uri rideUri, String column) {
-        // Get the point count to discard the fastest 10% speed
+        // Get the point count to discard the top 10% values
         Integer count = getLogCount(rideUri);
         if (count == null) return 0;
 
@@ -198,6 +222,28 @@ public class LogManager {
         }
     }
 
+    /**
+     * Note: the bottom 10% points are discarded to account for imprecise values.
+     */
+    @Background
+    public float getMin(Uri rideUri, String column) {
+        long rideId = ContentUris.parseId(rideUri);
+        String[] projection = { column };
+        LogSelection where = new LogSelection();
+        where.rideId(rideId).and().addRaw(column + " IS NOT NULL");
+        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), column);
+        try {
+            if (!c.moveToFirst()) return 0;
+            int count = c.getCount();
+            // Discard the first 10%
+            int index = count / 10;
+            c.moveToPosition(index);
+            return c.getFloat(0);
+        } finally {
+            c.close();
+        }
+    }
+
     @Background
     public float getMaxSpeed(Uri rideUri) {
         return getMax(rideUri, LogColumns.SPEED);
@@ -207,6 +253,21 @@ public class LogManager {
     public float getMaxCadence(Uri rideUri) {
         return getMax(rideUri, LogColumns.CADENCE);
     }
+
+    private float getMinCadence(Uri rideUri) {
+        return getMin(rideUri, LogColumns.CADENCE);
+    }
+
+    @Background
+    public float getMaxHeartRate(Uri rideUri) {
+        return getMax(rideUri, LogColumns.HEART_RATE);
+    }
+
+    @Background
+    public float getMinHeartRate(Uri rideUri) {
+        return getMin(rideUri, LogColumns.HEART_RATE);
+    }
+
 
 
     @Background
@@ -335,6 +396,32 @@ public class LogManager {
         return res;
     }
 
+    @Background
+    public List<Float> getHeartRateArray(Uri rideUri, int max) {
+        // Get the point count to determine the ratio to apply to not get more than max values
+        Integer count = getLogCount(rideUri);
+        if (count == null) return null;
+        int ratio = count / max;
+        if (ratio == 0) ratio = 1;
+
+        ArrayList<Float> res = new ArrayList<>(max);
+        // Get the values
+        String[] projection = new String[] { LogColumns.HEART_RATE };
+        LogSelection where = new LogSelection();
+        // Get at most max rows by applying a modulo on the id
+        long rideId = ContentUris.parseId(rideUri);
+        where.rideId(rideId).and().heartRateNot((Integer) null).and().addRaw(LogColumns._ID + "%" + ratio + "=0");
+        LogCursor cursor = where.query(mContext.getContentResolver(), projection);
+        try {
+            while (cursor.moveToNext()) {
+                res.add(Float.valueOf(cursor.getHeartRate()));
+            }
+        } finally {
+            cursor.close();
+        }
+        return res;
+    }
+
 
     /*
      * Listeners.
@@ -347,4 +434,5 @@ public class LogManager {
     public void removeListener(LogListener listener) {
         mListeners.remove(listener);
     }
+
 }

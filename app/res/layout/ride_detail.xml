@@ -13,6 +13,8 @@
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingRight="@dimen/activity_horizontal_margin" >
 
+        <!-- Map -->
+
         <FrameLayout
             android:id="@+id/conMap"
             android:layout_width="match_parent"
@@ -40,6 +42,8 @@
                 android:clickable="true" />
         </FrameLayout>
 
+        <!-- Date & time -->
+
         <TextView
             style="?android:attr/listSeparatorTextViewStyle"
             android:layout_width="match_parent"
@@ -63,6 +67,8 @@
                 android:paddingRight="8dp" />
         </LinearLayout>
 
+        <!-- No data indicator -->
+
         <TextView
             android:id="@+id/txtEmpty"
             android:layout_width="match_parent"
@@ -75,6 +81,8 @@
             android:text="@string/ride_detail_empty"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:visibility="gone" />
+
+        <!-- Detailed info -->
 
         <LinearLayout
             android:id="@+id/conDetailedInfo"
@@ -106,6 +114,8 @@
                     android:label="@string/ride_detail_dateTime_finish_label"
                     android:paddingRight="8dp" />
             </LinearLayout>
+
+            <!-- Duration -->
 
             <TextView
                 style="?android:attr/listSeparatorTextViewStyle"
@@ -140,6 +150,8 @@
                 </org.jraf.android.bikey.widget.LabelTextView>
             </LinearLayout>
 
+            <!-- Distance -->
+
             <TextView
                 style="?android:attr/listSeparatorTextViewStyle"
                 android:layout_width="match_parent"
@@ -162,6 +174,8 @@
                     android:label="@string/ride_detail_distance_total_label"
                     android:paddingRight="8dp" />
             </LinearLayout>
+
+            <!-- Speed -->
 
             <TextView
                 style="?android:attr/listSeparatorTextViewStyle"
@@ -203,6 +217,8 @@
                 android:layout_marginTop="@dimen/ride_detail_content_marginTop"
                 android:background="#1000" />
 
+            <!-- Cadence -->
+
             <TextView
                 android:id="@+id/txtCadenceSectionTitle"
                 style="?android:attr/listSeparatorTextViewStyle"
@@ -237,6 +253,65 @@
 
             <org.jraf.android.util.ui.graph.GraphView
                 android:id="@+id/grpCadence"
+                android:layout_width="match_parent"
+                android:layout_height="192dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/ride_detail_content_marginTop"
+                android:background="#1000" />
+
+            <!-- Heart rate -->
+
+            <TextView
+                android:id="@+id/txtHeartRateSectionTitle"
+                style="?android:attr/listSeparatorTextViewStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/ride_detail_title_marginTop"
+                android:text="@string/ride_detail_heartRate_section" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
+
+                <org.jraf.android.bikey.widget.LabelTextView
+                    android:id="@+id/txtHeartRateMin"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="@integer/ride_detail_leftColumn_weight"
+                    android:label="@string/ride_detail_heartRate_min_label"
+                    android:paddingRight="8dp" />
+
+                <org.jraf.android.bikey.widget.LabelTextView
+                    android:id="@+id/txtHeartRateMax"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:label="@string/ride_detail_heartRate_max_label"
+                    android:paddingRight="8dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="@dimen/ride_detail_content_marginTop" >
+
+                <org.jraf.android.bikey.widget.LabelTextView
+                    android:id="@+id/txtHeartRateAverage"
+                    android:layout_width="0px"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:label="@string/ride_detail_heartRate_average_label"
+                    android:paddingRight="8dp" />
+            </LinearLayout>
+
+            <org.jraf.android.util.ui.graph.GraphView
+                android:id="@+id/grpHeartRate"
                 android:layout_width="match_parent"
                 android:layout_height="192dp"
                 android:layout_marginLeft="8dp"

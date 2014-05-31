@@ -133,6 +133,21 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
     @InjectView(R.id.grpCadence)
     protected GraphView mGrpCadence;
 
+    @InjectView(R.id.txtHeartRateSectionTitle)
+    protected TextView mTxtHeartRateSectionTitle;
+
+    @InjectView(R.id.txtHeartRateMin)
+    protected LabelTextView mTxtHeartRateMin;
+
+    @InjectView(R.id.txtHeartRateMax)
+    protected LabelTextView mTxtHeartRateMax;
+
+    @InjectView(R.id.txtHeartRateAverage)
+    protected LabelTextView mTxtHeartRateAverage;
+
+    @InjectView(R.id.grpHeartRate)
+    protected GraphView mGrpHeartRate;
+
     private RideDetailStateFragment mState;
     private GoogleMap mMap;
 
@@ -214,6 +229,10 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
             private List<LatLng> mLatLngArray;
             private float[] mSpeedArray;
             private float[] mCadenceArray;
+            private float mMinHeartRate;
+            private float mMaxHeartRate;
+            private Float mAverageHeartRate;
+            private float[] mHeartRateArray;
 
             @Override
             protected void doInBackground() throws Throwable {
@@ -233,6 +252,9 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
                 mMovingDuration = logManager.getMovingDuration(rideUri);
                 mAverageCadence = logManager.getAverageCadence(rideUri);
                 mMaxCadence = logManager.getMaxCadence(rideUri);
+                mMinHeartRate = logManager.getMinHeartRate(rideUri);
+                mMaxHeartRate = logManager.getMaxHeartRate(rideUri);
+                mAverageHeartRate = logManager.getAverageHeartRate(rideUri);
 
                 mLatLngArray = logManager.getLatLngArray(rideUri, POINTS_TO_GRAPH);
 
@@ -243,6 +265,10 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
                 List<Float> cadenceList = logManager.getCadenceArray(rideUri, POINTS_TO_GRAPH);
                 mCadenceArray = CollectionUtil.unwrap(cadenceList.toArray(new Float[cadenceList.size()]));
                 mCadenceArray = MathUtil.getMovingAverage(mCadenceArray, mCadenceArray.length / 10);
+
+                List<Float> heartRateList = logManager.getHeartRateArray(rideUri, POINTS_TO_GRAPH);
+                mHeartRateArray = CollectionUtil.unwrap(heartRateList.toArray(new Float[heartRateList.size()]));
+                mHeartRateArray = MathUtil.getMovingAverage(mHeartRateArray, mHeartRateArray.length / 10);
             }
 
             @Override
@@ -307,6 +333,26 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
                 // Speed graph
                 a.mGrpSpeed.setColor(0, a.getResources().getColor(R.color.graph_line));
                 a.mGrpSpeed.setValues(0, mSpeedArray);
+
+                // Heart rate
+                if (mAverageHeartRate == null) {
+                    a.mTxtHeartRateSectionTitle.setVisibility(View.GONE);
+                    a.mTxtHeartRateAverage.setVisibility(View.GONE);
+                    a.mTxtHeartRateMin.setVisibility(View.GONE);
+                    a.mTxtHeartRateMax.setVisibility(View.GONE);
+                    a.mGrpHeartRate.setVisibility(View.GONE);
+                } else {
+                    a.mTxtHeartRateSectionTitle.setVisibility(View.VISIBLE);
+                    a.mTxtHeartRateAverage.setVisibility(View.VISIBLE);
+                    a.mTxtHeartRateAverage.setText(UnitUtil.formatHeartRate(mAverageHeartRate.intValue(), true));
+                    a.mTxtHeartRateMin.setVisibility(View.VISIBLE);
+                    a.mTxtHeartRateMin.setText(UnitUtil.formatHeartRate((int) mMinHeartRate, true));
+                    a.mTxtHeartRateMax.setVisibility(View.VISIBLE);
+                    a.mTxtHeartRateMax.setText(UnitUtil.formatHeartRate((int) mMaxHeartRate, true));
+                    a.mGrpHeartRate.setVisibility(View.VISIBLE);
+                    a.mGrpHeartRate.setColor(0, a.getResources().getColor(R.color.graph_line));
+                    a.mGrpHeartRate.setValues(0, mHeartRateArray);
+                }
             }
         }).execute(getSupportFragmentManager());
     }

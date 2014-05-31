@@ -24,19 +24,24 @@
  */
 package org.jraf.android.bikey.app.preference;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.backend.heartrate.HeartRateListener;
+import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.bikey.util.UnitUtil;
@@ -44,16 +49,21 @@ import org.jraf.android.bikey.util.UnitUtil;
 public class MainPreferenceFragment extends PreferenceFragment {
     private PreferenceCallbacks mCallbacks;
 
+    @SuppressLint("InlinedApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.preferences);
         updateListPreferenceSummary(Constants.PREF_UNITS);
 
-        // TODO hide heart monitor if not supported
-        // getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE)
-
-        findPreference(Constants.PREF_HEART_MONITOR_SCAN).setOnPreferenceClickListener(mOnPreferenceClickListener);
+        // Show heart rate section only if supported
+        boolean heartRateSupported = getActivity().getPackageManager().hasSystemFeature(PackageManager.FEATURE_BLUETOOTH_LE);
+        if (heartRateSupported) {
+            findPreference(Constants.PREF_HEART_RATE_SCAN).setOnPreferenceClickListener(mOnPreferenceClickListener);
+        } else {
+            PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(Constants.PREF_CATEGORY_HEART_RATE);
+            getPreferenceScreen().removePreference(preferenceCategory);
+        }
         findPreference(Constants.PREF_EXPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_IMPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
     }
@@ -78,11 +88,24 @@ public class MainPreferenceFragment extends PreferenceFragment {
     public void onStart() {
         super.onStart();
         PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+
+        // HeartRate
+        HeartRateManager.get().addListener(mHeartRateListener);
+
+        if (!HeartRateManager.get().isConnected()) {
+            mHeartRateListener.onDisconnect();
+        } else {
+            mHeartRateListener.onConnect();
+            mHeartRateListener.onHeartRateChange(HeartRateManager.get().getLastValue());
+        }
     }
 
     @Override
     public void onStop() {
         PreferenceManager.getDefaultSharedPreferences(getActivity()).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+
+        // HeartRate
+        HeartRateManager.get().removeListener(mHeartRateListener);
         super.onStop();
     }
 
@@ -137,11 +160,32 @@ public class MainPreferenceFragment extends PreferenceFragment {
             } else if (Constants.PREF_IMPORT.equals(preference.getKey())) {
                 getCallbacks().startImport();
                 return true;
-            } else if (Constants.PREF_HEART_MONITOR_SCAN.equals(preference.getKey())) {
+            } else if (Constants.PREF_HEART_RATE_SCAN.equals(preference.getKey())) {
                 getCallbacks().startHeartRateMonitorScan();
                 return true;
             }
             return false;
+        }
+    };
+
+    private HeartRateListener mHeartRateListener = new HeartRateListener() {
+        @Override
+        public void onConnect() {
+            Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
+            pref.setTitle(R.string.preference_heartRate_disconnect_title);
+            pref.setSummary(R.string.preference_heartRate_disconnect_summary);
+            pref.setWidgetLayoutResource(R.layout.heart_rate_pref_widget);
+        }
+
+        @Override
+        public void onHeartRateChange(int bpm) {}
+
+        @Override
+        public void onDisconnect() {
+            Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
+            pref.setTitle(R.string.preference_heartRate_scan_title);
+            pref.setSummary(R.string.preference_heartRate_scan_summary);
+            pref.setWidgetLayoutResource(0);
         }
     };
 }

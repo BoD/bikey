@@ -96,9 +96,11 @@
     <string name="preference_export_summary">Export rides to a Bikey database file</string>
     <string name="preference_import_title">Import rides</string>
     <string name="preference_import_summary">Import rides from a Bikey database file</string>
-    <string name="preference_heartMonitor_title">Heart rate monitor</string>
-    <string name="preference_heartMonitor_scan_title">Connect</string>
-    <string name="preference_heartMonitor_scan_summary">Connect to a heart rate monitor</string>
+    <string name="preference_heartRate_title">Heart rate monitor</string>
+    <string name="preference_heartRate_scan_title">Connect</string>
+    <string name="preference_heartRate_scan_summary">Connect to a heart rate monitor</string>
+    <string name="preference_heartRate_disconnect_title">Disconnect</string>
+    <string name="preference_heartRate_disconnect_summary">Connected to a heart rate monitor, tap to disconnect</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride">Ride started</string>
@@ -145,6 +147,10 @@
     <string name="ride_detail_action_display">DISPLAY</string>
     <string name="ride_detail_empty">This ride has no data.</string>
     <string name="ride_detail_deleteDialog_message">The ride will be deleted.</string>
+    <string name="ride_detail_heartRate_section">Heart rate</string>
+    <string name="ride_detail_heartRate_min_label">Min</string>
+    <string name="ride_detail_heartRate_max_label">Max</string>
+    <string name="ride_detail_heartRate_average_label">Averate</string>
 
     <!-- Ride map -->
     <string name="ride_map_title">Ride</string>

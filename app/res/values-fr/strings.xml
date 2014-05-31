@@ -116,9 +116,11 @@
     <string name="preference_export_summary">Exporter les parcours vers un fichier de base de données Bikey</string>
     <string name="preference_import_title">Importer des parcours</string>
     <string name="preference_import_summary">Importer des parcours depuis un fichier de base de données Bikey</string>
-    <string name="preference_heartMonitor_title">Cardiofréquencemètre</string>
-    <string name="preference_heartMonitor_scan_title">Se connecter</string>
-    <string name="preference_heartMonitor_scan_summary">Se connecter à un cardiofréquencemètre</string>
+    <string name="preference_heartRate_title">Cardiofréquencemètre</string>
+    <string name="preference_heartRate_scan_title">Se connecter</string>
+    <string name="preference_heartRate_scan_summary">Se connecter à un cardiofréquencemètre</string>
+    <string name="preference_heartRate_disconnect_title">Se déconnecter</string>
+    <string name="preference_heartRate_disconnect_summary">Connecté à un cardiofréquencemètre, clicker pour se déconnecter</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>
@@ -155,6 +157,10 @@
     <string name="ride_detail_action_display">AFFICHEUR</string>
     <string name="ride_detail_empty">Ce parcours n\`a aucune donnée.</string>
     <string name="ride_detail_deleteDialog_message">Le parcours sera supprimé.</string>
+    <string name="ride_detail_heartRate_section">Cardiofréquencemètre</string>
+    <string name="ride_detail_heartRate_min_label">Min</string>
+    <string name="ride_detail_heartRate_max_label">Max</string>
+    <string name="ride_detail_heartRate_average_label">Moyenne</string>
 
     <!-- Ride map -->
     <string name="ride_map_title">Parcours</string>

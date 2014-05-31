@@ -41,11 +41,10 @@ public class HeartRateDisplayFragment extends SimpleDisplayFragment {
         HeartRateManager.get().addListener(mHeartRateListener);
 
         if (!HeartRateManager.get().isConnected()) {
-            setText("    -    ");
-            setTextEnabled(false);
+            mHeartRateListener.onDisconnect();
         } else {
-            setText(UnitUtil.formatHeartRate(HeartRateManager.get().getLastValue()));
-            setTextEnabled(true);
+            mHeartRateListener.onConnect();
+            mHeartRateListener.onHeartRateChange(HeartRateManager.get().getLastValue());
         }
     }
 

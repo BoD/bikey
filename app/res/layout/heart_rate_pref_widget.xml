@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<blink xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:scaleType="center"
+        android:src="@drawable/ic_heart_red" />
+
+</blink>

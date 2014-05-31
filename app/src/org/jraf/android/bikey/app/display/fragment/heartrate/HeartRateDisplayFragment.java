@@ -76,5 +76,10 @@ public class HeartRateDisplayFragment extends SimpleDisplayFragment {
             setText("    -    ");
             setTextEnabled(false);
         }
+
+        @Override
+        public void onError() {
+            onDisconnected();
+        }
     };
 }

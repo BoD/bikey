@@ -74,17 +74,7 @@ public class HeartRateManager {
     private BluetoothDevice mBluetoothDevice;
     private BluetoothGatt mBluetoothGatt;
 
-    private Listeners<HeartRateListener> mListeners = new Listeners<HeartRateListener>() {
-        @Override
-        protected void onFirstListener() {
-            startListening();
-        }
-
-        @Override
-        protected void onNoMoreListeners() {
-            stopListening();
-        }
-    };
+    private Listeners<HeartRateListener> mListeners = new Listeners<>();
 
     private int mLastValue = -1;
     private Status mStatus = Status.DISCONNECTED;
@@ -99,14 +89,6 @@ public class HeartRateManager {
 
     public void removeListener(HeartRateListener listener) {
         mListeners.remove(listener);
-    }
-
-    protected void startListening() {
-        Log.d();
-    }
-
-    protected void stopListening() {
-        Log.d();
     }
 
     public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
@@ -244,6 +226,16 @@ public class HeartRateManager {
 
     protected void onHeartRateServiceNotFound() {
         Log.d();
+        onError();
+    }
+
+    private void onError() {
+        mListeners.dispatch(new Dispatcher<HeartRateListener>() {
+            @Override
+            public void dispatch(HeartRateListener listener) {
+                listener.onError();
+            }
+        });
     }
 
 
@@ -269,6 +261,7 @@ public class HeartRateManager {
 
     private void onHeartRateMeasurementCharacteristicNotFound() {
         Log.d();
+        onError();
     }
 
 
@@ -285,6 +278,7 @@ public class HeartRateManager {
 
     private void onClientCharacteristicConfigurationDescriptorNotFound() {
         Log.d();
+        onError();
     }
 
 

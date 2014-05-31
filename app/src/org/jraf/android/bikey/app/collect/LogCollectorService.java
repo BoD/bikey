@@ -233,6 +233,11 @@ public class LogCollectorService extends Service {
 
         @Override
         public void onConnected() {}
+
+        @Override
+        public void onError() {
+            onDisconnected();
+        }
     };
 
 

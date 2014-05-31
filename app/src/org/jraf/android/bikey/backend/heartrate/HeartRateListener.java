@@ -32,4 +32,6 @@ public interface HeartRateListener {
     void onHeartRateChange(int bpm);
 
     void onDisconnected();
+
+    void onError();
 }

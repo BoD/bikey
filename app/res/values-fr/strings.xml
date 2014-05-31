@@ -127,6 +127,7 @@
     <string name="preference_heartRate_disconnect_confirmDialog_message">Comment déconnecter le cardiofréquencemètre ?</string>
     <string name="preference_heartRate_disconnect_confirmDialog_negative">Déconnecter</string>
     <string name="preference_heartRate_disconnect_confirmDialog_positive">Éteindre le bluetooth</string>
+    <string name="preference_heartRate_bt_error">Impossible d\'établir la connexion bluetooth</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>

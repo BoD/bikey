@@ -107,6 +107,7 @@
     <string name="preference_heartRate_disconnect_confirmDialog_message">How to disconnect the heart rate monitor?</string>
     <string name="preference_heartRate_disconnect_confirmDialog_negative">Disconnect</string>
     <string name="preference_heartRate_disconnect_confirmDialog_positive">Turn bluetooth off</string>
+    <string name="preference_heartRate_bt_error">Unable to connect to bluetooth device</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride">Ride started</string>

@@ -37,6 +37,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
+import android.widget.Toast;
 
 import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
@@ -203,6 +204,11 @@ public class MainPreferenceFragment extends PreferenceFragment {
             pref.setTitle(R.string.preference_heartRate_scan_title);
             pref.setSummary(R.string.preference_heartRate_scan_summary);
             pref.setWidgetLayoutResource(0);
+        }
+
+        @Override
+        public void onError() {
+            Toast.makeText(getActivity(), R.string.preference_heartRate_bt_error, Toast.LENGTH_LONG).show();
         }
     };
 }

@@ -39,6 +39,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
+import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -49,6 +50,9 @@ import org.jraf.android.util.log.wrapper.Log;
 public class PreferenceActivity extends BaseFragmentActivity implements PreferenceCallbacks, AlertDialogListener {
     private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
     private static final int REQUEST_SCAN_HEART_RATE_MONITOR = 1;
+
+    private static final int DIALOG_RECORD_CADENCE = 0;
+    private static final int DIALOG_DISCONNECT_HEART_RATE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,26 +75,17 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
         return super.onOptionsItemSelected(item);
     }
 
+
     /*
      * Cadence confirmation.
      */
 
     @Override
     public void showRecordCadenceConfirmDialog() {
-        AlertDialogFragment.newInstance(0, R.string.preference_recordCadence_confirmDialog_title, R.string.preference_recordCadence_confirmDialog_message, 0,
-                R.string.common_yes, R.string.common_no, (Parcelable) null).show(getSupportFragmentManager());
+        AlertDialogFragment.newInstance(DIALOG_RECORD_CADENCE, R.string.preference_recordCadence_confirmDialog_title,
+                R.string.preference_recordCadence_confirmDialog_message, 0, R.string.common_yes, R.string.common_no, (Parcelable) null).show(
+                getSupportFragmentManager());
     }
-
-    @Override
-    public void onClickNegative(int tag, Object payload) {
-        PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.PREF_RECORD_CADENCE, false).commit();
-    }
-
-    @Override
-    public void onClickPositive(int tag, Object payload) {}
-
-    @Override
-    public void onClickListItem(int tag, int index, Object payload) {}
 
 
     /*
@@ -174,11 +169,43 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
     @Override
     public void disconnectHeartRateMonitor() {
         Log.d();
-        // TODO do not do that
-        //Disable bluetooth
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.disable();
+        AlertDialogFragment.newInstance(DIALOG_DISCONNECT_HEART_RATE, R.string.preference_heartRate_disconnect_confirmDialog_title,
+                R.string.preference_heartRate_disconnect_confirmDialog_message, 0, R.string.preference_heartRate_disconnect_confirmDialog_positive,
+                R.string.preference_heartRate_disconnect_confirmDialog_negative, (Parcelable) null).show(getSupportFragmentManager());
+    }
+
+
+    /*
+     * AlertDialogListener.
+     */
+
+    @Override
+    public void onClickNegative(int tag, Object payload) {
+        switch (tag) {
+            case DIALOG_RECORD_CADENCE:
+                PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.PREF_RECORD_CADENCE, false).commit();
+                break;
+
+            case DIALOG_DISCONNECT_HEART_RATE:
+                // Just disconnect
+                HeartRateManager.get().disconnect();
+                break;
         }
     }
+
+    @Override
+    public void onClickPositive(int tag, Object payload) {
+        switch (tag) {
+            case DIALOG_DISCONNECT_HEART_RATE:
+                // Turn off bluetooth
+                BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+                if (mBluetoothAdapter.isEnabled()) {
+                    mBluetoothAdapter.disable();
+                }
+                break;
+        }
+    }
+
+    @Override
+    public void onClickListItem(int tag, int index, Object payload) {}
 }

@@ -103,6 +103,10 @@
     <string name="preference_heartRate_disconnect_summary">Connected to a heart rate monitor, tap to disconnect</string>
     <string name="preference_heartRate_connecting_title">Connecting</string>
     <string name="preference_heartRate_connecting_summary">Connecting to the heart rate monitor…</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_title">Disconnect</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_message">How to disconnect the heart rate monitor?</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_negative">Disconnect</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_positive">Turn bluetooth off</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride">Ride started</string>
@@ -152,7 +156,7 @@
     <string name="ride_detail_heartRate_section">Heart rate</string>
     <string name="ride_detail_heartRate_min_label">Min</string>
     <string name="ride_detail_heartRate_max_label">Max</string>
-    <string name="ride_detail_heartRate_average_label">Averate</string>
+    <string name="ride_detail_heartRate_average_label">Average</string>
 
     <!-- Ride map -->
     <string name="ride_map_title">Ride</string>

@@ -308,4 +308,12 @@ public class HeartRateManager {
     public int getLastValue() {
         return mLastValue;
     }
+
+    public void disconnect() {
+        if (mBluetoothGatt != null) {
+            mBluetoothGatt.close();
+            mBluetoothDevice = null;
+        }
+        onDisconnect();
+    }
 }

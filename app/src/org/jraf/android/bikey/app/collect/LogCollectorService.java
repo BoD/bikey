@@ -219,17 +219,20 @@ public class LogCollectorService extends Service {
 
     private HeartRateListener mHeartRateListener = new HeartRateListener() {
         @Override
+        public void onConnecting() {}
+
+        @Override
         public void onHeartRateChange(int bpm) {
             mLastHeartRate = bpm;
         }
 
         @Override
-        public void onDisconnect() {
+        public void onDisconnected() {
             mLastHeartRate = null;
         }
 
         @Override
-        public void onConnect() {}
+        public void onConnected() {}
     };
 
 

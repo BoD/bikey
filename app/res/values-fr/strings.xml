@@ -121,6 +121,8 @@
     <string name="preference_heartRate_scan_summary">Se connecter à un cardiofréquencemètre</string>
     <string name="preference_heartRate_disconnect_title">Se déconnecter</string>
     <string name="preference_heartRate_disconnect_summary">Connecté à un cardiofréquencemètre, clicker pour se déconnecter</string>
+    <string name="preference_heartRate_connecting_title">Connexion en cours</string>
+    <string name="preference_heartRate_connecting_summary">Connexion au cardiofréquencemètre en cours…</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>

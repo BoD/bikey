@@ -25,9 +25,11 @@
 package org.jraf.android.bikey.backend.heartrate;
 
 public interface HeartRateListener {
-    void onConnect();
+    void onConnecting();
+
+    void onConnected();
 
     void onHeartRateChange(int bpm);
 
-    void onDisconnect();
+    void onDisconnected();
 }

@@ -38,13 +38,15 @@ public class HeartRateDisplayFragment extends SimpleDisplayFragment {
     public void onStart() {
         super.onStart();
         // HeartRate
-        HeartRateManager.get().addListener(mHeartRateListener);
-
-        if (!HeartRateManager.get().isConnected()) {
-            mHeartRateListener.onDisconnect();
+        HeartRateManager heartRateManager = HeartRateManager.get();
+        heartRateManager.addListener(mHeartRateListener);
+        if (heartRateManager.isConnecting()) {
+            mHeartRateListener.onConnecting();
+        } else if (heartRateManager.isConnected()) {
+            mHeartRateListener.onConnected();
         } else {
-            mHeartRateListener.onConnect();
-            mHeartRateListener.onHeartRateChange(HeartRateManager.get().getLastValue());
+            mHeartRateListener.onHeartRateChange(heartRateManager.getLastValue());
+            mHeartRateListener.onDisconnected();
         }
     }
 
@@ -57,7 +59,10 @@ public class HeartRateDisplayFragment extends SimpleDisplayFragment {
 
     private HeartRateListener mHeartRateListener = new HeartRateListener() {
         @Override
-        public void onConnect() {
+        public void onConnecting() {}
+
+        @Override
+        public void onConnected() {
             setTextEnabled(true);
         }
 
@@ -67,7 +72,7 @@ public class HeartRateDisplayFragment extends SimpleDisplayFragment {
         }
 
         @Override
-        public void onDisconnect() {
+        public void onDisconnected() {
             setText("    -    ");
             setTextEnabled(false);
         }

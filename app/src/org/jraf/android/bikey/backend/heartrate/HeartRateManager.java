@@ -62,6 +62,14 @@ public class HeartRateManager {
         return INSTANCE;
     }
 
+    // @formatter:off
+    private static enum Status {
+        DISCONNECTED,
+        CONNECTING,
+        CONNECTED,
+    }
+    // @formatter:on
+
     private Context mContext;
     private BluetoothDevice mBluetoothDevice;
     private BluetoothGatt mBluetoothGatt;
@@ -79,7 +87,7 @@ public class HeartRateManager {
     };
 
     private int mLastValue = -1;
-    private boolean mConnected;
+    private Status mStatus = Status.DISCONNECTED;
 
     private HeartRateManager() {
         mContext = Application.getApplication();
@@ -102,6 +110,15 @@ public class HeartRateManager {
     }
 
     public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
+        mStatus = Status.CONNECTING;
+        // Inform listeners
+        mListeners.dispatch(new Dispatcher<HeartRateListener>() {
+            @Override
+            public void dispatch(HeartRateListener listener) {
+                listener.onConnecting();
+            }
+        });
+
         mBluetoothDevice = bluetoothDevice;
         mBluetoothGatt = mBluetoothDevice.connectGatt(mContext, true, mBluetoothGattCallback);
     }
@@ -156,7 +173,7 @@ public class HeartRateManager {
             int value = characteristic.getIntValue(format, 1);
             if (value < 50) {
                 // This is probably a false measurement, consider this as a disconnect
-                if (mConnected) {
+                if (mStatus == Status.CONNECTED) {
                     // Disconnect
                     onDisconnect();
                 }
@@ -168,14 +185,14 @@ public class HeartRateManager {
             mLastValue = value;
             Log.d("heartRate=" + mLastValue);
 
-            if (!mConnected) {
-                mConnected = true;
+            if (mStatus != Status.CONNECTED) {
+                mStatus = Status.CONNECTED;
 
                 // Inform listeners
                 mListeners.dispatch(new Dispatcher<HeartRateListener>() {
                     @Override
                     public void dispatch(HeartRateListener listener) {
-                        listener.onConnect();
+                        listener.onConnected();
                     }
                 });
             }
@@ -193,12 +210,12 @@ public class HeartRateManager {
     };
 
     private void onDisconnect() {
-        mConnected = false;
+        mStatus = Status.DISCONNECTED;
         mLastValue = -1;
         mListeners.dispatch(new Dispatcher<HeartRateListener>() {
             @Override
             public void dispatch(HeartRateListener listener) {
-                listener.onDisconnect();
+                listener.onDisconnected();
             }
         });
     }
@@ -281,7 +298,11 @@ public class HeartRateManager {
     }
 
     public boolean isConnected() {
-        return mConnected;
+        return mStatus == Status.CONNECTED;
+    }
+
+    public boolean isConnecting() {
+        return mStatus == Status.CONNECTING;
     }
 
     public int getLastValue() {

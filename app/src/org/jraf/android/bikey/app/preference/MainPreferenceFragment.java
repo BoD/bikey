@@ -90,13 +90,15 @@ public class MainPreferenceFragment extends PreferenceFragment {
         PreferenceManager.getDefaultSharedPreferences(getActivity()).registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 
         // HeartRate
-        HeartRateManager.get().addListener(mHeartRateListener);
-
-        if (!HeartRateManager.get().isConnected()) {
-            mHeartRateListener.onDisconnect();
+        HeartRateManager heartRateManager = HeartRateManager.get();
+        heartRateManager.addListener(mHeartRateListener);
+        if (heartRateManager.isConnecting()) {
+            mHeartRateListener.onConnecting();
+        } else if (heartRateManager.isConnected()) {
+            mHeartRateListener.onConnected();
         } else {
-            mHeartRateListener.onConnect();
-            mHeartRateListener.onHeartRateChange(HeartRateManager.get().getLastValue());
+            mHeartRateListener.onHeartRateChange(heartRateManager.getLastValue());
+            mHeartRateListener.onDisconnected();
         }
     }
 
@@ -170,19 +172,30 @@ public class MainPreferenceFragment extends PreferenceFragment {
 
     private HeartRateListener mHeartRateListener = new HeartRateListener() {
         @Override
-        public void onConnect() {
+        public void onConnecting() {
             Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
+            pref.setEnabled(false);
+            pref.setTitle(R.string.preference_heartRate_connecting_title);
+            pref.setSummary(R.string.preference_heartRate_connecting_summary);
+            pref.setWidgetLayoutResource(R.layout.heart_rate_pref_widget_connecting);
+        }
+
+        @Override
+        public void onConnected() {
+            Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
+            pref.setEnabled(true);
             pref.setTitle(R.string.preference_heartRate_disconnect_title);
             pref.setSummary(R.string.preference_heartRate_disconnect_summary);
-            pref.setWidgetLayoutResource(R.layout.heart_rate_pref_widget);
+            pref.setWidgetLayoutResource(R.layout.heart_rate_pref_widget_connected);
         }
 
         @Override
         public void onHeartRateChange(int bpm) {}
 
         @Override
-        public void onDisconnect() {
+        public void onDisconnected() {
             Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
+            pref.setEnabled(true);
             pref.setTitle(R.string.preference_heartRate_scan_title);
             pref.setSummary(R.string.preference_heartRate_scan_summary);
             pref.setWidgetLayoutResource(0);

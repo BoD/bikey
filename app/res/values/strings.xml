@@ -101,6 +101,8 @@
     <string name="preference_heartRate_scan_summary">Connect to a heart rate monitor</string>
     <string name="preference_heartRate_disconnect_title">Disconnect</string>
     <string name="preference_heartRate_disconnect_summary">Connected to a heart rate monitor, tap to disconnect</string>
+    <string name="preference_heartRate_connecting_title">Connecting</string>
+    <string name="preference_heartRate_connecting_summary">Connecting to the heart rate monitor…</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride">Ride started</string>

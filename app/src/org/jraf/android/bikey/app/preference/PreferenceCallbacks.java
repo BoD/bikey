@@ -32,4 +32,6 @@ public interface PreferenceCallbacks {
     void startImport();
 
     void startHeartRateMonitorScan();
+
+    void disconnectHeartRateMonitor();
 }

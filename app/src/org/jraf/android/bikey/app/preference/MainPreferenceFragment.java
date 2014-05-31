@@ -163,7 +163,11 @@ public class MainPreferenceFragment extends PreferenceFragment {
                 getCallbacks().startImport();
                 return true;
             } else if (Constants.PREF_HEART_RATE_SCAN.equals(preference.getKey())) {
-                getCallbacks().startHeartRateMonitorScan();
+                if (HeartRateManager.get().isConnected()) {
+                    getCallbacks().disconnectHeartRateMonitor();
+                } else {
+                    getCallbacks().startHeartRateMonitorScan();
+                }
                 return true;
             }
             return false;

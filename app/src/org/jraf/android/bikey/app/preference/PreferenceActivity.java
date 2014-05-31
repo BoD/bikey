@@ -26,6 +26,7 @@ package org.jraf.android.bikey.app.preference;
 
 import java.io.File;
 
+import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class PreferenceActivity extends BaseFragmentActivity implements PreferenceCallbacks, AlertDialogListener {
     private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
@@ -167,5 +169,16 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
     public void startHeartRateMonitorScan() {
         Intent intent = new Intent(this, HeartRateMonitorScanActivity.class);
         startActivityForResult(intent, REQUEST_SCAN_HEART_RATE_MONITOR);
+    }
+
+    @Override
+    public void disconnectHeartRateMonitor() {
+        Log.d();
+        // TODO do not do that
+        //Disable bluetooth
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.disable();
+        }
     }
 }

@@ -25,8 +25,11 @@
 package org.jraf.android.bikey.app.display;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -42,11 +45,12 @@ import org.jraf.android.util.handler.HandlerUtil;
 
 public class FragmentCycler {
     private int mContainerResId;
-    private List<String> mFragmentTags = new ArrayList<String>(10);
-    private List<Checkable> mTabs = new ArrayList<Checkable>(10);
-    private List<Integer> mTitles = new ArrayList<Integer>(10);
+    private List<String> mFragmentTags = new ArrayList<>(10);
+    private List<Checkable> mTabs = new ArrayList<>(10);
+    private List<Integer> mTitles = new ArrayList<>(10);
     private int mCurrentVisibleIndex = 0;
     private TextView mTxtTitle;
+    private Map<String, Boolean> mEnabled = new HashMap<>();
 
     public FragmentCycler(int containerResId, TextView txtTitle) {
         mContainerResId = containerResId;
@@ -87,7 +91,11 @@ public class FragmentCycler {
     }
 
     public void cycle(FragmentActivity activity) {
-        int newIndex = (mCurrentVisibleIndex + 1) % mFragmentTags.size();
+        // Find the next *enabled* fragment to show
+        int newIndex = mCurrentVisibleIndex;
+        do {
+            newIndex = (newIndex + 1) % mFragmentTags.size();
+        } while (!isEnabled(newIndex));
         setCurrentVisibleIndex(activity, newIndex);
     }
 
@@ -119,7 +127,11 @@ public class FragmentCycler {
     }
 
     private String getTag(Fragment fragment) {
-        return fragment.getClass().getName();
+        return getTag(fragment.getClass());
+    }
+
+    private String getTag(Class<? extends Fragment> fragmentClass) {
+        return fragmentClass.getName();
     }
 
     private OnClickListener mTabOnClickListener = new OnClickListener() {
@@ -140,5 +152,23 @@ public class FragmentCycler {
 
     public void setCurrentVisibleIndex(int currentVisibleIndex) {
         mCurrentVisibleIndex = currentVisibleIndex;
+    }
+
+    public void setEnabled(Context context, Class<? extends Fragment> fragmentClass, boolean enabled) {
+        String tag = getTag(fragmentClass);
+        mEnabled.put(tag, enabled);
+
+        int index = mFragmentTags.indexOf(tag);
+        ((TextView) mTabs.get(index)).setTextColor(enabled ? context.getResources().getColor(R.color.bright_foreground_dark) : context.getResources().getColor(
+                R.color.bright_foreground_disabled_dark));
+    }
+
+    private boolean isEnabled(int index) {
+        Boolean enabled = mEnabled.get(mFragmentTags.get(index));
+        if (enabled == null) {
+            // Treat no value (default) as enabled.
+            enabled = true;
+        }
+        return enabled;
     }
 }

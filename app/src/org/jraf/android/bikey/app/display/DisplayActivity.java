@@ -56,6 +56,7 @@ import org.jraf.android.bikey.app.display.fragment.elapsedtime.ElapsedTimeDispla
 import org.jraf.android.bikey.app.display.fragment.heartrate.HeartRateDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.speed.SpeedDisplayFragment;
 import org.jraf.android.bikey.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
+import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
@@ -201,6 +202,10 @@ public class DisplayActivity extends BaseFragmentActivity {
         mFragmentCycler.add(this, HeartRateDisplayFragment.newInstance(), R.id.chkHeartRate, R.string.display_title_heartRate);
         mFragmentCycler.add(this, CompassDisplayFragment.newInstance(), R.id.chkTabCompass, R.string.display_title_compass);
         mFragmentCycler.add(this, CurrentTimeDisplayFragment.newInstance(), R.id.chkTabCurrentTime, R.string.display_title_currentTime);
+
+        HeartRateManager heartRateManager = HeartRateManager.get();
+        mFragmentCycler.setEnabled(this, HeartRateDisplayFragment.class, heartRateManager.isConnected() || heartRateManager.isConnecting());
+
         mFragmentCycler.show(this);
     }
 

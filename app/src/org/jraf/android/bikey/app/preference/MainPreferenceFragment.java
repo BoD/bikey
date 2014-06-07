@@ -200,6 +200,10 @@ public class MainPreferenceFragment extends PreferenceFragment {
         @Override
         public void onDisconnected() {
             Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
+            if (pref == null) {
+                // Could be null here, on devices where BTLE is not supported
+                return;
+            }
             pref.setEnabled(true);
             pref.setTitle(R.string.preference_heartRate_scan_title);
             pref.setSummary(R.string.preference_heartRate_scan_summary);

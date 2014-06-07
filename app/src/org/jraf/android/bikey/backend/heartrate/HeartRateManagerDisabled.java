@@ -25,27 +25,34 @@
 package org.jraf.android.bikey.backend.heartrate;
 
 import android.bluetooth.BluetoothDevice;
-import android.os.Build;
 
-public abstract class HeartRateManager {
-    private static final HeartRateManager INSTANCE = Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR2 ? new HeartRateManagerDisabled()
-            : new HeartRateManagerJellyBeanMR2();
+public class HeartRateManagerDisabled extends HeartRateManager {
+    /* package */HeartRateManagerDisabled() {}
 
-    public static HeartRateManager get() {
-        return INSTANCE;
+    @Override
+    public void addListener(HeartRateListener listener) {}
+
+    @Override
+    public void removeListener(HeartRateListener listener) {}
+
+    @Override
+    public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {}
+
+    @Override
+    public boolean isConnected() {
+        return false;
     }
 
-    public abstract void addListener(HeartRateListener listener);
+    @Override
+    public boolean isConnecting() {
+        return false;
+    }
 
-    public abstract void removeListener(HeartRateListener listener);
+    @Override
+    public int getLastValue() {
+        return 0;
+    }
 
-    public abstract void setBluetoothDevice(BluetoothDevice bluetoothDevice);
-
-    public abstract boolean isConnected();
-
-    public abstract boolean isConnecting();
-
-    public abstract int getLastValue();
-
-    public abstract void disconnect();
+    @Override
+    public void disconnect() {}
 }

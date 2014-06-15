@@ -42,7 +42,7 @@ public class LogContentValues extends AbstractContentValues {
 
     /**
      * Update row(s) using the values stored by this object and the given selection.
-     * 
+     *
      * @param contentResolver The content resolver to use.
      * @param where The selection to use (can be {@code null}).
      */
@@ -91,24 +91,24 @@ public class LogContentValues extends AbstractContentValues {
 
 
 
-    public LogContentValues putDuration(Long value) {
-        mContentValues.put(LogColumns.DURATION, value);
+    public LogContentValues putLogDuration(Long value) {
+        mContentValues.put(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogContentValues putDurationNull() {
-        mContentValues.putNull(LogColumns.DURATION);
+    public LogContentValues putLogDurationNull() {
+        mContentValues.putNull(LogColumns.LOG_DURATION);
         return this;
     }
 
 
-    public LogContentValues putDistance(Float value) {
-        mContentValues.put(LogColumns.DISTANCE, value);
+    public LogContentValues putLogDistance(Float value) {
+        mContentValues.put(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 
-    public LogContentValues putDistanceNull() {
-        mContentValues.putNull(LogColumns.DISTANCE);
+    public LogContentValues putLogDistanceNull() {
+        mContentValues.putNull(LogColumns.LOG_DISTANCE);
         return this;
     }
 

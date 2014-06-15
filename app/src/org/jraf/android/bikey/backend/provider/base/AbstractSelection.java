@@ -35,12 +35,12 @@ public abstract class AbstractSelection <T extends AbstractSelection<?>> {
     private static final String EQ = "=?";
     private static final String PAREN_OPEN = "(";
     private static final String PAREN_CLOSE = ")";
-    private static final String AND = " and ";
-    private static final String OR = " or ";
-    private static final String IS_NULL = " is null";
-    private static final String IS_NOT_NULL = " is not null";
-    private static final String IN = " in(";
-    private static final String NOT_IN = " not in(";
+    private static final String AND = " AND ";
+    private static final String OR = " OR ";
+    private static final String IS_NULL = " IS NULL";
+    private static final String IS_NOT_NULL = " IS NOT NULL";
+    private static final String IN = " IN (";
+    private static final String NOT_IN = " NOT IN (";
     private static final String COMMA = ",";
     private static final String GT = ">?";
     private static final String LT = "<?";

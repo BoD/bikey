@@ -232,63 +232,63 @@ public class LogSelection extends AbstractSelection<LogSelection> {
         return this;
     }
 
-    public LogSelection duration(Long... value) {
-        addEquals(LogColumns.DURATION, value);
+    public LogSelection logDuration(Long... value) {
+        addEquals(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogSelection durationNot(Long... value) {
-        addNotEquals(LogColumns.DURATION, value);
+    public LogSelection logDurationNot(Long... value) {
+        addNotEquals(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogSelection durationGt(long value) {
-        addGreaterThan(LogColumns.DURATION, value);
+    public LogSelection logDurationGt(long value) {
+        addGreaterThan(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogSelection durationGtEq(long value) {
-        addGreaterThanOrEquals(LogColumns.DURATION, value);
+    public LogSelection logDurationGtEq(long value) {
+        addGreaterThanOrEquals(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogSelection durationLt(long value) {
-        addLessThan(LogColumns.DURATION, value);
+    public LogSelection logDurationLt(long value) {
+        addLessThan(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogSelection durationLtEq(long value) {
-        addLessThanOrEquals(LogColumns.DURATION, value);
+    public LogSelection logDurationLtEq(long value) {
+        addLessThanOrEquals(LogColumns.LOG_DURATION, value);
         return this;
     }
 
-    public LogSelection distance(Float... value) {
-        addEquals(LogColumns.DISTANCE, value);
+    public LogSelection logDistance(Float... value) {
+        addEquals(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 
-    public LogSelection distanceNot(Float... value) {
-        addNotEquals(LogColumns.DISTANCE, value);
+    public LogSelection logDistanceNot(Float... value) {
+        addNotEquals(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 
-    public LogSelection distanceGt(float value) {
-        addGreaterThan(LogColumns.DISTANCE, value);
+    public LogSelection logDistanceGt(float value) {
+        addGreaterThan(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 
-    public LogSelection distanceGtEq(float value) {
-        addGreaterThanOrEquals(LogColumns.DISTANCE, value);
+    public LogSelection logDistanceGtEq(float value) {
+        addGreaterThanOrEquals(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 
-    public LogSelection distanceLt(float value) {
-        addLessThan(LogColumns.DISTANCE, value);
+    public LogSelection logDistanceLt(float value) {
+        addLessThan(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 
-    public LogSelection distanceLtEq(float value) {
-        addLessThanOrEquals(LogColumns.DISTANCE, value);
+    public LogSelection logDistanceLtEq(float value) {
+        addLessThanOrEquals(LogColumns.LOG_DISTANCE, value);
         return this;
     }
 

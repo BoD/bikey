@@ -6,9 +6,9 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -78,8 +78,8 @@ public class LogManager {
             if (speed < LocationManager.SPEED_MIN_THRESHOLD_M_S) {
                 Log.d("Speed under threshold, not logging it");
             } else {
-                values.putDuration(locationPair.getDuration());
-                values.putDistance(locationPair.getDistance());
+                values.putLogDuration(locationPair.getDuration());
+                values.putLogDistance(locationPair.getDistance());
                 values.putSpeed(speed);
             }
         }
@@ -105,7 +105,7 @@ public class LogManager {
     @Background
     public float getTotalDistance(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.DISTANCE + ")" };
+        String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId);
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
@@ -126,7 +126,7 @@ public class LogManager {
         float max = getMaxSpeed(rideUri);
 
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.DISTANCE + ")/sum(" + LogColumns.DURATION + ")*1000" };
+        String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")/sum(" + LogColumns.LOG_DURATION + ")*1000" };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S).and().speedLtEq(max);
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
@@ -187,7 +187,7 @@ public class LogManager {
     @Background
     public Long getMovingDuration(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.DURATION + ")" };
+        String[] projection = { "sum(" + LogColumns.LOG_DURATION + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S);
         Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);

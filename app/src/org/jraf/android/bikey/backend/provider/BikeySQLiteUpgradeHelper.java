@@ -50,7 +50,7 @@ public class BikeySQLiteUpgradeHelper {
             + " ;";
     private static final String SQL_POPULATE_TABLE_RIDE_3 = "UPDATE "
             + RideColumns.TABLE_NAME
-            + " SET " 
+            + " SET "
             + RideColumns.FIRST_ACTIVATED_DATE
             + " = ("
             + " SELECT MIN ( " + LogColumns.RECORDED_DATE + " ) "
@@ -62,12 +62,35 @@ public class BikeySQLiteUpgradeHelper {
             + RideColumns.TABLE_NAME + "." + RideColumns._ID
             + ")"
             + " ;";
-    
+
     // 3 -> 4
     private static final String SQL_UPGRADE_TABLE_LOG_4 = "ALTER TABLE "
             + LogColumns.TABLE_NAME
             + " ADD COLUMN "
             + LogColumns.HEART_RATE + " INTEGER "
+            + " ;";
+
+    // 4 -> 5
+    private static final String SQL_UPGRADE_TABLE_LOG_5_DUR = "ALTER TABLE "
+            + LogColumns.TABLE_NAME
+            + " ADD COLUMN "
+            + LogColumns.LOG_DURATION + " INTEGER"
+            + " ;";
+    private static final String SQL_UPGRADE_TABLE_LOG_5_DIST = "ALTER TABLE "
+            + LogColumns.TABLE_NAME
+            + " ADD COLUMN "
+            + LogColumns.LOG_DISTANCE + " REAL"
+            + " ;";
+    private static final String SQL_POPULATE_TABLE_LOG_5 = "UPDATE "
+            + LogColumns.TABLE_NAME
+            + " SET "
+            + LogColumns.LOG_DISTANCE
+            + " = "
+            + " distance "
+            + ","
+            + LogColumns.LOG_DURATION
+            + " = "
+            + " duration "
             + " ;";
     // @formatter:on
 
@@ -98,6 +121,15 @@ public class BikeySQLiteUpgradeHelper {
                     // Add new HEART_RATE column
                     db.execSQL(SQL_UPGRADE_TABLE_LOG_4);
                     curVersion = 4;
+                    break;
+
+                case 4:
+                    // 4 -> 5
+                    // Rename (add) columns
+                    db.execSQL(SQL_UPGRADE_TABLE_LOG_5_DUR);
+                    db.execSQL(SQL_UPGRADE_TABLE_LOG_5_DIST);
+                    db.execSQL(SQL_POPULATE_TABLE_LOG_5);
+                    curVersion = 5;
                     break;
             }
         }

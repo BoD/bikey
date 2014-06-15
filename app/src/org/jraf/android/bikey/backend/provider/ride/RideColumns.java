@@ -24,6 +24,9 @@
  */
 package org.jraf.android.bikey.backend.provider.ride;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import android.net.Uri;
 import android.provider.BaseColumns;
 
@@ -32,31 +35,51 @@ import org.jraf.android.bikey.backend.provider.BikeyProvider;
 /**
  * Columns for the {@code ride} table.
  */
-public interface RideColumns extends BaseColumns {
-    String TABLE_NAME = "ride";
-    Uri CONTENT_URI = Uri.parse(BikeyProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
+public class RideColumns implements BaseColumns {
+    public static final String TABLE_NAME = "ride";
+    public static final Uri CONTENT_URI = Uri.parse(BikeyProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
-    String _ID = BaseColumns._ID;
-    String NAME = "name";
-    String CREATED_DATE = "created_date";
-    String STATE = "state";
-    String FIRST_ACTIVATED_DATE = "first_activated_date";
-    String ACTIVATED_DATE = "activated_date";
-    String DURATION = "duration";
-    String DISTANCE = "distance";
+    public static final String _ID = BaseColumns._ID;
+    public static final String NAME = "name";
+    public static final String CREATED_DATE = "created_date";
+    public static final String STATE = "state";
+    public static final String FIRST_ACTIVATED_DATE = "first_activated_date";
+    public static final String ACTIVATED_DATE = "activated_date";
+    public static final String DURATION = "duration";
+    public static final String DISTANCE = "distance";
 
-    String DEFAULT_ORDER = _ID;
+    public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
-	// @formatter:off
-    String[] FULL_PROJECTION = new String[] {
-            _ID,
-            NAME,
-            CREATED_DATE,
-            STATE,
-            FIRST_ACTIVATED_DATE,
-            ACTIVATED_DATE,
-            DURATION,
-            DISTANCE
+    // @formatter:off
+    public static final String[] FULL_PROJECTION = new String[] {
+            TABLE_NAME + "." + _ID + " AS " + BaseColumns._ID,
+            TABLE_NAME + "." + NAME,
+            TABLE_NAME + "." + CREATED_DATE,
+            TABLE_NAME + "." + STATE,
+            TABLE_NAME + "." + FIRST_ACTIVATED_DATE,
+            TABLE_NAME + "." + ACTIVATED_DATE,
+            TABLE_NAME + "." + DURATION,
+            TABLE_NAME + "." + DISTANCE
     };
     // @formatter:on
+
+    private static final Set<String> ALL_COLUMNS = new HashSet<String>();
+    static {
+        ALL_COLUMNS.add(_ID);
+        ALL_COLUMNS.add(NAME);
+        ALL_COLUMNS.add(CREATED_DATE);
+        ALL_COLUMNS.add(STATE);
+        ALL_COLUMNS.add(FIRST_ACTIVATED_DATE);
+        ALL_COLUMNS.add(ACTIVATED_DATE);
+        ALL_COLUMNS.add(DURATION);
+        ALL_COLUMNS.add(DISTANCE);
+    }
+
+    public static boolean hasColumns(String[] projection) {
+        if (projection == null) return true;
+        for (String c : projection) {
+            if (ALL_COLUMNS.contains(c)) return true;
+        }
+        return false;
+    }
 }

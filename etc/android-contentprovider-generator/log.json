@@ -4,6 +4,10 @@
 			"name": "ride_id",
 			"type": "Long",
 			"nullable": false,
+			"foreignKey": {
+				"table": "ride",
+				"onDelete": "CASCADE",
+			},
 		},
 		{
 			"name": "recorded_date",
@@ -26,12 +30,12 @@
 			"nullable": false,
 		},
 		{
-			"name": "duration",
+			"name": "log_duration",
 			"type": "Long",
 			"nullable": true,
 		},
 		{
-			"name": "distance",
+			"name": "log_distance",
 			"type": "Float",
 			"nullable": true,
 		},
@@ -50,11 +54,5 @@
 			"type": "Integer",
 			"nullable": true,
 		},
-	],
-	"constraints": [
-		{
-			"name": "fk_ride",
-			"definition": "foreign key (ride_id) references ride (_id) on delete cascade",
-		}
 	],
 }

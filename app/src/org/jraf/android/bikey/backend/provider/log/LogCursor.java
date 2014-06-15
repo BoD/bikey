@@ -29,6 +29,7 @@ import java.util.Date;
 import android.database.Cursor;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractCursor;
+import org.jraf.android.bikey.backend.provider.ride.*;
 
 /**
  * Cursor wrapper for the {@code log} table.
@@ -75,19 +76,19 @@ public class LogCursor extends AbstractCursor {
     }
 
     /**
-     * Get the {@code duration} value.
+     * Get the {@code log_duration} value.
      * Can be {@code null}.
      */
-    public Long getDuration() {
-        return getLongOrNull(LogColumns.DURATION);
+    public Long getLogDuration() {
+        return getLongOrNull(LogColumns.LOG_DURATION);
     }
 
     /**
-     * Get the {@code distance} value.
+     * Get the {@code log_distance} value.
      * Can be {@code null}.
      */
-    public Float getDistance() {
-        return getFloatOrNull(LogColumns.DISTANCE);
+    public Float getLogDistance() {
+        return getFloatOrNull(LogColumns.LOG_DISTANCE);
     }
 
     /**
@@ -112,5 +113,62 @@ public class LogCursor extends AbstractCursor {
      */
     public Integer getHeartRate() {
         return getIntegerOrNull(LogColumns.HEART_RATE);
+    }
+
+    /**
+     * Get the {@code name} value.
+     * Can be {@code null}.
+     */
+    public String getName() {
+        Integer index = getCachedColumnIndexOrThrow(RideColumns.NAME);
+        return getString(index);
+    }
+
+    /**
+     * Get the {@code created_date} value.
+     * Cannot be {@code null}.
+     */
+    public Date getCreatedDate() {
+        return getDate(RideColumns.CREATED_DATE);
+    }
+
+    /**
+     * Get the {@code state} value.
+     * Cannot be {@code null}.
+     */
+    public RideState getState() {
+        Integer intValue = getIntegerOrNull(RideColumns.STATE);
+        if (intValue == null) return null;
+        return RideState.values()[intValue];
+    }
+
+    /**
+     * Get the {@code first_activated_date} value.
+     * Can be {@code null}.
+     */
+    public Date getFirstActivatedDate() {
+        return getDate(RideColumns.FIRST_ACTIVATED_DATE);
+    }
+
+    /**
+     * Get the {@code activated_date} value.
+     * Can be {@code null}.
+     */
+    public Date getActivatedDate() {
+        return getDate(RideColumns.ACTIVATED_DATE);
+    }
+
+    /**
+     * Get the {@code duration} value.
+     */
+    public long getDuration() {
+        return getLongOrNull(RideColumns.DURATION);
+    }
+
+    /**
+     * Get the {@code distance} value.
+     */
+    public float getDistance() {
+        return getFloatOrNull(RideColumns.DISTANCE);
     }
 }

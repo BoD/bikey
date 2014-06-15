@@ -42,7 +42,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = BikeySQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "bikey_provider.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
     private final Context mContext;
     private final BikeySQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
@@ -55,12 +55,12 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
             + LogColumns.LAT + " REAL NOT NULL, "
             + LogColumns.LON + " REAL NOT NULL, "
             + LogColumns.ELE + " REAL NOT NULL, "
-            + LogColumns.DURATION + " INTEGER, "
-            + LogColumns.DISTANCE + " REAL, "
+            + LogColumns.LOG_DURATION + " INTEGER, "
+            + LogColumns.LOG_DISTANCE + " REAL, "
             + LogColumns.SPEED + " REAL, "
             + LogColumns.CADENCE + " REAL, "
             + LogColumns.HEART_RATE + " INTEGER "
-            + ", CONSTRAINT FK_RIDE FOREIGN KEY (RIDE_ID) REFERENCES RIDE (_ID) ON DELETE CASCADE"
+            + ", CONSTRAINT fk_ride_id FOREIGN KEY (ride_id) REFERENCES ride (_id) ON DELETE CASCADE"
             + " );";
 
     private static final String SQL_CREATE_TABLE_RIDE = "CREATE TABLE IF NOT EXISTS "
@@ -130,10 +130,28 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
         if (!db.isReadOnly()) {
-            db.execSQL("PRAGMA foreign_keys=ON;");
+            setForeignKeyConstraintsEnabled(db);
         }
         mOpenHelperCallbacks.onOpen(mContext, db);
     }
+
+    private void setForeignKeyConstraintsEnabled(SQLiteDatabase db) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+            setForeignKeyConstraintsEnabledPreJellyBean(db);
+        } else {
+            setForeignKeyConstraintsEnabledPostJellyBean(db);
+        }
+    }
+
+    private void setForeignKeyConstraintsEnabledPreJellyBean(SQLiteDatabase db) {
+        db.execSQL("PRAGMA foreign_keys=ON;");
+    }
+
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+    private void setForeignKeyConstraintsEnabledPostJellyBean(SQLiteDatabase db) {
+        db.setForeignKeyConstraintsEnabled(true);
+    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

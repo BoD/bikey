@@ -48,6 +48,8 @@ import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 public class BikeyProvider extends ContentProvider {
     private static final String TAG = BikeyProvider.class.getSimpleName();
 
+    private static final boolean DEBUG = BuildConfig.DEBUG;
+
     private static final String TYPE_CURSOR_ITEM = "vnd.android.cursor.item/";
     private static final String TYPE_CURSOR_DIR = "vnd.android.cursor.dir/";
 
@@ -74,11 +76,11 @@ public class BikeyProvider extends ContentProvider {
         URI_MATCHER.addURI(AUTHORITY, RideColumns.TABLE_NAME + "/#", URI_TYPE_RIDE_ID);
     }
 
-    private BikeySQLiteOpenHelper mBikeySQLiteOpenHelper;
+    protected BikeySQLiteOpenHelper mBikeySQLiteOpenHelper;
 
     @Override
     public boolean onCreate() {
-        if (BuildConfig.DEBUG) {
+        if (DEBUG) {
             // Enable logging of SQL statements as they are executed.
             try {
                 Class<?> sqliteDebugClass = Class.forName("android.database.sqlite.SQLiteDebug");
@@ -91,10 +93,10 @@ public class BikeyProvider extends ContentProvider {
                 // field.setAccessible(true);
                 // field.set(null, true);
             } catch (Throwable t) {
-                if (BuildConfig.DEBUG) Log.w(TAG, "Could not enable SQLiteDebug logging", t);
+                if (DEBUG) Log.w(TAG, "Could not enable SQLiteDebug logging", t);
             }
         }
-        
+
         mBikeySQLiteOpenHelper = BikeySQLiteOpenHelper.newInstance(getContext());
         return true;
     }
@@ -119,7 +121,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "insert uri=" + uri + " values=" + values);
+        if (DEBUG) Log.d(TAG, "insert uri=" + uri + " values=" + values);
         String table = uri.getLastPathSegment();
         long rowId = mBikeySQLiteOpenHelper.getWritableDatabase().insertOrThrow(table, null, values);
         if (rowId == -1) return null;
@@ -132,7 +134,7 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int bulkInsert(Uri uri, ContentValues[] values) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "bulkInsert uri=" + uri + " values.length=" + values.length);
+        if (DEBUG) Log.d(TAG, "bulkInsert uri=" + uri + " values.length=" + values.length);
         String table = uri.getLastPathSegment();
         SQLiteDatabase db = mBikeySQLiteOpenHelper.getWritableDatabase();
         int res = 0;
@@ -159,9 +161,8 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
-        QueryParams queryParams = getQueryParams(uri, selection);
+        if (DEBUG) Log.d(TAG, "update uri=" + uri + " values=" + values + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
+        QueryParams queryParams = getQueryParams(uri, selection, null);
         int res = mBikeySQLiteOpenHelper.getWritableDatabase().update(queryParams.table, values, queryParams.selection, selectionArgs);
         String notify;
         if (res != 0 && ((notify = uri.getQueryParameter(QUERY_NOTIFY)) == null || "true".equals(notify))) {
@@ -172,8 +173,8 @@ public class BikeyProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
-        QueryParams queryParams = getQueryParams(uri, selection);
+        if (DEBUG) Log.d(TAG, "delete uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs));
+        QueryParams queryParams = getQueryParams(uri, selection, null);
         int res = mBikeySQLiteOpenHelper.getWritableDatabase().delete(queryParams.table, queryParams.selection, selectionArgs);
         String notify;
         if (res != 0 && ((notify = uri.getQueryParameter(QUERY_NOTIFY)) == null || "true".equals(notify))) {
@@ -185,11 +186,11 @@ public class BikeyProvider extends ContentProvider {
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
         String groupBy = uri.getQueryParameter(QUERY_GROUP_BY);
-        if (BuildConfig.DEBUG)
+        if (DEBUG)
             Log.d(TAG, "query uri=" + uri + " selection=" + selection + " selectionArgs=" + Arrays.toString(selectionArgs) + " sortOrder=" + sortOrder
                     + " groupBy=" + groupBy);
-        QueryParams queryParams = getQueryParams(uri, selection);
-        Cursor res = mBikeySQLiteOpenHelper.getReadableDatabase().query(queryParams.table, projection, queryParams.selection, selectionArgs, groupBy,
+        QueryParams queryParams = getQueryParams(uri, selection, projection);
+        Cursor res = mBikeySQLiteOpenHelper.getReadableDatabase().query(queryParams.tablesWithJoins, projection, queryParams.selection, selectionArgs, groupBy,
                 null, sortOrder == null ? queryParams.orderBy : sortOrder);
         res.setNotificationUri(getContext().getContentResolver(), uri);
         return res;
@@ -226,11 +227,12 @@ public class BikeyProvider extends ContentProvider {
 
     private static class QueryParams {
         public String table;
+        public String tablesWithJoins;
         public String selection;
         public String orderBy;
     }
 
-    private QueryParams getQueryParams(Uri uri, String selection) {
+    private QueryParams getQueryParams(Uri uri, String selection, String[] projection) {
         QueryParams res = new QueryParams();
         String id = null;
         int matchedId = URI_MATCHER.match(uri);
@@ -238,12 +240,17 @@ public class BikeyProvider extends ContentProvider {
             case URI_TYPE_LOG:
             case URI_TYPE_LOG_ID:
                 res.table = LogColumns.TABLE_NAME;
+                res.tablesWithJoins = LogColumns.TABLE_NAME;
+                if (RideColumns.hasColumns(projection)) {
+                    res.tablesWithJoins += " LEFT OUTER JOIN " + RideColumns.TABLE_NAME + " ON " + LogColumns.TABLE_NAME + "." + LogColumns.RIDE_ID + "=" + RideColumns.TABLE_NAME + "." + RideColumns._ID;
+                }
                 res.orderBy = LogColumns.DEFAULT_ORDER;
                 break;
 
             case URI_TYPE_RIDE:
             case URI_TYPE_RIDE_ID:
                 res.table = RideColumns.TABLE_NAME;
+                res.tablesWithJoins = RideColumns.TABLE_NAME;
                 res.orderBy = RideColumns.DEFAULT_ORDER;
                 break;
 

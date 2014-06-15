@@ -105,6 +105,9 @@ public class KmlExporter extends Exporter {
             // Write out the cadence as a set of Placemarks
             writeCadence(rideId, out);
 
+            // Write out the heart rate logs as a set of Placemarks
+            writeHeartRate(rideId, out);
+
             // Write the KML elements to close the document.
             out.println(getString(R.string.export_kml_folder_end));
             out.println(getString(R.string.export_kml_document_end));
@@ -191,18 +194,54 @@ public class KmlExporter extends Exporter {
         Log.d();
         String selection = LogColumns.RIDE_ID + "=? AND " + LogColumns.CADENCE + " NOT NULL";
         String[] selectionArgs = { String.valueOf(rideId) };
-        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, null));
+        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, LogColumns.RECORDED_DATE));
         if (c != null) {
             try {
                 // Only write out cadence if we have enough values.
                 if (c.getCount() < 5) return;
                 out.println(getString(R.string.export_kml_folder_begin, getString(R.string.export_kml_cadence_folder_name)));
+                int previousCadence = 0;
                 while (c.moveToNext()) {
-                    Float cadence = c.getCadence();
-                    Style style = Style.RED;
-                    if (cadence > 80) style = Style.GREEN;
-                    else if (cadence >= 60) style = Style.YELLOW;
-                    writePointPlacemark(null, c, out, String.valueOf(cadence.intValue()), style);
+                    int cadence = c.getCadence().intValue();
+                    if (cadence != previousCadence) {
+                        Style style = Style.RED;
+                        if (cadence > 80) style = Style.GREEN;
+                        else if (cadence >= 60) style = Style.YELLOW;
+                        writePointPlacemark(null, c, out, String.valueOf(cadence), style);
+                        previousCadence = cadence;
+                    }
+                }
+                out.println(getString(R.string.export_kml_folder_end));
+            } finally {
+                c.close();
+            }
+        }
+
+    }
+
+    /**
+     * Write a folder containing all the heart rate points
+     */
+    private void writeHeartRate(long rideId, PrintWriter out) {
+        Log.d();
+        String selection = LogColumns.RIDE_ID + "=? AND " + LogColumns.HEART_RATE + " NOT NULL";
+        String[] selectionArgs = { String.valueOf(rideId) };
+        LogCursor c = new LogCursor(getContext().getContentResolver().query(LogColumns.CONTENT_URI, null, selection, selectionArgs, LogColumns.RECORDED_DATE));
+        if (c != null) {
+            try {
+                // Only write out heart rate if we have enough values.
+                if (c.getCount() < 5) return;
+                out.println(getString(R.string.export_kml_folder_begin, getString(R.string.export_kml_heart_rate_folder_name)));
+                int previousHeartRate = 0;
+                while (c.moveToNext()) {
+                    int heartRate = c.getHeartRate();
+                    if (heartRate != previousHeartRate) {
+                        Style style = Style.RED;
+                        if (heartRate > 100) style = Style.GREEN;
+                        else if (heartRate >= 60) style = Style.YELLOW;
+                        writePointPlacemark(null, c, out, String.valueOf(heartRate), style);
+                        previousHeartRate = heartRate;
+                    }
                 }
                 out.println(getString(R.string.export_kml_folder_end));
             } finally {

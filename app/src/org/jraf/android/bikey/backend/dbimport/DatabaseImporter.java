@@ -106,6 +106,13 @@ public class DatabaseImporter {
                         for (int i = 0; i < columnCount; i++) {
                             String columnName = c.getColumnName(i);
                             Object value = c.getString(i);
+                            // The distance and duration columns of the log table
+                            // were renamed to log_distance and log_duration,
+                            // in DB version 5.
+                            if (LogColumns.TABLE_NAME.equals(table)) {
+                                if ("distance".equals(columnName)) columnName = LogColumns.LOG_DISTANCE;
+                                else if ("duration".equals(columnName)) columnName = LogColumns.LOG_DURATION;
+                            }
                             builder.withValue(columnName, value);
                         }
                         operations.add(builder.build());

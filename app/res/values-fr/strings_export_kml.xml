@@ -9,6 +9,7 @@
     <string name="export_kml_ride">Parcours</string>
     <string name="export_kml_point_name">Fin</string>
     <string name="export_kml_cadence_folder_name">Cadence</string>
+    <string name="export_kml_heart_rate_folder_name">Fréquence cardiaque</string>
     <!--  END translatable strings -->
 
 </resources>

@@ -6,9 +6,9 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -52,7 +52,7 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
     // See https://developer.bluetooth.org/gatt/characteristics/Pages/CharacteristicViewer.aspx?u=org.bluetooth.characteristic.heart_rate_measurement.xml
     private static final int GATT_CHARACTERISTIC_HEART_RATE_MEASUREMENT = 0x2A37;
 
-    // See https://developer.bluetooth.org/gatt/descriptors/Pages/DescriptorViewer.aspx?u=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml    
+    // See https://developer.bluetooth.org/gatt/descriptors/Pages/DescriptorViewer.aspx?u=org.bluetooth.descriptor.gatt.client_characteristic_configuration.xml
     private static final int GATT_DESCRIPTOR_CLIENT_CHARACTERISTIC_CONFIGURATION = 0x2902;
 
     // @formatter:off
@@ -88,6 +88,7 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
 
     @Override
     public void setBluetoothDevice(BluetoothDevice bluetoothDevice) {
+        Log.d();
         mStatus = Status.CONNECTING;
         // Inform listeners
         mListeners.dispatch(new Dispatcher<HeartRateListener>() {
@@ -304,10 +305,13 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
 
     @Override
     public void disconnect() {
+        Log.d();
         if (mBluetoothGatt != null) {
             mBluetoothGatt.close();
-            mBluetoothDevice = null;
+            mBluetoothGatt.disconnect();
+            mBluetoothGatt = null;
         }
+        mBluetoothDevice = null;
         onDisconnect();
     }
 }

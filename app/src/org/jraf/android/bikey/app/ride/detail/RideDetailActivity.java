@@ -25,7 +25,6 @@
 package org.jraf.android.bikey.app.ride.detail;
 
 import java.io.File;
-import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -72,7 +71,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 public class RideDetailActivity extends FragmentActivity implements AlertDialogListener {
@@ -318,7 +316,7 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
                 if (mLatLngArray.size() > 0) {
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
                     polylineOptions.color(getResources().getColor(R.color.map_polyline));
-                    Polyline polyline = a.getMap().addPolyline(polylineOptions);
+                    a.getMap().addPolyline(polylineOptions);
                     // Calculate bounds
                     LatLngBounds bounds = new LatLngBounds(mLatLngArray.get(0), mLatLngArray.get(0));
                     for (LatLng latLng : mLatLngArray) {
@@ -383,8 +381,12 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
      */
 
     private void showDeleteDialog() {
-        AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE, 0, R.string.ride_detail_deleteDialog_message, 0, android.R.string.ok, android.R.string.cancel,
-                (Serializable) null).show(getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE);
+        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.setMessage(R.string.ride_detail_deleteDialog_message);
+        dialog.setPositiveButton(android.R.string.ok);
+        dialog.setNegativeButton(android.R.string.cancel);
+        dialog.show(getSupportFragmentManager());
     }
 
     private void delete() {
@@ -408,8 +410,10 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
      */
 
     public void showShareDialog() {
-        AlertDialogFragment.newInstance(DIALOG_SHARE, R.string.ride_list_shareDialog_title, 0, R.array.export_choices, 0, 0, (Serializable) null).show(
-                getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_SHARE);
+        dialog.setTitle(R.string.ride_list_shareDialog_title);
+        dialog.setItems(R.array.export_choices);
+        dialog.show(getSupportFragmentManager());
     }
 
     @Override

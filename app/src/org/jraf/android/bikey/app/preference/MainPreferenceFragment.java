@@ -6,9 +6,9 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -164,8 +164,11 @@ public class MainPreferenceFragment extends PreferenceFragment {
                 getCallbacks().startImport();
                 return true;
             } else if (Constants.PREF_HEART_RATE_SCAN.equals(preference.getKey())) {
-                if (HeartRateManager.get().isConnected()) {
+                HeartRateManager heartRateManager = HeartRateManager.get();
+                if (heartRateManager.isConnected()) {
                     getCallbacks().disconnectHeartRateMonitor();
+                } else if (heartRateManager.isConnecting()) {
+                    getCallbacks().tryToReconnectOrGiveUp();
                 } else {
                     getCallbacks().startHeartRateMonitorScan();
                 }
@@ -179,7 +182,6 @@ public class MainPreferenceFragment extends PreferenceFragment {
         @Override
         public void onConnecting() {
             Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
-            pref.setEnabled(false);
             pref.setTitle(R.string.preference_heartRate_connecting_title);
             pref.setSummary(R.string.preference_heartRate_connecting_summary);
             pref.setWidgetLayoutResource(R.layout.heart_rate_pref_widget_connecting);
@@ -188,7 +190,6 @@ public class MainPreferenceFragment extends PreferenceFragment {
         @Override
         public void onConnected() {
             Preference pref = getPreferenceManager().findPreference(Constants.PREF_HEART_RATE_SCAN);
-            pref.setEnabled(true);
             pref.setTitle(R.string.preference_heartRate_disconnect_title);
             pref.setSummary(R.string.preference_heartRate_disconnect_summary);
             pref.setWidgetLayoutResource(R.layout.heart_rate_pref_widget_connected);

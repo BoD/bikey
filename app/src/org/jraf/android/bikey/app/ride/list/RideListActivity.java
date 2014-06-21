@@ -6,9 +6,9 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -175,8 +175,13 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         int quantity = checkedItemIds.length;
         String message = getResources().getQuantityString(R.plurals.ride_list_deleteDialog_message, quantity, quantity);
 
-        AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE, null, message, 0, getString(android.R.string.ok), getString(android.R.string.cancel),
-                checkedItemIds).show(getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE);
+        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.setMessage(message);
+        dialog.setPositiveButton(android.R.string.ok);
+        dialog.setNegativeButton(android.R.string.cancel);
+        dialog.setPayload(checkedItemIds);
+        dialog.show(getSupportFragmentManager());
     }
 
     private void delete(final long[] ids) {
@@ -198,8 +203,13 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         int quantity = checkedItemIds.length;
         String message = getString(R.string.ride_list_mergeDialog_message, quantity);
 
-        AlertDialogFragment.newInstance(DIALOG_CONFIRM_MERGE, null, message, 0, getString(android.R.string.ok), getString(android.R.string.cancel),
-                checkedItemIds).show(getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_MERGE);
+        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.setMessage(message);
+        dialog.setPositiveButton(android.R.string.ok);
+        dialog.setNegativeButton(android.R.string.cancel);
+        dialog.setPayload(checkedItemIds);
+        dialog.show(getSupportFragmentManager());
     }
 
     private void merge(final long[] ids) {
@@ -262,8 +272,10 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
 
     @Override
     public void showShareDialog(Uri checkedItemIdUri) {
-        AlertDialogFragment.newInstance(DIALOG_SHARE, R.string.ride_list_shareDialog_title, 0, R.array.export_choices, 0, 0, checkedItemIdUri).show(
-                getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_SHARE);
+        dialog.setTitle(R.string.ride_list_shareDialog_title);
+        dialog.setItems(R.array.export_choices);
+        dialog.show(getSupportFragmentManager());
     }
 
     @Override
@@ -275,7 +287,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 mState.mExporter = new GpxExporter(rideUri);
                 break;
             case 1:
-                // Kml 
+                // Kml
                 mState.mExporter = new KmlExporter(rideUri);
                 break;
             case 3:

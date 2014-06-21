@@ -6,9 +6,9 @@
  * \___/_/|_/_/ |_/_/ (_)___/_/  \_, /
  *                              /___/
  * repository.
- * 
+ *
  * Copyright (C) 2013 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -30,7 +30,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
@@ -53,6 +52,7 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
 
     private static final int DIALOG_RECORD_CADENCE = 0;
     private static final int DIALOG_DISCONNECT_HEART_RATE = 1;
+    private static final int DIALOG_RECONNECT_HEART_RATE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +82,12 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
 
     @Override
     public void showRecordCadenceConfirmDialog() {
-        AlertDialogFragment.newInstance(DIALOG_RECORD_CADENCE, R.string.preference_recordCadence_confirmDialog_title,
-                R.string.preference_recordCadence_confirmDialog_message, 0, R.string.common_yes, R.string.common_no, (Parcelable) null).show(
-                getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_RECORD_CADENCE);
+        dialog.setTitle(R.string.preference_recordCadence_confirmDialog_title);
+        dialog.setMessage(R.string.preference_recordCadence_confirmDialog_message);
+        dialog.setPositiveButton(R.string.common_yes);
+        dialog.setNegativeButton(R.string.common_no);
+        dialog.show(getSupportFragmentManager());
     }
 
 
@@ -169,9 +172,26 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
     @Override
     public void disconnectHeartRateMonitor() {
         Log.d();
-        AlertDialogFragment.newInstance(DIALOG_DISCONNECT_HEART_RATE, R.string.preference_heartRate_disconnect_confirmDialog_title,
-                R.string.preference_heartRate_disconnect_confirmDialog_message, 0, R.string.preference_heartRate_disconnect_confirmDialog_positive,
-                R.string.preference_heartRate_disconnect_confirmDialog_negative, (Parcelable) null).show(getSupportFragmentManager());
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_DISCONNECT_HEART_RATE);
+        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.setMessage(R.string.preference_heartRate_disconnect_confirmDialog_message);
+        dialog.setPositiveButton(R.string.preference_heartRate_disconnect_confirmDialog_positive);
+        dialog.setNegativeButton(R.string.preference_heartRate_disconnect_confirmDialog_negative);
+        dialog.setCancelIsNegative(false);
+        dialog.show(getSupportFragmentManager());
+    }
+
+    @Override
+    public void tryToReconnectOrGiveUp() {
+        Log.d();
+        AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_RECONNECT_HEART_RATE);
+        dialog.setTitle(R.string.preference_heartRate_reconnect_confirmDialog_title);
+        dialog.setMessage(R.string.preference_heartRate_reconnect_confirmDialog_message);
+        dialog.setPositiveButton(R.string.preference_heartRate_reconnect_confirmDialog_positive);
+        dialog.setNegativeButton(R.string.preference_heartRate_reconnect_confirmDialog_negative);
+        dialog.setCancelIsNegative(false);
+        dialog.show(getSupportFragmentManager());
+
     }
 
 
@@ -187,7 +207,8 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
                 break;
 
             case DIALOG_DISCONNECT_HEART_RATE:
-                // Just disconnect
+            case DIALOG_RECONNECT_HEART_RATE:
+                // Disconnect
                 HeartRateManager.get().disconnect();
                 break;
         }
@@ -197,11 +218,20 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
     public void onClickPositive(int tag, Object payload) {
         switch (tag) {
             case DIALOG_DISCONNECT_HEART_RATE:
+                // Disconnect
+                HeartRateManager.get().disconnect();
+
                 // Turn off bluetooth
                 BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
                 if (mBluetoothAdapter.isEnabled()) {
                     mBluetoothAdapter.disable();
                 }
+                break;
+
+            case DIALOG_RECONNECT_HEART_RATE:
+                // Disconnect and go back to scanning
+                HeartRateManager.get().disconnect();
+                startHeartRateMonitorScan();
                 break;
         }
     }

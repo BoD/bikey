@@ -107,6 +107,10 @@
     <string name="preference_heartRate_disconnect_confirmDialog_message">How to disconnect the heart rate monitor?</string>
     <string name="preference_heartRate_disconnect_confirmDialog_negative">Disconnect</string>
     <string name="preference_heartRate_disconnect_confirmDialog_positive">Turn bluetooth off</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_title">Connecting</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_message">Do you want to try connecting again or abort?</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_negative">Abort</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_positive">Try again</string>
     <string name="preference_heartRate_bt_error">Unable to connect to bluetooth device</string>
 
     <!-- TTS -->

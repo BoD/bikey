@@ -24,8 +24,6 @@
  */
 package org.jraf.android.bikey.app.collect;
 
-import java.util.Date;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -42,7 +40,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.WearableExtender;
 import android.support.v4.app.TaskStackBuilder;
 
 import org.jraf.android.bikey.Constants;
@@ -113,9 +110,7 @@ public class LogCollectorService extends Service {
 
                 // Show notification
                 Notification notification = createNotification();
-                //                //                startForeground(NOTIFICATION_ID, notification);
-                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                notificationManager.notify(NOTIFICATION_ID, notification);
+                startForeground(NOTIFICATION_ID, notification);
 
                 LocationManager.get().addLocationListener(mLocationListener);
 
@@ -132,7 +127,6 @@ public class LogCollectorService extends Service {
                 // Start recording heart rate
                 HeartRateManager.get().addListener(mHeartRateListener);
             }
-
         });
     }
 
@@ -179,9 +173,7 @@ public class LogCollectorService extends Service {
                 }
             });
 
-            Notification notification = createNotification();
-            NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-            notificationManager.notify(NOTIFICATION_ID, notification);
+            // TODO update values
         }
 
         @Override
@@ -260,13 +252,12 @@ public class LogCollectorService extends Service {
 
     private Notification createNotification() {
         NotificationCompat.Builder mainNotifBuilder = new NotificationCompat.Builder(this);
-        //        mainNotifBuilder.setOngoing(true);
+        mainNotifBuilder.setOngoing(true);
         mainNotifBuilder.setSmallIcon(R.drawable.ic_stat_collecting);
         mainNotifBuilder.setTicker(getString(R.string.service_notification_ticker));
         mainNotifBuilder.setContentTitle(getString(R.string.app_name));
         mainNotifBuilder.setContentText(getString(R.string.service_notification_text));
-
-        //        mainNotifBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
+        mainNotifBuilder.setPriority(NotificationCompat.PRIORITY_MAX);
 
         //        Intent intent = new Intent(this, DisplayActivity.class).setData(mCollectingRideUri);
         //        builder.setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
@@ -284,22 +275,8 @@ public class LogCollectorService extends Service {
         //        builder.addAction(R.drawable.ic_action_logs, getString(R.string.service_notification_action_logs),
         //                PendingIntent.getActivity(this, 0, new Intent(this, LogActivity.class), PendingIntent.FLAG_UPDATE_CURRENT));
 
-
-        // Android Wear
-
-        // Speed page
-        NotificationCompat.Builder speedNotifBuilder = new NotificationCompat.Builder(this);
-        speedNotifBuilder.setContentText(new Date().toString());
-
-        NotificationCompat.Builder pageNotificationBuilder = new WearableExtender().addPage(speedNotifBuilder.build()).extend(mainNotifBuilder);
-
-        Notification res = pageNotificationBuilder.build();
-
-        //        res.flags |= NotificationCompat.FLAG_FOREGROUND_SERVICE;
-        //        res.flags |= NotificationCompat.FLAG_NO_CLEAR;
-        //        res.flags |= NotificationCompat.FLAG_ONGOING_EVENT;
-
-        return res;
+        Notification notification = mainNotifBuilder.build();
+        return notification;
     }
 
     private void dismissNotification() {

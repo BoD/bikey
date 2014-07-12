@@ -1,4 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+import org.apache.tools.ant.filters.ReplaceTokens
+import java.text.SimpleDateFormat
+
 buildscript {
     repositories {
         jcenter()
@@ -14,3 +17,42 @@ allprojects {
         jcenter()
     }
 }
+
+
+def gitSha1() {
+    return 'git rev-parse --short HEAD'.execute().text.trim()
+}
+
+def buildDate() {
+    def dateFormat = new SimpleDateFormat('yyyy-MM-dd\'T\'HH:mm\'Z\'')
+    dateFormat.setTimeZone(TimeZone.getTimeZone('UTC'))
+    return dateFormat.format(new Date())
+}
+
+def filterResources(buildVariant) {
+    // Copy and 'filter' (replace {} placeholders) the resources
+    def path = buildVariant.processResources.resDir.getPath()
+    copy {
+        from path + '/values/values.xml'
+        filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')
+        into path + '/values'
+        rename 'values.xml', 'values.xml.expanded'
+    }
+    // Override the file
+    copy {
+        from path + '/values/values.xml.expanded'
+        into path + '/values'
+        rename 'values.xml.expanded', 'values.xml'
+    }
+    // Delete the temporary file
+    new File(path + '/values/values.xml.expanded').delete()
+}
+
+
+ext.buildProperties = new Properties()
+buildProperties.load(new FileInputStream(file('build.properties')))
+
+ext.buildNumberFile = file('build.number')
+ext.buildNumberProperties = new Properties()
+buildNumberProperties.load(new FileInputStream(buildNumberFile))
+ext.buildNumber = buildNumberProperties['build.number'].toInteger()

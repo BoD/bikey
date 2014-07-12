@@ -8,3 +8,4 @@ local.properties
 etc/apk/*
 etc/proguard/*
 build/intermediates
+wear/build/*

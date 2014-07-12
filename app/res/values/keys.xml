@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-
-    <string name="acra_login" translatable="false">${acra.login}</string>
-    <string name="acra_password" translatable="false">${acra.password}</string>
-    <string name="google_maps_keys" translatable="false">${google-maps-keys}</string>
-
-</resources>

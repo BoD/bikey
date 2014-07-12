@@ -1,0 +1,121 @@
+import java.text.SimpleDateFormat
+import org.apache.tools.ant.filters.ReplaceTokens
+
+apply plugin: 'com.android.application'
+
+
+def gitSha1() {
+    return 'git rev-parse --short HEAD'.execute().text.trim()
+}
+
+def buildDate() {
+    def dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
+    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"))
+    return dateFormat.format(new Date())
+}
+
+
+def buildProperties = new Properties()
+buildProperties.load(new FileInputStream(file('../build.properties')))
+project.buildProperties = buildProperties
+
+def buildNumberFile = file('../build.number')
+def buildNumberProperties = new Properties()
+buildNumberProperties.load(new FileInputStream(buildNumberFile))
+def buildNumber = buildNumberProperties['build.number'].toInteger()
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion '20.0.0'
+
+    defaultConfig {
+        applicationId 'org.jraf.android.bikey'
+        minSdkVersion 14
+        targetSdkVersion 19
+        versionCode buildNumber
+        versionName buildProperties['versionName']
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
+        }
+        buildConfigField 'String', 'GIT_SHA1', '"' + gitSha1() + '"'
+        buildConfigField 'String', 'BUILD_DATE', '"' + buildDate() + '"'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(buildProperties['key-store'])
+            storePassword buildProperties['key-store-password']
+            keyAlias buildProperties['key-alias']
+            keyPassword buildProperties['key-alias-password']
+        }
+    }
+
+    buildTypes {
+        release {
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+android.applicationVariants.all { variant ->
+    // Perform resource filtering
+    variant.mergeResources.doLast {
+        filterResources(variant)
+    }
+}
+
+def filterResources(buildVariant) {
+    // Copy and filter the resources
+    def path = buildVariant.processResources.resDir.getPath()
+    copy {
+        from path + '/values/values.xml'
+        filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')
+        into path + '/values'
+        rename 'values.xml', 'values.xml.expanded'
+    }
+    // Override the file
+    copy {
+        from path + '/values/values.xml.expanded'
+        into path + '/values'
+        rename 'values.xml.expanded', 'values.xml'
+    }
+    // Delete the temporary file
+    new File(path + '/values/values.xml.expanded').delete()
+}
+
+dependencies {
+    compile 'org.jraf:jraf-android-util:1.0.0'
+    compile 'com.android.support:support-v4:20.+'
+    compile 'com.google.android.gms:play-services:+'
+    compile 'com.jakewharton:butterknife:5.1.1'
+    compile files('libs/acra-4.5.0.jar')
+}
+
+task deploy(dependsOn: assembleRelease) << {
+    description 'Build a release apk, copy the result to the deploy folder, then increment the build number.'
+    // Copy the apk to the deploy folder
+    copy {
+        from buildDir.getPath() + '/outputs/apk/app-release.apk'
+        into buildProperties['deploy-folder']
+        rename 'app-release.apk', "bikey-${android.defaultConfig.versionCode}-signed.apk"
+    }
+    // Also copy the apk to the 'etc' folder
+    new File('../etc/apk').mkdirs()
+    copy {
+        from buildDir.getPath() + '/outputs/apk/app-release.apk'
+        into '../etc/apk'
+        rename 'app-release.apk', "bikey-${android.defaultConfig.versionCode}-signed.apk"
+    }
+    // Copy the proguard mapping to the 'etc' folder
+    new File('../etc/proguard').mkdirs()
+    copy {
+        from buildDir.getPath() + '/outputs/proguard/release/mapping.txt'
+        into '../etc/proguard'
+        rename 'mapping.txt', "mapping-${android.defaultConfig.versionCode}.txt"
+    }
+    buildNumberProperties['build.number'] = (buildNumber + 1).toString()
+    buildNumberProperties.store(buildNumberFile.newWriter(), null)
+}

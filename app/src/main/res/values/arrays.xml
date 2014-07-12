@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string-array name="export_choices">
+        <item>@string/export_choices_gpx</item>
+        <item>@string/export_choices_kml</item>
+        <item>@string/export_choices_genymotion</item>
+    </string-array>
+    <string-array name="preferences_units_labels">
+        <item>@string/preferences_units_labels_metric</item>
+        <item>@string/preferences_units_labels_imperial</item>
+    </string-array>
+    <string-array name="preferences_units_values" tools:ignore="MissingTranslation">
+        <item>PREF_UNITS_METRIC</item>
+        <item>PREF_UNITS_IMPERIAL</item>
+    </string-array>
+
+</resources>

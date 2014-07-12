@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name" translatable="false">Bikey</string>
+
+    <!-- Common -->
+    <string name="common_done">Done</string>
+    <string name="common_discard">Discard</string>
+    <string name="common_shareWith">Share with<xliff:g id="dotdotdot">&#8230;</xliff:g></string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+
+    <!-- Acra -->
+    <string name="acra_toast">The application has crashed.<xliff:g id="new_line">\n</xliff:g>Logs are being sent so the issue can be fixed.</string>
+
+    <!-- Service -->
+    <string name="service_notification_ticker">Ride in progress</string>
+    <string name="service_notification_text">Ride in progress</string>
+
+    <!-- Ride list -->
+    <string name="ride_list_title">Rides</string>
+    <string name="ride_list_action_add">New ride</string>
+    <string name="ride_list_action_settings">Settings</string>
+    <string name="ride_list_action_about">About</string>
+    <string name="ride_list_action_share">Share</string>
+    <string name="ride_list_action_edit">Edit</string>
+    <string name="ride_list_action_merge">Merge</string>
+    <string name="ride_list_action_delete">Delete</string>
+    <string name="ride_edit_edtName_hint">Ride name (optional)</string>
+    <string name="ride_list_empty">No rides</string>
+
+    <plurals name="ride_list_cab_subtitle">
+        <item quantity="one">%1$d ride selected</item>
+        <item quantity="other">%1$d rides selected</item>
+    </plurals>
+
+    <string name="ride_list_shareDialog_title">File format</string>
+
+    <plurals name="ride_list_deleteDialog_message">
+        <item quantity="one">One item will be deleted.</item>
+        <item quantity="other">%1$d items will be deleted.</item>
+    </plurals>
+
+    <string name="ride_list_notStarted">Not started</string>
+    <string name="ride_list_active">In progress</string>
+    <string name="ride_list_btnQuickStart">Quick Start</string>
+    <string name="ride_list_mergeDialog_message">%1$d items will be merged together</string>
+    <string name="ride_list_mergedRide">Merged ride</string>
+    <string name="ride_list_mergedRide_append">%1$s (merged)</string>
+
+    <!-- Display -->
+    <string name="display_tab_speed">Speed</string>
+    <string name="display_tab_duration">Dur.</string>
+    <string name="display_tab_distance">Dist.</string>
+    <string name="display_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
+    <string name="display_tab_heartRate">Heart rate</string>
+    <string name="display_tab_compass">Comp.</string>
+    <string name="display_tab_currentTime">Cur. time</string>
+    <string name="display_title_speed">Speed</string>
+    <string name="display_title_duration">Duration</string>
+    <string name="display_title_distance">Distance</string>
+    <string name="display_title_averageMovingSpeed">Average moving speed</string>
+    <string name="display_title_heartRate">Heart rate</string>
+    <string name="display_title_compass" />
+    <string name="display_title_currentTime">Current time</string>
+    <string name="display_chkRecord_created">Start</string>
+    <string name="display_chkRecord_active">Recording</string>
+    <string name="display_chkRecord_paused">Resume</string>
+
+    <!-- Export -->
+    <string name="export_failToast">Could not export data. Is external storage available?</string>
+    <string name="export_subject">Bike ride</string>
+    <string name="export_body">Ride data recorded with Bikey for Android.</string>
+    <string name="export_choices_gpx">GPX file</string>
+    <string name="export_choices_kml">KML file</string>
+    <string name="export_choices_genymotion">Genymotion script</string>
+
+    <!-- Import -->
+    <string name="ride_list_importDialog_title">Choose ride file to import</string>
+    <string name="import_failToast">Could not import the rides.</string>
+    <string name="import_successToast">Successfully imported the rides.</string>
+
+    <!-- Save to storage -->
+    <string name="saveToStorage_label">Save to storage</string>
+    <string name="saveToStorage_failedToast">Could not save file.</string>
+    <string name="saveToStorage_successToast">File saved to %1$s</string>
+
+    <!-- Preferences -->
+    <string name="preference_title">Settings</string>
+    <string name="preference_category_general_title">General</string>
+    <string name="preference_units_title">Units</string>
+    <string name="preference_listenToHeadsetButton_title">Use headset button</string>
+    <string name="preference_listenToHeadsetButton_summary">Stop / resume the current ride when pressing the button</string>
+    <string name="preference_recordCadence_title">Record cadence</string>
+    <string name="preference_recordCadence_confirmDialog_title">Cadence</string>
+    <string name="preference_recordCadence_confirmDialog_message">Cadence recording only works when the device is placed in your pocket (using movement detection).\n\nThis feature consumes more battery.\n\nAre you sure you want to enable it?</string>
+    <string name="preference_importExport_title">Export &amp; import</string>
+    <string name="preference_export_title">Export rides</string>
+    <string name="preference_export_summary">Export rides to a Bikey database file</string>
+    <string name="preference_import_title">Import rides</string>
+    <string name="preference_import_summary">Import rides from a Bikey database file</string>
+    <string name="preference_heartRate_title">Heart rate monitor</string>
+    <string name="preference_heartRate_scan_title">Connect</string>
+    <string name="preference_heartRate_scan_summary">Connect to a heart rate monitor</string>
+    <string name="preference_heartRate_disconnect_title">Disconnect</string>
+    <string name="preference_heartRate_disconnect_summary">Connected to a heart rate monitor, tap to disconnect</string>
+    <string name="preference_heartRate_connecting_title">Connecting</string>
+    <string name="preference_heartRate_connecting_summary">Connecting to the heart rate monitor…</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_title">Disconnect</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_message">How to disconnect the heart rate monitor?</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_negative">Disconnect</string>
+    <string name="preference_heartRate_disconnect_confirmDialog_positive">Turn bluetooth off</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_title">Connecting</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_message">Do you want to try connecting again or abort?</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_negative">Abort</string>
+    <string name="preference_heartRate_reconnect_confirmDialog_positive">Try again</string>
+    <string name="preference_heartRate_bt_error">Unable to connect to bluetooth device</string>
+    <string name="preferences_units_labels_metric">Metric (meters)</string>
+    <string name="preferences_units_labels_imperial">Imperial (miles)</string>
+
+    <!-- TTS -->
+    <string name="speak_activate_ride" translatable="false">Ride started</string>
+    <string name="speak_pause_ride" translatable="false">Ride paused</string>
+
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_action_sendLogs">Send logs</string>
+    <string name="about_sendingLogsToast">Logs are being sent.</string>
+    <string name="about_txtInfo1" translatable="false"><![CDATA[<b>BoD Bikey</b> v%1$s/%2$s<br/>Built on %3$s<font color="#808080"> – %4$s</font>]]></string>
+    <string name="about_txtInfo2" tools:ignore="TypographyOther">Copyright (C) 2013–2014 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).</string>
+    <string name="about_txtInfo3" translatable="false">Licensed under the terms of the GNU General Public License.</string>
+    <string name="about_email" translatable="false">→ BoD@JRAF.org</string>
+    <string name="about_web" translatable="false">→ JRAF.org/android</string>
+    <string name="about_sources" translatable="false">→ github.com/BoD/bikey</string>
+    <string name="about_gplusCommunity" translatable="false">→ plus.google.com/communities/112883758989838442968</string>
+    <string name="about_btnShare">Share app</string>
+    <string name="about_btnRate">Rate app</string>
+    <string name="about_btnOtherApps">Other apps</string>
+    <string name="about_btnDonate">Donate</string>
+    <string name="about_shareText_subject">Checkout out Bikey!</string>
+    <string name="about_shareText_body">Bikey for Android is a most excellent app!\nCheck it out here:\nhttp://play.google.com/store/apps/details?id=%s</string>
+
+    <!-- Quick start -->
+    <string name="shortcut_title">Bikey: Quick Start</string>
+
+    <!-- Ride detail -->
+    <string name="ride_detail_title">Ride</string>
+    <string name="ride_detail_dateTime_section">Date &amp; Time</string>
+    <string name="ride_detail_dateTime_date_label">Date</string>
+    <string name="ride_detail_dateTime_start_label">Start</string>
+    <string name="ride_detail_dateTime_finish_label">Finish</string>
+    <string name="ride_detail_distance_section">Distance</string>
+    <string name="ride_detail_distance_total_label">Total</string>
+    <string name="ride_detail_duration_section">Duration</string>
+    <string name="ride_detail_duration_moving_label">Moving</string>
+    <string name="ride_detail_duration_total_label">Total</string>
+    <string name="ride_detail_speed_section">Speed</string>
+    <string name="ride_detail_speed_average_label">Average moving</string>
+    <string name="ride_detail_speed_max_label">Max</string>
+    <string name="ride_detail_cadence_section">Cadence</string>
+    <string name="ride_detail_cadence_average_label">Average</string>
+    <string name="ride_detail_cadence_max_label">Max</string>
+    <string name="ride_detail_action_display">DISPLAY</string>
+    <string name="ride_detail_empty">This ride has no data.</string>
+    <string name="ride_detail_deleteDialog_message">The ride will be deleted.</string>
+    <string name="ride_detail_heartRate_section">Heart rate</string>
+    <string name="ride_detail_heartRate_min_label">Min</string>
+    <string name="ride_detail_heartRate_max_label">Max</string>
+    <string name="ride_detail_heartRate_average_label">Average</string>
+
+    <!-- Ride map -->
+    <string name="ride_map_title">Ride</string>
+    <string name="ride_map_action_map">Map type</string>
+    <string name="ride_map_action_map_normal">Normal</string>
+    <string name="ride_map_action_map_satellite">Satellite</string>
+    <string name="ride_map_action_map_terrain">Terrain</string>
+
+    <!-- Heart rate monitor scan -->
+    <string name="heartRateMonitorScan_title">Connect to a heart rate monitor</string>
+
+
+</resources>

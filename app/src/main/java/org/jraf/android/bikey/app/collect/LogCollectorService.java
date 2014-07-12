@@ -52,6 +52,8 @@ import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.common.Path;
+import org.jraf.android.bikey.common.WearMessagingUtil;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.string.StringUtil;
 
@@ -65,6 +67,7 @@ public class LogCollectorService extends Service {
     protected Location mLastLocation;
     private Float mLastCadence;
     private Integer mLastHeartRate;
+    private WearMessagingUtil mWearMessagingUtil= new WearMessagingUtil();;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -75,7 +78,7 @@ public class LogCollectorService extends Service {
     public int onStartCommand(final Intent intent, int flags, int startId) {
         Log.d("intent=" + StringUtil.toString(intent));
         if (intent == null) return Service.START_STICKY;
-        final String action = intent.getAction();
+        String action = intent.getAction();
         if (ACTION_START_COLLECTING.equals(action)) {
             startCollecting(intent.getData());
         } else if (ACTION_STOP_COLLECTING.equals(action)) {
@@ -88,6 +91,8 @@ public class LogCollectorService extends Service {
         runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
+                mWearMessagingUtil.connect(LogCollectorService.this);
+
                 // First, pause current ride if any
                 if (mCollectingRideUri != null) {
                     RideManager.get().pause(mCollectingRideUri);
@@ -112,6 +117,10 @@ public class LogCollectorService extends Service {
                 Notification notification = createNotification();
                 startForeground(NOTIFICATION_ID, notification);
 
+                // Show notification on wearable
+                mWearMessagingUtil.sendMessage(Path.Notif.SHOW);
+
+                // Start recording location
                 LocationManager.get().addLocationListener(mLocationListener);
 
                 // Start monitoring cadence (if enabled in the prefs)
@@ -121,8 +130,8 @@ public class LogCollectorService extends Service {
                 }
 
                 // Start listening to pref changes (to enable / disable cadence recording accordingly)
-                PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).registerOnSharedPreferenceChangeListener(
-                        mOnSharedPreferenceChangeListener);
+                PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).registerOnSharedPreferenceChangeListener
+                        (mOnSharedPreferenceChangeListener);
 
                 // Start recording heart rate
                 HeartRateManager.get().addListener(mHeartRateListener);
@@ -138,7 +147,12 @@ public class LogCollectorService extends Service {
             }
         });
 
+        // Dismiss notification
         dismissNotification();
+
+        // Dismiss notification on wearable
+        mWearMessagingUtil.sendMessage(Path.Notif.HIDE);
+
         LocationManager.get().removeLocationListener(mLocationListener);
         CadenceManager.get().removeListener(mCadenceListener);
         HeartRateManager.get().removeListener(mHeartRateListener);
@@ -289,6 +303,7 @@ public class LogCollectorService extends Service {
     public void onDestroy() {
         // Unregister pref listener
         PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+ mWearMessagingUtil.disconnect();
         super.onDestroy();
     }
 }

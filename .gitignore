@@ -9,3 +9,4 @@ etc/apk/*
 etc/proguard/*
 build/intermediates
 wear/build/*
+common/build/*

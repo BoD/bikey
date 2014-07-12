@@ -44,11 +44,13 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.android.support:support-v4:20.+'
     compile 'com.google.android.gms:play-services:+'
+    compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.jakewharton:butterknife:5.1.1'
-    compile files('libs/acra-4.5.0.jar')
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':common')
+    wearApp project(':wear')
 }
 
 task deploy(dependsOn: assembleRelease) << {

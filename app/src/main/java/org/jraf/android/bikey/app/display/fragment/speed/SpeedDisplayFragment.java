@@ -32,7 +32,7 @@ import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.location.Speedometer;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.UnitUtil;
 
 public class SpeedDisplayFragment extends SimpleDisplayFragment {
     public static SpeedDisplayFragment newInstance() {

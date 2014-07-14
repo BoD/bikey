@@ -42,7 +42,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
@@ -52,8 +51,7 @@ import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.bikey.common.Path;
-import org.jraf.android.bikey.common.WearMessagingUtil;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.string.StringUtil;
 
@@ -67,7 +65,7 @@ public class LogCollectorService extends Service {
     protected Location mLastLocation;
     private Float mLastCadence;
     private Integer mLastHeartRate;
-    private WearMessagingUtil mWearMessagingUtil= new WearMessagingUtil();;
+    private WearUpdater mWearUpdater = new WearUpdater();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -91,7 +89,8 @@ public class LogCollectorService extends Service {
         runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
-                mWearMessagingUtil.connect(LogCollectorService.this);
+                // Initialize wear updater
+                mWearUpdater.startUpdates(LogCollectorService.this);
 
                 // First, pause current ride if any
                 if (mCollectingRideUri != null) {
@@ -116,9 +115,6 @@ public class LogCollectorService extends Service {
                 // Show notification
                 Notification notification = createNotification();
                 startForeground(NOTIFICATION_ID, notification);
-
-                // Show notification on wearable
-                mWearMessagingUtil.sendMessage(Path.Notif.SHOW);
 
                 // Start recording location
                 LocationManager.get().addLocationListener(mLocationListener);
@@ -150,8 +146,8 @@ public class LogCollectorService extends Service {
         // Dismiss notification
         dismissNotification();
 
-        // Dismiss notification on wearable
-        mWearMessagingUtil.sendMessage(Path.Notif.HIDE);
+        // Update notification on wearable
+        // TODO mWearMessagingUtil.
 
         LocationManager.get().removeLocationListener(mLocationListener);
         CadenceManager.get().removeListener(mCadenceListener);
@@ -186,8 +182,6 @@ public class LogCollectorService extends Service {
                     mLastLocation = location;
                 }
             });
-
-            // TODO update values
         }
 
         @Override
@@ -301,9 +295,11 @@ public class LogCollectorService extends Service {
 
     @Override
     public void onDestroy() {
+        // Disconnect wear updater
+        mWearUpdater.stopUpdates();
+
         // Unregister pref listener
         PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
- mWearMessagingUtil.disconnect();
         super.onDestroy();
     }
 }

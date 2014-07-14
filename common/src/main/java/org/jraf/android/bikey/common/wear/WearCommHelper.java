@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.common;
+package org.jraf.android.bikey.common.wear;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -34,16 +34,33 @@ import android.os.Bundle;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.MessageApi;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.NodeApi;
+import com.google.android.gms.wearable.PutDataMapRequest;
+import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
+import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class WearMessagingUtil {
+/**
+ * Helper singleton class to communicate with wearables.<br/>
+ * Note: {@link #connect(android.content.Context)} must be called prior to calling all the other methods.<br/>
+ * Note: a connection to a {@link com.google.android.gms.common.api.GoogleApiClient} is maintained by this class, which may or may not a performance problem.
+ */
+public class WearCommHelper {
+    private static final WearCommHelper INSTANCE = new WearCommHelper();
+
     private final ExecutorService mThreadPool = Executors.newCachedThreadPool();
     private GoogleApiClient mGoogleApiClient;
+
+    private WearCommHelper() {}
+
+    public static WearCommHelper get() {
+        return INSTANCE;
+    }
 
     public void connect(Context context) {
         Log.d();
@@ -61,7 +78,8 @@ public class WearMessagingUtil {
         }).addOnConnectionFailedListener(new GoogleApiClient.OnConnectionFailedListener() {
             @Override
             public void onConnectionFailed(ConnectionResult result) {
-                Log.d("result=" + result);
+                Log.w("result=" + result);
+                // TODO handle failures
             }
         }).addApi(Wearable.API).build();
         mGoogleApiClient.connect();
@@ -73,7 +91,7 @@ public class WearMessagingUtil {
         mGoogleApiClient = null;
     }
 
-    public void sendMessage(final Path path) {
+    public void sendMessage(final String path) {
         Log.d("path=" + path);
         mThreadPool.submit(new Runnable() {
             @Override
@@ -83,18 +101,62 @@ public class WearMessagingUtil {
         });
     }
 
-    private void sendMessageNow(Path path) {
-        Collection<String> nodes = getNodes();
+    private void sendMessageNow(String path) {
+        Collection<String> nodes = getConnectedNodes();
         for (String node : nodes) {
             Log.d("node=" + node);
-            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mGoogleApiClient, node, path.toString(), null).await();
+            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mGoogleApiClient, node, path, null).await();
             if (!result.getStatus().isSuccess()) {
-                Log.e("Could not send message: " + result.getStatus(), null);
+                Log.w("Could not send message: " + result.getStatus());
             }
         }
     }
 
-    private Collection<String> getNodes() {
+    public void updateRideValues(final boolean ongoing, final long duration, final float speed, final float distance, final int heartRate) {
+        Log.d();
+        mThreadPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                updateRideValuesNow(ongoing, duration, speed, distance, heartRate);
+            }
+        });
+    }
+
+    private void updateRideValuesNow(boolean ongoing, long duration, float speed, float distance, int heartRate) {
+        Log.d("ongoing=" + ongoing + " duration=" + duration + " speed=" + speed + " distance=" + distance + " heartRate=" + heartRate);
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(CommConstants.PATH_RIDE_VALUES);
+        DataMap dataMap = putDataMapRequest.getDataMap();
+        dataMap.putBoolean(CommConstants.EXTRA_ONGOING, ongoing);
+        dataMap.putLong(CommConstants.EXTRA_DURATION, duration);
+        dataMap.putFloat(CommConstants.EXTRA_SPEED, speed);
+        dataMap.putFloat(CommConstants.EXTRA_DISTANCE, distance);
+        dataMap.putInt(CommConstants.EXTRA_HEART_RATE, heartRate);
+
+        PutDataRequest request = putDataMapRequest.asPutDataRequest();
+        Wearable.DataApi.putDataItem(mGoogleApiClient, request).await();
+    }
+
+    public void updatePreferences() {
+        Log.d();
+        mThreadPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                updatePreferencesNow();
+            }
+        });
+    }
+
+    private void updatePreferencesNow() {
+        Log.d();
+        PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(CommConstants.PATH_PREFERENCES);
+        DataMap dataMap = putDataMapRequest.getDataMap();
+        dataMap.putString(CommConstants.EXTRA_UNITS, UnitUtil.getUnits());
+
+        PutDataRequest request = putDataMapRequest.asPutDataRequest();
+        Wearable.DataApi.putDataItem(mGoogleApiClient, request).await();
+    }
+
+    private Collection<String> getConnectedNodes() {
         HashSet<String> results = new HashSet<String>();
         NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
         for (Node node : nodes.getNodes()) {

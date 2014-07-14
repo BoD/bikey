@@ -30,7 +30,7 @@ import android.net.Uri;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.util.datetime.DateTimeUtil;
 
 /**

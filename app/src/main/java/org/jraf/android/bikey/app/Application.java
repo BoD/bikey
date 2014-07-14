@@ -34,9 +34,10 @@ import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
 import org.jraf.android.bikey.Config;
-import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.bikey.common.UnitUtil;
+import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.util.log.wrapper.Log;
 
 //@formatter:off
@@ -109,6 +110,9 @@ public class Application extends android.app.Application {
 
         // Units
         UnitUtil.readPreferences(this);
+
+        // Connect Google Play Services in wear communication helper
+        WearCommHelper.get().connect(this);
 
         if (Config.STRICT_MODE) setupStrictMode();
     }

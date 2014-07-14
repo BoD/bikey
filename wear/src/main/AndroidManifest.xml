@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.jraf.android.bikey">
@@ -6,11 +7,11 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
         android:theme="@android:style/Theme.DeviceDefault">
         <service
-            android:name="org.jraf.android.bikey.wearable.app.notif.NotificationService"
+            android:name=".wearable.app.notif.NotificationService"
             android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedService">
@@ -19,5 +20,7 @@
             </intent-filter>
         </service>
     </application>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

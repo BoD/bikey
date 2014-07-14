@@ -27,7 +27,7 @@ package org.jraf.android.bikey.app.display.fragment.heartrate;
 import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.heartrate.HeartRateListener;
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.UnitUtil;
 
 public class HeartRateDisplayFragment extends SimpleDisplayFragment {
     public static HeartRateDisplayFragment newInstance() {

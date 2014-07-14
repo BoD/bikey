@@ -39,13 +39,14 @@ import android.preference.PreferenceManager;
 import android.preference.SwitchPreference;
 import android.widget.Toast;
 
-import org.jraf.android.bikey.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.heartrate.HeartRateListener;
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.bikey.common.UnitUtil;
+import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.bikey.util.MediaButtonUtil;
-import org.jraf.android.bikey.util.UnitUtil;
 
 public class MainPreferenceFragment extends PreferenceFragment {
     private PreferenceCallbacks mCallbacks;
@@ -118,7 +119,11 @@ public class MainPreferenceFragment extends PreferenceFragment {
             updateListPreferenceSummary(key);
             switch (key) {
                 case Constants.PREF_UNITS:
+                    // Update units
                     UnitUtil.readPreferences(getActivity());
+
+                    // Propagate unit preferences to wearables
+                    WearCommHelper.get().updatePreferences();
 
                     // Notify observers of rides since they display distances using a conversion depending on the preference
                     getActivity().getContentResolver().notifyChange(RideColumns.CONTENT_URI, null);

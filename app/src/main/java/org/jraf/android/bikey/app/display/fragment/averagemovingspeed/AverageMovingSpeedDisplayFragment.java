@@ -26,7 +26,7 @@ package org.jraf.android.bikey.app.display.fragment.averagemovingspeed;
 
 import org.jraf.android.bikey.app.display.fragment.LogDisplayFragment;
 import org.jraf.android.bikey.backend.log.LogManager;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.UnitUtil;
 
 public class AverageMovingSpeedDisplayFragment extends LogDisplayFragment {
     public static AverageMovingSpeedDisplayFragment newInstance() {

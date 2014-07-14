@@ -43,7 +43,7 @@ import android.widget.FrameLayout;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-import org.jraf.android.bikey.Constants;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;

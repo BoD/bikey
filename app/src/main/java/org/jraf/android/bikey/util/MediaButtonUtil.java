@@ -30,7 +30,7 @@ import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.preference.PreferenceManager;
 
-import org.jraf.android.bikey.Constants;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.app.mediabutton.MediaButtonReceiver;
 import org.jraf.android.bikey.app.mediabutton.TextToSpeechManager;
 

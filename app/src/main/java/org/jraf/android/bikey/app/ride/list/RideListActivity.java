@@ -275,6 +275,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_SHARE);
         dialog.setTitle(R.string.ride_list_shareDialog_title);
         dialog.setItems(R.array.export_choices);
+        dialog.setPayload(checkedItemIdUri);
         dialog.show(getSupportFragmentManager());
     }
 

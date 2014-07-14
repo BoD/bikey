@@ -33,7 +33,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 
-import org.jraf.android.bikey.Constants;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.backend.provider.ride.RideState;

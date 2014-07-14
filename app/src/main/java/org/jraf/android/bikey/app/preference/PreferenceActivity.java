@@ -33,7 +33,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
-import org.jraf.android.bikey.Constants;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;

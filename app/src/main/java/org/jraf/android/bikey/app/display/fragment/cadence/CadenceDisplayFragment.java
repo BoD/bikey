@@ -27,7 +27,7 @@ package org.jraf.android.bikey.app.display.fragment.cadence;
 import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
 import org.jraf.android.bikey.backend.cadence.CadenceManager;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.UnitUtil;
 
 public class CadenceDisplayFragment extends SimpleDisplayFragment {
     public static CadenceDisplayFragment newInstance() {

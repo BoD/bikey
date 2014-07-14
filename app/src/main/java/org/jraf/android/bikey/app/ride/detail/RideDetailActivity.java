@@ -54,7 +54,7 @@ import org.jraf.android.bikey.backend.export.kml.KmlExporter;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.bikey.util.UnitUtil;
+import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.widget.LabelTextView;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;

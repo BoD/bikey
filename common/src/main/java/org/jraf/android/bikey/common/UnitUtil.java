@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.util;
+package org.jraf.android.bikey.common;
 
 import java.text.DecimalFormat;
 
@@ -32,7 +32,6 @@ import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 
-import org.jraf.android.bikey.Constants;
 import org.jraf.android.util.annotation.Background;
 
 public class UnitUtil {
@@ -48,7 +47,7 @@ public class UnitUtil {
 
 
     private static char sDecimalSeparator;
-    private static String sUnit;
+    private static String sUnits;
 
     static {
         sDecimalSeparator = FORMAT_DISTANCE.getDecimalFormatSymbols().getDecimalSeparator();
@@ -57,7 +56,15 @@ public class UnitUtil {
     @Background
     public static void readPreferences(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        sUnit = preferences.getString(Constants.PREF_UNITS, Constants.PREF_UNITS_DEFAULT);
+        sUnits = preferences.getString(Constants.PREF_UNITS, Constants.PREF_UNITS_DEFAULT);
+    }
+
+    public static String getUnits() {
+        return sUnits;
+    }
+
+    public static void setUnits(String units) {
+        sUnits = units;
     }
 
 
@@ -68,7 +75,7 @@ public class UnitUtil {
     public static CharSequence formatSpeed(float metersPerSecond, boolean withUnit, float fractionRelativeSize) {
         String unit = "";
         float converted;
-        if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
+        if (Constants.PREF_UNITS_METRIC.equals(sUnits)) {
             if (withUnit) unit = " km/h";
             converted = metersPerSecond * M_S_TO_KM_H;
         } else {
@@ -115,7 +122,7 @@ public class UnitUtil {
     public static CharSequence formatDistance(float meters, boolean withUnit, float fractionRelativeSize) {
         String unit = "";
         float converted;
-        if (Constants.PREF_UNITS_METRIC.equals(sUnit)) {
+        if (Constants.PREF_UNITS_METRIC.equals(sUnits)) {
             if (withUnit) unit = " km";
             converted = meters * M_TO_KM;
         } else {

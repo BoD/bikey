@@ -1,12 +1,12 @@
 .idea
 .gradle
 *.iml
-app/build/*
 build.number
 build.properties
 local.properties
 etc/apk/*
 etc/proguard/*
 build/intermediates
+handheld/build/*
 wear/build/*
 common/build/*

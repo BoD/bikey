@@ -16,6 +16,8 @@ android {
         }
         buildConfigField 'String', 'GIT_SHA1', '"' + gitSha1() + '"'
         buildConfigField 'String', 'BUILD_DATE', '"' + buildDate() + '"'
+        // For now we enable strict mode for all the configs
+        buildConfigField 'boolean', 'STRICT_MODE', 'true'
     }
 
     signingConfigs {
@@ -28,10 +30,16 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField 'boolean', 'ACRA', 'false'
+        }
+
         release {
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
+
+            buildConfigField 'boolean', 'ACRA', 'true'
         }
     }
 }

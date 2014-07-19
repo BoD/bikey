@@ -26,16 +26,46 @@ package org.jraf.android.bikey.common.wear;
 
 public class CommConstants {
     /*
-     * Ride values.
+     * Ride.
      */
 
-    public static final String PATH_RIDE_VALUES = "/rideValues";
+    public static final String PATH_RIDE = "/ride";
 
-    public static final String EXTRA_ONGOING = "EXTRA_ONGOING";
-    public static final String EXTRA_DURATION = "EXTRA_DURATION";
+    /**
+     * Indicates whether a ride is currently ongoing ({@code boolean}).
+     */
+    public static final String PATH_RIDE_ONGOING = PATH_RIDE + "/ongoing";
+
+    /**
+     * Measurement values ({@code boolean}).
+     */
+    public static final String PATH_RIDE_VALUES = PATH_RIDE + "/values";
+
+
+    /**
+     * Start date offset ({@code long}). To get the current duration of the ride, add {@code System.currentTimeMillis()} to this value.
+     */
+    public static final String EXTRA_START_DATE_OFFSET = "EXTRA_START_DATE_OFFSET";
+
+    /**
+     * Current speed ({@code float}).
+     */
     public static final String EXTRA_SPEED = "EXTRA_SPEED";
+
+    /**
+     * Total distance ({@code float}).
+     */
     public static final String EXTRA_DISTANCE = "EXTRA_DISTANCE";
+
+    /**
+     * Current heart rate ({@code int}).
+     */
     public static final String EXTRA_HEART_RATE = "EXTRA_HEART_RATE";
+
+    /**
+     * All-purpose value.
+     */
+    public static final String EXTRA_VALUE = "EXTRA_VALUE";
 
 
     /*

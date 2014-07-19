@@ -10,7 +10,9 @@ android {
         targetSdkVersion 20
         versionCode buildNumber
         versionName buildProperties['versionName']
-    }
+
+        // For now we enable strict mode for all the configs
+        buildConfigField 'boolean', 'STRICT_MODE', 'true'}
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

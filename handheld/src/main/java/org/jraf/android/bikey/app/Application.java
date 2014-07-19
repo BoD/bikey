@@ -33,7 +33,7 @@ import org.acra.ACRAConfiguration;
 import org.acra.ReportField;
 import org.acra.ReportingInteractionMode;
 import org.acra.annotation.ReportsCrashes;
-import org.jraf.android.bikey.Config;
+import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.common.UnitUtil;
@@ -97,7 +97,7 @@ public class Application extends android.app.Application {
         Log.init(Constants.TAG);
 
         // ACRA
-        if (Config.ACRA) {
+        if (BuildConfig.ACRA) {
             try {
                 ACRA.init(this);
                 ACRAConfiguration config = ACRA.getConfig();
@@ -114,7 +114,7 @@ public class Application extends android.app.Application {
         // Connect Google Play Services in wear communication helper
         WearCommHelper.get().connect(this);
 
-        if (Config.STRICT_MODE) setupStrictMode();
+        if (BuildConfig.STRICT_MODE) setupStrictMode();
     }
 
     private void setupStrictMode() {

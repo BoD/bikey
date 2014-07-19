@@ -5,6 +5,8 @@
 
     <uses-feature android:name="android.hardware.type.watch" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
@@ -19,15 +21,24 @@
 
         <service
             android:name="org.jraf.android.bikey.wearable.app.notif.NotificationService"
-            android:enabled="true"
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
             </intent-filter>
         </service>
+
+        <receiver
+            android:name="org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver.ACTION_PAUSE" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver.ACTION_RESUME" />
+            </intent-filter>
+        </receiver>
     </application>
 
-    <uses-permission android:name="android.permission.VIBRATE" />
 
 </manifest>

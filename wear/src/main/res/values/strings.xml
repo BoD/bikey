@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name" translatable="false">Bikey</string>
 
-    <string name="notification_title_paused">Parcours en pause</string>
+    <string name="notification_title_ongoing">Ongoing ride</string>
+    <string name="notification_title_paused">Ride paused</string>
+
 
 </resources>

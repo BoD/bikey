@@ -28,11 +28,12 @@ import java.util.Date;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
-import android.view.Gravity;
 
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -47,6 +48,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.common.wear.CommConstants;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
+import org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.log.wrapper.Log;
 
@@ -167,13 +169,29 @@ public class NotificationService extends WearableListenerService {
         CharSequence heartRateStr = UnitUtil.formatHeartRate(mHeartRate, true);
 
         if (ongoing) {
-            CharSequence text = TextUtils.concat(distanceStr, "\n", speedStr, "\n", durationStr);
+            // Title
+            mainNotifBuilder.setContentTitle(getString(R.string.notification_title_ongoing));
+
+            // Text
+            CharSequence text = TextUtils.concat(distanceStr, "\n", durationStr, " - ", speedStr);
             mainNotifBuilder.setContentText(text);
+
+            // Action
+            Intent pauseRideIntent = new Intent(RideBroadcastReceiver.ACTION_PAUSE);
+            PendingIntent pauseRidePendingIntent = PendingIntent.getBroadcast(this, 0, pauseRideIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_pause, "Pause", pauseRidePendingIntent).build());
         } else {
+            // Title
             mainNotifBuilder.setContentTitle(getString(R.string.notification_title_paused));
 
+            // Text
             CharSequence text = TextUtils.concat(distanceStr, "\n", durationStr);
             mainNotifBuilder.setContentText(text);
+
+            // Action
+            Intent pauseRideIntent = new Intent(RideBroadcastReceiver.ACTION_RESUME);
+            PendingIntent pauseRidePendingIntent = PendingIntent.getBroadcast(this, 0, pauseRideIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_play, "Resume", pauseRidePendingIntent).build());
         }
 
 //        mainNotifBuilder.setContent(new RemoteViews(getPackageName(), R.layout.test));
@@ -194,12 +212,16 @@ public class NotificationService extends WearableListenerService {
         // Wear specifics
         Notification.WearableExtender wearableExtender = new Notification.WearableExtender();
 //        wearableExtender.setHintHideIcon(true);
-        if (ongoing) {
-            wearableExtender.setContentIcon(R.drawable.ic_action_pause);
-        } else {
-            wearableExtender.setContentIcon(R.drawable.ic_action_play);
-        }
-        wearableExtender.setContentIconGravity(Gravity.START);
+
+//        if (ongoing) {
+//            wearableExtender.setContentIcon(R.drawable.ic_action_pause);
+//        } else {
+//            wearableExtender.setContentIcon(R.drawable.ic_action_play);
+//        }
+//        wearableExtender.setContentIconGravity(Gravity.START);
+
+        wearableExtender.setContentAction(0);
+
 //        wearableExtender.setCustomSizePreset(Notification.WearableExtender.SIZE_LARGE);
 
         // Speed page

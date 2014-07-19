@@ -28,9 +28,7 @@ import java.util.Date;
 
 import android.app.Notification;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
@@ -84,7 +82,7 @@ public class NotificationService extends WearableListenerService {
         }
 
         boolean updateOngoingNotification = false;
-        boolean cancelNotification = false;
+        boolean showPausedRideNotification = false;
         for (DataEvent dataEvent : dataEvents) {
             DataItem dataItem = dataEvent.getDataItem();
             Uri uri = dataItem.getUri();
@@ -104,11 +102,13 @@ public class NotificationService extends WearableListenerService {
                 case CommConstants.PATH_RIDE_ONGOING:
                     boolean ongoing = dataMap.getBoolean(CommConstants.EXTRA_VALUE);
                     if (!ongoing) {
-                        cancelNotification = true;
+                        // The ride is no longer ongoing: show a paused notification
+                        showPausedRideNotification = true;
                     }
                     break;
 
                 case CommConstants.PATH_RIDE_VALUES:
+                    // Values update
                     mRideDistance = dataMap.getFloat(CommConstants.EXTRA_DISTANCE);
                     mRideSpeed = dataMap.getFloat(CommConstants.EXTRA_SPEED);
                     mRideStartDateOffset = dataMap.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
@@ -118,8 +118,8 @@ public class NotificationService extends WearableListenerService {
             }
         }
 
-        if (cancelNotification) {
-            cancelNotification();
+        if (showPausedRideNotification) {
+            showPausedRideNotification();
         } else if (updateOngoingNotification) {
             updateOngoingNotificationIfNecessary();
         }
@@ -136,7 +136,14 @@ public class NotificationService extends WearableListenerService {
     private void showOngoingNotification() {
         Log.d();
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = createOngoingNotification();
+        Notification notification = createNotification(true);
+        notificationManager.notify(NOTIFICATION_ID, notification);
+    }
+
+    private void showPausedRideNotification() {
+        Log.d();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = createNotification(false);
         notificationManager.notify(NOTIFICATION_ID, notification);
     }
 
@@ -146,13 +153,12 @@ public class NotificationService extends WearableListenerService {
         notificationManager.cancel(NOTIFICATION_ID);
     }
 
-    private Notification createOngoingNotification() {
+    private Notification createNotification(boolean ongoing) {
         Notification.Builder mainNotifBuilder = new Notification.Builder(this);
-        mainNotifBuilder.setOngoing(true);
+        mainNotifBuilder.setOngoing(ongoing);
         mainNotifBuilder.setSmallIcon(R.drawable.ic_launcher);
 //        mainNotifBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
 
-        Log.d("mRideStartDateOffset=" + mRideStartDateOffset);
         long duration = System.currentTimeMillis() + mRideStartDateOffset;
 
         CharSequence durationStr = DateTimeUtil.formatDurationShort(this, duration);
@@ -160,9 +166,15 @@ public class NotificationService extends WearableListenerService {
         CharSequence distanceStr = UnitUtil.formatDistance(mRideDistance, true, .85f, true);
         CharSequence heartRateStr = UnitUtil.formatHeartRate(mHeartRate, true);
 
-        CharSequence text = TextUtils.concat(durationStr, "\n", distanceStr, "\n", speedStr);
-        mainNotifBuilder.setContentText(text);
-//        mainNotifBuilder.setContentTitle(text);
+        if (ongoing) {
+            CharSequence text = TextUtils.concat(distanceStr, "\n", speedStr, "\n", durationStr);
+            mainNotifBuilder.setContentText(text);
+        } else {
+            mainNotifBuilder.setContentTitle(getString(R.string.notification_title_paused));
+
+            CharSequence text = TextUtils.concat(distanceStr, "\n", durationStr);
+            mainNotifBuilder.setContentText(text);
+        }
 
 //        mainNotifBuilder.setContent(new RemoteViews(getPackageName(), R.layout.test));
 
@@ -171,9 +183,6 @@ public class NotificationService extends WearableListenerService {
         //        Intent intent = new Intent(this, DisplayActivity.class).setData(mCollectingRideUri);
         //        builder.setContentIntent(PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT));
 
-
-        Intent intent = new Intent();
-        mainNotifBuilder.setContentIntent(PendingIntent.getActivity(this, 0, intent, 0));
 
         //TODO
 //        mainNotifBuilder.addAction(R.drawable.ic_launcher, getString(R.string.app_name), PendingIntent.getBroadcast(this, 0, new Intent("test"),
@@ -185,7 +194,11 @@ public class NotificationService extends WearableListenerService {
         // Wear specifics
         Notification.WearableExtender wearableExtender = new Notification.WearableExtender();
 //        wearableExtender.setHintHideIcon(true);
-        wearableExtender.setContentIcon(R.drawable.ic_action_pause);
+        if (ongoing) {
+            wearableExtender.setContentIcon(R.drawable.ic_action_pause);
+        } else {
+            wearableExtender.setContentIcon(R.drawable.ic_action_play);
+        }
         wearableExtender.setContentIconGravity(Gravity.START);
 //        wearableExtender.setCustomSizePreset(Notification.WearableExtender.SIZE_LARGE);
 

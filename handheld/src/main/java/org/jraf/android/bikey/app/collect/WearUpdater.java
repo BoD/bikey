@@ -41,7 +41,7 @@ import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.util.log.wrapper.Log;
 
 public class WearUpdater {
-    private static final long SEND_VALUES_RATE_S = 2;
+    private static final long SEND_VALUES_RATE_S = 3;
     private WearCommHelper mWearCommHelper = WearCommHelper.get();
     private Uri mActiveRideUri;
     private long mInitialDuration;

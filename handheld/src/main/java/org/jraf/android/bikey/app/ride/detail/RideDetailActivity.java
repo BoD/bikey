@@ -40,9 +40,12 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-import butterknife.OnClick;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
@@ -66,12 +69,9 @@ import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.ui.graph.GraphView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolylineOptions;
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+import butterknife.OnClick;
 
 public class RideDetailActivity extends FragmentActivity implements AlertDialogListener {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
@@ -290,10 +290,10 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
                 }
                 if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration.longValue()));
                 a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
-                a.mTxtDistanceTotal.setText(UnitUtil.formatDistance(mDistance, true, .85f));
+                a.mTxtDistanceTotal.setText(UnitUtil.formatDistance(mDistance, true, .85f, false));
 
-                a.mTxtSpeedAverage.setText(UnitUtil.formatSpeed(mAverageMovingSpeed, true, .85f));
-                a.mTxtSpeedMax.setText(UnitUtil.formatSpeed(mMaxSpeed, true, .85f));
+                a.mTxtSpeedAverage.setText(UnitUtil.formatSpeed(mAverageMovingSpeed, true, .85f, false));
+                a.mTxtSpeedMax.setText(UnitUtil.formatSpeed(mMaxSpeed, true, .85f, false));
 
                 // Cadence
                 if (mAverageCadence == null) {

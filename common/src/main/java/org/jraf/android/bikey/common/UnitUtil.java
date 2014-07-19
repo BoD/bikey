@@ -28,9 +28,11 @@ import java.text.DecimalFormat;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 
 import org.jraf.android.util.annotation.Background;
 
@@ -72,7 +74,7 @@ public class UnitUtil {
      * Speed.
      */
 
-    public static CharSequence formatSpeed(float metersPerSecond, boolean withUnit, float fractionRelativeSize) {
+    public static CharSequence formatSpeed(float metersPerSecond, boolean withUnit, float fractionRelativeSize, boolean bold) {
         String unit = "";
         float converted;
         if (Constants.PREF_UNITS_METRIC.equals(sUnits)) {
@@ -83,31 +85,37 @@ public class UnitUtil {
             converted = metersPerSecond * M_S_TO_MPH;
         }
 
-        if (metersPerSecond == 0f) return "0" + unit;
-
-        if (converted >= 20) {
+        String speedStr;
+        boolean hasFract = false;
+        if (metersPerSecond == 0f) {
+            speedStr = "0" + unit;
+        } else if (converted >= 20) {
             // Round to remove fraction
-            return String.valueOf(Math.round(converted)) + unit;
-        }
-
-        if (converted >= 5) {
-            // Round to closest .5
-            int truncated = (int) converted;
-            float fraction = converted - truncated;
-            if (fraction < .5) {
-                converted = truncated;
-            } else {
-                converted = truncated + .5f;
+            speedStr = String.valueOf(Math.round(converted)) + unit;
+        } else {
+            if (converted >= 5) {
+                // Round to closest .5
+                int truncated = (int) converted;
+                float fraction = converted - truncated;
+                if (fraction < .5) {
+                    converted = truncated;
+                } else {
+                    converted = truncated + .5f;
+                }
             }
+            hasFract = true;
+            speedStr = FORMAT_SPEED.format(converted) + unit;
         }
-        String speedStr = FORMAT_SPEED.format(converted) + unit;
         SpannableString builder = new SpannableString(speedStr);
-        builder.setSpan(new RelativeSizeSpan(fractionRelativeSize), speedStr.indexOf(sDecimalSeparator), speedStr.length() - unit.length(), 0);
+        if (hasFract) builder.setSpan(new RelativeSizeSpan(fractionRelativeSize), speedStr.indexOf(sDecimalSeparator), speedStr.length() - unit.length(), 0);
+        if (bold) {
+            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length() - unit.length(), 0);
+        }
         return builder;
     }
 
     public static CharSequence formatSpeed(float metersPerSecond, boolean withUnit) {
-        return formatSpeed(metersPerSecond, withUnit, .4f);
+        return formatSpeed(metersPerSecond, withUnit, .4f, false);
     }
 
     public static CharSequence formatSpeed(float metersPerSecond) {
@@ -119,7 +127,7 @@ public class UnitUtil {
      * Distance.
      */
 
-    public static CharSequence formatDistance(float meters, boolean withUnit, float fractionRelativeSize) {
+    public static CharSequence formatDistance(float meters, boolean withUnit, float fractionRelativeSize, boolean bold) {
         String unit = "";
         float converted;
         if (Constants.PREF_UNITS_METRIC.equals(sUnits)) {
@@ -130,16 +138,26 @@ public class UnitUtil {
             converted = meters * M_TO_MI;
         }
 
-        if (meters == 0f) return "0" + unit;
-
-        String distStr = FORMAT_DISTANCE.format(converted) + unit;
+        String distStr;
+        boolean hasFract = false;
+        if (meters == 0f) {
+            distStr = "0" + unit;
+        } else {
+            distStr = FORMAT_DISTANCE.format(converted) + unit;
+            hasFract = true;
+        }
         SpannableString builder = new SpannableString(distStr);
-        builder.setSpan(new RelativeSizeSpan(fractionRelativeSize), distStr.indexOf(sDecimalSeparator), distStr.length() - unit.length(), 0);
+        if (hasFract) {
+            builder.setSpan(new RelativeSizeSpan(fractionRelativeSize), distStr.indexOf(sDecimalSeparator), distStr.length() - unit.length(), 0);
+        }
+        if (bold) {
+            builder.setSpan(new StyleSpan(Typeface.BOLD), 0, builder.length() - unit.length(), 0);
+        }
         return builder;
     }
 
     public static CharSequence formatDistance(float meters, boolean withUnit) {
-        return formatDistance(meters, withUnit, .4f);
+        return formatDistance(meters, withUnit, .4f, false);
     }
 
     public static CharSequence formatDistance(float meters) {

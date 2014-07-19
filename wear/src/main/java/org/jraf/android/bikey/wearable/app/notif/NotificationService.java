@@ -155,14 +155,14 @@ public class NotificationService extends WearableListenerService {
         Log.d("mRideStartDateOffset=" + mRideStartDateOffset);
         long duration = System.currentTimeMillis() + mRideStartDateOffset;
 
-        CharSequence durationStr = DateTimeUtil.formatDuration(this, duration);
-        CharSequence speedStr = UnitUtil.formatSpeed(mRideSpeed, true, .85f);
-        CharSequence distanceStr = UnitUtil.formatDistance(mRideDistance, true, .85f);
+        CharSequence durationStr = DateTimeUtil.formatDurationShort(this, duration);
+        CharSequence speedStr = UnitUtil.formatSpeed(mRideSpeed, true, .85f, true);
+        CharSequence distanceStr = UnitUtil.formatDistance(mRideDistance, true, .85f, true);
         CharSequence heartRateStr = UnitUtil.formatHeartRate(mHeartRate, true);
 
-//        mainNotifBuilder.setContentTitle(durationStr+"\n"+speedStr+"\n"+distanceStr+"\n"+heartRateStr);
         CharSequence text = TextUtils.concat(durationStr, "\n", distanceStr, "\n", speedStr);
         mainNotifBuilder.setContentText(text);
+//        mainNotifBuilder.setContentTitle(text);
 
 //        mainNotifBuilder.setContent(new RemoteViews(getPackageName(), R.layout.test));
 

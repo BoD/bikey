@@ -24,21 +24,28 @@
  */
 package org.jraf.android.bikey.common.wear;
 
+import java.util.HashSet;
+
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataItemBuffer;
 import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
 
 import org.jraf.android.bikey.common.UnitUtil;
+import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.log.wrapper.Log;
 
 /**
@@ -87,28 +94,29 @@ public class WearCommHelper {
         mGoogleApiClient = null;
     }
 
-    /*
-    private Collection<String> getConnectedNodes() {
+    public void sendMessage(final String path, @Nullable final byte[] payload) {
+        Log.d("path=" + path);
         HashSet<String> results = new HashSet<String>();
-        NodeApi.GetConnectedNodesResult nodes = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).await();
-        for (Node node : nodes.getNodes()) {
-            results.add(node.getId());
-        }
-        return results;
+        PendingResult<NodeApi.GetConnectedNodesResult> nodesPendingResult = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient);
+        nodesPendingResult.setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
+            @Override
+            public void onResult(NodeApi.GetConnectedNodesResult result) {
+                for (Node node : result.getNodes()) {
+                    Wearable.MessageApi.sendMessage(mGoogleApiClient, node.getId(), path, payload);
+                }
+            }
+        });
     }
 
-    public void sendMessage(String path) {
-        Log.d("path=" + path);
-        Collection<String> nodes = getConnectedNodes();
-        for (String node : nodes) {
-            Log.d("node=" + node);
-            MessageApi.SendMessageResult result = Wearable.MessageApi.sendMessage(mGoogleApiClient, node, path, null).await();
-            if (!result.getStatus().isSuccess()) {
-                Log.w("Could not send message: " + result.getStatus());
-            }
-        }
+    @Background(Background.Type.NETWORK)
+    public void sendMessageRideResume() {
+        sendMessage(CommConstants.PATH_RIDE_CONTROL, CommConstants.PAYLOAD_RESUME);
     }
-    */
+
+    @Background(Background.Type.NETWORK)
+    public void sendMessageRidePause() {
+        sendMessage(CommConstants.PATH_RIDE_CONTROL, CommConstants.PAYLOAD_PAUSE);
+    }
 
 
     public void updateRideOngoing(boolean ongoing) {

@@ -41,6 +41,21 @@ public class CommConstants {
      */
     public static final String PATH_RIDE_VALUES = PATH_RIDE + "/values";
 
+    /**
+     * Control (message path).
+     */
+    public static final String PATH_RIDE_CONTROL = PATH_RIDE + "/control";
+
+    /**
+     * Resume.
+     */
+    public static final byte[] PAYLOAD_RESUME = {0};
+
+    /**
+     * Pause.
+     */
+    public static final byte[] PAYLOAD_PAUSE = {1};
+
 
     /**
      * Start date offset ({@code long}). To get the current duration of the ride, add {@code System.currentTimeMillis()} to this value.

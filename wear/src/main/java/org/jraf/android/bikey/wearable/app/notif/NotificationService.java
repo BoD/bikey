@@ -176,7 +176,7 @@ public class NotificationService extends WearableListenerService {
             CharSequence text = TextUtils.concat(distanceStr, "\n", durationStr, " - ", speedStr);
             mainNotifBuilder.setContentText(text);
 
-            // Action
+            // Action: pause
             Intent pauseRideIntent = new Intent(RideBroadcastReceiver.ACTION_PAUSE);
             PendingIntent pauseRidePendingIntent = PendingIntent.getBroadcast(this, 0, pauseRideIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_pause, "Pause", pauseRidePendingIntent).build());
@@ -188,7 +188,7 @@ public class NotificationService extends WearableListenerService {
             CharSequence text = TextUtils.concat(distanceStr, "\n", durationStr);
             mainNotifBuilder.setContentText(text);
 
-            // Action
+            // Action: resume
             Intent pauseRideIntent = new Intent(RideBroadcastReceiver.ACTION_RESUME);
             PendingIntent pauseRidePendingIntent = PendingIntent.getBroadcast(this, 0, pauseRideIntent, PendingIntent.FLAG_UPDATE_CURRENT);
             mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_play, "Resume", pauseRidePendingIntent).build());

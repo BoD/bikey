@@ -33,7 +33,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 
 import org.jraf.android.bikey.backend.location.Speedometer;
-import org.jraf.android.bikey.backend.log.LogListener;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -55,9 +54,6 @@ public class WearUpdater {
         // Ride updates
         RideManager.get().addListener(mRideListener);
 
-        // Log updates
-        LogManager.get().addListener(mLogListener);
-
         // Speed updates
         mSpeedometer.startListening();
 
@@ -66,22 +62,13 @@ public class WearUpdater {
 
         // Inform wearables that there is an ongoing ride
         mWearCommHelper.updateRideOngoing(true);
-
-        // Start the scheduled task
-        if (mScheduledExecutorService == null) {
-            mScheduledExecutorService = Executors.newScheduledThreadPool(1);
-        }
-        mScheduledExecutorService.scheduleAtFixedRate(mSendValueRunnable, SEND_VALUES_RATE_S, SEND_VALUES_RATE_S, TimeUnit.SECONDS);
-    }
+          }
 
     public void stopUpdates() {
         Log.d();
 
         // Ride updates
         RideManager.get().removeListener(mRideListener);
-
-        // Log updates
-        LogManager.get().removeListener(mLogListener);
 
         // Speed updates
         mSpeedometer.stopListening();
@@ -99,6 +86,7 @@ public class WearUpdater {
     private Runnable mSendValueRunnable = new Runnable() {
         @Override
         public void run() {
+            Log.d();
             if (mActiveRideUri == null) return;
             float totalDistance = LogManager.get().getTotalDistance(mActiveRideUri);
             long startDateOffset = mInitialDuration - mActivatedDate;
@@ -111,12 +99,20 @@ public class WearUpdater {
     private RideListener mRideListener = new RideListener() {
         @Override
         public void onActivated(final Uri rideUri) {
+            Log.d();
             mActiveRideUri = rideUri;
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... params) {
                     mInitialDuration = RideManager.get().getDuration(rideUri);
                     mActivatedDate = RideManager.get().getActivatedDate(rideUri).getTime();
+
+                    // Start the scheduled task now
+                    if (mScheduledExecutorService == null) {
+                        mScheduledExecutorService = Executors.newScheduledThreadPool(1);
+                    }
+                    mScheduledExecutorService.scheduleAtFixedRate(mSendValueRunnable, 0, SEND_VALUES_RATE_S, TimeUnit.SECONDS);
+
                     return null;
                 }
             }.execute();
@@ -125,12 +121,6 @@ public class WearUpdater {
         @Override
         public void onPaused(Uri rideUri) {
             mActiveRideUri = null;
-        }
-    };
-
-    private LogListener mLogListener = new LogListener() {
-        @Override
-        public void onLogAdded(Uri rideUri) {
         }
     };
 }

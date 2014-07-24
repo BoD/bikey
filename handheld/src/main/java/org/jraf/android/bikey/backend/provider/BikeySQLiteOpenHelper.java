@@ -43,6 +43,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_FILE_NAME = "bikey_provider.db";
     private static final int DATABASE_VERSION = 5;
+    private static BikeySQLiteOpenHelper sInstance;
     private final Context mContext;
     private final BikeySQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
@@ -77,7 +78,17 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
 
     // @formatter:on
 
-    public static BikeySQLiteOpenHelper newInstance(Context context) {
+    public static BikeySQLiteOpenHelper getInstance(Context context) {
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // See this article for more information: http://bit.ly/6LRzfx
+        if (sInstance == null) {
+            sInstance = newInstance(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
+    private static BikeySQLiteOpenHelper newInstance(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
             return newInstancePreHoneycomb(context);
         }

@@ -97,7 +97,7 @@ public class BikeyProvider extends ContentProvider {
             }
         }
 
-        mBikeySQLiteOpenHelper = BikeySQLiteOpenHelper.newInstance(getContext());
+        mBikeySQLiteOpenHelper = BikeySQLiteOpenHelper.getInstance(getContext());
         return true;
     }
 

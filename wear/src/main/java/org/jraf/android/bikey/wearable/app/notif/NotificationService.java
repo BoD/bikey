@@ -32,6 +32,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
@@ -106,6 +107,13 @@ public class NotificationService extends WearableListenerService {
                     if (!ongoing) {
                         // The ride is no longer ongoing: show a paused notification
                         showPausedRideNotification = true;
+
+                        // Retrieve the latest values now for the notification
+                        Bundle rideValues = WearCommHelper.get().retrieveRideValues();
+                        mRideDistance = rideValues.getFloat(CommConstants.EXTRA_DISTANCE);
+                        mRideSpeed = rideValues.getFloat(CommConstants.EXTRA_SPEED);
+                        mRideStartDateOffset = rideValues.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
+                        mHeartRate = rideValues.getInt(CommConstants.EXTRA_HEART_RATE);
                     }
                     break;
 

@@ -119,6 +119,10 @@ public class WearCommHelper {
     }
 
 
+    /*
+     * Ride values.
+     */
+
     public void updateRideOngoing(boolean ongoing) {
         Log.d();
         updateValueNow(CommConstants.PATH_RIDE_ONGOING, ongoing);
@@ -136,6 +140,24 @@ public class WearCommHelper {
 
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
         Wearable.DataApi.putDataItem(mGoogleApiClient, request);
+    }
+
+    public Bundle retrieveRideValues() {
+        Log.d();
+        Uri uri = new Uri.Builder().scheme("wear").path(CommConstants.PATH_RIDE_VALUES).build();
+        PendingResult<DataItemBuffer> pendingResult = Wearable.DataApi.getDataItems(mGoogleApiClient, uri);
+        DataItemBuffer dataItemBuffer = pendingResult.await();
+        if (dataItemBuffer.getCount() == 0) {
+            Log.d("No result");
+            dataItemBuffer.release();
+            return null;
+        }
+        DataItem dataItem = dataItemBuffer.get(0);
+        DataMap dataMap = DataMap.fromByteArray(dataItem.getData());
+        Bundle res = dataMap.toBundle();
+        Log.d("res=" + res);
+        dataItemBuffer.release();
+        return res;
     }
 
 

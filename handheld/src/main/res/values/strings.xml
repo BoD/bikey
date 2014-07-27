@@ -56,13 +56,6 @@
     <string name="display_tab_heartRate">Heart rate</string>
     <string name="display_tab_compass">Comp.</string>
     <string name="display_tab_currentTime">Cur. time</string>
-    <string name="display_title_speed">Speed</string>
-    <string name="display_title_duration">Duration</string>
-    <string name="display_title_distance">Distance</string>
-    <string name="display_title_averageMovingSpeed">Average moving speed</string>
-    <string name="display_title_heartRate">Heart rate</string>
-    <string name="display_title_compass" />
-    <string name="display_title_currentTime">Current time</string>
     <string name="display_chkRecord_created">Start</string>
     <string name="display_chkRecord_active">Recording</string>
     <string name="display_chkRecord_paused">Resume</string>

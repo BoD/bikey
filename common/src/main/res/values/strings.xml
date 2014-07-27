@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Bikey Common</string>
+
+    <!-- Display -->
+    <string name="display_title_speed">Speed</string>
+    <string name="display_title_duration">Duration</string>
+    <string name="display_title_distance">Distance</string>
+    <string name="display_title_averageMovingSpeed">Average moving speed</string>
+    <string name="display_title_heartRate">Heart rate</string>
+    <string name="display_title_compass" />
+    <string name="display_title_currentTime">Current time</string>
+
 </resources>

@@ -43,6 +43,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.common.wear.CommConstants;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.bikey.common.widget.fragmentcycler.FragmentCycler;
+import org.jraf.android.bikey.wearable.app.display.fragment.currenttime.CurrentTimeDisplayFragment;
 import org.jraf.android.bikey.wearable.app.display.fragment.elapsedtime.ElapsedTimeDisplayFragment;
 import org.jraf.android.bikey.wearable.app.display.fragment.speed.SpeedDisplayFragment;
 import org.jraf.android.bikey.wearable.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
@@ -60,6 +61,7 @@ public class DisplayActivity extends FragmentActivity {
     private SpeedDisplayFragment mSpeedDisplayFragment;
     private ElapsedTimeDisplayFragment mElapsedTimeDisplayFragment;
     private TotalDistanceDisplayFragment mTotalDistanceDisplayFragment;
+    private CurrentTimeDisplayFragment mCurrentTimeDisplayFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,23 +86,24 @@ public class DisplayActivity extends FragmentActivity {
 
     private void setupFragments() {
         mSpeedDisplayFragment = SpeedDisplayFragment.newInstance();
-//        mElapsedTimeDisplayFragment = ElapsedTimeDisplayFragment.newInstance();
+        mElapsedTimeDisplayFragment = ElapsedTimeDisplayFragment.newInstance();
         mTotalDistanceDisplayFragment = TotalDistanceDisplayFragment.newInstance();
-
+        mCurrentTimeDisplayFragment = CurrentTimeDisplayFragment.newInstance();
 
         long updateTitleDelay = 0;
         int tabColorEnabled = 0;
         int tabColorDisabled = 0;
         mFragmentCycler = new FragmentCycler(R.id.conFragments, mTxtTitle, updateTitleDelay, tabColorEnabled, tabColorDisabled);
         mFragmentCycler.add(this, mSpeedDisplayFragment, 0, R.string.display_title_speed);
-//        mFragmentCycler.add(this, mElapsedTimeDisplayFragment, 0, R.string.display_title_duration);
+        mFragmentCycler.add(this, mElapsedTimeDisplayFragment, 0, R.string.display_title_duration);
         mFragmentCycler.add(this, mTotalDistanceDisplayFragment, 0, R.string.display_title_distance);
+        mFragmentCycler.add(this, mCurrentTimeDisplayFragment, 0, R.string.display_title_currentTime);
 
         mFragmentCycler.show(this);
     }
 
     @OnTouch(R.id.vieFragmentCycle)
-    protected boolean fragmentCycleOnTouch(View v, MotionEvent event){
+    protected boolean fragmentCycleOnTouch(View v, MotionEvent event) {
         if (event.getAction() == MotionEvent.ACTION_DOWN) {
             mFragmentCycler.cycle(this);
         }
@@ -124,20 +127,25 @@ public class DisplayActivity extends FragmentActivity {
                 switch (path) {
                     case CommConstants.PATH_RIDE_ONGOING:
                         boolean ongoing = dataMap.getBoolean(CommConstants.EXTRA_VALUE);
-                        // TODO
+                        if (!ongoing) {
+                            // Ride is paused: exit the full screen activity
+                            finish();
+                            return;
+                        }
                         break;
 
                     case CommConstants.PATH_RIDE_VALUES:
                         // Values update
                         final float rideDistance = dataMap.getFloat(CommConstants.EXTRA_DISTANCE);
                         final float rideSpeed = dataMap.getFloat(CommConstants.EXTRA_SPEED);
-                        long rideStartDateOffset = dataMap.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
+                        final long rideStartDateOffset = dataMap.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
                         int heartRate = dataMap.getInt(CommConstants.EXTRA_HEART_RATE);
 
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 mSpeedDisplayFragment.setSpeed(rideSpeed);
+                                mElapsedTimeDisplayFragment.setStartDateOffset(rideStartDateOffset);
                                 mTotalDistanceDisplayFragment.setTotalDistance(rideDistance);
                             }
                         });

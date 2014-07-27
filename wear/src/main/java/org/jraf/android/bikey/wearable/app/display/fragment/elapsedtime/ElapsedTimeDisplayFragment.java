@@ -24,11 +24,39 @@
  */
 package org.jraf.android.bikey.wearable.app.display.fragment.elapsedtime;
 
+import android.os.Bundle;
+import android.os.SystemClock;
+import android.view.View;
+import android.widget.Chronometer;
+
+import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.wearable.app.display.fragment.SimpleDisplayFragment;
 
 public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
+    private Chronometer mChronometer;
+    private long mRideStartDateOffset;
+
     public static ElapsedTimeDisplayFragment newInstance() {
         return new ElapsedTimeDisplayFragment();
     }
 
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.display_elapsed_time;
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mChronometer = (Chronometer) view.findViewById(R.id.chronometer);
+    }
+
+    public void setStartDateOffset(long rideStartDateOffset) {
+        if (mRideStartDateOffset != rideStartDateOffset) {
+            mRideStartDateOffset = rideStartDateOffset;
+
+            mChronometer.setBase(SystemClock.elapsedRealtime() - (System.currentTimeMillis() + mRideStartDateOffset));
+            mChronometer.start();
+        }
+    }
 }

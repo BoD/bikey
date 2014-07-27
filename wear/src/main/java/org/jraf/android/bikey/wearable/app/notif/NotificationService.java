@@ -24,8 +24,6 @@
  */
 package org.jraf.android.bikey.wearable.app.notif;
 
-import java.util.Date;
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -33,7 +31,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
 
 import com.google.android.gms.wearable.DataEvent;
@@ -238,10 +235,10 @@ public class NotificationService extends WearableListenerService {
 
 //        wearableExtender.setCustomSizePreset(Notification.WearableExtender.SIZE_LARGE);
 
-        // Speed page
-        NotificationCompat.Builder speedPageNotifBuilder = new NotificationCompat.Builder(this);
-        speedPageNotifBuilder.setContentText(new Date().toString());
-        wearableExtender.addPage(speedPageNotifBuilder.build());
+//        // Speed page
+//        NotificationCompat.Builder speedPageNotifBuilder = new NotificationCompat.Builder(this);
+//        speedPageNotifBuilder.setContentText(new Date().toString());
+//        wearableExtender.addPage(speedPageNotifBuilder.build());
 
         Notification.Builder wearableNotifBuilder = wearableExtender.extend(mainNotifBuilder);
         Notification res = wearableNotifBuilder.build();

@@ -5,9 +5,6 @@
     <string name="notification_title_ongoing">Ongoing ride</string>
     <string name="notification_title_paused">Ride paused</string>
 
-    <string name="display_title_speed">Speed</string>
-    <string name="display_title_duration">Duration</string>
-    <string name="display_title_distance">Distance</string>
 
 
 </resources>

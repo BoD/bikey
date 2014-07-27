@@ -54,13 +54,6 @@
     <string name="display_tab_heartRate">Cardio.</string>
     <string name="display_tab_compass">Bouss.</string>
     <string name="display_tab_currentTime">Heure</string>
-    <string name="display_title_speed">Vitesse</string>
-    <string name="display_title_duration">Durée</string>
-    <string name="display_title_distance">Distance</string>
-    <string name="display_title_averageMovingSpeed">Vitesse moyenne</string>
-    <string name="display_title_heartRate">Cardiofréquencemètre</string>
-    <string name="display_title_compass" />
-    <string name="display_title_currentTime">Heure actuelle</string>
     <string name="display_chkRecord_created">Démarrer</string>
     <string name="display_chkRecord_active">Enregistrement</string>
     <string name="display_chkRecord_paused">Reprendre</string>

@@ -49,6 +49,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.common.wear.CommConstants;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
+import org.jraf.android.bikey.wearable.app.display.DisplayActivity;
 import org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.log.wrapper.Log;
@@ -187,7 +188,12 @@ public class NotificationService extends WearableListenerService {
             // Action: pause
             Intent pauseRideIntent = new Intent(RideBroadcastReceiver.ACTION_PAUSE);
             PendingIntent pauseRidePendingIntent = PendingIntent.getBroadcast(this, 0, pauseRideIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_pause, "Pause", pauseRidePendingIntent).build());
+            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_pause, "Pause", pauseRidePendingIntent).build()); // TODO translate string
+
+            // Action: full screen
+            Intent fullScreenIntent = new Intent(this, DisplayActivity.class);
+            PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0, fullScreenIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_full_screen, "Full screen", fullScreenPendingIntent).build()); // TODO translate string
         } else {
             // Title
             mainNotifBuilder.setContentTitle(getString(R.string.notification_title_paused));
@@ -199,7 +205,7 @@ public class NotificationService extends WearableListenerService {
             // Action: resume
             Intent pauseRideIntent = new Intent(RideBroadcastReceiver.ACTION_RESUME);
             PendingIntent pauseRidePendingIntent = PendingIntent.getBroadcast(this, 0, pauseRideIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_play, "Resume", pauseRidePendingIntent).build());
+            mainNotifBuilder.addAction(new Notification.Action.Builder(R.drawable.ic_action_play, "Resume", pauseRidePendingIntent).build()); // TODO translate string
         }
 
 //        mainNotifBuilder.setContent(new RemoteViews(getPackageName(), R.layout.test));

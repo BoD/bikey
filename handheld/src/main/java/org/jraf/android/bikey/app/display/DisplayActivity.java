@@ -62,6 +62,7 @@ import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.common.widget.fragmentcycler.FragmentCycler;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
@@ -194,7 +195,10 @@ public class DisplayActivity extends BaseFragmentActivity {
     }
 
     private void setupFragments(int currentVisibleIndex) {
-        mFragmentCycler = new FragmentCycler(R.id.conFragments, mTxtTitle);
+        long updateTitleDelay = getResources().getInteger(R.integer.animation_controls_showHide);
+        int tabColorEnabled = getResources().getColor(R.color.bright_foreground_dark);
+        int tabColorDisabled = getResources().getColor(R.color.bright_foreground_disabled_dark);
+        mFragmentCycler = new FragmentCycler(R.id.conFragments, mTxtTitle, updateTitleDelay, tabColorEnabled, tabColorDisabled);
         mFragmentCycler.setCurrentVisibleIndex(currentVisibleIndex);
         mFragmentCycler.add(this, SpeedDisplayFragment.newInstance(), R.id.chkTabSpeed, R.string.display_title_speed);
         mFragmentCycler.add(this, ElapsedTimeDisplayFragment.newInstance(), R.id.chkTabDuration, R.string.display_title_duration);

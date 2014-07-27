@@ -22,7 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.app.display;
+package org.jraf.android.bikey.common.widget.fragmentcycler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -39,7 +39,6 @@ import android.view.View.OnClickListener;
 import android.widget.Checkable;
 import android.widget.TextView;
 
-import org.jraf.android.bikey.R;
 import org.jraf.android.util.handler.HandlerUtil;
 
 
@@ -51,12 +50,21 @@ public class FragmentCycler {
     private int mCurrentVisibleIndex = 0;
     private TextView mTxtTitle;
     private Map<String, Boolean> mEnabled = new HashMap<>();
+    private long mUpdateTitleDelay;
+    private final int mTabColorEnabled;
+    private final int mTabColorDisabled;
 
-    public FragmentCycler(int containerResId, TextView txtTitle) {
+    public FragmentCycler(int containerResId, TextView txtTitle, long updateTitleDelay, int tabColorEnabled, int tabColorDisabled) {
         mContainerResId = containerResId;
         mTxtTitle = txtTitle;
+        mUpdateTitleDelay = updateTitleDelay;
+        mTabColorEnabled = tabColorEnabled;
+        mTabColorDisabled = tabColorDisabled;
     }
 
+    /**
+     * @param tabResId Optional, use 0 for no tab.
+     */
     public void add(FragmentActivity activity, Fragment fragment, int tabResId, int titleResId) {
         String tag = getTag(fragment);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -73,8 +81,10 @@ public class FragmentCycler {
         }
         mFragmentTags.add(tag);
         View tab = activity.findViewById(tabResId);
-        mTabs.add((Checkable) tab);
-        tab.setOnClickListener(mTabOnClickListener);
+        if (tab != null) {
+            mTabs.add((Checkable) tab);
+            tab.setOnClickListener(mTabOnClickListener);
+        }
         mTitles.add(titleResId);
     }
 
@@ -86,7 +96,10 @@ public class FragmentCycler {
         FragmentTransaction t = fragmentManager.beginTransaction();
         t.show(fragment);
         t.commit();
-        mTabs.get(mCurrentVisibleIndex).setChecked(true);
+        if (!mTabs.isEmpty()) {
+            Checkable checkable = mTabs.get(mCurrentVisibleIndex);
+            checkable.setChecked(true);
+        }
         updateTitle();
     }
 
@@ -111,19 +124,22 @@ public class FragmentCycler {
         t.hide(hideFragment);
         t.show(showFragment);
         t.commit();
-        mTabs.get(previousVisibleIndex).setChecked(false);
-        mTabs.get(mCurrentVisibleIndex).setChecked(true);
+        if (!mTabs.isEmpty()) {
+            Checkable prevCheckable = mTabs.get(previousVisibleIndex);
+            prevCheckable.setChecked(false);
+            Checkable curCheckable = mTabs.get(mCurrentVisibleIndex);
+            curCheckable.setChecked(true);
+        }
         updateTitle();
     }
 
     private void updateTitle() {
-        int duration = mTxtTitle.getResources().getInteger(R.integer.animation_controls_showHide);
         HandlerUtil.getMainHandler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mTxtTitle.setText(mTitles.get(mCurrentVisibleIndex));
             }
-        }, duration);
+        }, mUpdateTitleDelay);
     }
 
     private String getTag(Fragment fragment) {
@@ -159,8 +175,10 @@ public class FragmentCycler {
         mEnabled.put(tag, enabled);
 
         int index = mFragmentTags.indexOf(tag);
-        ((TextView) mTabs.get(index)).setTextColor(enabled ? context.getResources().getColor(R.color.bright_foreground_dark) : context.getResources().getColor(
-                R.color.bright_foreground_disabled_dark));
+        if (!mTabs.isEmpty()) {
+            TextView textView = (TextView) mTabs.get(index);
+            textView.setTextColor(enabled ? mTabColorEnabled : mTabColorDisabled);
+        }
     }
 
     private boolean isEnabled(int index) {

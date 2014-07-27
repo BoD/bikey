@@ -38,6 +38,8 @@
                 <action android:name="org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver.ACTION_RESUME" />
             </intent-filter>
         </receiver>
+
+        <activity android:name="org.jraf.android.bikey.wearable.app.display.DisplayActivity" />
     </application>
 
 

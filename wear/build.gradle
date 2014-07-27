@@ -12,7 +12,8 @@ android {
         versionName buildProperties['versionName']
 
         // For now we enable strict mode for all the configs
-        buildConfigField 'boolean', 'STRICT_MODE', 'true'}
+        buildConfigField 'boolean', 'STRICT_MODE', 'true'
+    }
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -43,4 +44,5 @@ dependencies {
     compile project(':common')
     compile 'com.google.android.support:wearable:+'
     compile 'org.jraf:jraf-android-util:1.0.0' // You must install or update the Support Repository through the SDK manager to use this dependency.
+    compile 'com.jakewharton:butterknife:5.1.1'
 }

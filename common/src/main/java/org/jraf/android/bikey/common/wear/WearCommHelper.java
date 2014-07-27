@@ -35,6 +35,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataItemBuffer;
 import com.google.android.gms.wearable.DataMap;
@@ -236,5 +237,13 @@ public class WearCommHelper {
 
         PutDataRequest request = putDataMapRequest.asPutDataRequest();
         Wearable.DataApi.putDataItem(mGoogleApiClient, request);
+    }
+
+    public void addDataApiListener(DataApi.DataListener dataListener) {
+        Wearable.DataApi.addListener(mGoogleApiClient, dataListener);
+    }
+
+    public void removeDataApiListener(DataApi.DataListener dataListener) {
+        Wearable.DataApi.removeListener(mGoogleApiClient, dataListener);
     }
 }

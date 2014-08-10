@@ -65,19 +65,20 @@ dependencies {
 
 task deploy(dependsOn: assembleRelease) << {
     description 'Build a release apk, copy the result to the deploy and \'etc\' folders, then increment the build number.'
-    // Copy the apk to the deploy folder
-    copy {
-        from buildDir.getPath() + '/outputs/apk/app-release.apk'
-        into buildProperties['deploy-folder']
-        rename 'app-release.apk', "bikey-${android.defaultConfig.versionCode}-signed.apk"
-    }
 
-    // Also copy the apk to the 'etc' folder
+    // Copy the apk to the 'etc' folder
     new File('../etc/apk').mkdirs()
     copy {
-        from buildDir.getPath() + '/outputs/apk/app-release.apk'
+        from buildDir.getPath() + '/outputs/apk/handheld-release.apk'
         into '../etc/apk'
-        rename 'app-release.apk', "bikey-${android.defaultConfig.versionCode}-signed.apk"
+        rename 'handheld-release.apk', "bikey-${android.defaultConfig.versionCode}-signed.apk"
+    }
+
+    // Also copy the apk to the deploy folder
+    copy {
+        from buildDir.getPath() + '/outputs/apk/handheld-release.apk'
+        into buildProperties['deploy-folder']
+        rename 'handheld-release.apk', "bikey-${android.defaultConfig.versionCode}-signed.apk"
     }
 
     // Copy the proguard mapping to the 'etc' folder

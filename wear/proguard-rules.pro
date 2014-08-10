@@ -1,3 +1,8 @@
+# For Butterknife
+-dontwarn butterknife.internal.**
+-keep class **$$ViewInjector { *; }
+-keepnames class * { @butterknife.InjectView *;}
+
 # For Google Play Services
 -keep class * extends java.util.ListResourceBundle {
     protected Object[][] getContents();

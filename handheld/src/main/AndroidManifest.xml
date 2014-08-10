@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="org.jraf.android.bikey"
-          tools:ignore="MissingVersion">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="org.jraf.android.bikey"
+    tools:ignore="MissingVersion"
+    android:sharedUserId="org.jraf.android">
 
     <!-- android:sharedUserId="org.jraf.android" -->
 
@@ -21,6 +22,10 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
+    <uses-feature
+        android:name="android.hardware.type.watch"
+        android:required="false" />
+
 
     <application
         android:name="org.jraf.android.bikey.app.Application"

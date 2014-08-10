@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">Bikey Common</string>
-
     <!-- Display -->
     <string name="display_title_speed">Vitesse</string>
     <string name="display_title_duration">Durée</string>
@@ -9,5 +7,4 @@
     <string name="display_title_heartRate">Cardiofréquencemètre</string>
     <string name="display_title_compass" />
     <string name="display_title_currentTime">Heure actuelle</string>
-
 </resources>

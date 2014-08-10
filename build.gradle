@@ -15,6 +15,9 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
+        maven {
+            url 'http://JRAF.org/static/maven/2'
+        }
     }
 }
 

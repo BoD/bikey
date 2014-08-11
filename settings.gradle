@@ -1,1 +1,2 @@
 include ':handheld', ':wear', ':common'
+include ':PebbleKit'

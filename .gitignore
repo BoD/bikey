@@ -10,3 +10,4 @@ build/intermediates
 handheld/build/*
 wear/build/*
 common/build/*
+pebbleKit/build/*

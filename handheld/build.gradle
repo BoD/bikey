@@ -61,6 +61,7 @@ dependencies {
 
     // Package the wear apk inside this one
     wearApp project(':wear')
+    compile project(':PebbleKit')
 }
 
 task deploy(dependsOn: assembleRelease) << {

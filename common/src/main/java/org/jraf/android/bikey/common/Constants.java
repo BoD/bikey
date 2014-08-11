@@ -50,5 +50,8 @@ public class Constants {
     public static final String PREF_RIDE_MAP_TYPE_SATELLITE = "PREF_RIDE_MAP_TYPE_SATELLITE";
     public static final String PREF_RIDE_MAP_TYPE_TERRAIN = "PREF_RIDE_MAP_TYPE_TERRAIN";
 
+    public static final String PREF_WEAR = "PREF_WEAR";
+    public static final String PREF_PEBBLE = "PREF_PEBBLE";
+
 
 }

@@ -65,13 +65,19 @@ public class LogCollectorService extends Service {
     protected Location mLastLocation;
     private Float mLastCadence;
     private Integer mLastHeartRate;
-    private WearUpdater mWearUpdater = new WearUpdater();
+    private SharedPreferences mPreferences;
+    private WearUpdater mWearUpdater = null;
+    private PebbleUpdater mPebbleUpdater = null;
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    public void onCreate(){
+        super.onCreate();
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+    }
     @Override
     public int onStartCommand(final Intent intent, int flags, int startId) {
         Log.d("intent=" + StringUtil.toString(intent));
@@ -89,8 +95,17 @@ public class LogCollectorService extends Service {
         runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
-                // Initialize wear updater
-                mWearUpdater.startUpdates(LogCollectorService.this);
+                //check for watches support
+                if (mPreferences.getBoolean(Constants.PREF_WEAR, false))
+                    mWearUpdater = new WearUpdater();
+                if (mPreferences.getBoolean(Constants.PREF_PEBBLE, false))
+                    mPebbleUpdater = new PebbleUpdater();
+
+                // Initialize SW updater
+                if (mWearUpdater != null)
+                    mWearUpdater.startUpdates(LogCollectorService.this);
+                if (mPebbleUpdater != null)
+                    mPebbleUpdater.startUpdates(LogCollectorService.this);
 
                 // First, pause current ride if any
                 if (mCollectingRideUri != null) {
@@ -296,7 +311,10 @@ public class LogCollectorService extends Service {
     @Override
     public void onDestroy() {
         // Disconnect wear updater
-        mWearUpdater.stopUpdates();
+        if (mWearUpdater != null)
+                    mWearUpdater.stopUpdates();
+        if (mPebbleUpdater != null)
+                    mPebbleUpdater.stopUpdates();
 
         // Unregister pref listener
         PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);

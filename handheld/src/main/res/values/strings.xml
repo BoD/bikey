@@ -111,6 +111,10 @@
     <string name="preferences_units_labels_metric">Metric (meters)</string>
     <string name="preferences_units_labels_imperial">Imperial (miles)</string>
 
+    <string name="preference_watches_title">Smartwatches</string>
+    <string name="preference_wear_title">Connect with Wear watch</string>
+    <string name="preference_pebble_title">Connect with Pebble watch</string>
+
     <!-- TTS -->
     <string name="speak_activate_ride" translatable="false">Ride started</string>
     <string name="speak_pause_ride" translatable="false">Ride paused</string>

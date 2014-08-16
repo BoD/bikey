@@ -40,9 +40,9 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    //compile 'com.google.android.gms:play-services-wearable:+'
     compile project(':common')
-    compile 'com.google.android.support:wearable:+'
-    compile 'org.jraf:jraf-android-util:1.0.0' // You must install or update the Support Repository through the SDK manager to use this dependency.
+//    compile 'com.google.android.gms:play-services-wearable:5.0.77'
+//    compile 'com.google.android.support:wearable:1.0.0'
+    compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.jakewharton:butterknife:5.1.1'
 }

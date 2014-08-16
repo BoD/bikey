@@ -26,6 +26,6 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.google.android.gms:play-services:+'
+    compile 'com.google.android.gms:play-services-wearable:5.0.77'
     compile 'org.jraf:jraf-android-util:1.0.0'
 }

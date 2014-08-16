@@ -52,8 +52,12 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.+'
-    compile 'com.google.android.gms:play-services:+'
+    compile 'com.android.support:support-v4:20.0.0'
+    // Normally we should depend on play-services, but since we depend on common, which depends on play-services-wearable,
+    // and both these libraries use the same package name, we need to depend on this one instead.
+    // This works for now, but we're probably gonna run into problems in the future.
+    //    compile 'com.google.android.gms:play-services:5.0.89'
+    compile 'com.google.android.gms:play-services-wearable:5.0.77'
     compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.jakewharton:butterknife:5.1.1'
     compile fileTree(include: ['*.jar'], dir: 'libs')

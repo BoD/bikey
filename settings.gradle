@@ -1,1 +1,4 @@
-include ':handheld', ':wear', ':common'
+include ':handheld'
+include ':wear'
+include ':common'
+include ':PebbleKit'

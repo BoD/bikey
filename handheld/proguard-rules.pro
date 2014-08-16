@@ -17,3 +17,8 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+
+# For PebbleKit
+-dontwarn javax.annotation.**
+-dontwarn sun.misc.**
+-dontwarn javax.inject.**

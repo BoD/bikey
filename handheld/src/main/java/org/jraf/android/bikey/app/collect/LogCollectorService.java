@@ -44,6 +44,8 @@ import android.support.v4.app.TaskStackBuilder;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
+import org.jraf.android.bikey.app.smartwatchsender.AndroidWearSender;
+import org.jraf.android.bikey.app.smartwatchsender.PebbleSender;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
 import org.jraf.android.bikey.backend.cadence.CadenceManager;
 import org.jraf.android.bikey.backend.heartrate.HeartRateListener;
@@ -65,11 +67,18 @@ public class LogCollectorService extends Service {
     protected Location mLastLocation;
     private Float mLastCadence;
     private Integer mLastHeartRate;
-    private WearUpdater mWearUpdater = new WearUpdater();
+    private SharedPreferences mPreferences;
+    private AndroidWearSender mAndroidWearSender = null;
+    private PebbleSender mPebbleSender = null;
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    public void onCreate() {
+        super.onCreate();
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
@@ -89,8 +98,15 @@ public class LogCollectorService extends Service {
         runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
-                // Initialize wear updater
-                mWearUpdater.startUpdates(LogCollectorService.this);
+                // Smartwatches support (if enabled in prefs)
+                if (mPreferences.getBoolean(Constants.PREF_ANDROID_WEAR, Constants.PREF_ANDROID_WEAR_DEFAULT)) {
+                    mAndroidWearSender = new AndroidWearSender();
+                    mAndroidWearSender.startSending(LogCollectorService.this);
+                }
+                if (mPreferences.getBoolean(Constants.PREF_PEBBLE, Constants.PREF_PEBBLE_DEFAULT)) {
+                    mPebbleSender = new PebbleSender();
+                    mPebbleSender.startSending(LogCollectorService.this);
+                }
 
                 // First, pause current ride if any
                 if (mCollectingRideUri != null) {
@@ -120,14 +136,12 @@ public class LogCollectorService extends Service {
                 LocationManager.get().addLocationListener(mLocationListener);
 
                 // Start monitoring cadence (if enabled in the prefs)
-                if (PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).getBoolean(Constants.PREF_RECORD_CADENCE,
-                        Constants.PREF_RECORD_CADENCE_DEFAULT)) {
+                if (mPreferences.getBoolean(Constants.PREF_RECORD_CADENCE, Constants.PREF_RECORD_CADENCE_DEFAULT)) {
                     CadenceManager.get().addListener(mCadenceListener);
                 }
 
                 // Start listening to pref changes (to enable / disable cadence recording accordingly)
-                PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).registerOnSharedPreferenceChangeListener
-                        (mOnSharedPreferenceChangeListener);
+                mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
 
                 // Start recording heart rate
                 HeartRateManager.get().addListener(mHeartRateListener);
@@ -145,9 +159,6 @@ public class LogCollectorService extends Service {
 
         // Dismiss notification
         dismissNotification();
-
-        // Update notification on wearable
-        // TODO mWearMessagingUtil.
 
         LocationManager.get().removeLocationListener(mLocationListener);
         CadenceManager.get().removeListener(mCadenceListener);
@@ -214,14 +225,15 @@ public class LogCollectorService extends Service {
     protected OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
         @Override
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            if (PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).getBoolean(Constants.PREF_RECORD_CADENCE,
-                    Constants.PREF_RECORD_CADENCE_DEFAULT)) {
+            if (mPreferences.getBoolean(Constants.PREF_RECORD_CADENCE, Constants.PREF_RECORD_CADENCE_DEFAULT)) {
                 // Start monitoring cadence
                 CadenceManager.get().addListener(mCadenceListener);
             } else {
                 // Stop monitoring cadence
                 CadenceManager.get().removeListener(mCadenceListener);
             }
+
+            // TODO check for smartwatch preferences and start / stop sending values
         }
     };
 
@@ -295,8 +307,9 @@ public class LogCollectorService extends Service {
 
     @Override
     public void onDestroy() {
-        // Disconnect wear updater
-        mWearUpdater.stopUpdates();
+        // Disconnect smartwatch senders
+        if (mAndroidWearSender != null) mAndroidWearSender.stopSending();
+        if (mPebbleSender != null) mPebbleSender.stopSending();
 
         // Unregister pref listener
         PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);

@@ -9,18 +9,34 @@
             android:title="@string/preference_units_title" />
 
         <SwitchPreference
-            android:textOn="ON"
-            android:textOff="OFF"
+            android:switchTextOn="ON"
+            android:switchTextOff="OFF"
             android:defaultValue="false"
             android:key="PREF_LISTEN_TO_HEADSET_BUTTON"
             android:summary="@string/preference_listenToHeadsetButton_summary"
             android:title="@string/preference_listenToHeadsetButton_title" />
         <SwitchPreference
-            android:textOn="ON"
-            android:textOff="OFF"
+            android:switchTextOn="ON"
+            android:switchTextOff="OFF"
             android:defaultValue="false"
             android:key="PREF_RECORD_CADENCE"
             android:title="@string/preference_recordCadence_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/preference_smartwatches_title">
+        <SwitchPreference
+            android:switchTextOn="ON"
+            android:switchTextOff="OFF"
+            android:defaultValue="false"
+            android:key="PREF_ANDROID_WEAR"
+            android:summary="@string/preference_androidWear_summary"
+            android:title="@string/preference_androidWear_title" />
+        <SwitchPreference
+            android:switchTextOn="ON"
+            android:switchTextOff="OFF"
+            android:defaultValue="false"
+            android:key="PREF_PEBBLE"
+            android:summary="@string/preference_pebble_summary"
+            android:title="@string/preference_pebble_title" />
     </PreferenceCategory>
     <PreferenceCategory
         android:key="PREF_CATEGORY_HEART_RATE"

@@ -129,6 +129,11 @@ public class WearCommHelper {
         updateValueNow(CommConstants.PATH_RIDE_ONGOING, ongoing);
     }
 
+    public void clearRideValues() {
+        Log.d();
+        Wearable.DataApi.deleteDataItems(mGoogleApiClient, createUri(CommConstants.PATH_RIDE_VALUES));
+    }
+
     public void updateRideValues(long startDateOffset, float speed, float distance, int heartRate) {
         Log.d("startDateOffset=" + startDateOffset + " speed=" + speed + " distance=" + distance + " heartRate=" + heartRate);
         PutDataMapRequest putDataMapRequest = PutDataMapRequest.create(CommConstants.PATH_RIDE_VALUES);
@@ -145,7 +150,7 @@ public class WearCommHelper {
 
     public Bundle retrieveRideValues() {
         Log.d();
-        Uri uri = new Uri.Builder().scheme("wear").path(CommConstants.PATH_RIDE_VALUES).build();
+        Uri uri = createUri(CommConstants.PATH_RIDE_VALUES);
         PendingResult<DataItemBuffer> pendingResult = Wearable.DataApi.getDataItems(mGoogleApiClient, uri);
         DataItemBuffer dataItemBuffer = pendingResult.await();
         if (dataItemBuffer.getCount() == 0) {
@@ -245,5 +250,9 @@ public class WearCommHelper {
 
     public void removeDataApiListener(DataApi.DataListener dataListener) {
         Wearable.DataApi.removeListener(mGoogleApiClient, dataListener);
+    }
+
+    private static Uri createUri(String path) {
+        return new Uri.Builder().scheme("wear").path(path).build();
     }
 }

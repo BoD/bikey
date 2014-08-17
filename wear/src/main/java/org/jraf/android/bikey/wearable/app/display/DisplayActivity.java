@@ -25,6 +25,7 @@
 package org.jraf.android.bikey.wearable.app.display;
 
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.MotionEvent;
@@ -70,6 +71,29 @@ public class DisplayActivity extends FragmentActivity {
         setContentView(R.layout.display);
         ButterKnife.inject(this);
         setupFragments();
+        retrieveRideValues();
+    }
+
+    private void retrieveRideValues() {
+        // Retrieve the latest values now, to show the elapsed time
+        new AsyncTask<Void, Void, Bundle>(){
+            @Override
+            protected Bundle doInBackground(Void... params) {
+                return WearCommHelper.get().retrieveRideValues();
+            }
+
+            @Override
+            protected void onPostExecute(Bundle rideValues) {
+                float rideDistance = rideValues.getFloat(CommConstants.EXTRA_DISTANCE);
+                float rideSpeed = rideValues.getFloat(CommConstants.EXTRA_SPEED);
+                long rideStartDateOffset = rideValues.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
+                int heartRate = rideValues.getInt(CommConstants.EXTRA_HEART_RATE);
+
+                mSpeedDisplayFragment.setSpeed(rideSpeed);
+                mElapsedTimeDisplayFragment.setStartDateOffset(rideStartDateOffset);
+                mTotalDistanceDisplayFragment.setTotalDistance(rideDistance);
+            }
+        }.execute();
     }
 
     @Override

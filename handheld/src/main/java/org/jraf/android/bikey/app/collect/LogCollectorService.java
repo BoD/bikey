@@ -42,6 +42,8 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import com.getpebble.android.kit.PebbleKit;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.smartwatchsender.AndroidWearSender;
@@ -95,15 +97,17 @@ public class LogCollectorService extends Service {
     }
 
     private void startCollecting(final Uri rideUri) {
+        final Context context = getApplicationContext();
         runOnBackgroundThread(new Runnable() {
             @Override
             public void run() {
                 // Smartwatches support (if enabled in prefs)
                 if (mPreferences.getBoolean(Constants.PREF_ANDROID_WEAR, Constants.PREF_ANDROID_WEAR_DEFAULT)) {
                     mAndroidWearSender = new AndroidWearSender();
-                    mAndroidWearSender.startSending(LogCollectorService.this);
+                    mAndroidWearSender.startSending(context);
                 }
-                if (mPreferences.getBoolean(Constants.PREF_PEBBLE, Constants.PREF_PEBBLE_DEFAULT)) {
+                if (mPreferences.getBoolean(Constants.PREF_PEBBLE, Constants.PREF_PEBBLE_DEFAULT)
+                        && PebbleKit.isWatchConnected(context)) {
                     mPebbleSender = new PebbleSender();
                     mPebbleSender.startSending(LogCollectorService.this);
                 }

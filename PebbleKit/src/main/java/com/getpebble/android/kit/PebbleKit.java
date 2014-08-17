@@ -101,10 +101,15 @@ public final class PebbleKit {
                 context.getContentResolver().query(
                         Uri.parse("content://com.getpebble.android.provider/state"), null, null,
                         null, null);
-        if (c == null || !c.moveToNext()) {
+        if (c == null) {
+            return false;
+        }else if (!c.moveToNext()){
+            c.close();
             return false;
         }
-        return c.getInt(KIT_STATE_COLUMN_CONNECTED) == 1;
+        int connected = c.getInt(KIT_STATE_COLUMN_CONNECTED);
+        c.close();
+        return  connected == 1;
     }
 
     /**

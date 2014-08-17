@@ -29,6 +29,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -165,7 +166,7 @@ public class NotificationService extends WearableListenerService {
         Notification.Builder mainNotifBuilder = new Notification.Builder(this);
         mainNotifBuilder.setOngoing(ongoing);
         mainNotifBuilder.setSmallIcon(R.drawable.ic_launcher);
-//        mainNotifBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher));
+        mainNotifBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notif_logo));
 
         long duration = System.currentTimeMillis() + mRideStartDateOffset;
 

@@ -40,9 +40,6 @@ public class AndroidWearSender extends SmartwatchSender {
     public void startSending(Context context) {
         super.startSending(context);
 
-        // Delete old ride values
-        mWearCommHelper.clearRideValues();
-
         // Propagate unit preferences at this point
         mWearCommHelper.updatePreferences();
 

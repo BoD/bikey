@@ -40,11 +40,14 @@ import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.util.log.wrapper.Log;
 
+import fr.nicolaspomepuy.androidwearcrashreport.mobile.CrashInfo;
+import fr.nicolaspomepuy.androidwearcrashreport.mobile.CrashReport;
+
 //@formatter:off
 @ReportsCrashes(
-    mode = ReportingInteractionMode.TOAST, 
-    resToastText = R.string.acra_toast, 
-    formKey = "", 
+    mode = ReportingInteractionMode.TOAST,
+    resToastText = R.string.acra_toast,
+    formKey = "",
     formUri = "https://bod.cloudant.com/acra-bikey/_design/acra-storage/_update/report",
     reportType = org.acra.sender.HttpSender.Type.JSON,
     httpMethod = org.acra.sender.HttpSender.Method.PUT,
@@ -79,7 +82,7 @@ import org.jraf.android.util.log.wrapper.Log;
         ReportField.SHARED_PREFERENCES,
         ReportField.SETTINGS_SYSTEM,
         ReportField.SETTINGS_SECURE
-    }, 
+    },
     logcatArguments = { "-t", "300", "-v", "time" })
 //@formatter:on
 public class Application extends android.app.Application {
@@ -96,8 +99,9 @@ public class Application extends android.app.Application {
         // Log
         Log.init(Constants.TAG);
 
-        // ACRA
-        if (BuildConfig.ACRA) {
+        // Crash reporting
+        if (BuildConfig.CRASH_REPORT) {
+            // ACRA
             try {
                 ACRA.init(this);
                 ACRAConfiguration config = ACRA.getConfig();
@@ -105,6 +109,20 @@ public class Application extends android.app.Application {
                 config.setFormUriBasicAuthPassword(getString(R.string.acra_password));
             } catch (Throwable t) {
                 Log.w("Problem while initializing ACRA", t);
+            }
+
+            // AndroidWearCrashReport
+            try {
+                CrashReport.getInstance(this).setOnCrashListener(new CrashReport.IOnCrashListener() {
+                    @Override
+                    public void onCrashReceived(CrashInfo crashInfo) {
+                        Exception exception = new Exception("Crash on the wearable app " + crashInfo.getManufacturer() + "/" + crashInfo.getModel() + "/" +
+                                crashInfo.getProduct() + "/" + crashInfo.getFingerprint(), crashInfo.getThrowable());
+                        ACRA.getErrorReporter().handleSilentException(exception);
+                    }
+                });
+            } catch (Throwable t) {
+                Log.w("Problem while initializing AndroidWearCrashReport", t);
             }
         }
 
@@ -114,6 +132,7 @@ public class Application extends android.app.Application {
         // Connect Google Play Services in wear communication helper
         WearCommHelper.get().connect(this);
 
+        // Strict mode
         if (BuildConfig.STRICT_MODE) setupStrictMode();
     }
 

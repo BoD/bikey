@@ -31,15 +31,15 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField 'boolean', 'ACRA', 'false'
+            buildConfigField 'boolean', 'CRASH_REPORT', 'false'
         }
 
         release {
+            buildConfigField 'boolean', 'CRASH_REPORT', 'true'
+
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
-            buildConfigField 'boolean', 'ACRA', 'true'
         }
     }
 }
@@ -60,6 +60,7 @@ dependencies {
     compile 'com.google.android.gms:play-services-wearable:5.0.77'
     compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.jakewharton:butterknife:5.1.1'
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.2@aar'
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':common')
     compile project(':PebbleKit')

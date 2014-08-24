@@ -30,7 +30,13 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField 'boolean', 'CRASH_REPORT', 'false'
+        }
+
         release {
+            buildConfigField 'boolean', 'CRASH_REPORT', 'true'
+
             runProguard true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
@@ -45,4 +51,5 @@ dependencies {
 //    compile 'com.google.android.support:wearable:1.0.0'
     compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.jakewharton:butterknife:5.1.1'
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.2@aar'
 }

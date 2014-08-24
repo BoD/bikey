@@ -32,6 +32,8 @@ import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.util.log.wrapper.Log;
 
+import fr.nicolaspomepuy.androidwearcrashreport.wear.CrashReporter;
+
 public class Application extends android.app.Application {
     @Override
     public void onCreate() {
@@ -40,9 +42,20 @@ public class Application extends android.app.Application {
         // Log
         Log.init(Constants.TAG);
 
+        // Crash reporting
+        if (BuildConfig.CRASH_REPORT) {
+            // AndroidWearCrashReport
+            try {
+                CrashReporter.getInstance(this).start();
+            } catch (Throwable t) {
+                Log.w("Problem while initializing AndroidWearCrashReport", t);
+            }
+        }
+
         // Connect Google Play Services in wear communication helper
         WearCommHelper.get().connect(this);
 
+        // Strict mode
         if (BuildConfig.STRICT_MODE) setupStrictMode();
     }
 

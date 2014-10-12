@@ -127,10 +127,14 @@
     <string name="about_txtInfo1" translatable="false"><![CDATA[<b>BoD Bikey</b> v%1$s/%2$s<br/>Built on %3$s<font color="#808080"> – %4$s</font>]]></string>
     <string name="about_txtInfo2" tools:ignore="TypographyOther">Copyright (C) 2013–2014 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).</string>
     <string name="about_txtInfo3" translatable="false">Licensed under the terms of the GNU General Public License.</string>
-    <string name="about_email" translatable="false">→ BoD@JRAF.org</string>
-    <string name="about_web" translatable="false">→ JRAF.org/android</string>
-    <string name="about_sources" translatable="false">→ github.com/BoD/bikey</string>
-    <string name="about_gplusCommunity" translatable="false">→ plus.google.com/communities/112883758989838442968</string>
+    <string name="about_email_uri" translatable="false">mailto:BoD@JRAF.org</string>
+    <string name="about_email_text" translatable="false">BoD@JRAF.org</string>
+    <string name="about_web_uri" translatable="false">http://JRAF.org/android/</string>
+    <string name="about_web_text" translatable="false">JRAF.org/android</string>
+    <string name="about_sources_uri" translatable="false">https://github.com/BoD/bikey/</string>
+    <string name="about_sources_text" translatable="false">Source code on Github</string>
+    <string name="about_gplusCommunity_uri" translatable="false">http://plus.google.com/communities/112883758989838442968</string>
+    <string name="about_gplusCommunity_text" translatable="false">Beta test community on Google+</string>
     <string name="about_btnShare">Share app</string>
     <string name="about_btnRate">Rate app</string>
     <string name="about_btnOtherApps">Other apps</string>

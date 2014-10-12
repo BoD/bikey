@@ -97,7 +97,7 @@ public class WearCommHelper {
 
     public void sendMessage(final String path, @Nullable final byte[] payload) {
         Log.d("path=" + path);
-        HashSet<String> results = new HashSet<String>();
+        HashSet<String> results = new HashSet<>();
         PendingResult<NodeApi.GetConnectedNodesResult> nodesPendingResult = Wearable.NodeApi.getConnectedNodes(mGoogleApiClient);
         nodesPendingResult.setResultCallback(new ResultCallback<NodeApi.GetConnectedNodesResult>() {
             @Override

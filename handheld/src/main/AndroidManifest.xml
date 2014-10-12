@@ -2,10 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="org.jraf.android.bikey"
-    tools:ignore="MissingVersion"
-    android:sharedUserId="org.jraf.android">
-
-    <!-- android:sharedUserId="org.jraf.android" -->
+    tools:ignore="MissingVersion">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -124,11 +121,6 @@
         <activity
             android:name="org.jraf.android.bikey.app.preference.PreferenceActivity"
             android:label="@string/preference_title" />
-
-        <!-- About -->
-        <activity
-            android:name="org.jraf.android.bikey.app.about.AboutActivity"
-            android:label="@string/about_title" />
 
         <!-- Home screen shortcut -->
         <activity

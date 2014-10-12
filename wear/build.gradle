@@ -4,6 +4,11 @@ android {
     compileSdkVersion 'android-20'
     buildToolsVersion '20.0.0'
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 20
@@ -13,11 +18,6 @@ android {
 
         // For now we enable strict mode for all the configs
         buildConfigField 'boolean', 'STRICT_MODE', 'true'
-    }
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
     }
 
     signingConfigs {
@@ -32,6 +32,8 @@ android {
     buildTypes {
         debug {
             buildConfigField 'boolean', 'CRASH_REPORT', 'false'
+
+            runProguard false
         }
 
         release {

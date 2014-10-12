@@ -11,3 +11,4 @@ handheld/build/*
 wear/build/*
 common/build/*
 pebbleKit/build/*
+.DS_Store

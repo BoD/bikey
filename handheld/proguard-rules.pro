@@ -39,13 +39,11 @@
 -keepnames class org.acra.ReportField {
     *;
 }
--keep public class org.acra.ErrorReporter
-{
+-keep public class org.acra.ErrorReporter {
     public void addCustomData(java.lang.String,java.lang.String);
     public void putCustomData(java.lang.String,java.lang.String);
     public void removeCustomData(java.lang.String);
 }
--keep public class org.acra.ErrorReporter
-{
+-keep public class org.acra.ErrorReporter {
     public void handleSilentException(java.lang.Throwable);
 }

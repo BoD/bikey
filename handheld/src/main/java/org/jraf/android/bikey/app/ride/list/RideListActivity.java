@@ -34,8 +34,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 
+import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.app.about.AboutActivity;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
@@ -47,6 +47,7 @@ import org.jraf.android.bikey.backend.export.kml.KmlExporter;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.util.MediaButtonUtil;
+import org.jraf.android.util.about.AboutActivityIntentBuilder;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -109,7 +110,20 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 return true;
 
             case R.id.action_about:
-                startActivity(new Intent(this, AboutActivity.class));
+                AboutActivityIntentBuilder builder = new AboutActivityIntentBuilder();
+                builder.setAppName(getString(R.string.app_name));
+                builder.setBuildDate(BuildConfig.BUILD_DATE);
+                builder.setGitSha1(BuildConfig.GIT_SHA1);
+                builder.setAuthorCopyright(getString(R.string.about_txtInfo2));
+                builder.setLicense(getString(R.string.about_txtInfo3));
+                builder.setShareTextSubject(getString(R.string.about_shareText_subject));
+                builder.setShareTextBody(getString(R.string.about_shareText_body));
+                builder.setBackgroundResId(R.drawable.about_bg);
+                builder.addLink(getString(R.string.about_email_uri), getString(R.string.about_email_text));
+                builder.addLink(getString(R.string.about_web_uri), getString(R.string.about_web_text));
+                builder.addLink(getString(R.string.about_sources_uri), getString(R.string.about_sources_text));
+                builder.addLink(getString(R.string.about_gplusCommunity_uri), getString(R.string.about_gplusCommunity_text));
+                startActivity(builder.build(this));
                 return true;
 
             case R.id.action_settings:
@@ -291,7 +305,7 @@ public class RideListActivity extends BaseFragmentActivity implements AlertDialo
                 // Kml
                 mState.mExporter = new KmlExporter(rideUri);
                 break;
-            case 3:
+            case 2:
                 // Genymotion script
                 mState.mExporter = new GenymotionExporter(rideUri);
                 break;

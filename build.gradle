@@ -1,13 +1,16 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 import org.apache.tools.ant.filters.ReplaceTokens
+
 import java.text.SimpleDateFormat
+
+ext.globalProjectName = 'bikey'
 
 buildscript {
     repositories {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:0.13.3'
     }
 }
 
@@ -50,7 +53,6 @@ def filterResources(buildVariant) {
     // Delete the temporary file
     new File(path + '/values/values.xml.expanded').delete()
 }
-
 
 ext.buildProperties = new Properties()
 buildProperties.load(new FileInputStream(file('build.properties')))

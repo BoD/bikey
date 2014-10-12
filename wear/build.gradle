@@ -1,0 +1,57 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 'android-20'
+    buildToolsVersion '20.0.0'
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    defaultConfig {
+        applicationId 'org.jraf.android.bikey'
+        minSdkVersion 20
+        targetSdkVersion 20
+        versionCode buildNumber
+        versionName buildProperties['versionName']
+
+        // For now we enable strict mode for all the configs
+        buildConfigField 'boolean', 'STRICT_MODE', 'true'
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(buildProperties['key-store'])
+            storePassword buildProperties['key-store-password']
+            keyAlias buildProperties['key-alias']
+            keyPassword buildProperties['key-alias-password']
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField 'boolean', 'CRASH_REPORT', 'false'
+
+            runProguard false
+        }
+
+        release {
+            buildConfigField 'boolean', 'CRASH_REPORT', 'true'
+
+            runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':common')
+//    compile 'com.google.android.gms:play-services-wearable:5.0.77'
+//    compile 'com.google.android.support:wearable:1.0.0'
+    compile 'org.jraf:jraf-android-util:1.0.0'
+    compile 'com.jakewharton:butterknife:5.1.1'
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.2@aar'
+}

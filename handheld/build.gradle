@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 19
-    buildToolsVersion '20.0.0'
+    buildToolsVersion '21.1.2'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -12,9 +12,11 @@ android {
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 21
         versionCode buildNumber
         versionName buildProperties['versionName']
+        resConfigs "en", "fr"
+
         buildConfigField 'String', 'GIT_SHA1', '"' + gitSha1() + '"'
         buildConfigField 'String', 'BUILD_DATE', '"' + buildDate() + '"'
         // For now we enable strict mode for all the configs
@@ -38,7 +40,8 @@ android {
         release {
             buildConfigField 'boolean', 'CRASH_REPORT', 'true'
 
-            runProguard true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }
@@ -74,7 +77,7 @@ task deploy(dependsOn: assembleRelease) << {
     description 'Build a release apk, copy the result to the deploy and \'etc\' folders, then increment the build number.'
 
     // Copy the apk to the 'etc' folder
-    new File('../etc/apk').mkdirs()
+    new File('etc/apk').mkdirs()
     copy {
         from buildDir.getPath() + "/outputs/apk/${project.name}-release.apk"
         into '../etc/apk'
@@ -89,9 +92,9 @@ task deploy(dependsOn: assembleRelease) << {
     }
 
     // Copy the proguard mapping to the 'etc' folder
-    new File('../etc/proguard').mkdirs()
+    new File('etc/proguard').mkdirs()
     copy {
-        from buildDir.getPath() + '/outputs/proguard/release/mapping.txt'
+        from buildDir.getPath() + '/outputs/mapping/release/mapping.txt'
         into '../etc/proguard'
         rename 'mapping.txt', "mapping-${android.defaultConfig.versionCode}.txt"
     }

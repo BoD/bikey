@@ -10,7 +10,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.3'
+        classpath 'com.android.tools.build:gradle:1.0.1'
     }
 }
 
@@ -37,7 +37,7 @@ def buildDate() {
 
 def filterResources(buildVariant) {
     // Copy and 'filter' (replace {} placeholders) the resources
-    def path = buildVariant.processResources.resDir.getPath()
+    def path = buildVariant.outputs[0].processResources.resDir.getPath()
     copy {
         from path + '/values/values.xml'
         filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')

@@ -13,7 +13,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode buildNumber
-        versionName buildProperties['versionName']
+        versionName buildProperties.versionName
     }
 
     buildTypes {

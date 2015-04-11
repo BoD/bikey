@@ -14,7 +14,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode buildNumber
-        versionName buildProperties['versionName']
+        versionName buildProperties.versionName
         resConfigs "en", "fr"
 
         buildConfigField 'String', 'GIT_SHA1', '"' + gitSha1() + '"'
@@ -25,10 +25,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(buildProperties['key-store'])
-            storePassword buildProperties['key-store-password']
-            keyAlias buildProperties['key-alias']
-            keyPassword buildProperties['key-alias-password']
+            storeFile file(buildProperties.keyStore)
+            storePassword buildProperties.keyStorePassword
+            keyAlias buildProperties.keyAlias
+            keyPassword buildProperties.keyPassword
         }
     }
 
@@ -86,7 +86,7 @@ task deploy(dependsOn: assembleRelease) << {
     // Also copy the apk to the deploy folder
     copy {
         from buildDir.getPath() + "/outputs/apk/${project.name}-release.apk"
-        into buildProperties['deploy-folder']
+        into buildProperties.deployFolder
         rename "${project.name}-release.apk", "${globalProjectName}-${android.defaultConfig.versionCode}-signed.apk"
     }
 

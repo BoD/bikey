@@ -1,7 +1,10 @@
 # Edit and save this file to a file named build.properties.
 versionName=1.0.0
-key-store=/mnt/z/docs/devkeys/android_release_key.keystore
-key-store-password=P4ssw0Rd
-key-alias=android_release_key
-key-alias-password=P4ssw0Rd
-deploy-folder=/mnt/z/s/apache_www/static/tmp/
+keyStore=/mnt/z/docs/devkeys/android_release_key.keystore
+keyStorePassword=P4ssw0Rd
+keyAlias=android_release_key
+keyPassword=P4ssw0Rd
+deployFolder=/mnt/z/s/apache_www/static/tmp/
+acraLogin=
+acraPassword=
+googleMapsKeys=

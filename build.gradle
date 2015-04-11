@@ -51,7 +51,7 @@ def filterResources(buildVariant) {
         rename 'values.xml.expanded', 'values.xml'
     }
     // Delete the temporary file
-    new File(path + '/values/values.xml.expanded').delete()
+    file(path + '/values/values.xml.expanded').delete()
 }
 
 ext.buildProperties = new Properties()

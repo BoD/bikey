@@ -63,8 +63,11 @@ public class TextToSpeechManager {
         public void onInit(int status) {
             Log.d("status=" + status);
             mStatus = status;
-            mTextToSpeech.addEarcon(mContext.getString(R.string.speak_activate_ride), mContext.getPackageName(), R.raw.start);
-            mTextToSpeech.addEarcon(mContext.getString(R.string.speak_pause_ride), mContext.getPackageName(), R.raw.stop);
+            // If the status is not success, the TextToSpeech will be null
+            if(mTextToSpeech != null) {
+                mTextToSpeech.addEarcon(mContext.getString(R.string.speak_activate_ride), mContext.getPackageName(), R.raw.start);
+                mTextToSpeech.addEarcon(mContext.getString(R.string.speak_pause_ride), mContext.getPackageName(), R.raw.stop);
+            }
         }
     };
 

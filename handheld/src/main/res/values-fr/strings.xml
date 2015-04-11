@@ -8,9 +8,6 @@
     <string name="common_yes">Oui</string>
     <string name="common_no">Non</string>
 
-    <!-- Acra -->
-    <string name="acra_toast">L\'application a rencontré une anomalie.\nDes logs vont être envoyés pour que nous puissions corriger le problème.</string>
-
     <!-- Service -->
     <string name="service_notification_ticker">Parcours en cours</string>
     <string name="service_notification_text">Parcours en cours</string>

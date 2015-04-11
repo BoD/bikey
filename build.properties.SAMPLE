@@ -5,6 +5,5 @@ keyStorePassword=P4ssw0Rd
 keyAlias=android_release_key
 keyPassword=P4ssw0Rd
 deployFolder=/mnt/z/s/apache_www/static/tmp/
-acraLogin=John
-acraPassword=P4ssw0Rd
 googleMapsKeys=abcd4242
+fabricCrashlyticsApiKey=abcd4242

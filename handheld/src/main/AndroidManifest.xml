@@ -37,7 +37,13 @@
             android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/google_maps_keys" />
+            android:value="${googleMapsKeys}" />
+
+        <!-- Crashlytics api key -->
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabricCrashlyticsApiKey}" />
+
 
         <!-- Provider -->
         <provider

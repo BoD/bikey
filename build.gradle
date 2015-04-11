@@ -1,6 +1,4 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
-import org.apache.tools.ant.filters.ReplaceTokens
-
 import java.text.SimpleDateFormat
 
 ext.globalProjectName = 'bikey'
@@ -10,7 +8,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.0.1'
+        classpath 'com.android.tools.build:gradle:1.1.0'
     }
 }
 
@@ -20,6 +18,9 @@ allprojects {
         jcenter()
         maven {
             url 'http://JRAF.org/static/maven/2'
+        }
+        maven {
+            url 'https://maven.fabric.io/public'
         }
     }
 }
@@ -35,29 +36,12 @@ def buildDate() {
     return dateFormat.format(new Date())
 }
 
-def filterResources(buildVariant) {
-    // Copy and 'filter' (replace {} placeholders) the resources
-    def path = buildVariant.outputs[0].processResources.resDir.getPath()
-    copy {
-        from path + '/values/values.xml'
-        filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')
-        into path + '/values'
-        rename 'values.xml', 'values.xml.expanded'
-    }
-    // Override the file
-    copy {
-        from path + '/values/values.xml.expanded'
-        into path + '/values'
-        rename 'values.xml.expanded', 'values.xml'
-    }
-    // Delete the temporary file
-    file(path + '/values/values.xml.expanded').delete()
-}
-
+// Load build properties
 ext.buildProperties = new Properties()
 buildProperties.load(new FileInputStream(file('build.properties')))
 
+// Build number
 ext.buildNumberFile = file('build.number')
 ext.buildNumberProperties = new Properties()
 buildNumberProperties.load(new FileInputStream(buildNumberFile))
-ext.buildNumber = buildNumberProperties['build.number'].toInteger()
+ext.buildNumber = buildNumberProperties.buildNumber.toInteger()

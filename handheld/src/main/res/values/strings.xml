@@ -10,9 +10,6 @@
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
 
-    <!-- Acra -->
-    <string name="acra_toast">The application has crashed.<xliff:g id="new_line">\n</xliff:g>Logs are being sent so the issue can be fixed.</string>
-
     <!-- Service -->
     <string name="service_notification_ticker">Ride in progress</string>
     <string name="service_notification_text">Ride in progress</string>

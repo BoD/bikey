@@ -14,7 +14,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 21
         versionCode buildNumber
-        versionName buildProperties.versionName
+        versionName project.versionName
 
         // For now we enable strict mode for all the configs
         buildConfigField 'boolean', 'STRICT_MODE', 'true'
@@ -22,10 +22,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(buildProperties.keyStore)
-            storePassword buildProperties.keyStorePassword
-            keyAlias buildProperties.keyAlias
-            keyPassword buildProperties.keyPassword
+            storeFile file(project.keyStore)
+            storePassword project.keyStorePassword
+            keyAlias project.keyAlias
+            keyPassword project.keyPassword
         }
     }
 

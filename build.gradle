@@ -38,6 +38,18 @@ def buildDate() {
 def filterResources(buildVariant) {
     // Copy and 'filter' (replace {} placeholders) the resources
     def path = buildVariant.outputs[0].processResources.resDir.getPath()
+
+    // We can't use the project.properties object directly in the filter, because
+    // it's a HashMap, and we need a Properties object.
+    // We can't just do buildProperties.putAll(project.properties) because this
+    // crashes if a property exists with a "null" value.
+    Properties buildProperties = new Properties();
+    Set keys = project.properties.keySet();
+    for(Object key : keys) {
+        Object value = project.properties.get(key);
+        if(value != null)
+            buildProperties .put(key, value);
+    }
     copy {
         from path + '/values/values.xml'
         filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')
@@ -53,9 +65,6 @@ def filterResources(buildVariant) {
     // Delete the temporary file
     file(path + '/values/values.xml.expanded').delete()
 }
-
-ext.buildProperties = new Properties()
-buildProperties.load(new FileInputStream(file('build.properties')))
 
 ext.buildNumberFile = file('build.number')
 ext.buildNumberProperties = new Properties()

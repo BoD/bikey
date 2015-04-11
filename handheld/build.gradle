@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 19
-    buildToolsVersion '21.1.2'
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 14
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode buildNumber
         versionName buildProperties['versionName']
         resConfigs "en", "fr"
@@ -56,7 +56,7 @@ android.applicationVariants.all { variant ->
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:support-v4:22.0.0'
     // Normally we should depend on play-services, but since we depend on common, which depends on play-services-wearable,
     // and both these libraries use the same package name, we need to depend on this one instead.
     // This works for now, but we're probably gonna run into problems in the future.
@@ -72,7 +72,6 @@ dependencies {
     // Package the wear apk inside this one
     wearApp project(':wear')
 }
-
 task deploy(dependsOn: assembleRelease) << {
     description 'Build a release apk, copy the result to the deploy and \'etc\' folders, then increment the build number.'
 

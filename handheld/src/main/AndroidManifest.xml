@@ -145,6 +145,12 @@
         <activity
             android:name="org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity"
             android:label="@string/heartRateMonitorScan_title" />
+
+        <!-- About activity which should be in the library manifest -->
+        <activity
+            android:name="org.jraf.android.util.about.AboutActivity"
+            android:theme="@style/Theme.AppCompat.Light"
+            android:label="@string/about_title" />
     </application>
 
 </manifest>

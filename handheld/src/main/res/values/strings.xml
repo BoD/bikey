@@ -125,7 +125,7 @@
     <string name="about_action_sendLogs">Send logs</string>
     <string name="about_sendingLogsToast">Logs are being sent.</string>
     <string name="about_txtInfo1" translatable="false"><![CDATA[<b>BoD Bikey</b> v%1$s/%2$s<br/>Built on %3$s<font color="#808080"> – %4$s</font>]]></string>
-    <string name="about_txtInfo2" tools:ignore="TypographyOther">Copyright (C) 2013–2014 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).</string>
+    <string name="about_txtInfo2" tools:ignore="TypographyOther">Copyright (C) 2013–2015 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).</string>
     <string name="about_txtInfo3" translatable="false">Licensed under the terms of the GNU General Public License.</string>
     <string name="about_email_uri" translatable="false">mailto:BoD@JRAF.org</string>
     <string name="about_email_text" translatable="false">BoD@JRAF.org</string>

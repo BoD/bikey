@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 'android-19'
-    buildToolsVersion '20.0.0'
+    compileSdkVersion 21
+    buildToolsVersion '22.0.1'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -10,16 +10,16 @@ android {
     }
 
     defaultConfig {
-        applicationId 'org.jraf.android.bikey.common'
         minSdkVersion 14
-        targetSdkVersion 19
+        targetSdkVersion 22
         versionCode buildNumber
         versionName buildProperties['versionName']
     }
 
     buildTypes {
         release {
-            runProguard false
+            minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }

@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 'android-20'
-    buildToolsVersion '20.0.0'
+    compileSdkVersion 21
+    buildToolsVersion '22.0.1'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -11,8 +11,8 @@ android {
 
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
-        minSdkVersion 20
-        targetSdkVersion 20
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode buildNumber
         versionName buildProperties['versionName']
 
@@ -33,13 +33,15 @@ android {
         debug {
             buildConfigField 'boolean', 'CRASH_REPORT', 'false'
 
-            runProguard false
+            minifyEnabled false
+            shrinkResources false
         }
 
         release {
             buildConfigField 'boolean', 'CRASH_REPORT', 'true'
 
-            runProguard true
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
         }

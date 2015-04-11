@@ -10,7 +10,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.13.3'
+        classpath 'com.android.tools.build:gradle:1.0.0'
     }
 }
 
@@ -37,21 +37,23 @@ def buildDate() {
 
 def filterResources(buildVariant) {
     // Copy and 'filter' (replace {} placeholders) the resources
-    def path = buildVariant.processResources.resDir.getPath()
-    copy {
-        from path + '/values/values.xml'
-        filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')
-        into path + '/values'
-        rename 'values.xml', 'values.xml.expanded'
+    for(output in buildVariant.outputs) {
+        def path = output.processResources.resDir.getPath()
+        copy {
+            from path + '/values/values.xml'
+            filter(ReplaceTokens, tokens: buildProperties, beginToken: '{', endToken: '}')
+            into path + '/values'
+            rename 'values.xml', 'values.xml.expanded'
+        }
+        // Override the file
+        copy {
+            from path + '/values/values.xml.expanded'
+            into path + '/values'
+            rename 'values.xml.expanded', 'values.xml'
+        }
+        // Delete the temporary file
+        new File(path + '/values/values.xml.expanded').delete()
     }
-    // Override the file
-    copy {
-        from path + '/values/values.xml.expanded'
-        into path + '/values'
-        rename 'values.xml.expanded', 'values.xml'
-    }
-    // Delete the temporary file
-    new File(path + '/values/values.xml.expanded').delete()
 }
 
 ext.buildProperties = new Properties()

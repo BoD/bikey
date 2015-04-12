@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 21
+    compileSdkVersion 22
     buildToolsVersion '22.0.1'
 
     defaultConfig {
@@ -44,10 +44,7 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':common')
-//    compile 'com.google.android.gms:play-services-wearable:5.0.77'
-//    compile 'com.google.android.support:wearable:1.0.0'
     compile 'org.jraf:jraf-android-util:1.0.0'
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.4@aar'

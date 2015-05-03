@@ -25,6 +25,8 @@
 package org.jraf.android.bikey.app.ride.map;
 
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -32,7 +34,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.FragmentActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,26 +41,30 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 
-import butterknife.ButterKnife;
-import butterknife.InjectView;
-
-import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.util.annotation.Background;
+import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
+import org.jraf.android.util.handler.HandlerUtil;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-public class RideMapActivity extends FragmentActivity {
+import butterknife.ButterKnife;
+import butterknife.InjectView;
+
+public class RideMapActivity extends BaseAppCompatActivity {
     private Uri mRideUri;
 
     @InjectView(R.id.conMap)
@@ -74,23 +79,12 @@ public class RideMapActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_map);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRideUri = getIntent().getData();
 
         ButterKnife.inject(this);
         tintedStatusBarHack();
-
-        // Add a padding since the map is below the action bar (and status bar / nav bar on >= kitkat)
-        int statusBarHeight = 0;
-        int navigationBarHeight = 0;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            statusBarHeight = getStatusBarHeight();
-            navigationBarHeight = getNavigationBarHeight();
-        }
-        getMap().setPadding(0, getActioBarHeight() + statusBarHeight, 0, navigationBarHeight);
-
-        updateMapType();
 
         loadData();
     }
@@ -175,7 +169,7 @@ public class RideMapActivity extends FragmentActivity {
         }
     }
 
-    private int getActioBarHeight() {
+    private int getActionBarHeight() {
         int res;
         // Retrieve the action bar height from the theme
         TypedArray a = getTheme().obtainStyledAttributes(R.style.Theme_Bikey_Map, new int[] { android.R.attr.actionBarSize });
@@ -231,6 +225,9 @@ public class RideMapActivity extends FragmentActivity {
                 LogManager logManager = LogManager.get();
 
                 mLatLngArray = logManager.getLatLngArray(rideUri, 100);
+
+                // Make sure the map is actually available
+                getMap();
             }
 
             @Override
@@ -239,6 +236,17 @@ public class RideMapActivity extends FragmentActivity {
                 if (mName != null) a.setTitle(mName);
 
                 // Map
+                // Add a padding since the map is below the action bar (and status bar / nav bar on >= kitkat)
+                int statusBarHeight = 0;
+                int navigationBarHeight = 0;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                    statusBarHeight = getStatusBarHeight();
+                    navigationBarHeight = getNavigationBarHeight();
+                }
+                getMap().setPadding(0, getActionBarHeight() + statusBarHeight, 0, navigationBarHeight);
+
+                updateMapType();
+
                 if (mLatLngArray.size() > 0) {
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
                     polylineOptions.color(getResources().getColor(R.color.map_polyline));
@@ -262,11 +270,31 @@ public class RideMapActivity extends FragmentActivity {
      * Map.
      */
 
+    /**
+     * Blocks until the map is actually available.
+     */
+    @Background
     private GoogleMap getMap() {
         if (mMap == null) {
-            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+            final CountDownLatch latch = new CountDownLatch(1);
+            HandlerUtil.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap = googleMap;
+                            latch.countDown();
+                        }
+                    });
+                }
+            });
+
+            try {
+                latch.await(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {}
         }
         return mMap;
     }
-
 }

@@ -1,24 +1,25 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/action_display"
         android:icon="@drawable/ic_action_display"
-        android:showAsAction="always|withText"
+        app:showAsAction="always|withText"
         android:title="@string/ride_detail_action_display"/>
     <item
         android:id="@+id/action_share"
         android:icon="@drawable/ic_action_share"
-        android:showAsAction="always|withText"
+        app:showAsAction="always|withText"
         android:title="@string/ride_list_action_share"/>
     <item
         android:id="@+id/action_edit"
         android:icon="@drawable/ic_action_edit"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/ride_list_action_edit"/>
     <item
         android:id="@+id/action_delete"
         android:icon="@drawable/ic_action_delete"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="@string/ride_list_action_delete"/>
 
 </menu>

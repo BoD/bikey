@@ -159,7 +159,7 @@
     <string name="ride_detail_cadence_section">Cadence</string>
     <string name="ride_detail_cadence_average_label">Average</string>
     <string name="ride_detail_cadence_max_label">Max</string>
-    <string name="ride_detail_action_display">DISPLAY</string>
+    <string name="ride_detail_action_display">Display</string>
     <string name="ride_detail_empty">This ride has no data.</string>
     <string name="ride_detail_deleteDialog_message">The ride will be deleted.</string>
     <string name="ride_detail_heartRate_section">Heart rate</string>

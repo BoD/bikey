@@ -11,22 +11,22 @@
         <item name="android:textSize">22sp</item>
     </style>
 
-    <style name="TextAppearance.Bikey.Large" parent="@android:style/TextAppearance.Holo.Large">
+    <style name="TextAppearance.Bikey.Large" parent="TextAppearance.AppCompat.Large">
         <item name="android:textColor">@color/primary_text_color_dark</item>
     </style>
 
-    <style name="Widget.Bikey.ListView" parent="@android:style/Widget.Holo.Light.ListView">
+    <style name="Widget.Bikey.ListView" parent="Widget.AppCompat.ListView">
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
-    <style name="Widget.Bikey.ActionBar.Logo" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
-        <item name="android:displayOptions">useLogo|showHome</item>
-        <item name="android:logo">@drawable/ic_actionbar_logo</item>
+    <style name="Widget.Bikey.ActionBar.Logo" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="displayOptions">useLogo|showHome</item>
+        <item name="logo">@drawable/ic_actionbar_logo</item>
     </style>
 
-    <style name="Widget.Bikey.ActionBar.Translucent" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+    <style name="Widget.Bikey.ActionBar.Translucent" parent="Widget.AppCompat.Light.ActionBar.Solid">
         <item name="android:background">@color/action_bar_translucent_bg</item>
     </style>
 

@@ -21,6 +21,6 @@ android {
 }
 
 dependencies {
-    compile 'com.google.android.gms:play-services-wearable:7.0.0'
+    compile 'com.google.android.gms:play-services-wearable:7.3.0'
     compile 'org.jraf:jraf-android-util:1.0.0'
 }

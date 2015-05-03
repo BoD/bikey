@@ -48,13 +48,13 @@ import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.util.MediaButtonUtil;
 import org.jraf.android.util.about.AboutActivityIntentBuilder;
-import org.jraf.android.util.app.base.BaseFragmentActivity;
+import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 
-public class RideListActivity extends BaseFragmentActivity implements AlertDialogListener, RideListCallbacks {
+public class RideListActivity extends BaseAppCompatActivity implements AlertDialogListener, RideListCallbacks {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
 
     private static final String PREFIX = RideListActivity.class.getName() + ".";

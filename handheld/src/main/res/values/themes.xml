@@ -1,22 +1,24 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Bikey" parent="android:Theme.Holo.Light">
+    <style name="Theme.Bikey" parent="Theme.AppCompat.Light">
         <item name="android:listViewStyle">@style/Widget.Bikey.ListView</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
 
-    <style name="Theme.Bikey.Display" parent="android:Theme.Holo.NoActionBar.Fullscreen">
+    <style name="Theme.Bikey.Display" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowBackground">@android:color/black</item>
         <item name="android:textAppearanceLarge">@style/TextAppearance.Bikey.Large</item>
     </style>
 
     <style name="Theme.Bikey.ActionBarLogo">
-        <item name="android:actionBarStyle">@style/Widget.Bikey.ActionBar.Logo</item>
+        <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Logo</item>
     </style>
 
     <style name="Theme.Bikey.Map">
-        <item name="android:windowActionBarOverlay">true</item>
-        <item name="android:actionBarStyle">@style/Widget.Bikey.ActionBar.Translucent</item>
+        <item name="windowActionBarOverlay">true</item>
+        <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Translucent</item>
     </style>
 
 </resources>

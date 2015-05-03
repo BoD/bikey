@@ -24,11 +24,10 @@
  */
 package org.jraf.android.bikey.app.ride.edit;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,10 +38,11 @@ import android.widget.TextView.OnEditorActionListener;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 
-public class RideEditActivity extends FragmentActivity {
+public class RideEditActivity extends BaseAppCompatActivity {
     private EditText mEdtName;
 
     @Override
@@ -80,7 +80,7 @@ public class RideEditActivity extends FragmentActivity {
     }
 
     private void setupActionBar() {
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         View customActionBarView = getLayoutInflater().inflate(R.layout.ride_edit_actionbar, null);
         actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));

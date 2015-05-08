@@ -21,13 +21,26 @@
         <item name="android:scrollbarStyle">outsideOverlay</item>
     </style>
 
+    <style name="Widget.Bikey.ActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="contentInsetStart">72dp</item>
+    </style>
+
+    <style name="Widget.Bikey.ActionBar.Buttons">
+        <item name="contentInsetStart">0px</item>
+        <item name="contentInsetEnd">0px</item>
+    </style>
+
     <style name="Widget.Bikey.ActionBar.Logo" parent="Widget.AppCompat.Light.ActionBar.Solid">
         <item name="displayOptions">useLogo|showHome</item>
         <item name="logo">@drawable/ic_actionbar_logo</item>
     </style>
 
-    <style name="Widget.Bikey.ActionBar.Translucent" parent="Widget.AppCompat.Light.ActionBar.Solid">
+    <style name="Widget.Bikey.ActionBar.Translucent">
         <item name="android:background">@color/action_bar_translucent_bg</item>
+    </style>
+
+    <style name="Widget.Bikey.Button" parent="Widget.AppCompat.Button">
+        <item name="android:textColor">#FFF</item>
     </style>
 
 </resources>

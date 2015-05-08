@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<manifest package="org.jraf.android.bikey"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="org.jraf.android.bikey"
     tools:ignore="MissingVersion">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -79,6 +79,7 @@
         <!-- Ride edit -->
         <activity
             android:name="org.jraf.android.bikey.app.ride.edit.RideEditActivity"
+            android:theme="@style/Theme.Bikey.ActionBarButtons"
             android:windowSoftInputMode="stateVisible" />
 
         <!-- Ride detail -->
@@ -152,10 +153,9 @@
             android:name="org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity"
             android:label="@string/heartRateMonitorScan_title" />
 
-        <!-- About activity which should be in the library manifest -->
+        <!-- About activity which is in jraf-android-util -->
         <activity
             android:name="org.jraf.android.util.about.AboutActivity"
-            android:theme="@style/Theme.AppCompat.Light"
             android:label="@string/about_title" />
     </application>
 

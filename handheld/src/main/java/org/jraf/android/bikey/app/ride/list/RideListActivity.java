@@ -123,6 +123,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
                 builder.addLink(getString(R.string.about_web_uri), getString(R.string.about_web_text));
                 builder.addLink(getString(R.string.about_sources_uri), getString(R.string.about_sources_text));
                 builder.addLink(getString(R.string.about_gplusCommunity_uri), getString(R.string.about_gplusCommunity_text));
+                builder.setIsLightIcons(true);
                 startActivity(builder.build(this));
                 return true;
 

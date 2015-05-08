@@ -3,6 +3,12 @@
     <style name="Theme.Bikey" parent="Theme.AppCompat.Light">
         <item name="android:listViewStyle">@style/Widget.Bikey.ListView</item>
         <item name="android:windowContentOverlay">@null</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="actionBarStyle">@style/Widget.Bikey.ActionBar</item>
+        <item name="android:textColorLink">@color/accent</item>
+        <item name="colorButtonNormal">@color/accent</item>
+        <item name="buttonStyle">@style/Widget.Bikey.Button</item>
+
     </style>
 
     <style name="Theme.Bikey.Display" parent="Theme.AppCompat.NoActionBar">
@@ -16,9 +22,12 @@
         <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Logo</item>
     </style>
 
+    <style name="Theme.Bikey.ActionBarButtons">
+        <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Buttons</item>
+    </style>
+
     <style name="Theme.Bikey.Map">
         <item name="windowActionBarOverlay">true</item>
         <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Translucent</item>
     </style>
-
 </resources>

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <color name="accent">@android:color/holo_blue_dark</color>
+
     <color name="bright_foreground_dark">#FFF</color>
     <color name="bright_foreground_disabled_dark">#8FFF</color>
     <color name="display_gps_first_fix">#0F0</color>
@@ -9,8 +11,8 @@
     <color name="ride_list_item_active">#309600</color>
     <color name="tab_bg_pressed">#DD33b5e5</color>
     <color name="tab_bg_checked">#D09c</color>
-    <color name="map_polyline">@android:color/holo_blue_dark</color>
-    <color name="graph_line">@android:color/holo_blue_dark</color>
+    <color name="map_polyline">@color/accent</color>
+    <color name="graph_line">@color/accent</color>
     <color name="action_bar_translucent_bg">#cddd</color>
 
 </resources>

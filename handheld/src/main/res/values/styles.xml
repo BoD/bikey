@@ -37,7 +37,8 @@
         <item name="logo">@drawable/ic_actionbar_logo</item>
     </style>
 
-    <style name="Widget.Bikey.ActionBar.Translucent">
+    <style name="Widget.Bikey.ActionBar.Translucent" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="contentInsetStart">72dp</item>
         <item name="android:background">@color/action_bar_translucent_bg</item>
     </style>
 

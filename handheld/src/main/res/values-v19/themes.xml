@@ -1,10 +1,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.Bikey.Map">
-        <item name="windowActionBarOverlay">true</item>
+    <style name="Theme.Bikey.Map" parent="Theme.Bikey.MapBase">
         <item name="android:windowTranslucentStatus">true</item>
         <item name="android:windowTranslucentNavigation">true</item>
-        <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Translucent</item>
     </style>
 
 </resources>

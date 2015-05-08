@@ -1,4 +1,4 @@
-<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <style name="Theme.Bikey" parent="Theme.AppCompat.Light">
         <item name="android:listViewStyle">@style/Widget.Bikey.ListView</item>
@@ -24,8 +24,16 @@
         <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Buttons</item>
     </style>
 
-    <style name="Theme.Bikey.Map">
-        <item name="windowActionBarOverlay">true</item>
-        <item name="actionBarStyle">@style/Widget.Bikey.ActionBar.Translucent</item>
+    <style name="Theme.Bikey.MapBase" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:listViewStyle">@style/Widget.Bikey.ListView</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="android:textColorLink">@color/accent</item>
+        <item name="colorButtonNormal">@color/accent</item>
+        <item name="buttonStyle">@style/Widget.Bikey.Button</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="Theme.Bikey.Map" parent="Theme.Bikey.MapBase" />
 </resources>

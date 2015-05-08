@@ -28,18 +28,17 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.log.LogManager;
@@ -68,7 +67,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
     private Uri mRideUri;
 
     @InjectView(R.id.conMap)
-    protected FrameLayout mConMap;
+    protected ViewGroup mConMap;
 
     @InjectView(R.id.vieStatusBarTint)
     protected View mVieStatusBarTint;
@@ -79,6 +78,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_map);
+        setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRideUri = getIntent().getData();
@@ -189,24 +189,11 @@ public class RideMapActivity extends BaseAppCompatActivity {
 
     private int getNavigationBarHeight() {
         int res = 0;
-        if (!hasNavigationBar()) return 0;
         int resourceId = getResources().getIdentifier("navigation_bar_height", "dimen", "android");
         if (resourceId > 0) {
             res = getResources().getDimensionPixelSize(resourceId);
         }
         return res;
-    }
-
-    private boolean hasNavigationBar() {
-        Resources res = getResources();
-        int resourceId = res.getIdentifier("config_showNavigationBar", "bool", "android");
-        if (resourceId != 0) {
-            boolean hasNav = res.getBoolean(resourceId);
-
-            return hasNav;
-        }
-        // Fallback
-        return !ViewConfiguration.get(this).hasPermanentMenuKey();
     }
 
     private void loadData() {
@@ -236,7 +223,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
                 if (mName != null) a.setTitle(mName);
 
                 // Map
-                // Add a padding since the map is below the action bar (and status bar / nav bar on >= kitkat)
+                // Add a padding since the map is below the action bar (+ status bar + nav bar if >= kitkat)
                 int statusBarHeight = 0;
                 int navigationBarHeight = 0;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

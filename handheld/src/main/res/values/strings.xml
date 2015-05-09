@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <string name="app_name" translatable="false">Bikey</string>
 
     <!-- Common -->
     <string name="common_done">Done</string>
     <string name="common_discard">Discard</string>
-    <string name="common_shareWith">Share with<xliff:g id="dotdotdot">&#8230;</xliff:g></string>
     <string name="common_yes">Yes</string>
     <string name="common_no">No</string>
 
@@ -41,6 +40,7 @@
     <string name="ride_list_notStarted">Not started</string>
     <string name="ride_list_active">In progress</string>
     <string name="ride_list_btnQuickStart">Quick Start</string>
+    <string name="ride_list_mergeDialog_title">Confirmation</string>
     <string name="ride_list_mergeDialog_message">%1$d items will be merged together</string>
     <string name="ride_list_mergedRide">Merged ride</string>
     <string name="ride_list_mergedRide_append">%1$s (merged)</string>
@@ -49,7 +49,6 @@
     <string name="display_tab_speed">Speed</string>
     <string name="display_tab_duration">Dur.</string>
     <string name="display_tab_distance">Dist.</string>
-    <string name="display_tab_averageMovingSpeed">Avg. mov.\nspeed</string>
     <string name="display_tab_heartRate">Heart rate</string>
     <string name="display_tab_compass">Comp.</string>
     <string name="display_tab_currentTime">Cur. time</string>
@@ -64,11 +63,6 @@
     <string name="export_choices_gpx">GPX file</string>
     <string name="export_choices_kml">KML file</string>
     <string name="export_choices_genymotion">Genymotion script</string>
-
-    <!-- Import -->
-    <string name="ride_list_importDialog_title">Choose ride file to import</string>
-    <string name="import_failToast">Could not import the rides.</string>
-    <string name="import_successToast">Successfully imported the rides.</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Save to storage</string>
@@ -112,6 +106,9 @@
     <string name="preference_androidWear_summary">Connect to an Android Wear smartwatch</string>
     <string name="preference_pebble_title">Pebble</string>
     <string name="preference_pebble_summary">Connect to a Pebble smartwatch</string>
+    <string name="preference_importDialog_title">Choose ride file to import</string>
+    <string name="preference_import_failToast">Could not import the rides.</string>
+    <string name="preference_import_successToast">Successfully imported the rides.</string>
 
     <!-- TTS -->
     <string name="speak_activate_ride" translatable="false">Ride started</string>
@@ -119,9 +116,6 @@
 
     <!-- About -->
     <string name="about_title">About</string>
-    <string name="about_action_sendLogs">Send logs</string>
-    <string name="about_sendingLogsToast">Logs are being sent.</string>
-    <string name="about_txtInfo1" translatable="false"><![CDATA[<b>BoD Bikey</b> v%1$s/%2$s<br/>Built on %3$s<font color="#808080"> – %4$s</font>]]></string>
     <string name="about_txtInfo2" tools:ignore="TypographyOther">Copyright (C) 2013–2015 Benoit \'BoD\' Lubek.\nAdditional code by Carmen Alvarez (c@rmen.ca).</string>
     <string name="about_txtInfo3" translatable="false">Licensed under the terms of the GNU General Public License.</string>
     <string name="about_email_uri" translatable="false">mailto:BoD@JRAF.org</string>
@@ -132,10 +126,6 @@
     <string name="about_sources_text" translatable="false">Source code on Github</string>
     <string name="about_gplusCommunity_uri" translatable="false">http://plus.google.com/communities/112883758989838442968</string>
     <string name="about_gplusCommunity_text" translatable="false">Beta test community on Google+</string>
-    <string name="about_btnShare">Share app</string>
-    <string name="about_btnRate">Rate app</string>
-    <string name="about_btnOtherApps">Other apps</string>
-    <string name="about_btnDonate">Donate</string>
     <string name="about_shareText_subject">Checkout out Bikey!</string>
     <string name="about_shareText_body">Bikey for Android is a most excellent app!\nCheck it out here:\nhttp://play.google.com/store/apps/details?id=%s</string>
 

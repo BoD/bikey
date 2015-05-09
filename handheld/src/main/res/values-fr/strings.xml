@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2" xmlns:tools="http://schemas.android.com/tools">
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Common -->
     <string name="common_done">Valider</string>
     <string name="common_discard">Annuler</string>
-    <string name="common_shareWith">Partager avec<xliff:g id="dotdotdot">&#8230;</xliff:g></string>
     <string name="common_yes">Oui</string>
     <string name="common_no">Non</string>
 
@@ -39,6 +38,7 @@
     <string name="ride_list_notStarted">Pas démarré</string>
     <string name="ride_list_active">En cours</string>
     <string name="ride_list_btnQuickStart">Démarrage Rapide</string>
+    <string name="ride_list_mergeDialog_title">Confirmation</string>
     <string name="ride_list_mergeDialog_message">%1$d éléments seront fusionnés</string>
     <string name="ride_list_mergedRide">Parcours fusionné</string>
     <string name="ride_list_mergedRide_append">%1$s (fusionné)</string>
@@ -47,7 +47,6 @@
     <string name="display_tab_speed">Vit.</string>
     <string name="display_tab_duration">Dur.</string>
     <string name="display_tab_distance">Dist.</string>
-    <string name="display_tab_averageMovingSpeed">Vit.\nmoy.</string>
     <string name="display_tab_heartRate">Cardio.</string>
     <string name="display_tab_compass">Bouss.</string>
     <string name="display_tab_currentTime">Heure</string>
@@ -62,11 +61,6 @@
     <string name="export_choices_gpx">Fichier GPX</string>
     <string name="export_choices_kml">Fichier KML</string>
     <string name="export_choices_genymotion">Script Genymotion</string>
-
-    <!-- Import -->
-    <string name="ride_list_importDialog_title">Sélectionner le fichier à importer</string>
-    <string name="import_failToast">Échec de l\'importation des parcours.</string>
-    <string name="import_successToast">Succès de l\'importation des parcours.</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Enregistrer sur stockage</string>
@@ -110,17 +104,13 @@
     <string name="preference_androidWear_summary">Se connecter à une smartwatch Android Wear</string>
     <string name="preference_pebble_title">Pebble</string>
     <string name="preference_pebble_summary">Se connecter à une smartwatch Pebble</string>
-
+    <string name="preference_importDialog_title">Sélectionner le fichier à importer</string>
+    <string name="preference_import_failToast">Échec de l\'importation des parcours.</string>
+    <string name="preference_import_successToast">Succès de l\'importation des parcours.</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>
-    <string name="about_action_sendLogs">Envoyer les logs</string>
-    <string name="about_sendingLogsToast">Logs en cours d\'envoi.</string>
     <string name="about_txtInfo2" tools:ignore="TypographyOther,TypographyDashes">Copyright (C) 2013-2015 Benoit \'BoD\' Lubek.\nCode additionnel par Carmen Alvarez (c@rmen.ca).</string>
-    <string name="about_btnShare">Partager</string>
-    <string name="about_btnRate">Votre avis</string>
-    <string name="about_btnOtherApps">Autres applis</string>
-    <string name="about_btnDonate">Faire un don</string>
     <string name="about_shareText_subject">Essayez Bikey !</string>
     <string name="about_shareText_body">Bikey pour Android est une appli excellente !\nTestez là ici :\nhttp://play.google.com/store/apps/details?id=%s</string>
 

@@ -135,7 +135,7 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
             importIntent.putExtra("CONTENT_TYPE", contentType);
         }
 
-        startActivityForResult(Intent.createChooser(importIntent, getString(R.string.ride_list_importDialog_title)), REQUEST_PICK_FILE_FOR_IMPORT);
+        startActivityForResult(Intent.createChooser(importIntent, getString(R.string.preference_importDialog_title)), REQUEST_PICK_FILE_FOR_IMPORT);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
             protected void doInBackground() throws Throwable {
                 DatabaseImporter.importDatabase(thiz, ridesFile);
             }
-        }.toastFail(R.string.import_failToast).toastOk(R.string.import_successToast)).execute(getSupportFragmentManager());
+        }.toastFail(R.string.preference_import_failToast).toastOk(R.string.preference_import_successToast)).execute(getSupportFragmentManager());
     }
 
 

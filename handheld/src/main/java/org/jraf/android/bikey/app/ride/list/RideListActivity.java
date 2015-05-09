@@ -219,7 +219,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
         String message = getString(R.string.ride_list_mergeDialog_message, quantity);
 
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_MERGE);
-        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.setTitle(R.string.ride_list_mergeDialog_title);
         dialog.setMessage(message);
         dialog.setPositiveButton(android.R.string.ok);
         dialog.setNegativeButton(android.R.string.cancel);

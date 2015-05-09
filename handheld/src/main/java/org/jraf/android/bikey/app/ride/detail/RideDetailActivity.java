@@ -27,25 +27,19 @@ package org.jraf.android.bikey.app.ride.detail;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
@@ -59,21 +53,32 @@ import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.widget.LabelTextView;
+import org.jraf.android.util.annotation.Background;
+import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.collection.CollectionUtil;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
+import org.jraf.android.util.handler.HandlerUtil;
 import org.jraf.android.util.log.wrapper.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.ui.graph.GraphView;
+
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class RideDetailActivity extends FragmentActivity implements AlertDialogListener {
+public class RideDetailActivity extends BaseAppCompatActivity implements AlertDialogListener {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
 
     private static final int POINTS_TO_GRAPH = 100;
@@ -154,7 +159,7 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_detail);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRideUri = getIntent().getData();
 
@@ -267,6 +272,9 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
                 List<Float> heartRateList = logManager.getHeartRateArray(rideUri, POINTS_TO_GRAPH);
                 mHeartRateArray = CollectionUtil.unwrap(heartRateList.toArray(new Float[heartRateList.size()]));
                 mHeartRateArray = MathUtil.getMovingAverage(mHeartRateArray, mHeartRateArray.length / 10);
+
+                // Make sure the map is actually available
+                getMap();
             }
 
             @Override
@@ -360,9 +368,30 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
      * Map.
      */
 
+    /**
+     * Blocks until the map is actually available.
+     */
+    @Background
     private GoogleMap getMap() {
         if (mMap == null) {
-            mMap = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+            final CountDownLatch latch = new CountDownLatch(1);
+            HandlerUtil.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+                    mapFragment.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap = googleMap;
+                            latch.countDown();
+                        }
+                    });
+                }
+            });
+
+            try {
+                latch.await(2, TimeUnit.SECONDS);
+            } catch (InterruptedException e) {}
         }
         return mMap;
     }
@@ -390,7 +419,7 @@ public class RideDetailActivity extends FragmentActivity implements AlertDialogL
     }
 
     private void delete() {
-        final long[] ids = { ContentUris.parseId(mRideUri) };
+        final long[] ids = {ContentUris.parseId(mRideUri)};
         new TaskFragment(new Task<RideDetailActivity>() {
             @Override
             protected void doInBackground() throws Throwable {

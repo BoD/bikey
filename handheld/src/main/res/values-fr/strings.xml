@@ -116,7 +116,7 @@
     <string name="about_title">À propos</string>
     <string name="about_action_sendLogs">Envoyer les logs</string>
     <string name="about_sendingLogsToast">Logs en cours d\'envoi.</string>
-    <string name="about_txtInfo2" tools:ignore="TypographyOther,TypographyDashes">Copyright (C) 2009-2014 Benoit \'BoD\' Lubek.\nCode additionnel par Carmen Alvarez (c@rmen.ca).</string>
+    <string name="about_txtInfo2" tools:ignore="TypographyOther,TypographyDashes">Copyright (C) 2013-2015 Benoit \'BoD\' Lubek.\nCode additionnel par Carmen Alvarez (c@rmen.ca).</string>
     <string name="about_btnShare">Partager</string>
     <string name="about_btnRate">Votre avis</string>
     <string name="about_btnOtherApps">Autres applis</string>
@@ -144,8 +144,8 @@
     <string name="ride_detail_cadence_section">Cadence</string>
     <string name="ride_detail_cadence_average_label">Moyenne</string>
     <string name="ride_detail_cadence_max_label">Max</string>
-    <string name="ride_detail_action_display">AFFICHEUR</string>
-    <string name="ride_detail_empty">Ce parcours n\`a aucune donnée.</string>
+    <string name="ride_detail_action_display">Afficheur</string>
+    <string name="ride_detail_empty">Ce parcours n\'a aucune donnée.</string>
     <string name="ride_detail_deleteDialog_message">Le parcours sera supprimé.</string>
     <string name="ride_detail_heartRate_section">Cardiofréquencemètre</string>
     <string name="ride_detail_heartRate_min_label">Min</string>

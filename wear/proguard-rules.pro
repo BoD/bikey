@@ -1,3 +1,10 @@
+# Do not obfuscate
+-dontobfuscate
+
+# Keep line numbers
+-renamesourcefileattribute SourceFile
+-keepattributes SourceFile,LineNumberTable
+
 # For Butterknife
 -dontwarn butterknife.internal.**
 -keep class **$$ViewInjector { *; }

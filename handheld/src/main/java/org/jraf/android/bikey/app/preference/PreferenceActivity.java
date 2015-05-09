@@ -33,20 +33,20 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
-import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
-import org.jraf.android.util.app.base.BaseFragmentActivity;
+import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class PreferenceActivity extends BaseFragmentActivity implements PreferenceCallbacks, AlertDialogListener {
+public class PreferenceActivity extends BaseAppCompatActivity implements PreferenceCallbacks, AlertDialogListener {
     private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
     private static final int REQUEST_SCAN_HEART_RATE_MONITOR = 1;
 
@@ -61,7 +61,7 @@ public class PreferenceActivity extends BaseFragmentActivity implements Preferen
 
         getFragmentManager().beginTransaction().replace(android.R.id.content, new MainPreferenceFragment()).commit();
 
-        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
 

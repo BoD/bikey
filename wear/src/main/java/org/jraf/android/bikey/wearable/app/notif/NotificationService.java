@@ -34,15 +34,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
-import com.google.android.gms.wearable.MessageEvent;
-import com.google.android.gms.wearable.Node;
-import com.google.android.gms.wearable.WearableListenerService;
-
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.common.wear.CommConstants;
@@ -51,6 +42,15 @@ import org.jraf.android.bikey.wearable.app.display.DisplayActivity;
 import org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.log.wrapper.Log;
+
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
+import com.google.android.gms.wearable.MessageEvent;
+import com.google.android.gms.wearable.Node;
+import com.google.android.gms.wearable.WearableListenerService;
 
 public class NotificationService extends WearableListenerService {
     private static final int NOTIFICATION_ID = 0;
@@ -165,7 +165,7 @@ public class NotificationService extends WearableListenerService {
     private Notification createNotification(boolean ongoing) {
         Notification.Builder mainNotifBuilder = new Notification.Builder(this);
         mainNotifBuilder.setOngoing(ongoing);
-        mainNotifBuilder.setSmallIcon(R.drawable.ic_launcher);
+        mainNotifBuilder.setSmallIcon(R.mipmap.ic_launcher);
         mainNotifBuilder.setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_notif_logo));
 
         long duration = System.currentTimeMillis() + mRideStartDateOffset;

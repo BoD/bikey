@@ -67,7 +67,7 @@
         <!-- Ride list -->
         <activity
             android:name="org.jraf.android.bikey.app.ride.list.RideListActivity"
-            android:icon="@drawable/ic_launcher"
+            android:icon="@mipmap/ic_launcher"
             android:theme="@style/Theme.Bikey.ActionBarLogo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

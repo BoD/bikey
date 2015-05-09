@@ -78,7 +78,7 @@ public class RideManager {
         values.putState(RideState.CREATED);
         values.putDuration(0l);
         values.putDistance(0f);
-        return values.insert(mContext.getContentResolver());
+        return values.insert(mContext);
     }
 
     @Background
@@ -89,12 +89,12 @@ public class RideManager {
         // Delete rides
         RideSelection rideWhere = new RideSelection();
         rideWhere.id(ids);
-        int res = rideWhere.delete(mContext.getContentResolver());
+        int res = rideWhere.delete(mContext);
 
         // Delete logs
         LogSelection logWhere = new LogSelection();
         logWhere.rideId(ids);
-        logWhere.delete(mContext.getContentResolver());
+        logWhere.delete(mContext);
 
         // If we just deleted the current ride, select another ride to be the current ride (if any).
         Uri currentRideUri = getCurrentRide();

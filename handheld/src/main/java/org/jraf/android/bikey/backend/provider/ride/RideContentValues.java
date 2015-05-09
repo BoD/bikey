@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,11 @@ package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
 
+import android.content.Context;
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractContentValues;
 
@@ -46,11 +49,21 @@ public class RideContentValues extends AbstractContentValues {
      * @param contentResolver The content resolver to use.
      * @param where The selection to use (can be {@code null}).
      */
-    public int update(ContentResolver contentResolver, RideSelection where) {
+    public int update(ContentResolver contentResolver, @Nullable RideSelection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
-    public RideContentValues putName(String value) {
+    /**
+     * Update row(s) using the values stored by this object and the given selection.
+     *
+     * @param contentResolver The content resolver to use.
+     * @param where The selection to use (can be {@code null}).
+     */
+    public int update(Context context, @Nullable RideSelection where) {
+        return context.getContentResolver().update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
+    }
+
+    public RideContentValues putName(@Nullable String value) {
         mContentValues.put(RideColumns.NAME, value);
         return this;
     }
@@ -60,9 +73,8 @@ public class RideContentValues extends AbstractContentValues {
         return this;
     }
 
-
-    public RideContentValues putCreatedDate(Date value) {
-        if (value == null) throw new IllegalArgumentException("value for createdDate must not be null");
+    public RideContentValues putCreatedDate(@NonNull Date value) {
+        if (value == null) throw new IllegalArgumentException("createdDate must not be null");
         mContentValues.put(RideColumns.CREATED_DATE, value.getTime());
         return this;
     }
@@ -73,16 +85,14 @@ public class RideContentValues extends AbstractContentValues {
         return this;
     }
 
-
-    public RideContentValues putState(RideState value) {
-        if (value == null) throw new IllegalArgumentException("value for state must not be null");
+    public RideContentValues putState(@NonNull RideState value) {
+        if (value == null) throw new IllegalArgumentException("state must not be null");
         mContentValues.put(RideColumns.STATE, value.ordinal());
         return this;
     }
 
 
-
-    public RideContentValues putFirstActivatedDate(Date value) {
+    public RideContentValues putFirstActivatedDate(@Nullable Date value) {
         mContentValues.put(RideColumns.FIRST_ACTIVATED_DATE, value == null ? null : value.getTime());
         return this;
     }
@@ -92,13 +102,12 @@ public class RideContentValues extends AbstractContentValues {
         return this;
     }
 
-    public RideContentValues putFirstActivatedDate(Long value) {
+    public RideContentValues putFirstActivatedDate(@Nullable Long value) {
         mContentValues.put(RideColumns.FIRST_ACTIVATED_DATE, value);
         return this;
     }
 
-
-    public RideContentValues putActivatedDate(Date value) {
+    public RideContentValues putActivatedDate(@Nullable Date value) {
         mContentValues.put(RideColumns.ACTIVATED_DATE, value == null ? null : value.getTime());
         return this;
     }
@@ -108,11 +117,10 @@ public class RideContentValues extends AbstractContentValues {
         return this;
     }
 
-    public RideContentValues putActivatedDate(Long value) {
+    public RideContentValues putActivatedDate(@Nullable Long value) {
         mContentValues.put(RideColumns.ACTIVATED_DATE, value);
         return this;
     }
-
 
     public RideContentValues putDuration(long value) {
         mContentValues.put(RideColumns.DURATION, value);
@@ -120,11 +128,9 @@ public class RideContentValues extends AbstractContentValues {
     }
 
 
-
     public RideContentValues putDistance(float value) {
         mContentValues.put(RideColumns.DISTANCE, value);
         return this;
     }
-
 
 }

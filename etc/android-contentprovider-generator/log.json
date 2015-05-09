@@ -6,53 +6,53 @@
 			"nullable": false,
 			"foreignKey": {
 				"table": "ride",
-				"onDelete": "CASCADE",
-			},
+				"onDelete": "CASCADE"
+			}
 		},
 		{
 			"name": "recorded_date",
 			"type": "Date",
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "lat",
 			"type": "Double",
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "lon",
 			"type": "Double",
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "ele",
 			"type": "Double",
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "log_duration",
 			"type": "Long",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "log_distance",
 			"type": "Float",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "speed",
 			"type": "Float",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "cadence",
 			"type": "Float",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "heart_rate",
 			"type": "Integer",
-			"nullable": true,
-		},
-	],
+			"nullable": true
+		}
+	]
 }

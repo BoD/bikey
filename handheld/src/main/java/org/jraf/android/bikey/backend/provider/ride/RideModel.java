@@ -24,24 +24,60 @@
  */
 package org.jraf.android.bikey.backend.provider.ride;
 
+import org.jraf.android.bikey.backend.provider.base.BaseModel;
+
+import java.util.Date;
+
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 /**
- * Possible values for the {@code state} column of the {@code ride} table.
+ * Data model for the {@code ride} table.
  */
-public enum RideState {
-    /**
-     * Initial state: the ride has been created but has not started yet.
-     */
-    CREATED,
+public interface RideModel extends BaseModel {
 
     /**
-     * The ride is currently active and being recorded.<br/>
-Only one ride can be active at any time.
+     * Get the {@code name} value.
+     * Can be {@code null}.
      */
-    ACTIVE,
+    @Nullable
+    String getName();
 
     /**
-     * The ride has been started but recording is currently paused.
+     * Get the {@code created_date} value.
+     * Cannot be {@code null}.
      */
-    PAUSED,
+    @NonNull
+    Date getCreatedDate();
 
+    /**
+     * Get the {@code state} value.
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    RideState getState();
+
+    /**
+     * Get the {@code first_activated_date} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    Date getFirstActivatedDate();
+
+    /**
+     * Get the {@code activated_date} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    Date getActivatedDate();
+
+    /**
+     * Get the {@code duration} value.
+     */
+    long getDuration();
+
+    /**
+     * Get the {@code distance} value.
+     */
+    float getDistance();
 }

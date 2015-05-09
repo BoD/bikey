@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,41 +27,60 @@ package org.jraf.android.bikey.backend.provider.ride;
 import java.util.Date;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractCursor;
 
 /**
  * Cursor wrapper for the {@code ride} table.
  */
-public class RideCursor extends AbstractCursor {
+public class RideCursor extends AbstractCursor implements RideModel {
     public RideCursor(Cursor cursor) {
         super(cursor);
+    }
+
+    /**
+     * Primary key.
+     */
+    public long getId() {
+        Long res = getLongOrNull(RideColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code name} value.
      * Can be {@code null}.
      */
+    @Nullable
     public String getName() {
-        Integer index = getCachedColumnIndexOrThrow(RideColumns.NAME);
-        return getString(index);
+        String res = getStringOrNull(RideColumns.NAME);
+        return res;
     }
 
     /**
      * Get the {@code created_date} value.
      * Cannot be {@code null}.
      */
+    @NonNull
     public Date getCreatedDate() {
-        return getDate(RideColumns.CREATED_DATE);
+        Date res = getDateOrNull(RideColumns.CREATED_DATE);
+        if (res == null)
+            throw new NullPointerException("The value of 'created_date' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code state} value.
      * Cannot be {@code null}.
      */
+    @NonNull
     public RideState getState() {
         Integer intValue = getIntegerOrNull(RideColumns.STATE);
-        if (intValue == null) return null;
+        if (intValue == null)
+            throw new NullPointerException("The value of 'state' in the database was null, which is not allowed according to the model definition");
         return RideState.values()[intValue];
     }
 
@@ -69,29 +88,39 @@ public class RideCursor extends AbstractCursor {
      * Get the {@code first_activated_date} value.
      * Can be {@code null}.
      */
+    @Nullable
     public Date getFirstActivatedDate() {
-        return getDate(RideColumns.FIRST_ACTIVATED_DATE);
+        Date res = getDateOrNull(RideColumns.FIRST_ACTIVATED_DATE);
+        return res;
     }
 
     /**
      * Get the {@code activated_date} value.
      * Can be {@code null}.
      */
+    @Nullable
     public Date getActivatedDate() {
-        return getDate(RideColumns.ACTIVATED_DATE);
+        Date res = getDateOrNull(RideColumns.ACTIVATED_DATE);
+        return res;
     }
 
     /**
      * Get the {@code duration} value.
      */
     public long getDuration() {
-        return getLongOrNull(RideColumns.DURATION);
+        Long res = getLongOrNull(RideColumns.DURATION);
+        if (res == null)
+            throw new NullPointerException("The value of 'duration' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code distance} value.
      */
     public float getDistance() {
-        return getFloatOrNull(RideColumns.DISTANCE);
+        Float res = getFloatOrNull(RideColumns.DISTANCE);
+        if (res == null)
+            throw new NullPointerException("The value of 'distance' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 }

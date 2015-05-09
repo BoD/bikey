@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,13 +24,12 @@
  */
 package org.jraf.android.bikey.backend.provider.log;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import android.net.Uri;
 import android.provider.BaseColumns;
 
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
+import org.jraf.android.bikey.backend.provider.log.LogColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 
 /**
  * Columns for the {@code log} table.
@@ -39,56 +38,66 @@ public class LogColumns implements BaseColumns {
     public static final String TABLE_NAME = "log";
     public static final Uri CONTENT_URI = Uri.parse(BikeyProvider.CONTENT_URI_BASE + "/" + TABLE_NAME);
 
+    /**
+     * Primary key.
+     */
     public static final String _ID = BaseColumns._ID;
+
     public static final String RIDE_ID = "ride_id";
+
     public static final String RECORDED_DATE = "recorded_date";
+
     public static final String LAT = "lat";
+
     public static final String LON = "lon";
+
     public static final String ELE = "ele";
+
     public static final String LOG_DURATION = "log_duration";
+
     public static final String LOG_DISTANCE = "log_distance";
+
     public static final String SPEED = "speed";
+
     public static final String CADENCE = "cadence";
+
     public static final String HEART_RATE = "heart_rate";
+
 
     public static final String DEFAULT_ORDER = TABLE_NAME + "." +_ID;
 
     // @formatter:off
-    public static final String[] FULL_PROJECTION = new String[] {
-            TABLE_NAME + "." + _ID + " AS " + BaseColumns._ID,
-            TABLE_NAME + "." + RIDE_ID,
-            TABLE_NAME + "." + RECORDED_DATE,
-            TABLE_NAME + "." + LAT,
-            TABLE_NAME + "." + LON,
-            TABLE_NAME + "." + ELE,
-            TABLE_NAME + "." + LOG_DURATION,
-            TABLE_NAME + "." + LOG_DISTANCE,
-            TABLE_NAME + "." + SPEED,
-            TABLE_NAME + "." + CADENCE,
-            TABLE_NAME + "." + HEART_RATE
+    public static final String[] ALL_COLUMNS = new String[] {
+            _ID,
+            RIDE_ID,
+            RECORDED_DATE,
+            LAT,
+            LON,
+            ELE,
+            LOG_DURATION,
+            LOG_DISTANCE,
+            SPEED,
+            CADENCE,
+            HEART_RATE
     };
     // @formatter:on
-
-    private static final Set<String> ALL_COLUMNS = new HashSet<String>();
-    static {
-        ALL_COLUMNS.add(_ID);
-        ALL_COLUMNS.add(RIDE_ID);
-        ALL_COLUMNS.add(RECORDED_DATE);
-        ALL_COLUMNS.add(LAT);
-        ALL_COLUMNS.add(LON);
-        ALL_COLUMNS.add(ELE);
-        ALL_COLUMNS.add(LOG_DURATION);
-        ALL_COLUMNS.add(LOG_DISTANCE);
-        ALL_COLUMNS.add(SPEED);
-        ALL_COLUMNS.add(CADENCE);
-        ALL_COLUMNS.add(HEART_RATE);
-    }
 
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
-            if (ALL_COLUMNS.contains(c)) return true;
+            if (c.equals(RIDE_ID) || c.contains("." + RIDE_ID)) return true;
+            if (c.equals(RECORDED_DATE) || c.contains("." + RECORDED_DATE)) return true;
+            if (c.equals(LAT) || c.contains("." + LAT)) return true;
+            if (c.equals(LON) || c.contains("." + LON)) return true;
+            if (c.equals(ELE) || c.contains("." + ELE)) return true;
+            if (c.equals(LOG_DURATION) || c.contains("." + LOG_DURATION)) return true;
+            if (c.equals(LOG_DISTANCE) || c.contains("." + LOG_DISTANCE)) return true;
+            if (c.equals(SPEED) || c.contains("." + SPEED)) return true;
+            if (c.equals(CADENCE) || c.contains("." + CADENCE)) return true;
+            if (c.equals(HEART_RATE) || c.contains("." + HEART_RATE)) return true;
         }
         return false;
     }
+
+    public static final String PREFIX_RIDE = TABLE_NAME + "__" + RideColumns.TABLE_NAME;
 }

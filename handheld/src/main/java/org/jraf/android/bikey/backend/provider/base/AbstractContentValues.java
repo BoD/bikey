@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,12 +24,13 @@
  */
 package org.jraf.android.bikey.backend.provider.base;
 
+import android.content.Context;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.net.Uri;
 
 public abstract class AbstractContentValues {
-    protected ContentValues mContentValues = new ContentValues();
+    protected final ContentValues mContentValues = new ContentValues();
 
     /**
      * Returns the {@code uri} argument to pass to the {@code ContentResolver} methods.
@@ -45,10 +46,19 @@ public abstract class AbstractContentValues {
 
     /**
      * Inserts a row into a table using the values stored by this object.
-     * 
+     *
      * @param contentResolver The content resolver to use.
      */
     public Uri insert(ContentResolver contentResolver) {
         return contentResolver.insert(uri(), values());
+    }
+
+    /**
+     * Inserts a row into a table using the values stored by this object.
+     *
+     * @param context The context to use.
+     */
+    public Uri insert(Context context) {
+        return context.getContentResolver().insert(uri(), values());
     }
 }

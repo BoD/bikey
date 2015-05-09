@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ import android.content.Context;
 import android.database.DatabaseErrorHandler;
 import android.database.DefaultDatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.util.Log;
@@ -48,7 +47,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private final BikeySQLiteOpenHelperCallbacks mOpenHelperCallbacks;
 
     // @formatter:off
-    private static final String SQL_CREATE_TABLE_LOG = "CREATE TABLE IF NOT EXISTS "
+    public static final String SQL_CREATE_TABLE_LOG = "CREATE TABLE IF NOT EXISTS "
             + LogColumns.TABLE_NAME + " ( "
             + LogColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + LogColumns.RIDE_ID + " INTEGER NOT NULL, "
@@ -61,10 +60,10 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
             + LogColumns.SPEED + " REAL, "
             + LogColumns.CADENCE + " REAL, "
             + LogColumns.HEART_RATE + " INTEGER "
-            + ", CONSTRAINT fk_ride_id FOREIGN KEY (ride_id) REFERENCES ride (_id) ON DELETE CASCADE"
+            + ", CONSTRAINT fk_ride_id FOREIGN KEY (" + LogColumns.RIDE_ID + ") REFERENCES ride (_id) ON DELETE CASCADE"
             + " );";
 
-    private static final String SQL_CREATE_TABLE_RIDE = "CREATE TABLE IF NOT EXISTS "
+    public static final String SQL_CREATE_TABLE_RIDE = "CREATE TABLE IF NOT EXISTS "
             + RideColumns.TABLE_NAME + " ( "
             + RideColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
             + RideColumns.NAME + " TEXT, "
@@ -99,13 +98,12 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     /*
      * Pre Honeycomb.
      */
-
     private static BikeySQLiteOpenHelper newInstancePreHoneycomb(Context context) {
-        return new BikeySQLiteOpenHelper(context, DATABASE_FILE_NAME, null, DATABASE_VERSION);
+        return new BikeySQLiteOpenHelper(context);
     }
 
-    private BikeySQLiteOpenHelper(Context context, String name, CursorFactory factory, int version) {
-        super(context, name, factory, version);
+    private BikeySQLiteOpenHelper(Context context) {
+        super(context, DATABASE_FILE_NAME, null, DATABASE_VERSION);
         mContext = context;
         mOpenHelperCallbacks = new BikeySQLiteOpenHelperCallbacks();
     }
@@ -114,15 +112,14 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     /*
      * Post Honeycomb.
      */
-
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     private static BikeySQLiteOpenHelper newInstancePostHoneycomb(Context context) {
-        return new BikeySQLiteOpenHelper(context, DATABASE_FILE_NAME, null, DATABASE_VERSION, new DefaultDatabaseErrorHandler());
+        return new BikeySQLiteOpenHelper(context, new DefaultDatabaseErrorHandler());
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    private BikeySQLiteOpenHelper(Context context, String name, CursorFactory factory, int version, DatabaseErrorHandler errorHandler) {
-        super(context, name, factory, version, errorHandler);
+    private BikeySQLiteOpenHelper(Context context, DatabaseErrorHandler errorHandler) {
+        super(context, DATABASE_FILE_NAME, null, DATABASE_VERSION, errorHandler);
         mContext = context;
         mOpenHelperCallbacks = new BikeySQLiteOpenHelperCallbacks();
     }
@@ -162,7 +159,6 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private void setForeignKeyConstraintsEnabledPostJellyBean(SQLiteDatabase db) {
         db.setForeignKeyConstraintsEnabled(true);
     }
-
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

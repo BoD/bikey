@@ -86,7 +86,7 @@ public class LogManager {
         values.putCadence(cadence);
         values.putHeartRate(heartRate);
 
-        Uri res = mContext.getContentResolver().insert(LogColumns.CONTENT_URI, values.values());
+        Uri res = values.insert(mContext);
 
         // Update total distance for ride
         float totalDistance = getTotalDistance(rideUri);
@@ -108,7 +108,7 @@ public class LogManager {
         String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return 0;
             return c.getFloat(0);
@@ -129,7 +129,7 @@ public class LogManager {
         String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")/sum(" + LogColumns.LOG_DURATION + ")*1000" };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S).and().speedLtEq(max);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return 0;
             return c.getFloat(0);
@@ -151,7 +151,7 @@ public class LogManager {
         String[] projection = { "avg(" + LogColumns.CADENCE + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().cadenceGtEq(min).and().cadenceLtEq(max);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
@@ -174,7 +174,7 @@ public class LogManager {
         String[] projection = { "avg(" + LogColumns.HEART_RATE + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().heartRateGtEq((int) min).and().heartRateLtEq((int) max);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
@@ -190,7 +190,7 @@ public class LogManager {
         String[] projection = { "sum(" + LogColumns.LOG_DURATION + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
@@ -213,7 +213,7 @@ public class LogManager {
         String[] projection = { column };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().addRaw(column + " IS NOT NULL");
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), column + " DESC LIMIT " + count / 10);
+        Cursor c = where.query(mContext, projection, column + " DESC LIMIT " + count / 10);
         try {
             if (!c.moveToLast()) return 0;
             return c.getFloat(0);
@@ -231,7 +231,7 @@ public class LogManager {
         String[] projection = { column };
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().addRaw(column + " IS NOT NULL");
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), column);
+        Cursor c = where.query(mContext, projection, column);
         try {
             if (!c.moveToFirst()) return 0;
             int count = c.getCount();
@@ -276,7 +276,7 @@ public class LogManager {
         String[] projection = { "min(" + LogColumns.RECORDED_DATE + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
@@ -292,7 +292,7 @@ public class LogManager {
         String[] projection = { "max(" + LogColumns.RECORDED_DATE + ")" };
         LogSelection where = new LogSelection();
         where.rideId(rideId);
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return null;
             if (c.isNull(0)) return null;
@@ -308,7 +308,7 @@ public class LogManager {
         LogSelection where = new LogSelection();
         where.rideId(rideId);
         int count;
-        Cursor c = mContext.getContentResolver().query(LogColumns.CONTENT_URI, projection, where.sel(), where.args(), null);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToNext()) return null;
             count = c.getInt(0);
@@ -333,7 +333,7 @@ public class LogManager {
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
         where.rideId(rideId).and().addRaw(LogColumns._ID + "%" + ratio + "=0");
-        LogCursor cursor = where.query(mContext.getContentResolver(), projection);
+        LogCursor cursor = where.query(mContext, projection);
         try {
             while (cursor.moveToNext()) {
                 res.add(new LatLng(cursor.getLat(), cursor.getLon()));
@@ -359,7 +359,7 @@ public class LogManager {
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
         where.rideId(rideId).and().speedNot((Float) null).and().addRaw(LogColumns._ID + "%" + ratio + "=0");
-        LogCursor cursor = where.query(mContext.getContentResolver(), projection);
+        LogCursor cursor = where.query(mContext, projection);
         try {
             while (cursor.moveToNext()) {
                 res.add(cursor.getSpeed());
@@ -385,7 +385,7 @@ public class LogManager {
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
         where.rideId(rideId).and().cadenceNot((Float) null).and().addRaw(LogColumns._ID + "%" + ratio + "=0");
-        LogCursor cursor = where.query(mContext.getContentResolver(), projection);
+        LogCursor cursor = where.query(mContext, projection);
         try {
             while (cursor.moveToNext()) {
                 res.add(cursor.getCadence());
@@ -411,7 +411,7 @@ public class LogManager {
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
         where.rideId(rideId).and().heartRateNot((Integer) null).and().addRaw(LogColumns._ID + "%" + ratio + "=0");
-        LogCursor cursor = where.query(mContext.getContentResolver(), projection);
+        LogCursor cursor = where.query(mContext, projection);
         try {
             while (cursor.moveToNext()) {
                 res.add(Float.valueOf(cursor.getHeartRate()));

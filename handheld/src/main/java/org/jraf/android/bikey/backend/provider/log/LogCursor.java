@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -27,6 +27,8 @@ package org.jraf.android.bikey.backend.provider.log;
 import java.util.Date;
 
 import android.database.Cursor;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractCursor;
 import org.jraf.android.bikey.backend.provider.ride.*;
@@ -34,111 +36,62 @@ import org.jraf.android.bikey.backend.provider.ride.*;
 /**
  * Cursor wrapper for the {@code log} table.
  */
-public class LogCursor extends AbstractCursor {
+public class LogCursor extends AbstractCursor implements LogModel {
     public LogCursor(Cursor cursor) {
         super(cursor);
+    }
+
+    /**
+     * Primary key.
+     */
+    public long getId() {
+        Long res = getLongOrNull(LogColumns._ID);
+        if (res == null)
+            throw new NullPointerException("The value of '_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code ride_id} value.
      */
     public long getRideId() {
-        return getLongOrNull(LogColumns.RIDE_ID);
-    }
-
-    /**
-     * Get the {@code recorded_date} value.
-     * Cannot be {@code null}.
-     */
-    public Date getRecordedDate() {
-        return getDate(LogColumns.RECORDED_DATE);
-    }
-
-    /**
-     * Get the {@code lat} value.
-     */
-    public double getLat() {
-        return getDoubleOrNull(LogColumns.LAT);
-    }
-
-    /**
-     * Get the {@code lon} value.
-     */
-    public double getLon() {
-        return getDoubleOrNull(LogColumns.LON);
-    }
-
-    /**
-     * Get the {@code ele} value.
-     */
-    public double getEle() {
-        return getDoubleOrNull(LogColumns.ELE);
-    }
-
-    /**
-     * Get the {@code log_duration} value.
-     * Can be {@code null}.
-     */
-    public Long getLogDuration() {
-        return getLongOrNull(LogColumns.LOG_DURATION);
-    }
-
-    /**
-     * Get the {@code log_distance} value.
-     * Can be {@code null}.
-     */
-    public Float getLogDistance() {
-        return getFloatOrNull(LogColumns.LOG_DISTANCE);
-    }
-
-    /**
-     * Get the {@code speed} value.
-     * Can be {@code null}.
-     */
-    public Float getSpeed() {
-        return getFloatOrNull(LogColumns.SPEED);
-    }
-
-    /**
-     * Get the {@code cadence} value.
-     * Can be {@code null}.
-     */
-    public Float getCadence() {
-        return getFloatOrNull(LogColumns.CADENCE);
-    }
-
-    /**
-     * Get the {@code heart_rate} value.
-     * Can be {@code null}.
-     */
-    public Integer getHeartRate() {
-        return getIntegerOrNull(LogColumns.HEART_RATE);
+        Long res = getLongOrNull(LogColumns.RIDE_ID);
+        if (res == null)
+            throw new NullPointerException("The value of 'ride_id' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code name} value.
      * Can be {@code null}.
      */
-    public String getName() {
-        Integer index = getCachedColumnIndexOrThrow(RideColumns.NAME);
-        return getString(index);
+    @Nullable
+    public String getRideName() {
+        String res = getStringOrNull(RideColumns.NAME);
+        return res;
     }
 
     /**
      * Get the {@code created_date} value.
      * Cannot be {@code null}.
      */
-    public Date getCreatedDate() {
-        return getDate(RideColumns.CREATED_DATE);
+    @NonNull
+    public Date getRideCreatedDate() {
+        Date res = getDateOrNull(RideColumns.CREATED_DATE);
+        if (res == null)
+            throw new NullPointerException("The value of 'created_date' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code state} value.
      * Cannot be {@code null}.
      */
-    public RideState getState() {
+    @NonNull
+    public RideState getRideState() {
         Integer intValue = getIntegerOrNull(RideColumns.STATE);
-        if (intValue == null) return null;
+        if (intValue == null)
+            throw new NullPointerException("The value of 'state' in the database was null, which is not allowed according to the model definition");
         return RideState.values()[intValue];
     }
 
@@ -146,29 +99,131 @@ public class LogCursor extends AbstractCursor {
      * Get the {@code first_activated_date} value.
      * Can be {@code null}.
      */
-    public Date getFirstActivatedDate() {
-        return getDate(RideColumns.FIRST_ACTIVATED_DATE);
+    @Nullable
+    public Date getRideFirstActivatedDate() {
+        Date res = getDateOrNull(RideColumns.FIRST_ACTIVATED_DATE);
+        return res;
     }
 
     /**
      * Get the {@code activated_date} value.
      * Can be {@code null}.
      */
-    public Date getActivatedDate() {
-        return getDate(RideColumns.ACTIVATED_DATE);
+    @Nullable
+    public Date getRideActivatedDate() {
+        Date res = getDateOrNull(RideColumns.ACTIVATED_DATE);
+        return res;
     }
 
     /**
      * Get the {@code duration} value.
      */
-    public long getDuration() {
-        return getLongOrNull(RideColumns.DURATION);
+    public long getRideDuration() {
+        Long res = getLongOrNull(RideColumns.DURATION);
+        if (res == null)
+            throw new NullPointerException("The value of 'duration' in the database was null, which is not allowed according to the model definition");
+        return res;
     }
 
     /**
      * Get the {@code distance} value.
      */
-    public float getDistance() {
-        return getFloatOrNull(RideColumns.DISTANCE);
+    public float getRideDistance() {
+        Float res = getFloatOrNull(RideColumns.DISTANCE);
+        if (res == null)
+            throw new NullPointerException("The value of 'distance' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
+     * Get the {@code recorded_date} value.
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    public Date getRecordedDate() {
+        Date res = getDateOrNull(LogColumns.RECORDED_DATE);
+        if (res == null)
+            throw new NullPointerException("The value of 'recorded_date' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
+     * Get the {@code lat} value.
+     */
+    public double getLat() {
+        Double res = getDoubleOrNull(LogColumns.LAT);
+        if (res == null)
+            throw new NullPointerException("The value of 'lat' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
+     * Get the {@code lon} value.
+     */
+    public double getLon() {
+        Double res = getDoubleOrNull(LogColumns.LON);
+        if (res == null)
+            throw new NullPointerException("The value of 'lon' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
+     * Get the {@code ele} value.
+     */
+    public double getEle() {
+        Double res = getDoubleOrNull(LogColumns.ELE);
+        if (res == null)
+            throw new NullPointerException("The value of 'ele' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
+     * Get the {@code log_duration} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    public Long getLogDuration() {
+        Long res = getLongOrNull(LogColumns.LOG_DURATION);
+        return res;
+    }
+
+    /**
+     * Get the {@code log_distance} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    public Float getLogDistance() {
+        Float res = getFloatOrNull(LogColumns.LOG_DISTANCE);
+        return res;
+    }
+
+    /**
+     * Get the {@code speed} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    public Float getSpeed() {
+        Float res = getFloatOrNull(LogColumns.SPEED);
+        return res;
+    }
+
+    /**
+     * Get the {@code cadence} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    public Float getCadence() {
+        Float res = getFloatOrNull(LogColumns.CADENCE);
+        return res;
+    }
+
+    /**
+     * Get the {@code heart_rate} value.
+     * Can be {@code null}.
+     */
+    @Nullable
+    public Integer getHeartRate() {
+        Integer res = getIntegerOrNull(LogColumns.HEART_RATE);
+        return res;
     }
 }

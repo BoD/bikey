@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,6 +26,7 @@ package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
 
+import android.content.Context;
 import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
@@ -37,7 +38,7 @@ import org.jraf.android.bikey.backend.provider.base.AbstractSelection;
  */
 public class RideSelection extends AbstractSelection<RideSelection> {
     @Override
-    public Uri uri() {
+    protected Uri baseUri() {
         return RideColumns.CONTENT_URI;
     }
 
@@ -57,25 +58,53 @@ public class RideSelection extends AbstractSelection<RideSelection> {
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null)}.
      */
     public RideCursor query(ContentResolver contentResolver, String[] projection) {
         return query(contentResolver, projection, null);
     }
 
     /**
-     * Equivalent of calling {@code query(contentResolver, projection, null, null}.
+     * Equivalent of calling {@code query(contentResolver, projection, null, null)}.
      */
     public RideCursor query(ContentResolver contentResolver) {
         return query(contentResolver, null, null);
     }
 
-
-    public RideSelection id(long... value) {
-        addEquals(RideColumns._ID, toObjectArray(value));
-        return this;
+    /**
+     * Query the given content resolver using this selection.
+     *
+     * @param context The context to use for the query.
+     * @param projection A list of which columns to return. Passing null will return all columns, which is inefficient.
+     * @param sortOrder How to order the rows, formatted as an SQL ORDER BY clause (excluding the ORDER BY itself). Passing null will use the default sort
+     *            order, which may be unordered.
+     * @return A {@code RideCursor} object, which is positioned before the first entry, or null.
+     */
+    public RideCursor query(Context context, String[] projection, String sortOrder) {
+        Cursor cursor = context.getContentResolver().query(uri(), projection, sel(), args(), sortOrder);
+        if (cursor == null) return null;
+        return new RideCursor(cursor);
     }
 
+    /**
+     * Equivalent of calling {@code query(context, projection, null)}.
+     */
+    public RideCursor query(Context context, String[] projection) {
+        return query(context, projection, null);
+    }
+
+    /**
+     * Equivalent of calling {@code query(context, projection, null, null)}.
+     */
+    public RideCursor query(Context context) {
+        return query(context, null, null);
+    }
+
+
+    public RideSelection id(long... value) {
+        addEquals("ride." + RideColumns._ID, toObjectArray(value));
+        return this;
+    }
 
     public RideSelection name(String... value) {
         addEquals(RideColumns.NAME, value);
@@ -89,6 +118,21 @@ public class RideSelection extends AbstractSelection<RideSelection> {
 
     public RideSelection nameLike(String... value) {
         addLike(RideColumns.NAME, value);
+        return this;
+    }
+
+    public RideSelection nameContains(String... value) {
+        addContains(RideColumns.NAME, value);
+        return this;
+    }
+
+    public RideSelection nameStartsWith(String... value) {
+        addStartsWith(RideColumns.NAME, value);
+        return this;
+    }
+
+    public RideSelection nameEndsWith(String... value) {
+        addEndsWith(RideColumns.NAME, value);
         return this;
     }
 

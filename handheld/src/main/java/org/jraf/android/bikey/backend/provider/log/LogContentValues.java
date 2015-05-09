@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -26,8 +26,11 @@ package org.jraf.android.bikey.backend.provider.log;
 
 import java.util.Date;
 
+import android.content.Context;
 import android.content.ContentResolver;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractContentValues;
 
@@ -46,8 +49,18 @@ public class LogContentValues extends AbstractContentValues {
      * @param contentResolver The content resolver to use.
      * @param where The selection to use (can be {@code null}).
      */
-    public int update(ContentResolver contentResolver, LogSelection where) {
+    public int update(ContentResolver contentResolver, @Nullable LogSelection where) {
         return contentResolver.update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
+    }
+
+    /**
+     * Update row(s) using the values stored by this object and the given selection.
+     *
+     * @param contentResolver The content resolver to use.
+     * @param where The selection to use (can be {@code null}).
+     */
+    public int update(Context context, @Nullable LogSelection where) {
+        return context.getContentResolver().update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
 
     public LogContentValues putRideId(long value) {
@@ -56,9 +69,8 @@ public class LogContentValues extends AbstractContentValues {
     }
 
 
-
-    public LogContentValues putRecordedDate(Date value) {
-        if (value == null) throw new IllegalArgumentException("value for recordedDate must not be null");
+    public LogContentValues putRecordedDate(@NonNull Date value) {
+        if (value == null) throw new IllegalArgumentException("recordedDate must not be null");
         mContentValues.put(LogColumns.RECORDED_DATE, value.getTime());
         return this;
     }
@@ -69,12 +81,10 @@ public class LogContentValues extends AbstractContentValues {
         return this;
     }
 
-
     public LogContentValues putLat(double value) {
         mContentValues.put(LogColumns.LAT, value);
         return this;
     }
-
 
 
     public LogContentValues putLon(double value) {
@@ -83,15 +93,13 @@ public class LogContentValues extends AbstractContentValues {
     }
 
 
-
     public LogContentValues putEle(double value) {
         mContentValues.put(LogColumns.ELE, value);
         return this;
     }
 
 
-
-    public LogContentValues putLogDuration(Long value) {
+    public LogContentValues putLogDuration(@Nullable Long value) {
         mContentValues.put(LogColumns.LOG_DURATION, value);
         return this;
     }
@@ -101,8 +109,7 @@ public class LogContentValues extends AbstractContentValues {
         return this;
     }
 
-
-    public LogContentValues putLogDistance(Float value) {
+    public LogContentValues putLogDistance(@Nullable Float value) {
         mContentValues.put(LogColumns.LOG_DISTANCE, value);
         return this;
     }
@@ -112,8 +119,7 @@ public class LogContentValues extends AbstractContentValues {
         return this;
     }
 
-
-    public LogContentValues putSpeed(Float value) {
+    public LogContentValues putSpeed(@Nullable Float value) {
         mContentValues.put(LogColumns.SPEED, value);
         return this;
     }
@@ -123,8 +129,7 @@ public class LogContentValues extends AbstractContentValues {
         return this;
     }
 
-
-    public LogContentValues putCadence(Float value) {
+    public LogContentValues putCadence(@Nullable Float value) {
         mContentValues.put(LogColumns.CADENCE, value);
         return this;
     }
@@ -134,8 +139,7 @@ public class LogContentValues extends AbstractContentValues {
         return this;
     }
 
-
-    public LogContentValues putHeartRate(Integer value) {
+    public LogContentValues putHeartRate(@Nullable Integer value) {
         mContentValues.put(LogColumns.HEART_RATE, value);
         return this;
     }
@@ -144,5 +148,4 @@ public class LogContentValues extends AbstractContentValues {
         mContentValues.putNull(LogColumns.HEART_RATE);
         return this;
     }
-
 }

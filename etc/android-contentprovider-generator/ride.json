@@ -3,12 +3,12 @@
 		{
 			"name": "name",
 			"type": "String",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "created_date",
 			"type": "Date",
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "state",
@@ -17,29 +17,29 @@
 			"enumValues": [
 				{"CREATED": "Initial state: the ride has been created but has not started yet."},
 				{"ACTIVE": "The ride is currently active and being recorded.<br/>\nOnly one ride can be active at any time."},
-				{"PAUSED": "The ride has been started but recording is currently paused."},
+				{"PAUSED": "The ride has been started but recording is currently paused."}
 			],
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "first_activated_date",
 			"type": "Date",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "activated_date",
 			"type": "Date",
-			"nullable": true,
+			"nullable": true
 		},
 		{
 			"name": "duration",
 			"type": "Long",
-			"nullable": false,
+			"nullable": false
 		},
 		{
 			"name": "distance",
 			"type": "Float",
-			"nullable": false,
-		},
-	],
+			"nullable": false
+		}
+	]
 }

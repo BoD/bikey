@@ -1,6 +1,9 @@
 # Do not obfuscate
 -dontobfuscate
 
+# Resolves some obscure proguard/dex problem
+-optimizations !code/allocation/variable
+
 # Keep line numbers
 -renamesourcefileattribute SourceFile
 -keepattributes SourceFile,LineNumberTable
@@ -24,3 +27,4 @@
 -keepnames class * implements android.os.Parcelable {
     public static final ** CREATOR;
 }
+-optimizations !code/allocation/variable

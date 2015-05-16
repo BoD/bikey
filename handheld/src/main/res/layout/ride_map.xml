@@ -17,7 +17,8 @@
         app:uiScrollGestures="true"
         app:uiTiltGestures="true"
         app:uiZoomControls="true"
-        app:uiZoomGestures="true" />
+        app:uiZoomGestures="true"
+        app:useViewLifecycle="true" />
 
     <View
         android:id="@+id/vieStatusBarTint"

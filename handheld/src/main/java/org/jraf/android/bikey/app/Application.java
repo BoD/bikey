@@ -28,13 +28,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.StrictMode;
 
-import com.crashlytics.android.Crashlytics;
-
 import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.util.log.wrapper.Log;
+
+import com.crashlytics.android.Crashlytics;
 
 import fr.nicolaspomepuy.androidwearcrashreport.mobile.CrashInfo;
 import fr.nicolaspomepuy.androidwearcrashreport.mobile.CrashReport;
@@ -93,7 +93,8 @@ public class Application extends android.app.Application {
         new Handler().post(new Runnable() {
             @Override
             public void run() {
-                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectAll().penaltyLog().build());
+                // Do not detect disk reads/writes because it seems it causes bugs in Google Maps (?!)
+                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectCustomSlowCalls().detectNetwork().penaltyLog().build());
                 StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
             }
         });

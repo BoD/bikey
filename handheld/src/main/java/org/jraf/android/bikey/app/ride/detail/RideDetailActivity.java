@@ -39,6 +39,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.jraf.android.bikey.R;
@@ -87,6 +88,12 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     private static final int DIALOG_SHARE = 1;
 
     private Uri mRideUri;
+
+    @InjectView(R.id.pgbLoading)
+    protected ProgressBar mPgbLoading;
+
+    @InjectView(R.id.conRoot)
+    protected View mConRoot;
 
     @InjectView(R.id.txtDateTimeDate)
     protected LabelTextView mTxtDateTimeDate;
@@ -238,6 +245,12 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
             private float[] mHeartRateArray;
 
             @Override
+            protected void onPreExecute() {
+                mPgbLoading.setVisibility(View.VISIBLE);
+                mConRoot.setVisibility(View.INVISIBLE);
+            }
+
+            @Override
             protected void doInBackground() throws Throwable {
                 RideManager rideManager = RideManager.get();
                 Uri rideUri = getActivity().mRideUri;
@@ -279,6 +292,9 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
             @Override
             protected void onPostExecuteOk() {
+                mPgbLoading.setVisibility(View.GONE);
+                mConRoot.setVisibility(View.VISIBLE);
+
                 RideDetailActivity a = getActivity();
                 if (mName != null) a.setTitle(mName);
                 a.mTxtDateTimeDate.setText(DateUtils.formatDateTime(a, mCreatedDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
@@ -321,6 +337,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                 }
 
                 // Map
+                a.getMap().getUiSettings().setMapToolbarEnabled(false);
                 if (mLatLngArray.size() > 0) {
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
                     polylineOptions.color(getResources().getColor(R.color.map_polyline));
@@ -360,7 +377,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                     a.mGrpHeartRate.setValues(0, mHeartRateArray);
                 }
             }
-        }).execute(getSupportFragmentManager());
+        }).execute(getSupportFragmentManager(), false);
     }
 
 

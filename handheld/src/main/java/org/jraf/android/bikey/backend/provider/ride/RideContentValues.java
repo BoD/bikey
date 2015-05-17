@@ -26,8 +26,8 @@ package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
 
-import android.content.Context;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,6 +62,13 @@ public class RideContentValues extends AbstractContentValues {
     public int update(Context context, @Nullable RideSelection where) {
         return context.getContentResolver().update(uri(), values(), where == null ? null : where.sel(), where == null ? null : where.args());
     }
+
+    public RideContentValues putUuid(@NonNull String value) {
+        if (value == null) throw new IllegalArgumentException("uuid must not be null");
+        mContentValues.put(RideColumns.UUID, value);
+        return this;
+    }
+
 
     public RideContentValues putName(@Nullable String value) {
         mContentValues.put(RideColumns.NAME, value);

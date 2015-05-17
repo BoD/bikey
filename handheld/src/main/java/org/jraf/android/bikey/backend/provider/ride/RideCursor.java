@@ -51,6 +51,18 @@ public class RideCursor extends AbstractCursor implements RideModel {
     }
 
     /**
+     * Get the {@code uuid} value.
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    public String getUuid() {
+        String res = getStringOrNull(RideColumns.UUID);
+        if (res == null)
+            throw new NullPointerException("The value of 'uuid' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
      * Get the {@code name} value.
      * Can be {@code null}.
      */

@@ -24,17 +24,24 @@
  */
 package org.jraf.android.bikey.backend.provider.ride;
 
-import org.jraf.android.bikey.backend.provider.base.BaseModel;
-
 import java.util.Date;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import org.jraf.android.bikey.backend.provider.base.BaseModel;
+
 /**
  * Data model for the {@code ride} table.
  */
 public interface RideModel extends BaseModel {
+
+    /**
+     * Get the {@code uuid} value.
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    String getUuid();
 
     /**
      * Get the {@code name} value.

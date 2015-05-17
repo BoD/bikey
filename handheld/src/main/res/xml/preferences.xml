@@ -49,6 +49,10 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/preference_importExport_title">
         <Preference
+            android:key="SYNC_WITH_GOOGLE_DRIVE"
+            android:summary="Synchronize with Google Drive"
+            android:title="Synchronize with Google Drive" />
+        <Preference
             android:icon="@drawable/ic_action_export"
             android:key="PREF_EXPORT"
             android:summary="@string/preference_export_summary"

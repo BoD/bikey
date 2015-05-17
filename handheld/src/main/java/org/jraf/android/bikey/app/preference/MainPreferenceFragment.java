@@ -68,6 +68,7 @@ public class MainPreferenceFragment extends PreferenceFragment {
         }
         findPreference(Constants.PREF_EXPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_IMPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
+        findPreference(Constants.SYNC_WITH_GOOGLE_DRIVE).setOnPreferenceClickListener(mOnPreferenceClickListener);
     }
 
     @Override
@@ -168,12 +169,15 @@ public class MainPreferenceFragment extends PreferenceFragment {
             } else if (Constants.PREF_IMPORT.equals(preference.getKey())) {
                 getCallbacks().startImport();
                 return true;
+            } else if (Constants.SYNC_WITH_GOOGLE_DRIVE.equals(preference.getKey())) {
+                getCallbacks().syncWithGoogleDrive();
+                return true;
             } else if (Constants.PREF_HEART_RATE_SCAN.equals(preference.getKey())) {
                 HeartRateManager heartRateManager = HeartRateManager.get();
                 if (heartRateManager.isConnected()) {
                     getCallbacks().disconnectHeartRateMonitor();
                 } else if (heartRateManager.isConnecting()) {
-                    getCallbacks().tryToReconnectOrGiveUp();
+                    getCallbacks().tryToReconnectHeartRateMonitorOrGiveUp();
                 } else {
                     getCallbacks().startHeartRateMonitorScan();
                 }

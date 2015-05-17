@@ -25,9 +25,11 @@
 package org.jraf.android.bikey.app.preference;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -39,6 +41,7 @@ import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -46,13 +49,25 @@ import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class PreferenceActivity extends BaseAppCompatActivity implements PreferenceCallbacks, AlertDialogListener {
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+import com.google.android.gms.drive.DriveApi;
+import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.query.Query;
+
+public class PreferenceActivity extends BaseAppCompatActivity
+        implements PreferenceCallbacks, AlertDialogListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
     private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
     private static final int REQUEST_SCAN_HEART_RATE_MONITOR = 1;
+    private static final int REQUEST_RESOLVE_CONNECTION = 2;
 
     private static final int DIALOG_RECORD_CADENCE = 0;
     private static final int DIALOG_DISCONNECT_HEART_RATE = 1;
     private static final int DIALOG_RECONNECT_HEART_RATE = 2;
+
+    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,6 +161,12 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
                 if (resultCode != RESULT_OK) return;
                 importRides(data.getData());
                 break;
+
+            case REQUEST_RESOLVE_CONNECTION:
+                if (resultCode == RESULT_OK) {
+                    getGoogleApiClient().connect();
+                }
+                break;
         }
     }
 
@@ -182,7 +203,7 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
     }
 
     @Override
-    public void tryToReconnectOrGiveUp() {
+    public void tryToReconnectHeartRateMonitorOrGiveUp() {
         Log.d();
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_RECONNECT_HEART_RATE);
         dialog.setTitle(R.string.preference_heartRate_reconnect_confirmDialog_title);
@@ -191,7 +212,86 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
         dialog.setNegativeButton(R.string.preference_heartRate_reconnect_confirmDialog_negative);
         dialog.setCancelIsNegative(false);
         dialog.show(getSupportFragmentManager());
+    }
 
+
+    /*
+     * Google Drive.
+     */
+
+    @Background
+    private GoogleApiClient getGoogleApiClient() {
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addApi(Drive.API)
+                    .addScope(Drive.SCOPE_FILE)
+                    .addScope(Drive.SCOPE_APPFOLDER)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .build();
+        }
+        return mGoogleApiClient;
+    }
+
+    @Override
+    public void onConnected(Bundle connectionHint) {
+        Log.d("connectionHint=" + connectionHint);
+        listFiles();
+    }
+
+    @Override
+    public void onConnectionSuspended(int cause) {
+        Log.d("cause=" + cause);
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+        if (connectionResult.hasResolution()) {
+            try {
+                connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_CONNECTION);
+            } catch (IntentSender.SendIntentException e) {
+                Log.e("Could not resolve connection failed", e);
+            }
+        } else {
+            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+        }
+    }
+
+
+    @Override
+    public void syncWithGoogleDrive() {
+        Log.d();
+        if (getGoogleApiClient().isConnected()) {
+            // Already connected: sync how
+            listFiles();
+        } else {
+            // Not connected yet: connect - sync will happen when connected
+            getGoogleApiClient().connect();
+        }
+    }
+
+    public void listFiles() {
+        new TaskFragment(new Task<PreferenceActivity>() {
+            @Override
+            protected void doInBackground() throws Throwable {
+                Query query = new Query.Builder().build();
+                DriveApi.MetadataBufferResult metadataBufferResult = Drive.DriveApi.query(getGoogleApiClient(), query).await();
+                ArrayList<String> res = new ArrayList<>();
+                for (Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
+                    res.add(metadata.getTitle());
+                }
+                metadataBufferResult.release();
+
+                Log.d(res.toString());
+            }
+        }).execute(getSupportFragmentManager());
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected()) mGoogleApiClient.disconnect();
+        mGoogleApiClient = null;
+        super.onDestroy();
     }
 
 

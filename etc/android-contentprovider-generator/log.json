@@ -1,58 +1,58 @@
 {
-	"fields": [
-		{
-			"name": "ride_id",
-			"type": "Long",
-			"nullable": false,
-			"foreignKey": {
-				"table": "ride",
-				"onDelete": "CASCADE"
-			}
-		},
-		{
-			"name": "recorded_date",
-			"type": "Date",
-			"nullable": false
-		},
-		{
-			"name": "lat",
-			"type": "Double",
-			"nullable": false
-		},
-		{
-			"name": "lon",
-			"type": "Double",
-			"nullable": false
-		},
-		{
-			"name": "ele",
-			"type": "Double",
-			"nullable": false
-		},
-		{
-			"name": "log_duration",
-			"type": "Long",
-			"nullable": true
-		},
-		{
-			"name": "log_distance",
-			"type": "Float",
-			"nullable": true
-		},
-		{
-			"name": "speed",
-			"type": "Float",
-			"nullable": true
-		},
-		{
-			"name": "cadence",
-			"type": "Float",
-			"nullable": true
-		},
-		{
-			"name": "heart_rate",
-			"type": "Integer",
-			"nullable": true
-		}
-	]
+  "fields": [
+    {
+      "name": "ride_id",
+      "type": "Long",
+      "nullable": false,
+      "foreignKey": {
+        "table": "ride",
+        "onDelete": "CASCADE"
+      }
+    },
+    {
+      "name": "recorded_date",
+      "type": "Date",
+      "nullable": false
+    },
+    {
+      "name": "lat",
+      "type": "Double",
+      "nullable": false
+    },
+    {
+      "name": "lon",
+      "type": "Double",
+      "nullable": false
+    },
+    {
+      "name": "ele",
+      "type": "Double",
+      "nullable": false
+    },
+    {
+      "name": "log_duration",
+      "type": "Long",
+      "nullable": true
+    },
+    {
+      "name": "log_distance",
+      "type": "Float",
+      "nullable": true
+    },
+    {
+      "name": "speed",
+      "type": "Float",
+      "nullable": true
+    },
+    {
+      "name": "cadence",
+      "type": "Float",
+      "nullable": true
+    },
+    {
+      "name": "heart_rate",
+      "type": "Integer",
+      "nullable": true
+    }
+  ]
 }

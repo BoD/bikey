@@ -1,45 +1,50 @@
 {
-	"fields": [
-		{
-			"name": "name",
-			"type": "String",
-			"nullable": true
-		},
-		{
-			"name": "created_date",
-			"type": "Date",
-			"nullable": false
-		},
-		{
-			"name": "state",
-			"type": "enum",
-			"enumName": "RideState",
-			"enumValues": [
-				{"CREATED": "Initial state: the ride has been created but has not started yet."},
-				{"ACTIVE": "The ride is currently active and being recorded.<br/>\nOnly one ride can be active at any time."},
-				{"PAUSED": "The ride has been started but recording is currently paused."}
-			],
-			"nullable": false
-		},
-		{
-			"name": "first_activated_date",
-			"type": "Date",
-			"nullable": true
-		},
-		{
-			"name": "activated_date",
-			"type": "Date",
-			"nullable": true
-		},
-		{
-			"name": "duration",
-			"type": "Long",
-			"nullable": false
-		},
-		{
-			"name": "distance",
-			"type": "Float",
-			"nullable": false
-		}
-	]
+  "fields": [
+    {
+      "name": "uuid",
+      "type": "String",
+      "nullable": false
+    },
+    {
+      "name": "name",
+      "type": "String",
+      "nullable": true
+    },
+    {
+      "name": "created_date",
+      "type": "Date",
+      "nullable": false
+    },
+    {
+      "name": "state",
+      "type": "enum",
+      "enumName": "RideState",
+      "enumValues": [
+        {"CREATED": "Initial state: the ride has been created but has not started yet."},
+        {"ACTIVE": "The ride is currently active and being recorded.<br/>\nOnly one ride can be active at any time."},
+        {"PAUSED": "The ride has been started but recording is currently paused."}
+      ],
+      "nullable": false
+    },
+    {
+      "name": "first_activated_date",
+      "type": "Date",
+      "nullable": true
+    },
+    {
+      "name": "activated_date",
+      "type": "Date",
+      "nullable": true
+    },
+    {
+      "name": "duration",
+      "type": "Long",
+      "nullable": false
+    },
+    {
+      "name": "distance",
+      "type": "Float",
+      "nullable": false
+    }
+  ]
 }

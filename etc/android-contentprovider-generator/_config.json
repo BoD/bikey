@@ -8,7 +8,7 @@
   "sqliteOpenHelperCallbacksClassName": "BikeySQLiteOpenHelperCallbacks",
   "sqliteUpgradeHelperClassName": "BikeySQLiteUpgradeHelper",
   "databaseFileName": "bikey_provider.db",
-  "databaseVersion": 5,
+  "databaseVersion": 6,
   "enableForeignKeys": true,
   "useAnnotations": true
 }

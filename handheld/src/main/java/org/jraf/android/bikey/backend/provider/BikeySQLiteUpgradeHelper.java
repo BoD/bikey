@@ -24,6 +24,8 @@
  */
 package org.jraf.android.bikey.backend.provider;
 
+import java.util.UUID;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
@@ -92,6 +94,23 @@ public class BikeySQLiteUpgradeHelper {
             + " = "
             + " duration "
             + " ;";
+
+    // 5 -> 6
+    private static final String RIDE_UUID_UPGRADE = UUID.randomUUID().toString() + "_";
+    private static final String SQL_UPGRADE_TABLE_RIDE_6 = "ALTER TABLE "
+            + RideColumns.TABLE_NAME
+            + " ADD COLUMN "
+            + RideColumns.UUID + " TEXT "
+            + " ;";
+    private static final String SQL_POPULATE_TABLE_RIDE_6 = "UPDATE "
+            + RideColumns.TABLE_NAME
+            + " SET "
+            + RideColumns.UUID
+            + " = "
+            + "'" + RIDE_UUID_UPGRADE + "'"
+            + " || "
+            + RideColumns._ID
+            + " ;";
     // @formatter:on
 
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -130,6 +149,15 @@ public class BikeySQLiteUpgradeHelper {
                     db.execSQL(SQL_UPGRADE_TABLE_LOG_5_DIST);
                     db.execSQL(SQL_POPULATE_TABLE_LOG_5);
                     curVersion = 5;
+                    break;
+
+                case 5:
+                    // 5 -> 6
+                    // Add new UUID column
+                    db.execSQL(SQL_UPGRADE_TABLE_RIDE_6);
+                    // Populate it with an UUID + the id of the ride
+                    db.execSQL(SQL_POPULATE_TABLE_RIDE_6);
+                    curVersion = 6;
                     break;
             }
         }

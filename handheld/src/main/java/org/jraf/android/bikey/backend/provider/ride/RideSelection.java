@@ -26,8 +26,8 @@ package org.jraf.android.bikey.backend.provider.ride;
 
 import java.util.Date;
 
-import android.content.Context;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -103,6 +103,36 @@ public class RideSelection extends AbstractSelection<RideSelection> {
 
     public RideSelection id(long... value) {
         addEquals("ride." + RideColumns._ID, toObjectArray(value));
+        return this;
+    }
+
+    public RideSelection uuid(String... value) {
+        addEquals(RideColumns.UUID, value);
+        return this;
+    }
+
+    public RideSelection uuidNot(String... value) {
+        addNotEquals(RideColumns.UUID, value);
+        return this;
+    }
+
+    public RideSelection uuidLike(String... value) {
+        addLike(RideColumns.UUID, value);
+        return this;
+    }
+
+    public RideSelection uuidContains(String... value) {
+        addContains(RideColumns.UUID, value);
+        return this;
+    }
+
+    public RideSelection uuidStartsWith(String... value) {
+        addStartsWith(RideColumns.UUID, value);
+        return this;
+    }
+
+    public RideSelection uuidEndsWith(String... value) {
+        addEndsWith(RideColumns.UUID, value);
         return this;
     }
 

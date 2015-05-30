@@ -107,6 +107,15 @@ public class GoogleDriveSyncManager {
         boolean ok = sendNewLocalItems(googleApiClient, newLocalItems);
         Log.d("ok=" + ok);
 
+//        Log.d("Get new server items");
+//        ArrayList<ServerItem> newServerItems = getNewServerItems(serverItems, newLocalItems);
+//        Log.d("newServerItems=" + newServerItems);
+//
+//        Log.d("Download new server items");
+//        ok = ok && downloadNewServerItems(googleApiClient, newServerItems);
+//        Log.d("ok=" + ok);
+//
+
         Log.d("Sync finished");
         return ok;
     }
@@ -268,4 +277,12 @@ public class GoogleDriveSyncManager {
         }
         return true;
     }
+
+//    private ArrayList<String> getNewLocalItems(ArrayList<ServerItem> serverItems, ArrayList<String> newLocalItems) {
+//        // FIXME: Double iteration!  Bad perf!
+//        for (String localItem : newLocalItems) {
+//
+//        }
+//        return null;
+//    }
 }

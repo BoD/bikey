@@ -25,6 +25,7 @@
 package org.jraf.android.bikey.backend.ride;
 
 import java.util.Date;
+import java.util.UUID;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -36,7 +37,6 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
-import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
@@ -49,6 +49,7 @@ import org.jraf.android.bikey.backend.provider.ride.RideContentValues;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
@@ -71,6 +72,7 @@ public class RideManager {
     @Background
     public Uri create(String name) {
         RideContentValues values = new RideContentValues();
+        values.putUuid(UUID.randomUUID().toString());
         values.putCreatedDate(new Date());
         if (!TextUtils.isEmpty(name)) {
             values.putName(name);

@@ -22,7 +22,8 @@
       "enumValues": [
         {"CREATED": "Initial state: the ride has been created but has not started yet."},
         {"ACTIVE": "The ride is currently active and being recorded.<br/>\nOnly one ride can be active at any time."},
-        {"PAUSED": "The ride has been started but recording is currently paused."}
+        {"PAUSED": "The ride has been started but recording is currently paused."},
+        {"DELETED": "The ride has been deleted locally (deleted rides only exist until the next Google Drive sync)."}
       ],
       "nullable": false
     },

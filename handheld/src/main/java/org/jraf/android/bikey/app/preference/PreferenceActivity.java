@@ -25,7 +25,6 @@
 package org.jraf.android.bikey.app.preference;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
@@ -39,6 +38,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
+import org.jraf.android.bikey.backend.googledrive.GoogleDriveSyncManager;
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.annotation.Background;
@@ -53,9 +53,6 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveApi;
-import com.google.android.gms.drive.Metadata;
-import com.google.android.gms.drive.query.Query;
 
 public class PreferenceActivity extends BaseAppCompatActivity
         implements PreferenceCallbacks, AlertDialogListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -274,15 +271,7 @@ public class PreferenceActivity extends BaseAppCompatActivity
         new TaskFragment(new Task<PreferenceActivity>() {
             @Override
             protected void doInBackground() throws Throwable {
-                Query query = new Query.Builder().build();
-                DriveApi.MetadataBufferResult metadataBufferResult = Drive.DriveApi.query(getGoogleApiClient(), query).await();
-                ArrayList<String> res = new ArrayList<>();
-                for (Metadata metadata : metadataBufferResult.getMetadataBuffer()) {
-                    res.add(metadata.getTitle());
-                }
-                metadataBufferResult.release();
-
-                Log.d(res.toString());
+                GoogleDriveSyncManager.get(PreferenceActivity.this).sync(getGoogleApiClient());
             }
         }).execute(getSupportFragmentManager());
     }

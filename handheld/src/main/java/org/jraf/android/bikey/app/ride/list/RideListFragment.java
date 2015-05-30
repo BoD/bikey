@@ -44,6 +44,7 @@ import android.widget.ListView;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
+import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 
 public class RideListFragment extends ListFragment implements LoaderCallbacks<Cursor> {
@@ -145,7 +146,8 @@ public class RideListFragment extends ListFragment implements LoaderCallbacks<Cu
 
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return new CursorLoader(getActivity(), RideColumns.CONTENT_URI, null, null, null, RideColumns.CREATED_DATE + " desc") {
+        RideSelection selection = new RideSelection().stateNot(RideState.DELETED);
+        return new CursorLoader(getActivity(), RideColumns.CONTENT_URI, null, selection.sel(), selection.args(), RideColumns.CREATED_DATE + " desc") {
             @Override
             public Cursor loadInBackground() {
                 return new RideCursor(super.loadInBackground());

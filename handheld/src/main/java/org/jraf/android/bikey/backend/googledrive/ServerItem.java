@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2013-2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,31 +22,35 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.jraf.android.bikey.backend.provider.ride;
+package org.jraf.android.bikey.backend.googledrive;
 
-/**
- * Possible values for the {@code state} column of the {@code ride} table.
- */
-public enum RideState {
-    /**
-     * Initial state: the ride has been created but has not started yet.
-     */
-    CREATED,
+import com.google.android.gms.drive.DriveId;
+import com.google.android.gms.drive.Metadata;
 
+public class ServerItem {
     /**
-     * The ride is currently active and being recorded.<br/>
-Only one ride can be active at any time.
+     * Local ride uuid.
      */
-    ACTIVE,
+    public String uuid;
 
     /**
-     * The ride has been started but recording is currently paused.
+     * Google drive id.
      */
-    PAUSED,
+    public DriveId driveId;
 
     /**
-     * The ride has been deleted locally (deleted rides only exist until the next Google Drive sync).
+     * The item is marked as deleted on the server.
      */
-    DELETED,
+    boolean deleted;
 
+    public ServerItem(Metadata metadata) {
+        uuid = metadata.getTitle().split("\\.")[0]; // Get only the file name, not the extension
+        driveId = metadata.getDriveId();
+        deleted = metadata.isTrashed();
+    }
+
+    @Override
+    public String toString() {
+        return "ServerItem{" + "uuid='" + uuid + '\'' + ", driveId=" + driveId + ", deleted=" + deleted + '}';
+    }
 }

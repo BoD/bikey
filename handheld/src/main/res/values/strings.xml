@@ -63,6 +63,7 @@
     <string name="export_choices_gpx">GPX file</string>
     <string name="export_choices_kml">KML file</string>
     <string name="export_choices_genymotion">Genymotion script</string>
+    <string name="export_choices_bikey">Bikey file</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Save to storage</string>

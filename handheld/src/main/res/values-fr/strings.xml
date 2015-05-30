@@ -61,6 +61,7 @@
     <string name="export_choices_gpx">Fichier GPX</string>
     <string name="export_choices_kml">Fichier KML</string>
     <string name="export_choices_genymotion">Script Genymotion</string>
+    <string name="export_choices_bikey">Fichier Bikey</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Enregistrer sur stockage</string>

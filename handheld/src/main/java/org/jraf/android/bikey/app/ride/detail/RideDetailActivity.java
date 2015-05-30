@@ -46,6 +46,7 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
 import org.jraf.android.bikey.app.ride.map.RideMapActivity;
+import org.jraf.android.bikey.backend.export.bikey.BikeyExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.export.kml.KmlExporter;
@@ -473,9 +474,13 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                 // Kml
                 mState.mExporter = new KmlExporter(mRideUri);
                 break;
-            case 3:
+            case 2:
                 // Genymotion script
                 mState.mExporter = new GenymotionExporter(mRideUri);
+                break;
+            case 3:
+                // Bikey
+                mState.mExporter = new BikeyExporter(mRideUri);
                 break;
         }
         startExport();

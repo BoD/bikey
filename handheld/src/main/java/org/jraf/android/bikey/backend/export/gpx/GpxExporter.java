@@ -55,7 +55,7 @@ public class GpxExporter extends Exporter {
     @Override
     @Background
     public void export() throws IOException {
-        PrintWriter out = new PrintWriter(getExportFile());
+        PrintWriter out = new PrintWriter(getOutputStream());
         // Header
         String appName = getString(R.string.app_name);
         String rideName = RideManager.get().getDisplayName(getRideUri());

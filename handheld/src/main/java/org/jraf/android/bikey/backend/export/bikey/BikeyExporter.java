@@ -59,7 +59,7 @@ public class BikeyExporter extends Exporter {
     @Override
     @Background
     public void export() throws IOException {
-        PrintWriter out = new PrintWriter(getExportFile());
+        PrintWriter out = new PrintWriter(getOutputStream());
         // Header
         String appVersion = null;
         try {

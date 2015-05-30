@@ -51,7 +51,7 @@ public class GenymotionExporter extends Exporter {
     @Override
     @Background
     public void export() throws IOException {
-        PrintWriter out = new PrintWriter(getExportFile());
+        PrintWriter out = new PrintWriter(getOutputStream());
         long rideId = ContentUris.parseId(getRideUri());
         String selection = LogColumns.RIDE_ID + "=?";
         String[] selectionArgs = { String.valueOf(rideId) };

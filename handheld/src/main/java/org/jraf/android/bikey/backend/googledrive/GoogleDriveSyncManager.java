@@ -25,14 +25,19 @@
 package org.jraf.android.bikey.backend.googledrive;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
+import android.content.ContentUris;
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
+import org.jraf.android.bikey.backend.export.bikey.BikeyExporter;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
@@ -107,14 +112,13 @@ public class GoogleDriveSyncManager {
         boolean ok = sendNewLocalItems(googleApiClient, newLocalItems);
         Log.d("ok=" + ok);
 
-//        Log.d("Get new server items");
-//        ArrayList<ServerItem> newServerItems = getNewServerItems(serverItems, newLocalItems);
-//        Log.d("newServerItems=" + newServerItems);
-//
-//        Log.d("Download new server items");
-//        ok = ok && downloadNewServerItems(googleApiClient, newServerItems);
-//        Log.d("ok=" + ok);
-//
+        Log.d("Get new server items");
+        ArrayList<ServerItem> newServerItems = getNewServerItems(serverItems, newLocalItems);
+        Log.d("newServerItems=" + newServerItems);
+
+        Log.d("Download new server items");
+        ok = ok && downloadNewServerItems(googleApiClient, newServerItems);
+        Log.d("ok=" + ok);
 
         Log.d("Sync finished");
         return ok;
@@ -176,7 +180,7 @@ public class GoogleDriveSyncManager {
         }
         Log.d("Server items to delete: " + serverItemsToDelete);
         for (ServerItem serverItem : serverItemsToDelete) {
-            Log.d("Delete (mark as trashed) " + serverItem + "...");
+            Log.d("Delete (mark as trashed) " + serverItem);
             DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
             // Mark the file as trashed
             Status status = driveFile.trash(googleApiClient).await(AWAIT_DELAY_SHORT, AWAIT_UNIT_SHORT);
@@ -251,14 +255,24 @@ public class GoogleDriveSyncManager {
                 return false;
             }
 
+            RideSelection rideSelection = new RideSelection();
+            rideSelection.uuid(uuid);
+            RideCursor rideCursor = rideSelection.query(mContext);
+            rideCursor.moveToFirst();
+            Uri rideUri = ContentUris.withAppendedId(RideColumns.CONTENT_URI, rideCursor.getId());
+            rideCursor.close();
+            Log.d("rideUri=" + rideUri);
+
             DriveContents driveContents = driveContentsResult.getDriveContents();
             OutputStream outputStream = driveContents.getOutputStream();
+            BikeyExporter exporter = new BikeyExporter(rideUri);
+            exporter.setOutputStream(outputStream);
             try {
-                outputStream.write(("Test uuid=" + uuid).getBytes("utf-8"));
+                exporter.export();
                 outputStream.flush();
                 IoUtil.closeSilently(outputStream);
             } catch (IOException e) {
-                Log.w("Could not write to Drive contents", e);
+                Log.w("Could not export to Drive contents", e);
                 return false;
             }
 
@@ -278,11 +292,50 @@ public class GoogleDriveSyncManager {
         return true;
     }
 
-//    private ArrayList<String> getNewLocalItems(ArrayList<ServerItem> serverItems, ArrayList<String> newLocalItems) {
-//        // FIXME: Double iteration!  Bad perf!
-//        for (String localItem : newLocalItems) {
-//
-//        }
-//        return null;
-//    }
+    private ArrayList<ServerItem> getNewServerItems(ArrayList<ServerItem> serverItems, ArrayList<String> newLocalItems) {
+        ArrayList<ServerItem> res = new ArrayList<>();
+        // FIXME: Double iteration!  Bad perf!
+        for (ServerItem serverItem : serverItems) {
+            if (serverItem.deleted) continue;
+            boolean found = false;
+            for (String localItem : newLocalItems) {
+                if (serverItem.uuid.equals(localItem)) {
+                    // Found it: skip
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) res.add(serverItem);
+        }
+        return res;
+    }
+
+    @WorkerThread
+    private boolean downloadNewServerItems(GoogleApiClient googleApiClient, ArrayList<ServerItem> newServerItems) {
+        Log.d();
+        for (ServerItem serverItem : newServerItems) {
+            Log.d("Download " + serverItem);
+            DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
+            DriveApi.DriveContentsResult driveContentsResult =
+                    driveFile.open(googleApiClient, DriveFile.MODE_READ_ONLY, new DriveFile.DownloadProgressListener() {
+                        @Override
+                        public void onProgress(long bytesDownloaded, long bytesExpected) {
+                            Log.d(bytesDownloaded + "/" + bytesDownloaded);
+                        }
+                    }).await(AWAIT_DELAY_LONG, AWAIT_UNIT_LONG);
+            Status status = driveContentsResult.getStatus();
+            Log.d("driveContentsResult.status=" + status);
+            if (!status.isSuccess()) {
+                Log.d("Could not open Drive contents");
+                return false;
+            }
+
+            DriveContents contents = driveContentsResult.getDriveContents();
+            InputStream inputStream = contents.getInputStream();
+
+            contents.discard(googleApiClient);
+        }
+
+        return true;
+    }
 }

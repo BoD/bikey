@@ -56,7 +56,7 @@ public class KmlExporter extends Exporter {
     @Override
     @Background
     public void export() throws IOException {
-        PrintWriter out = new PrintWriter(getExportFile());
+        PrintWriter out = new PrintWriter(getOutputStream());
         Uri rideUri = getRideUri();
         // Header
         out.println(getString(R.string.export_kml_document_begin));

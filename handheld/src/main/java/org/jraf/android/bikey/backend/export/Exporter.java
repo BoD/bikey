@@ -25,7 +25,10 @@
 package org.jraf.android.bikey.backend.export;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 import android.content.Context;
 import android.net.Uri;
@@ -37,6 +40,7 @@ import org.jraf.android.util.annotation.Background;
 public abstract class Exporter {
     private Context mContext;
     private Uri mRideUri;
+    private OutputStream mOutputStream;
 
     protected Exporter(Uri rideUri) {
         mContext = Application.getApplication();
@@ -48,23 +52,34 @@ public abstract class Exporter {
     @Background
     public abstract void export() throws IOException;
 
-    public Uri getRideUri() {
+    protected Uri getRideUri() {
         return mRideUri;
     }
 
-    public File getExportFile() {
+    protected File getExportFile() {
         return new File(mContext.getExternalFilesDir(null), getExportedFileName());
     }
 
-    public Context getContext() {
+    protected Context getContext() {
         return mContext;
     }
 
-    public String getString(int resId) {
+    protected String getString(int resId) {
         return mContext.getString(resId);
     }
 
-    public String getString(int resId, Object... args) {
+    protected String getString(int resId, Object... args) {
         return mContext.getString(resId, args);
+    }
+
+    public void setOutputStream(OutputStream outputStream) {
+        mOutputStream = outputStream;
+    }
+
+    protected OutputStream getOutputStream() throws FileNotFoundException {
+        if (mOutputStream == null) {
+            mOutputStream = new FileOutputStream(getExportFile());
+        }
+        return mOutputStream;
     }
 }

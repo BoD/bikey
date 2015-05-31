@@ -339,7 +339,7 @@ public class GoogleDriveSyncManager {
                     driveFile.open(googleApiClient, DriveFile.MODE_READ_ONLY, new DriveFile.DownloadProgressListener() {
                         @Override
                         public void onProgress(long bytesDownloaded, long bytesExpected) {
-                            Log.d(bytesDownloaded + "/" + bytesDownloaded);
+                            Log.d(bytesDownloaded + "/" + bytesExpected);
                         }
                     }).await(AWAIT_DELAY_LONG, AWAIT_UNIT_LONG);
             Status status = driveContentsResult.getStatus();

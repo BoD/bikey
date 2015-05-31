@@ -29,6 +29,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.UUID;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentProviderOperation.Builder;
@@ -115,6 +116,13 @@ public class DatabaseImporter {
                             }
                             builder.withValue(columnName, value);
                         }
+
+                        if (RideColumns.TABLE_NAME.equals(table) && c.getColumnIndex(RideColumns.UUID) == -1) {
+                            // The ride has no UUID column, but it became mandatory (not null constraint) in DB version 6.
+                            // Add one now.
+                            builder.withValue(RideColumns.UUID, UUID.randomUUID().toString());
+                        }
+
                         operations.add(builder.build());
                         if (operations.size() >= 100) {
                             context.getContentResolver().applyBatch(BikeyProvider.AUTHORITY, operations);

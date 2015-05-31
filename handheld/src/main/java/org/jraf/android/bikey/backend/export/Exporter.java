@@ -56,7 +56,7 @@ public abstract class Exporter {
         return mRideUri;
     }
 
-    protected File getExportFile() {
+    public File getExportFile() {
         return new File(mContext.getExternalFilesDir(null), getExportedFileName());
     }
 

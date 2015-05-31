@@ -36,6 +36,7 @@ import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
+import org.jraf.android.bikey.backend.dbimport.BikeyRideImporter;
 import org.jraf.android.bikey.backend.export.bikey.BikeyExporter;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
@@ -113,12 +114,16 @@ public class GoogleDriveSyncManager {
         Log.d("ok=" + ok);
 
         Log.d("Get new server items");
-        ArrayList<ServerItem> newServerItems = getNewServerItems(serverItems, newLocalItems);
+//        ArrayList<String> allLocalItems = getAllLocalItems();
+        ArrayList<String> allLocalItems = newLocalItems;
+        ArrayList<ServerItem> newServerItems = getNewServerItems(serverItems, allLocalItems);
         Log.d("newServerItems=" + newServerItems);
 
-        Log.d("Download new server items");
-        ok = ok && downloadNewServerItems(googleApiClient, newServerItems);
-        Log.d("ok=" + ok);
+        if (!newServerItems.isEmpty()) {
+            Log.d("Download new server items");
+            ok = ok && downloadNewServerItems(googleApiClient, newServerItems);
+            Log.d("ok=" + ok);
+        }
 
         Log.d("Sync finished");
         return ok;
@@ -134,7 +139,7 @@ public class GoogleDriveSyncManager {
         Status status = metadataBufferResult.getStatus();
         Log.d("status=" + status);
         if (!status.isSuccess()) {
-            Log.d("Could not query app folder");
+            Log.w("Could not query app folder");
             metadataBufferResult.release();
             return null;
         }
@@ -186,7 +191,7 @@ public class GoogleDriveSyncManager {
             Status status = driveFile.trash(googleApiClient).await(AWAIT_DELAY_SHORT, AWAIT_UNIT_SHORT);
             Log.d("status=" + status);
             if (!status.isSuccess()) {
-                Log.d("Could not mark as trashed " + serverItem);
+                Log.w("Could not mark as trashed " + serverItem);
                 return false;
             }
         }
@@ -230,7 +235,7 @@ public class GoogleDriveSyncManager {
             boolean existsOnServer = false;
             for (ServerItem serverItem : serverItems) {
                 if (serverItem.uuid.equals(uuid)) {
-                    // Already on the server!  Skip it
+                    // Already exists on the server!  Skip it
                     existsOnServer = true;
                     break;
                 }
@@ -251,7 +256,7 @@ public class GoogleDriveSyncManager {
             Status status = driveContentsResult.getStatus();
             Log.d("driveContentsResult.status=" + status);
             if (!status.isSuccess()) {
-                Log.d("Could not create new Drive contents");
+                Log.w("Could not create new Drive contents");
                 return false;
             }
 
@@ -285,27 +290,41 @@ public class GoogleDriveSyncManager {
             status = driveFileResult.getStatus();
             Log.d("driveFileResult.status=" + status);
             if (!status.isSuccess()) {
-                Log.d("Could not create new Drive file");
+                Log.w("Could not create new Drive file");
                 return false;
             }
         }
         return true;
     }
 
-    private ArrayList<ServerItem> getNewServerItems(ArrayList<ServerItem> serverItems, ArrayList<String> newLocalItems) {
+    @WorkerThread
+    private ArrayList<String> getAllLocalItems() {
+        Log.d();
+        RideSelection rideSelection = new RideSelection();
+        rideSelection.stateNot(RideState.DELETED);
+        RideCursor c = rideSelection.query(mContext);
+        ArrayList<String> res = new ArrayList<>();
+        while (c.moveToNext()) {
+            res.add(c.getUuid());
+        }
+        c.close();
+        return res;
+    }
+
+    private ArrayList<ServerItem> getNewServerItems(ArrayList<ServerItem> serverItems, ArrayList<String> allLocalItems) {
         ArrayList<ServerItem> res = new ArrayList<>();
         // FIXME: Double iteration!  Bad perf!
         for (ServerItem serverItem : serverItems) {
             if (serverItem.deleted) continue;
-            boolean found = false;
-            for (String localItem : newLocalItems) {
+            boolean existsLocally = false;
+            for (String localItem : allLocalItems) {
                 if (serverItem.uuid.equals(localItem)) {
-                    // Found it: skip
-                    found = true;
+                    // Already exists locally!  Skip it
+                    existsLocally = true;
                     break;
                 }
             }
-            if (!found) res.add(serverItem);
+            if (!existsLocally) res.add(serverItem);
         }
         return res;
     }
@@ -326,13 +345,19 @@ public class GoogleDriveSyncManager {
             Status status = driveContentsResult.getStatus();
             Log.d("driveContentsResult.status=" + status);
             if (!status.isSuccess()) {
-                Log.d("Could not open Drive contents");
+                Log.w("Could not open Drive contents");
                 return false;
             }
 
             DriveContents contents = driveContentsResult.getDriveContents();
             InputStream inputStream = contents.getInputStream();
-
+            try {
+                new BikeyRideImporter(inputStream).doImport();
+            } catch (Exception e) {
+                Log.w("Could not parse or read Drive contents", e);
+                contents.discard(googleApiClient);
+                return false;
+            }
             contents.discard(googleApiClient);
         }
 

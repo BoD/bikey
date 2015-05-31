@@ -114,8 +114,8 @@ public class GoogleDriveSyncManager {
         Log.d("ok=" + ok);
 
         Log.d("Get new server items");
-//        ArrayList<String> allLocalItems = getAllLocalItems();
-        ArrayList<String> allLocalItems = newLocalItems;
+        ArrayList<String> allLocalItems = getAllLocalItems();
+        //        ArrayList<String> allLocalItems = newLocalItems; // Uncomment to test
         ArrayList<ServerItem> newServerItems = getNewServerItems(serverItems, allLocalItems);
         Log.d("newServerItems=" + newServerItems);
 

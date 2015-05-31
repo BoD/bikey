@@ -69,6 +69,7 @@ public class DatabaseImporter {
                 importDatabase(context, tempDb);
                 tempDb.delete();
             }
+            IoUtil.closeSilently(is, os);
         }
     }
 

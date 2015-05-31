@@ -37,7 +37,6 @@ import android.util.Xml;
 
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
-import org.jraf.android.util.log.LogUtil;
 import org.jraf.android.util.log.wrapper.Log;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -80,7 +79,6 @@ public class BikeyRideImporter {
                 switch (parser.getEventType()) {
                     case XmlPullParser.START_TAG:
                         tagName = parser.getName();
-                        Log.d("state=" + state + " tagName=" + tagName);
 
                         switch (tagName) {
                             case "ride":
@@ -110,7 +108,7 @@ public class BikeyRideImporter {
                                 // "Value" tag
                                 String typeStr = parser.getAttributeValue(null, "type");
                                 valueType = Integer.parseInt(typeStr);
-                                Log.d("type=" + LogUtil.getConstantName(Cursor.class, valueType, "FIELD_TYPE_"));
+                                // Log.d("type=" + LogUtil.getConstantName(Cursor.class, valueType, "FIELD_TYPE_"));
                                 isInValue = true;
                                 break;
                         }
@@ -169,7 +167,6 @@ public class BikeyRideImporter {
     }
 
     private void createLog(long rideId, ContentValues logContentValues) {
-        Log.d();
         logContentValues.put(LogColumns.RIDE_ID, rideId);
         mContentResolver.insert(LogColumns.CONTENT_URI, logContentValues);
     }

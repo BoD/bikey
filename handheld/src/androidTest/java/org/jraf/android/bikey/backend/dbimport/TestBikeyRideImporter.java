@@ -28,6 +28,7 @@ import android.content.ContentResolver;
 import android.test.ProviderTestCase2;
 
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
+import org.jraf.android.bikey.backend.provider.TestBikeyProvider;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
@@ -36,12 +37,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 
-public class TestBikeyRideImporter extends ProviderTestCase2<BikeyProvider> {
+public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> {
 
     private ContentResolver mContentResolver;
 
     public TestBikeyRideImporter() {
-        super(BikeyProvider.class, BikeyProvider.AUTHORITY);
+        super(TestBikeyProvider.class, BikeyProvider.AUTHORITY);
     }
 
     @Override

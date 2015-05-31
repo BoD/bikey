@@ -123,6 +123,70 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
         assertTrue(logCursor.isClosed());
     }
 
+    public void testRideImporterCadence() throws IOException, ParseException {
+        // Import the file
+        InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride-cadence.ride");
+        BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is);
+        importer.doImport();
+        RideSelection rideSelection = new RideSelection();
+        rideSelection.createdDate(1396219692235l);
+        RideCursor rideCursor = rideSelection.query(mContentResolver);
+        assertNotNull(rideCursor);
+        assertEquals(1, rideCursor.getCount());
+        rideCursor.moveToFirst();
+
+        // Verify the attributes of the ride
+        assertRideData(rideCursor,
+                null, // name
+                1396219692235l, // created date
+                RideState.PAUSED,
+                null, // first activated date
+                0l, // activated date
+                1192587, // duration
+                3547.17f); // distance
+
+        long rideId = rideCursor.getId();
+        // Cleanup ride cursor
+        rideCursor.close();
+        assertTrue(rideCursor.isClosed());
+
+        // Verify that the ride has logs
+        LogSelection logSelection = new LogSelection();
+        logSelection.rideCreatedDate(1396219692235l);
+        LogCursor logCursor = logSelection.query(mContentResolver);
+        assertNotNull(logCursor);
+        assertEquals(268, logCursor.getCount());
+
+        // Verify a couple of the log rows
+        logCursor.moveToFirst();
+        assertLogData(logCursor, rideId,
+                1396219716435l, // recorded date
+                48.8539, // latitude
+                2.28887, // longitude
+                65.0, // elevation
+                null, // log duration
+                null, // log distance
+                null, // speed
+                49.7035f, // cadence
+                null); // heart rate
+
+        logCursor.move(1);
+        assertLogData(logCursor, rideId,
+                1396219719393l, // recorded date
+                48.8538, // latitude
+                2.28876, // longitude
+                65.0, // elevation
+                2958l, // log duration
+                11.6525f, // log distance
+                3.93931f, // speed
+                50.9672f, // cadence
+                null); // heart rate
+
+        // Cleanup log cursor
+        logCursor.close();
+        assertTrue(logCursor.isClosed());
+}
+
     private void assertRideData(RideCursor cursor, String name, Long createdDate, RideState state, Long firstActivatedDate, Long activatedDate, long duration, float distance) {
         assertTrue(cursor.getId() > 0);
         assertEquals(name, cursor.getName());

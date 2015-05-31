@@ -112,11 +112,11 @@ public class BikeyExporter extends Exporter {
                     break;
 
                 case Cursor.FIELD_TYPE_FLOAT:
-                    value = String.valueOf(cursor.getFloat(i));
+                    value = String.valueOf(cursor.getDouble(i));
                     break;
 
                 case Cursor.FIELD_TYPE_INTEGER:
-                    value = String.valueOf(cursor.getInt(i));
+                    value = String.valueOf(cursor.getLong(i));
                     break;
             }
             out.print(value);

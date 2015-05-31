@@ -35,6 +35,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.util.Xml;
 
+import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.util.log.LogUtil;
 import org.jraf.android.util.log.wrapper.Log;
@@ -69,6 +70,7 @@ public class BikeyRideImporter {
 
             State state = State.BIKEY;
             ContentValues rideContentValues = new ContentValues();
+            ContentValues logContentValues = null;
             String value;
             int valueType = -1;
             String tagName = null;
@@ -85,14 +87,17 @@ public class BikeyRideImporter {
                                 state = State.RIDE;
                                 break;
 
-                            case "log":
-                                state = State.LOG;
-                                break;
-
                             case "logs":
                                 // We have all the values about the ride: create it now
                                 rideId = createRide(rideContentValues);
                                 Log.d("rideId=" + rideId);
+                                break;
+
+                            case "log":
+                                state = State.LOG;
+                                // Save the previous log (if any)
+                                if (logContentValues != null) createLog(rideId, logContentValues);
+                                logContentValues = new ContentValues();
                                 break;
 
                             case "_id":
@@ -115,34 +120,41 @@ public class BikeyRideImporter {
                         if (isInValue) {
                             value = parser.getText();
 
+                            ContentValues contentValues = null;
                             switch (state) {
                                 case RIDE:
-                                    switch (valueType) {
-                                        case Cursor.FIELD_TYPE_NULL:
-                                            rideContentValues.putNull(tagName);
-                                            break;
-
-                                        case Cursor.FIELD_TYPE_STRING:
-                                            rideContentValues.put(tagName, value);
-                                            break;
-
-                                        case Cursor.FIELD_TYPE_INTEGER:
-                                            rideContentValues.put(tagName, Integer.parseInt(value));
-                                            break;
-
-
-                                        case Cursor.FIELD_TYPE_FLOAT:
-                                            rideContentValues.put(tagName, Float.parseFloat(value));
-                                            break;
-                                    }
+                                    contentValues = rideContentValues;
+                                    break;
+                                case LOG:
+                                    contentValues = logContentValues;
                                     break;
                             }
+
+                            switch (valueType) {
+                                case Cursor.FIELD_TYPE_NULL:
+                                    contentValues.putNull(tagName);
+                                    break;
+
+                                case Cursor.FIELD_TYPE_STRING:
+                                    contentValues.put(tagName, value);
+                                    break;
+
+                                case Cursor.FIELD_TYPE_INTEGER:
+                                    contentValues.put(tagName, Long.parseLong(value));
+                                    break;
+
+                                case Cursor.FIELD_TYPE_FLOAT:
+                                    contentValues.put(tagName, Double.parseDouble(value));
+                                    break;
+                            }
+
                         }
                         isInValue = false;
-
+                        break;
                 }
             }
-
+            // Save the last log (if any)
+            if (logContentValues != null) createLog(rideId, logContentValues);
         } catch (XmlPullParserException e) {
             ParseException parseException = new ParseException("Could not parse xml", 0);
             parseException.initCause(e);
@@ -154,5 +166,11 @@ public class BikeyRideImporter {
         Log.d();
         Uri rideUri = mContentResolver.insert(RideColumns.CONTENT_URI, rideContentValues);
         return ContentUris.parseId(rideUri);
+    }
+
+    private void createLog(long rideId, ContentValues logContentValues) {
+        Log.d();
+        logContentValues.put(LogColumns.RIDE_ID, rideId);
+        mContentResolver.insert(LogColumns.CONTENT_URI, logContentValues);
     }
 }

@@ -233,7 +233,7 @@ public class PreferenceActivity extends BaseAppCompatActivity
     @Override
     public void onConnected(Bundle connectionHint) {
         Log.d("connectionHint=" + connectionHint);
-        listFiles();
+        startGoogleDriveSyncTask();
     }
 
     @Override
@@ -260,14 +260,14 @@ public class PreferenceActivity extends BaseAppCompatActivity
         Log.d();
         if (getGoogleApiClient().isConnected()) {
             // Already connected: sync how
-            listFiles();
+            startGoogleDriveSyncTask();
         } else {
             // Not connected yet: connect - sync will happen when connected
             getGoogleApiClient().connect();
         }
     }
 
-    public void listFiles() {
+    public void startGoogleDriveSyncTask() {
         new TaskFragment(new Task<PreferenceActivity>() {
             @Override
             protected void doInBackground() throws Throwable {

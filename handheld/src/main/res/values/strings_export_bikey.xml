@@ -5,7 +5,7 @@
 <![CDATA["<?xml version=\"1.0\" encoding=\"utf-8\"?>
 <bikey version=\"1\">
     <meta>
-        <appVersion>%1$s<appVersion>
+        <appVersion>%1$s</appVersion>
         <creationDate>%2$s</creationDate>
     </meta>
 

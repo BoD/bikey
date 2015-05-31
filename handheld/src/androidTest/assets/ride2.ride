@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bikey version="1">
+    <meta>
+        <appVersion>99</appVersion>
+        <creationDate>2015-05-31T13:18:46Z</creationDate>
+    </meta>
+
+    <ride>
+
+<_id type="1">29</_id>
+<uuid type="3">afa4156d-ea60-4ca3-9afa-8a393455cf00</uuid>
+<name type="3">Papa's Route</name>
+<created_date type="1">-531335637</created_date>
+<state type="1">2</state>
+<first_activated_date type="0">null</first_activated_date>
+<activated_date type="1">0</activated_date>
+<duration type="1">3905722</duration>
+<distance type="2">14518.9</distance>
+
+        <logs>
+
+
+            <log>
+
+<_id type="1">13225</_id>
+<ride_id type="1">29</ride_id>
+<recorded_date type="1">-531241817</recorded_date>
+<lat type="2">34.1239</lat>
+<lon type="2">-117.879</lon>
+<ele type="2">157.8</ele>
+<log_duration type="0">null</log_duration>
+<log_distance type="0">null</log_distance>
+<speed type="0">null</speed>
+<cadence type="0">null</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">13226</_id>
+<ride_id type="1">29</ride_id>
+<recorded_date type="1">-531240697</recorded_date>
+<lat type="2">34.1239</lat>
+<lon type="2">-117.879</lon>
+<ele type="2">157.5</ele>
+<log_duration type="0">null</log_duration>
+<log_distance type="0">null</log_distance>
+<speed type="0">null</speed>
+<cadence type="0">null</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">13227</_id>
+<ride_id type="1">29</ride_id>
+<recorded_date type="1">-531239910</recorded_date>
+<lat type="2">34.1239</lat>
+<lon type="2">-117.879</lon>
+<ele type="2">156.6</ele>
+<log_duration type="1">787</log_duration>
+<log_distance type="2">1.40527</log_distance>
+<speed type="2">1.78561</speed>
+<cadence type="0">null</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">13228</_id>
+<ride_id type="1">29</ride_id>
+<recorded_date type="1">-531238939</recorded_date>
+<lat type="2">34.1239</lat>
+<lon type="2">-117.879</lon>
+<ele type="2">157.3</ele>
+<log_duration type="1">971</log_duration>
+<log_distance type="2">0.598846</log_distance>
+<speed type="2">0.616731</speed>
+<cadence type="0">null</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">13229</_id>
+<ride_id type="1">29</ride_id>
+<recorded_date type="1">-531237870</recorded_date>
+<lat type="2">34.1239</lat>
+<lon type="2">-117.879</lon>
+<ele type="2">157.0</ele>
+<log_duration type="0">null</log_duration>
+<log_distance type="0">null</log_distance>
+<speed type="0">null</speed>
+<cadence type="0">null</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+
+
+        </logs>
+
+
+    </ride>
+</bikey>
+

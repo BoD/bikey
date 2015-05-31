@@ -24,6 +24,10 @@
  */
 package org.jraf.android.bikey.backend.dbimport;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+
 import android.content.ContentResolver;
 import android.test.ProviderTestCase2;
 
@@ -32,10 +36,6 @@ import org.jraf.android.bikey.backend.provider.TestBikeyProvider;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
 
 public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> {
 
@@ -55,15 +55,19 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
 
 
     public void testRideImporter1() throws IOException, ParseException {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride1.ride");
-        BikeyRideImporter importer = new BikeyRideImporter(is);
+        InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride2.ride");
+        BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is);
         importer.doImport();
         RideSelection selection = new RideSelection();
-        RideCursor cursor = selection.name("Papa's Route").query(mContentResolver);
+        RideCursor cursor = selection.query(mContentResolver);
         assertNotNull(cursor);
         assertEquals(1, cursor.getCount());
         cursor.moveToFirst();
         assertEquals("afa4156d-ea60-4ca3-9afa-8a393455cf00", cursor.getUuid());
+        assertEquals("Papa's Route", cursor.getName());
+
+        
+
         cursor.close();
         assertTrue(cursor.isClosed());
     }

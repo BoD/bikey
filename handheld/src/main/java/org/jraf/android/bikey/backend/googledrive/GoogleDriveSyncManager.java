@@ -352,7 +352,7 @@ public class GoogleDriveSyncManager {
             DriveContents contents = driveContentsResult.getDriveContents();
             InputStream inputStream = contents.getInputStream();
             try {
-                new BikeyRideImporter(inputStream).doImport();
+                new BikeyRideImporter(mContext.getContentResolver(), inputStream).doImport();
             } catch (Exception e) {
                 Log.w("Could not parse or read Drive contents", e);
                 contents.discard(googleApiClient);

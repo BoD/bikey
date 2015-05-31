@@ -28,16 +28,30 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.database.Cursor;
+import android.net.Uri;
 import android.util.Xml;
 
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.util.log.LogUtil;
 import org.jraf.android.util.log.wrapper.Log;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 
 public class BikeyRideImporter {
-    private InputStream mInputStream;
+    private static final String DOCUMENT_VERSION = "1";
+    private final ContentResolver mContentResolver;
+    private final InputStream mInputStream;
 
-    public BikeyRideImporter(InputStream inputStream) {
+    private static enum State {
+        BIKEY, RIDE, LOG,
+    }
+
+    public BikeyRideImporter(ContentResolver contentResolver, InputStream inputStream) {
+        mContentResolver = contentResolver;
         mInputStream = inputStream;
     }
 
@@ -47,11 +61,85 @@ public class BikeyRideImporter {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(mInputStream, null);
             parser.nextTag();
+            parser.require(XmlPullParser.START_TAG, null, "bikey");
+            String version = parser.getAttributeValue(null, "version");
+            if (!DOCUMENT_VERSION.equals(version)) {
+                Log.w("Importing from an unsupported format version!  Continuing anyway, but it may fail.");
+            }
 
-            while (parser.next() != XmlPullParser.END_TAG) {
-                if (parser.getEventType() == XmlPullParser.START_TAG) {
-                    String tagName = parser.getName();
-                    Log.d("tagName=" + tagName);
+            State state = State.BIKEY;
+            ContentValues rideContentValues = new ContentValues();
+            String value;
+            int valueType = -1;
+            String tagName = null;
+            boolean isInValue = false;
+            long rideId = -1;
+            while (parser.next() != XmlPullParser.END_DOCUMENT) {
+                switch (parser.getEventType()) {
+                    case XmlPullParser.START_TAG:
+                        tagName = parser.getName();
+                        Log.d("state=" + state + " tagName=" + tagName);
+
+                        switch (tagName) {
+                            case "ride":
+                                state = State.RIDE;
+                                break;
+
+                            case "log":
+                                state = State.LOG;
+                                break;
+
+                            case "logs":
+                                // We have all the values about the ride: create it now
+                                rideId = createRide(rideContentValues);
+                                Log.d("rideId=" + rideId);
+                                break;
+
+                            case "_id":
+                            case "ride_id":
+                                // Ignore those: autoincrement ids will be used instead
+                                break;
+
+                            default:
+                                if (state != State.RIDE && state != State.LOG) break;
+                                // "Value" tag
+                                String typeStr = parser.getAttributeValue(null, "type");
+                                valueType = Integer.parseInt(typeStr);
+                                Log.d("type=" + LogUtil.getConstantName(Cursor.class, valueType, "FIELD_TYPE_"));
+                                isInValue = true;
+                                break;
+                        }
+                        break;
+
+                    case XmlPullParser.TEXT:
+                        if (isInValue) {
+                            value = parser.getText();
+
+                            switch (state) {
+                                case RIDE:
+                                    switch (valueType) {
+                                        case Cursor.FIELD_TYPE_NULL:
+                                            rideContentValues.putNull(tagName);
+                                            break;
+
+                                        case Cursor.FIELD_TYPE_STRING:
+                                            rideContentValues.put(tagName, value);
+                                            break;
+
+                                        case Cursor.FIELD_TYPE_INTEGER:
+                                            rideContentValues.put(tagName, Integer.parseInt(value));
+                                            break;
+
+
+                                        case Cursor.FIELD_TYPE_FLOAT:
+                                            rideContentValues.put(tagName, Float.parseFloat(value));
+                                            break;
+                                    }
+                                    break;
+                            }
+                        }
+                        isInValue = false;
+
                 }
             }
 
@@ -60,5 +148,11 @@ public class BikeyRideImporter {
             parseException.initCause(e);
             throw parseException;
         }
+    }
+
+    private long createRide(ContentValues rideContentValues) {
+        Log.d();
+        Uri rideUri = mContentResolver.insert(RideColumns.CONTENT_URI, rideContentValues);
+        return ContentUris.parseId(rideUri);
     }
 }

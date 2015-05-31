@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2014 Carmen Alvarez (c@rmen.ca)
+ * Copyright (C) 2015 Carmen Alvarez (c@rmen.ca)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +28,7 @@ import android.content.ContentResolver;
 import android.test.ProviderTestCase2;
 
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
+import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 
@@ -39,15 +40,18 @@ public class TestBikeyRideImporter extends ProviderTestCase2<BikeyProvider> {
 
     private ContentResolver mContentResolver;
 
+    public TestBikeyRideImporter() {
+        super(BikeyProvider.class, BikeyProvider.AUTHORITY);
+    }
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         mContentResolver = getMockContentResolver();
+        new LogSelection().delete(mContentResolver);
+        new RideSelection().delete(mContentResolver);
     }
 
-    public TestBikeyRideImporter() {
-        super(BikeyProvider.class, BikeyProvider.AUTHORITY);
-    }
 
     public void testRideImporter1() throws IOException, ParseException {
         InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride1.ride");

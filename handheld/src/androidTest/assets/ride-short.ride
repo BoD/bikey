@@ -2,15 +2,15 @@
 <bikey version="1">
     <meta>
         <appVersion>99</appVersion>
-        <creationDate>2015-05-31T13:18:46Z</creationDate>
+        <creationDate>2015-05-31T20:42:24Z</creationDate>
     </meta>
 
     <ride>
 
 <_id type="1">29</_id>
-<uuid type="3">afa4156d-ea60-4ca3-9afa-8a393455cf00</uuid>
+<uuid type="3">4245b4dc-ee6b-4e77-a659-fd3987edb5ee</uuid>
 <name type="3">Papa's Route</name>
-<created_date type="1">-531335637</created_date>
+<created_date type="1">1391038068267</created_date>
 <state type="1">2</state>
 <first_activated_date type="0">null</first_activated_date>
 <activated_date type="1">0</activated_date>
@@ -24,7 +24,7 @@
 
 <_id type="1">13225</_id>
 <ride_id type="1">29</ride_id>
-<recorded_date type="1">-531241817</recorded_date>
+<recorded_date type="1">1391038162087</recorded_date>
 <lat type="2">34.1239</lat>
 <lon type="2">-117.879</lon>
 <ele type="2">157.8</ele>
@@ -41,7 +41,7 @@
 
 <_id type="1">13226</_id>
 <ride_id type="1">29</ride_id>
-<recorded_date type="1">-531240697</recorded_date>
+<recorded_date type="1">1391038163207</recorded_date>
 <lat type="2">34.1239</lat>
 <lon type="2">-117.879</lon>
 <ele type="2">157.5</ele>
@@ -58,7 +58,7 @@
 
 <_id type="1">13227</_id>
 <ride_id type="1">29</ride_id>
-<recorded_date type="1">-531239910</recorded_date>
+<recorded_date type="1">1391038163994</recorded_date>
 <lat type="2">34.1239</lat>
 <lon type="2">-117.879</lon>
 <ele type="2">156.6</ele>
@@ -75,7 +75,7 @@
 
 <_id type="1">13228</_id>
 <ride_id type="1">29</ride_id>
-<recorded_date type="1">-531238939</recorded_date>
+<recorded_date type="1">1391038164965</recorded_date>
 <lat type="2">34.1239</lat>
 <lon type="2">-117.879</lon>
 <ele type="2">157.3</ele>
@@ -92,7 +92,7 @@
 
 <_id type="1">13229</_id>
 <ride_id type="1">29</ride_id>
-<recorded_date type="1">-531237870</recorded_date>
+<recorded_date type="1">1391038166034</recorded_date>
 <lat type="2">34.1239</lat>
 <lon type="2">-117.879</lon>
 <ele type="2">157.0</ele>

@@ -27,6 +27,7 @@ package org.jraf.android.bikey.backend.dbimport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.Date;
 
 import android.content.ContentResolver;
 import android.test.ProviderTestCase2;
@@ -36,6 +37,7 @@ import org.jraf.android.bikey.backend.provider.TestBikeyProvider;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 
 public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> {
 
@@ -54,20 +56,36 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
     }
 
 
-    public void testRideImporter1() throws IOException, ParseException {
-        InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride2.ride");
+    public void testRideImporterShortRide() throws IOException, ParseException {
+        // Import the file
+        InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride-short.ride");
         BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is);
         importer.doImport();
         RideSelection selection = new RideSelection();
         RideCursor cursor = selection.query(mContentResolver);
+
+        // Verify that the ride was created
         assertNotNull(cursor);
         assertEquals(1, cursor.getCount());
         cursor.moveToFirst();
-        assertEquals("afa4156d-ea60-4ca3-9afa-8a393455cf00", cursor.getUuid());
+
+        // Verify the attributes of the ride
+        assertTrue(cursor.getId() > 0);
+        assertEquals(RideState.PAUSED, cursor.getState());
+        assertEquals("4245b4dc-ee6b-4e77-a659-fd3987edb5ee", cursor.getUuid());
         assertEquals("Papa's Route", cursor.getName());
+        Date activatedDate = cursor.getActivatedDate();
+        assertNotNull(activatedDate);
+        assertEquals(0, activatedDate.getTime());
+        Date createdDate = cursor.getCreatedDate();
+        assertNotNull(createdDate);
+        assertEquals(1391038068267l, createdDate.getTime());
+        assertEquals(14518.9f, cursor.getDistance());
+        assertEquals(3905722, cursor.getDuration());
+        Date firstActivatedDate = cursor.getFirstActivatedDate();
+        assertNull(firstActivatedDate);
 
-        
-
+        // Cleanup
         cursor.close();
         assertTrue(cursor.isClosed());
     }

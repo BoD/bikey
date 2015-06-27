@@ -32,6 +32,7 @@ import android.content.IntentSender;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.WorkerThread;
 import android.view.MenuItem;
 
 import org.jraf.android.bikey.R;
@@ -41,7 +42,6 @@ import org.jraf.android.bikey.backend.export.db.DbExporter;
 import org.jraf.android.bikey.backend.googledrive.GoogleDriveSyncManager;
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -216,7 +216,7 @@ public class PreferenceActivity extends BaseAppCompatActivity
      * Google Drive.
      */
 
-    @Background
+    @WorkerThread
     private GoogleApiClient getGoogleApiClient() {
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)

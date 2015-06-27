@@ -32,9 +32,9 @@ import java.io.OutputStream;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.app.Application;
-import org.jraf.android.util.annotation.Background;
 
 
 public abstract class Exporter {
@@ -49,7 +49,7 @@ public abstract class Exporter {
 
     protected abstract String getExportedFileName();
 
-    @Background
+    @WorkerThread
     public abstract void export() throws IOException;
 
     protected Uri getRideUri() {

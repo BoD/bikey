@@ -33,6 +33,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.WorkerThread;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,6 @@ import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -260,7 +260,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
     /**
      * Blocks until the map is actually available.
      */
-    @Background
+    @WorkerThread
     private GoogleMap getMap() {
         if (mMap == null) {
             final CountDownLatch latch = new CountDownLatch(1);

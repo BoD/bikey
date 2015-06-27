@@ -32,6 +32,7 @@ import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.export.Exporter;
@@ -40,7 +41,6 @@ import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
@@ -58,7 +58,7 @@ public class BikeyExporter extends Exporter {
     }
 
     @Override
-    @Background
+    @WorkerThread
     public void export() throws IOException {
         PrintWriter out = new PrintWriter(new BufferedOutputStream(getOutputStream()));
         // Header

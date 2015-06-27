@@ -30,11 +30,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.preference.PreferenceManager;
+import android.support.annotation.WorkerThread;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
-
-import org.jraf.android.util.annotation.Background;
 
 public class UnitUtil {
     private static final float M_TO_KM = 0.001f;
@@ -55,7 +54,7 @@ public class UnitUtil {
         sDecimalSeparator = FORMAT_DISTANCE.getDecimalFormatSymbols().getDecimalSeparator();
     }
 
-    @Background
+    @WorkerThread
     public static void readPreferences(Context context) {
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         sUnits = preferences.getString(Constants.PREF_UNITS, Constants.PREF_UNITS_DEFAULT);

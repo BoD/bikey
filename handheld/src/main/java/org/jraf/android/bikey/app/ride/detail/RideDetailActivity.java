@@ -34,6 +34,7 @@ import android.content.ContentUris;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.WorkerThread;
 import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -55,7 +56,6 @@ import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.widget.LabelTextView;
-import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -389,7 +389,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     /**
      * Blocks until the map is actually available.
      */
-    @Background
+    @WorkerThread
     private GoogleMap getMap() {
         if (mMap == null) {
             final CountDownLatch latch = new CountDownLatch(1);

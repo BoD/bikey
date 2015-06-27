@@ -27,6 +27,7 @@ package org.jraf.android.bikey.backend.dbimport;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.ArrayList;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -44,6 +45,7 @@ import org.xmlpull.v1.XmlPullParser;
 
 public class BikeyRideImporter {
     private static final String DOCUMENT_VERSION = "1";
+    private static final int CONTENT_VALUES_BUFFER_SIZE = 100;
 
     @NonNull
     private final ContentResolver mContentResolver;
@@ -51,12 +53,14 @@ public class BikeyRideImporter {
     private final InputStream mInputStream;
     @Nullable
     private final RideImporterProgressListener mRideImporterProgressListener;
+    private ArrayList<ContentValues> mContentValuesList;
 
     private enum State {
         BIKEY, RIDE, LOG,
     }
 
-    public BikeyRideImporter(@NonNull ContentResolver contentResolver, @NonNull InputStream inputStream, @Nullable RideImporterProgressListener rideImporterProgressListener) {
+    public BikeyRideImporter(@NonNull ContentResolver contentResolver, @NonNull InputStream inputStream,
+                             @Nullable RideImporterProgressListener rideImporterProgressListener) {
         mContentResolver = contentResolver;
         mInputStream = inputStream;
         mRideImporterProgressListener = rideImporterProgressListener;
@@ -115,7 +119,8 @@ public class BikeyRideImporter {
                                 if (logContentValues != null) {
                                     createLog(rideId, logContentValues);
                                     logIndex++;
-                                    if (mRideImporterProgressListener != null) mRideImporterProgressListener.onLogImported(logIndex, logCount);
+                                    if (mRideImporterProgressListener != null && logIndex % 100 == 0)
+                                        mRideImporterProgressListener.onLogImported(logIndex, logCount);
                                 }
                                 logContentValues = new ContentValues();
                                 break;
@@ -180,6 +185,8 @@ public class BikeyRideImporter {
                 logIndex++;
                 if (mRideImporterProgressListener != null) mRideImporterProgressListener.onLogImported(logIndex, logCount);
             }
+            // Flush any remaining ContentValues
+            flushContentValuesList();
             if (mRideImporterProgressListener != null) mRideImporterProgressListener.onImportFinished(RideImporterProgressListener.LogImportStatus.SUCCESS);
         } catch (Throwable t) {
             ParseException parseException = new ParseException("Could not parse xml", 0);
@@ -197,6 +204,19 @@ public class BikeyRideImporter {
 
     private void createLog(long rideId, ContentValues logContentValues) {
         logContentValues.put(LogColumns.RIDE_ID, rideId);
-        mContentResolver.insert(LogColumns.CONTENT_URI, logContentValues);
+        if (mContentValuesList == null) mContentValuesList = new ArrayList<>(CONTENT_VALUES_BUFFER_SIZE);
+        mContentValuesList.add(logContentValues);
+        if (mContentValuesList.size() == CONTENT_VALUES_BUFFER_SIZE) {
+            flushContentValuesList();
+        }
+    }
+
+    private void flushContentValuesList() {
+        if (mContentValuesList == null) return;
+        int size = mContentValuesList.size();
+        if (size == 0) return;
+        Log.d("Inserting " + size + " items");
+        mContentResolver.bulkInsert(LogColumns.CONTENT_URI, mContentValuesList.toArray(new ContentValues[size]));
+        mContentValuesList.clear();
     }
 }

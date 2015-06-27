@@ -89,13 +89,16 @@ public class GoogleDriveSyncManager {
             return false;
         }
 
+//        serverDeleteAllItems(googleApiClient, serverItems);
+//        return true;
+
         Log.d("Get locally deleted items");
         ArrayList<String> locallyDeletedItems = getLocallyDeletedItems();
         Log.d("locallyDeletedItems=" + locallyDeletedItems);
 
         if (!locallyDeletedItems.isEmpty()) {
             Log.d("Delete locally deleted items from the server");
-            boolean ok = serverDeleteItems(googleApiClient, locallyDeletedItems, serverItems);
+            boolean ok = serverTrashItems(googleApiClient, locallyDeletedItems, serverItems);
             Log.d("ok=" + ok);
             if (ok) {
                 Log.d("Purge locally deleted items");
@@ -171,8 +174,8 @@ public class GoogleDriveSyncManager {
     }
 
     @WorkerThread
-    private boolean serverDeleteItems(GoogleApiClient googleApiClient, ArrayList<String> locallyDeletedItems, ArrayList<ServerItem> serverItems) {
-        // Find the server items to delete
+    private boolean serverTrashItems(GoogleApiClient googleApiClient, ArrayList<String> locallyDeletedItems, ArrayList<ServerItem> serverItems) {
+        // Find the server items to trash
         ArrayList<ServerItem> serverItemsToDelete = new ArrayList<>();
 
         // FIXME: Double iteration!  Bad perf!
@@ -186,13 +189,30 @@ public class GoogleDriveSyncManager {
         }
         Log.d("Server items to delete: " + serverItemsToDelete);
         for (ServerItem serverItem : serverItemsToDelete) {
-            Log.d("Delete (mark as trashed) " + serverItem);
+            Log.d("Trash " + serverItem);
             DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
             // Mark the file as trashed
             Status status = driveFile.trash(googleApiClient).await(AWAIT_DELAY_SHORT, AWAIT_UNIT_SHORT);
             Log.d("status=" + status);
             if (!status.isSuccess()) {
                 Log.w("Could not mark as trashed " + serverItem);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @WorkerThread
+    private boolean serverDeleteAllItems(GoogleApiClient googleApiClient, ArrayList<ServerItem> serverItemsToDelete) {
+        Log.d("Server items to delete: " + serverItemsToDelete);
+        for (ServerItem serverItem : serverItemsToDelete) {
+            Log.d("Delete " + serverItem);
+            DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
+            // Mark the file as trashed
+            Status status = driveFile.delete(googleApiClient).await(AWAIT_DELAY_SHORT, AWAIT_UNIT_SHORT);
+            Log.d("status=" + status);
+            if (!status.isSuccess()) {
+                Log.w("Could not delete " + serverItem);
                 return false;
             }
         }

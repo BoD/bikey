@@ -9,7 +9,7 @@
         <creationDate>%2$s</creationDate>
     </meta>
 
-    <ride logCount="%3$d">
+    <ride logCount=\"%3$d\">
 "]]>
     </string>
 

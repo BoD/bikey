@@ -24,6 +24,7 @@
  */
 package org.jraf.android.bikey.backend.export.bikey;
 
+import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -59,7 +60,7 @@ public class BikeyExporter extends Exporter {
     @Override
     @Background
     public void export() throws IOException {
-        PrintWriter out = new PrintWriter(getOutputStream());
+        PrintWriter out = new PrintWriter(new BufferedOutputStream(getOutputStream()));
         // Header
         String appVersion = null;
         try {
@@ -68,7 +69,15 @@ public class BikeyExporter extends Exporter {
             // Can never happen
         }
         String creationDate = DateTimeUtil.toIso8601(System.currentTimeMillis(), true);
-        out.println(getString(R.string.export_bikey_begin, appVersion, creationDate));
+
+        // Query
+        long rideId = ContentUris.parseId(getRideUri());
+        LogSelection logSelection = new LogSelection();
+        logSelection.rideId(rideId);
+        LogCursor logCursor = logSelection.query(getContext(), LogColumns.ALL_COLUMNS);
+
+        int logCount = logCursor.getCount();
+        out.println(getString(R.string.export_bikey_begin, appVersion, creationDate, logCount));
 
         RideCursor rideCursor = RideManager.get().query(getRideUri());
         exportCursorRow(rideCursor, out);
@@ -77,10 +86,6 @@ public class BikeyExporter extends Exporter {
         // Logs
         out.println(getString(R.string.export_bikey_logs_begin));
 
-        long rideId = ContentUris.parseId(getRideUri());
-        LogSelection logSelection = new LogSelection();
-        logSelection.rideId(rideId);
-        LogCursor logCursor = logSelection.query(getContext(), LogColumns.ALL_COLUMNS);
         while (logCursor.moveToNext()) {
             out.println(getString(R.string.export_bikey_log_begin));
             exportCursorRow(logCursor, out);
@@ -91,6 +96,7 @@ public class BikeyExporter extends Exporter {
         // End
         out.println(getString(R.string.export_bikey_logs_end));
         out.println(getString(R.string.export_bikey_end));
+        out.flush();
         IoUtil.closeSilently(out);
 
     }

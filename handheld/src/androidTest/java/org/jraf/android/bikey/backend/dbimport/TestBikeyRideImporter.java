@@ -24,6 +24,11 @@
  */
 package org.jraf.android.bikey.backend.dbimport;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.util.Date;
+
 import android.content.ContentResolver;
 import android.test.ProviderTestCase2;
 
@@ -34,11 +39,7 @@ import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.util.Date;
+import org.jraf.android.util.log.wrapper.Log;
 
 public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> {
 
@@ -60,7 +61,7 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
     public void testRideImporterShortRide() throws IOException, ParseException {
         // Import the file
         InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride-short.ride");
-        BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is);
+        BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is, getRideImporterProgressListener());
         importer.doImport();
         RideSelection rideSelection = new RideSelection();
         rideSelection.name("Papa's Route");
@@ -123,10 +124,29 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
         assertTrue(logCursor.isClosed());
     }
 
+    private static RideImporterProgressListener getRideImporterProgressListener() {
+        return new RideImporterProgressListener() {
+            @Override
+            public void onImportStarted() {
+                Log.d();
+            }
+
+            @Override
+            public void onLogImported(long logIndex, long total) {
+                Log.d(logIndex + "/" + total);
+            }
+
+            @Override
+            public void onImportFinished(LogImportStatus status) {
+                Log.d("status=" + status);
+            }
+        };
+    }
+
     public void testRideImporterCadence() throws IOException, ParseException {
         // Import the file
         InputStream is = getClass().getClassLoader().getResourceAsStream("assets/ride-cadence.ride");
-        BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is);
+        BikeyRideImporter importer = new BikeyRideImporter(mContentResolver, is, getRideImporterProgressListener());
         importer.doImport();
         RideSelection rideSelection = new RideSelection();
         rideSelection.createdDate(1396219692235l);
@@ -185,9 +205,10 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
         // Cleanup log cursor
         logCursor.close();
         assertTrue(logCursor.isClosed());
-}
+    }
 
-    private void assertRideData(RideCursor cursor, String name, Long createdDate, RideState state, Long firstActivatedDate, Long activatedDate, long duration, float distance) {
+    private void assertRideData(RideCursor cursor, String name, Long createdDate, RideState state, Long firstActivatedDate, Long activatedDate, long duration,
+                                float distance) {
         assertTrue(cursor.getId() > 0);
         assertEquals(name, cursor.getName());
         assertDate(createdDate, cursor.getCreatedDate());
@@ -198,7 +219,8 @@ public class TestBikeyRideImporter extends ProviderTestCase2<TestBikeyProvider> 
         assertEquals(distance, cursor.getDistance());
     }
 
-    private void assertLogData(LogCursor cursor, long rideId, Long recordedDate, double latitude, double longitude, double elevation, Long logDuration, Float logDistance, Float speed, Float cadence, Integer heartRate) {
+    private void assertLogData(LogCursor cursor, long rideId, Long recordedDate, double latitude, double longitude, double elevation, Long logDuration,
+                               Float logDistance, Float speed, Float cadence, Integer heartRate) {
         assertTrue(cursor.getId() > 0);
         assertEquals(rideId, cursor.getRideId());
         assertDate(recordedDate, cursor.getRecordedDate());

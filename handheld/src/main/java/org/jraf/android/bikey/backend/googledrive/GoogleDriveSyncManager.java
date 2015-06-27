@@ -37,6 +37,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.backend.dbimport.BikeyRideImporter;
+import org.jraf.android.bikey.backend.dbimport.RideImporterProgressListener;
 import org.jraf.android.bikey.backend.export.bikey.BikeyExporter;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
@@ -351,8 +352,24 @@ public class GoogleDriveSyncManager {
 
             DriveContents contents = driveContentsResult.getDriveContents();
             InputStream inputStream = contents.getInputStream();
+            RideImporterProgressListener rideImporterProgressListener = new RideImporterProgressListener() {
+                @Override
+                public void onImportStarted() {
+                    Log.d();
+                }
+
+                @Override
+                public void onLogImported(long logIndex, long total) {
+                    Log.d(logIndex + "/" + total);
+                }
+
+                @Override
+                public void onImportFinished(LogImportStatus status) {
+                    Log.d("status=" + status);
+                }
+            };
             try {
-                new BikeyRideImporter(mContext.getContentResolver(), inputStream).doImport();
+                new BikeyRideImporter(mContext.getContentResolver(), inputStream, rideImporterProgressListener).doImport();
             } catch (Exception e) {
                 Log.w("Could not parse or read Drive contents", e);
                 contents.discard(googleApiClient);

@@ -7,7 +7,7 @@
  *                              /___/
  * repository.
  *
- * Copyright (C) 2014 Carmen Alvarez (c@rmen.ca)
+ * Copyright (C) 2015 Benoit 'BoD' Lubek (BoD@JRAF.org)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -33,29 +33,37 @@ import android.content.ContentUris;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Xml;
 
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.util.log.wrapper.Log;
 import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 public class BikeyRideImporter {
     private static final String DOCUMENT_VERSION = "1";
-    private final ContentResolver mContentResolver;
-    private final InputStream mInputStream;
 
-    private static enum State {
+    @NonNull
+    private final ContentResolver mContentResolver;
+    @NonNull
+    private final InputStream mInputStream;
+    @Nullable
+    private final RideImporterProgressListener mRideImporterProgressListener;
+
+    private enum State {
         BIKEY, RIDE, LOG,
     }
 
-    public BikeyRideImporter(ContentResolver contentResolver, InputStream inputStream) {
+    public BikeyRideImporter(@NonNull ContentResolver contentResolver, @NonNull InputStream inputStream, @Nullable RideImporterProgressListener rideImporterProgressListener) {
         mContentResolver = contentResolver;
         mInputStream = inputStream;
+        mRideImporterProgressListener = rideImporterProgressListener;
     }
 
     public void doImport() throws IOException, ParseException {
+        if (mRideImporterProgressListener != null) mRideImporterProgressListener.onImportStarted();
         XmlPullParser parser = Xml.newPullParser();
         try {
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
@@ -75,6 +83,8 @@ public class BikeyRideImporter {
             String tagName = null;
             boolean isInValue = false;
             long rideId = -1;
+            long logCount = 0L;
+            long logIndex = 0L;
             while (parser.next() != XmlPullParser.END_DOCUMENT) {
                 switch (parser.getEventType()) {
                     case XmlPullParser.START_TAG:
@@ -83,6 +93,14 @@ public class BikeyRideImporter {
                         switch (tagName) {
                             case "ride":
                                 state = State.RIDE;
+                                // "logCount" tag
+                                String logCountStr = parser.getAttributeValue(null, "logCount");
+                                if (logCountStr == null) {
+                                    // Old format didn't have this tag.  In that case, report an unknown count (-1)
+                                    logCount = -1;
+                                } else {
+                                    logCount = Long.parseLong(logCountStr);
+                                }
                                 break;
 
                             case "logs":
@@ -94,7 +112,11 @@ public class BikeyRideImporter {
                             case "log":
                                 state = State.LOG;
                                 // Save the previous log (if any)
-                                if (logContentValues != null) createLog(rideId, logContentValues);
+                                if (logContentValues != null) {
+                                    createLog(rideId, logContentValues);
+                                    logIndex++;
+                                    if (mRideImporterProgressListener != null) mRideImporterProgressListener.onLogImported(logIndex, logCount);
+                                }
                                 logContentValues = new ContentValues();
                                 break;
 
@@ -105,7 +127,7 @@ public class BikeyRideImporter {
 
                             default:
                                 if (state != State.RIDE && state != State.LOG) break;
-                                // "Value" tag
+                                // "type" tag
                                 String typeStr = parser.getAttributeValue(null, "type");
                                 valueType = Integer.parseInt(typeStr);
                                 // Log.d("type=" + LogUtil.getConstantName(Cursor.class, valueType, "FIELD_TYPE_"));
@@ -118,12 +140,13 @@ public class BikeyRideImporter {
                         if (isInValue) {
                             value = parser.getText();
 
-                            ContentValues contentValues = null;
+                            ContentValues contentValues;
                             switch (state) {
                                 case RIDE:
                                     contentValues = rideContentValues;
                                     break;
                                 case LOG:
+                                default:
                                     contentValues = logContentValues;
                                     break;
                             }
@@ -152,10 +175,16 @@ public class BikeyRideImporter {
                 }
             }
             // Save the last log (if any)
-            if (logContentValues != null) createLog(rideId, logContentValues);
-        } catch (XmlPullParserException e) {
+            if (logContentValues != null) {
+                createLog(rideId, logContentValues);
+                logIndex++;
+                if (mRideImporterProgressListener != null) mRideImporterProgressListener.onLogImported(logIndex, logCount);
+            }
+            if (mRideImporterProgressListener != null) mRideImporterProgressListener.onImportFinished(RideImporterProgressListener.LogImportStatus.SUCCESS);
+        } catch (Throwable t) {
             ParseException parseException = new ParseException("Could not parse xml", 0);
-            parseException.initCause(e);
+            parseException.initCause(t);
+            if (mRideImporterProgressListener != null) mRideImporterProgressListener.onImportFinished(RideImporterProgressListener.LogImportStatus.FAIL);
             throw parseException;
         }
     }

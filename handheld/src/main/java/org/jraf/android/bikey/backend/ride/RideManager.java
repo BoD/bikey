@@ -88,15 +88,17 @@ public class RideManager {
         // First pause any active rides in the list
         pauseRides(ids);
 
-        // Delete rides
-        RideSelection rideWhere = new RideSelection();
-        rideWhere.id(ids);
-        int res = rideWhere.delete(mContext);
+        // Mark rides as deleted
+        RideSelection rideSelection = new RideSelection();
+        rideSelection.id(ids);
+        RideContentValues rideContentValues = new RideContentValues();
+        rideContentValues.putState(RideState.DELETED);
+        int res = rideContentValues.update(mContext, rideSelection);
 
         // Delete logs
-        LogSelection logWhere = new LogSelection();
-        logWhere.rideId(ids);
-        logWhere.delete(mContext);
+        LogSelection logSelection = new LogSelection();
+        logSelection.rideId(ids);
+        logSelection.delete(mContext);
 
         // If we just deleted the current ride, select another ride to be the current ride (if any).
         Uri currentRideUri = getCurrentRide();
@@ -117,12 +119,12 @@ public class RideManager {
         pauseRides(ids);
 
         // Choose the master ride (the one with the earliest creation date)
-        String[] projection = { RideColumns._ID };
-        RideSelection rideWhere = new RideSelection();
-        rideWhere.id(ids);
+        String[] projection = {RideColumns._ID};
+        RideSelection rideSelection = new RideSelection();
+        rideSelection.id(ids);
         String order = RideColumns.CREATED_DATE;
         ContentResolver contentResolver = mContext.getContentResolver();
-        RideCursor rideCursor = rideWhere.query(contentResolver, projection, order);
+        RideCursor rideCursor = rideSelection.query(contentResolver, projection, order);
         long masterRideId = 0;
         try {
             rideCursor.moveToNext();
@@ -132,8 +134,8 @@ public class RideManager {
         }
 
         // Calculate the total duration
-        projection = new String[] { "sum(" + RideColumns.DURATION + ")" };
-        Cursor c = contentResolver.query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), null);
+        projection = new String[] {"sum(" + RideColumns.DURATION + ")"};
+        Cursor c = contentResolver.query(RideColumns.CONTENT_URI, projection, rideSelection.sel(), rideSelection.args(), null);
         long totalDuration = 0;
         try {
             if (c.moveToNext()) {
@@ -148,18 +150,18 @@ public class RideManager {
             if (mergedRideId == masterRideId) continue;
 
             // Update logs
-            LogSelection logWhere = new LogSelection();
-            logWhere.rideId(mergedRideId);
+            LogSelection logSelection = new LogSelection();
+            logSelection.rideId(mergedRideId);
             LogContentValues values = new LogContentValues();
             values.putRideId(masterRideId);
-            values.update(contentResolver, logWhere);
+            values.update(contentResolver, logSelection);
 
             // Delete merged ride
-            rideWhere = new RideSelection();
-            rideWhere.id(mergedRideId);
+            rideSelection = new RideSelection();
+            rideSelection.id(mergedRideId);
             // Do not notify yet
             Uri contentUri = BikeyProvider.notify(RideColumns.CONTENT_URI, false);
-            contentResolver.delete(contentUri, rideWhere.sel(), rideWhere.args());
+            contentResolver.delete(contentUri, rideSelection.sel(), rideSelection.args());
         }
 
         // Rename master ride
@@ -247,7 +249,7 @@ public class RideManager {
     @Background
     public void pause(final Uri rideUri) {
         // Get current activated date / duration
-        String[] projection = { RideColumns.ACTIVATED_DATE, RideColumns.DURATION };
+        String[] projection = {RideColumns.ACTIVATED_DATE, RideColumns.DURATION};
         RideCursor c = new RideCursor(mContext.getContentResolver().query(rideUri, projection, null, null, null));
         try {
             if (!c.moveToNext()) {
@@ -308,7 +310,7 @@ public class RideManager {
 
     @Background
     private Uri getMostRecentRide() {
-        String[] projection = { RideColumns._ID };
+        String[] projection = {RideColumns._ID};
         // Return a ride, prioritizing ACTIVE ones first, then sorting by creation date.
         Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, null, null,
                 RideColumns.STATE + ", " + RideColumns.CREATED_DATE + " DESC");

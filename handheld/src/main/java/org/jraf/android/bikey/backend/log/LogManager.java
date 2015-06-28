@@ -32,6 +32,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
+import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.backend.location.LocationManager;
@@ -41,7 +42,6 @@ import org.jraf.android.bikey.backend.provider.log.LogContentValues;
 import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.wrapper.Log;
@@ -62,7 +62,7 @@ public class LogManager {
         mContext = Application.getApplication();
     }
 
-    @Background
+    @WorkerThread
     public Uri add(final Uri rideUri, Location location, Location previousLocation, Float cadence, Integer heartRate) {
         // Add a log
         LogContentValues values = new LogContentValues();
@@ -102,7 +102,7 @@ public class LogManager {
         return res;
     }
 
-    @Background
+    @WorkerThread
     public float getTotalDistance(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")" };
@@ -120,7 +120,7 @@ public class LogManager {
     /**
      * Note: the top 10% points are discarded to account for imprecise values.
      */
-    @Background
+    @WorkerThread
     public float getAverageMovingSpeed(Uri rideUri) {
         // First get the max
         float max = getMaxSpeed(rideUri);
@@ -141,7 +141,7 @@ public class LogManager {
     /**
      * Note: the top 10% points are discarded to account for imprecise values.
      */
-    @Background
+    @WorkerThread
     public Float getAverageCadence(Uri rideUri) {
         // First get the min and max
         float min = getMinCadence(rideUri);
@@ -164,7 +164,7 @@ public class LogManager {
     /**
      * Note: the top 10% points are discarded to account for imprecise values.
      */
-    @Background
+    @WorkerThread
     public Float getAverageHeartRate(Uri rideUri) {
         // First get the min and max
         float min = getMinHeartRate(rideUri);
@@ -184,7 +184,7 @@ public class LogManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public Long getMovingDuration(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.LOG_DURATION + ")" };
@@ -203,7 +203,7 @@ public class LogManager {
     /**
      * Note: the top 10% points are discarded to account for imprecise values.
      */
-    @Background
+    @WorkerThread
     public float getMax(Uri rideUri, String column) {
         // Get the point count to discard the top 10% values
         Integer count = getLogCount(rideUri);
@@ -225,7 +225,7 @@ public class LogManager {
     /**
      * Note: the bottom 10% points are discarded to account for imprecise values.
      */
-    @Background
+    @WorkerThread
     public float getMin(Uri rideUri, String column) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { column };
@@ -244,12 +244,12 @@ public class LogManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public float getMaxSpeed(Uri rideUri) {
         return getMax(rideUri, LogColumns.SPEED);
     }
 
-    @Background
+    @WorkerThread
     public float getMaxCadence(Uri rideUri) {
         return getMax(rideUri, LogColumns.CADENCE);
     }
@@ -258,19 +258,19 @@ public class LogManager {
         return getMin(rideUri, LogColumns.CADENCE);
     }
 
-    @Background
+    @WorkerThread
     public float getMaxHeartRate(Uri rideUri) {
         return getMax(rideUri, LogColumns.HEART_RATE);
     }
 
-    @Background
+    @WorkerThread
     public float getMinHeartRate(Uri rideUri) {
         return getMin(rideUri, LogColumns.HEART_RATE);
     }
 
 
 
-    @Background
+    @WorkerThread
     public Long getFirstLogDate(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "min(" + LogColumns.RECORDED_DATE + ")" };
@@ -286,7 +286,7 @@ public class LogManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public Long getLastLogDate(Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "max(" + LogColumns.RECORDED_DATE + ")" };
@@ -318,7 +318,7 @@ public class LogManager {
         return count;
     }
 
-    @Background
+    @WorkerThread
     public List<LatLng> getLatLngArray(Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
@@ -344,7 +344,7 @@ public class LogManager {
         return res;
     }
 
-    @Background
+    @WorkerThread
     public List<Float> getSpeedArray(Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
@@ -370,7 +370,7 @@ public class LogManager {
         return res;
     }
 
-    @Background
+    @WorkerThread
     public List<Float> getCadenceArray(Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
@@ -396,7 +396,7 @@ public class LogManager {
         return res;
     }
 
-    @Background
+    @WorkerThread
     public List<Float> getHeartRateArray(Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);

@@ -36,6 +36,7 @@ public class Constants {
     public static final String PREF_HEART_RATE_SCAN = "PREF_HEART_RATE_SCAN";
     public static final String PREF_IMPORT = "PREF_IMPORT";
     public static final String PREF_EXPORT = "PREF_EXPORT";
+    public static final String SYNC_WITH_GOOGLE_DRIVE = "SYNC_WITH_GOOGLE_DRIVE";
 
     public static final String PREF_LISTEN_TO_HEADSET_BUTTON = "PREF_LISTEN_TO_HEADSET_BUTTON";
     public static final boolean PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT = false;

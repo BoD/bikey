@@ -27,13 +27,13 @@ package org.jraf.android.bikey.app.display.fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.backend.log.LogListener;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.util.annotation.Background;
 
 public abstract class LogDisplayFragment extends SimpleDisplayFragment {
 
@@ -128,6 +128,6 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         }
     };
 
-    @Background
+    @WorkerThread
     protected abstract CharSequence queryValue();
 }

@@ -46,6 +46,6 @@ android {
 dependencies {
     compile project(':common')
     compile 'org.jraf:jraf-android-util:1.0.0'
-    compile 'com.jakewharton:butterknife:5.1.1'
+    compile 'com.jakewharton:butterknife:7.0.0'
     compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.4@aar'
 }

@@ -34,6 +34,7 @@ import android.preference.PreferenceManager;
 import android.view.MenuItem;
 
 import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.app.googledrivesync.GoogleDriveSyncActivity;
 import org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity;
 import org.jraf.android.bikey.backend.dbimport.DatabaseImporter;
 import org.jraf.android.bikey.backend.export.db.DbExporter;
@@ -46,13 +47,15 @@ import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.log.wrapper.Log;
 
-public class PreferenceActivity extends BaseAppCompatActivity implements PreferenceCallbacks, AlertDialogListener {
+public class PreferenceActivity extends BaseAppCompatActivity
+        implements PreferenceCallbacks, AlertDialogListener {
     private static final int REQUEST_PICK_FILE_FOR_IMPORT = 0;
     private static final int REQUEST_SCAN_HEART_RATE_MONITOR = 1;
 
     private static final int DIALOG_RECORD_CADENCE = 0;
     private static final int DIALOG_DISCONNECT_HEART_RATE = 1;
     private static final int DIALOG_RECONNECT_HEART_RATE = 2;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,7 +185,7 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
     }
 
     @Override
-    public void tryToReconnectOrGiveUp() {
+    public void tryToReconnectHeartRateMonitorOrGiveUp() {
         Log.d();
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_RECONNECT_HEART_RATE);
         dialog.setTitle(R.string.preference_heartRate_reconnect_confirmDialog_title);
@@ -191,7 +194,13 @@ public class PreferenceActivity extends BaseAppCompatActivity implements Prefere
         dialog.setNegativeButton(R.string.preference_heartRate_reconnect_confirmDialog_negative);
         dialog.setCancelIsNegative(false);
         dialog.show(getSupportFragmentManager());
+    }
 
+    @Override
+    public void syncWithGoogleDrive() {
+        Log.d();
+        Intent intent = new Intent(this, GoogleDriveSyncActivity.class);
+        startActivity(intent);
     }
 
 

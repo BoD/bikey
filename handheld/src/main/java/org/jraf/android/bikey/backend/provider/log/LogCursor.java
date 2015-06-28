@@ -31,7 +31,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractCursor;
-import org.jraf.android.bikey.backend.provider.ride.*;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 
 /**
  * Cursor wrapper for the {@code log} table.
@@ -58,6 +59,18 @@ public class LogCursor extends AbstractCursor implements LogModel {
         Long res = getLongOrNull(LogColumns.RIDE_ID);
         if (res == null)
             throw new NullPointerException("The value of 'ride_id' in the database was null, which is not allowed according to the model definition");
+        return res;
+    }
+
+    /**
+     * Get the {@code uuid} value.
+     * Cannot be {@code null}.
+     */
+    @NonNull
+    public String getRideUuid() {
+        String res = getStringOrNull(RideColumns.UUID);
+        if (res == null)
+            throw new NullPointerException("The value of 'uuid' in the database was null, which is not allowed according to the model definition");
         return res;
     }
 

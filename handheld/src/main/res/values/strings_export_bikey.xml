@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="export_bikey_begin" translatable="false">
+<![CDATA["<?xml version=\"1.0\" encoding=\"utf-8\"?>
+<bikey version=\"1\">
+    <meta>
+        <appVersion>%1$s</appVersion>
+        <creationDate>%2$s</creationDate>
+    </meta>
+
+    <ride logCount=\"%3$d\">
+"]]>
+    </string>
+
+    <string name="export_bikey_logs_begin" translatable="false">
+<![CDATA["
+        <logs>
+"]]>
+    </string>
+
+    <string name="export_bikey_logs_end" translatable="false">
+<![CDATA["
+        </logs>
+"]]>
+    </string>
+
+        <string name="export_bikey_log_begin" translatable="false">
+<![CDATA["
+            <log>
+"]]>
+    </string>
+
+    <string name="export_bikey_log_end" translatable="false">
+<![CDATA["
+            </log>
+"]]>
+    </string>
+
+    <string name="export_bikey_end" translatable="false">
+<![CDATA["
+    </ride>
+</bikey>
+"]]>
+    </string>
+
+</resources>

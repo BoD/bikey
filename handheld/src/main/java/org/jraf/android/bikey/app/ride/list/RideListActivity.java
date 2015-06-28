@@ -41,6 +41,7 @@ import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.preference.PreferenceActivity;
 import org.jraf.android.bikey.app.ride.detail.RideDetailActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
+import org.jraf.android.bikey.backend.export.bikey.BikeyExporter;
 import org.jraf.android.bikey.backend.export.genymotion.GenymotionExporter;
 import org.jraf.android.bikey.backend.export.gpx.GpxExporter;
 import org.jraf.android.bikey.backend.export.kml.KmlExporter;
@@ -309,6 +310,10 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
             case 2:
                 // Genymotion script
                 mState.mExporter = new GenymotionExporter(rideUri);
+                break;
+            case 3:
+                // Bikey
+                mState.mExporter = new BikeyExporter(rideUri);
                 break;
         }
         startExport();

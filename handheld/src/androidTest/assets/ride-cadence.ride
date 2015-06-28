@@ -1,0 +1,4584 @@
+<?xml version="1.0" encoding="utf-8"?>
+<bikey version="1">
+    <meta>
+        <appVersion>99</appVersion>
+        <creationDate>2015-05-31T21:26:49Z</creationDate>
+    </meta>
+
+    <ride>
+
+<_id type="1">39</_id>
+<uuid type="3">cb59996a-6dad-40f0-884c-7db5baff87f3</uuid>
+<name type="0">null</name>
+<created_date type="1">1396219692235</created_date>
+<state type="1">2</state>
+<first_activated_date type="0">null</first_activated_date>
+<activated_date type="1">0</activated_date>
+<duration type="1">1192587</duration>
+<distance type="2">3547.17</distance>
+
+        <logs>
+
+
+            <log>
+
+<_id type="1">31919</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219716435</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28887</lon>
+<ele type="2">65.0</ele>
+<log_duration type="0">null</log_duration>
+<log_distance type="0">null</log_distance>
+<speed type="0">null</speed>
+<cadence type="2">49.7035</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31920</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219719393</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28876</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2958</log_duration>
+<log_distance type="2">11.6525</log_distance>
+<speed type="2">3.93931</speed>
+<cadence type="2">50.9672</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31921</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219722373</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28869</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2980</log_duration>
+<log_distance type="2">13.8475</log_distance>
+<speed type="2">4.6468</speed>
+<cadence type="2">54.0466</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31922</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219725403</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.2888</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3030</log_duration>
+<log_distance type="2">11.8467</log_distance>
+<speed type="2">3.90979</speed>
+<cadence type="2">56.414</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31923</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219728437</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28889</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3034</log_duration>
+<log_distance type="2">12.6939</log_distance>
+<speed type="2">4.18388</speed>
+<cadence type="2">54.9042</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31924</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219731415</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.28895</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2978</log_duration>
+<log_distance type="2">13.889</log_distance>
+<speed type="2">4.66386</speed>
+<cadence type="2">52.2869</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31925</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219734445</recorded_date>
+<lat type="2">48.8541</lat>
+<lon type="2">2.28907</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3030</log_duration>
+<log_distance type="2">10.9387</log_distance>
+<speed type="2">3.61013</speed>
+<cadence type="2">54.1926</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31926</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219737420</recorded_date>
+<lat type="2">48.8541</lat>
+<lon type="2">2.2892</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2975</log_duration>
+<log_distance type="2">10.6588</log_distance>
+<speed type="2">3.58279</speed>
+<cadence type="2">54.6199</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31927</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219740409</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28923</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">14.6301</log_distance>
+<speed type="2">4.89465</speed>
+<cadence type="2">53.7336</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31928</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219743434</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28928</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3025</log_duration>
+<log_distance type="2">14.1316</log_distance>
+<speed type="2">4.67161</speed>
+<cadence type="2">54.0508</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31929</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219746459</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28916</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3025</log_duration>
+<log_distance type="2">10.8617</log_distance>
+<speed type="2">3.59064</speed>
+<cadence type="2">50.9463</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31930</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219749415</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28924</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2956</log_duration>
+<log_distance type="2">13.293</log_distance>
+<speed type="2">4.49696</speed>
+<cadence type="2">52.561</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31931</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219752433</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28926</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3018</log_duration>
+<log_distance type="2">14.7366</log_distance>
+<speed type="2">4.8829</speed>
+<cadence type="2">52.9388</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31932</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219755407</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28935</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2974</log_duration>
+<log_distance type="2">12.8172</log_distance>
+<speed type="2">4.30977</speed>
+<cadence type="2">50.4324</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31933</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219758443</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28939</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3036</log_duration>
+<log_distance type="2">14.3182</log_distance>
+<speed type="2">4.71615</speed>
+<cadence type="2">48.9675</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31934</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219761448</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.28938</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3005</log_duration>
+<log_distance type="2">14.8115</log_distance>
+<speed type="2">4.92894</speed>
+<cadence type="2">47.4103</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31935</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219764465</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28933</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3017</log_duration>
+<log_distance type="2">14.0089</log_distance>
+<speed type="2">4.64331</speed>
+<cadence type="2">46.2373</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31936</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219767471</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28944</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">11.5626</log_distance>
+<speed type="2">3.8465</speed>
+<cadence type="2">46.3747</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31937</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219770477</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.28936</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">13.3403</log_distance>
+<speed type="2">4.43788</speed>
+<cadence type="2">47.673</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31938</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219773463</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28941</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2986</log_duration>
+<log_distance type="2">14.1783</log_distance>
+<speed type="2">4.74827</speed>
+<cadence type="2">51.8993</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31939</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219776536</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28944</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3073</log_duration>
+<log_distance type="2">14.5702</log_distance>
+<speed type="2">4.74135</speed>
+<cadence type="2">57.9931</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31940</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219779483</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28935</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2947</log_duration>
+<log_distance type="2">12.4894</log_distance>
+<speed type="2">4.23802</speed>
+<cadence type="2">55.3757</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31941</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219782461</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28934</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2978</log_duration>
+<log_distance type="2">14.7967</log_distance>
+<speed type="2">4.96868</speed>
+<cadence type="2">57.0643</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31942</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219785478</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.2893</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3017</log_duration>
+<log_distance type="2">14.4302</log_distance>
+<speed type="2">4.78295</speed>
+<cadence type="2">57.9583</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31943</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219788515</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28929</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3037</log_duration>
+<log_distance type="2">14.8237</log_distance>
+<speed type="2">4.88103</speed>
+<cadence type="2">54.4329</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31944</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219791473</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28932</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2958</log_duration>
+<log_distance type="2">14.5758</log_distance>
+<speed type="2">4.92759</speed>
+<cadence type="2">51.8248</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31945</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219794523</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28937</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3050</log_duration>
+<log_distance type="2">14.263</log_distance>
+<speed type="2">4.67639</speed>
+<cadence type="2">43.8924</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31946</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219797480</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.2894</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2957</log_duration>
+<log_distance type="2">14.6663</log_distance>
+<speed type="2">4.95987</speed>
+<cadence type="2">43.9187</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31947</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219800520</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28935</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3040</log_duration>
+<log_distance type="2">14.2791</log_distance>
+<speed type="2">4.69707</speed>
+<cadence type="2">42.1336</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31948</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219803492</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28935</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2972</log_duration>
+<log_distance type="2">14.8272</log_distance>
+<speed type="2">4.98895</speed>
+<cadence type="2">41.2353</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31949</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219806522</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28923</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3030</log_duration>
+<log_distance type="2">11.0243</log_distance>
+<speed type="2">3.63839</speed>
+<cadence type="2">37.6461</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31950</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219809511</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28912</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">11.6497</log_distance>
+<speed type="2">3.89753</speed>
+<cadence type="2">36.7138</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31951</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219812490</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.289</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2979</log_duration>
+<log_distance type="2">10.3169</log_distance>
+<speed type="2">3.46319</speed>
+<cadence type="2">33.1222</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31952</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219815512</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28913</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3022</log_duration>
+<log_distance type="2">9.94001</log_distance>
+<speed type="2">3.28922</speed>
+<cadence type="2">31.1365</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31953</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219818519</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28919</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3007</log_duration>
+<log_distance type="2">13.9258</log_distance>
+<speed type="2">4.63112</speed>
+<cadence type="2">29.1466</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31954</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219821518</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28914</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2999</log_duration>
+<log_distance type="2">14.2788</log_distance>
+<speed type="2">4.76119</speed>
+<cadence type="2">26.5358</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31955</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219824526</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28906</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">13.228</log_distance>
+<speed type="2">4.39761</speed>
+<cadence type="2">26.2142</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31956</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219827535</recorded_date>
+<lat type="2">48.8534</lat>
+<lon type="2">2.28902</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">14.4146</log_distance>
+<speed type="2">4.7905</speed>
+<cadence type="2">26.8569</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31957</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219830512</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28903</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2977</log_duration>
+<log_distance type="2">14.7932</log_distance>
+<speed type="2">4.96918</speed>
+<cadence type="2">30.3708</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31958</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219833517</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28895</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3005</log_duration>
+<log_distance type="2">13.3184</log_distance>
+<speed type="2">4.43208</speed>
+<cadence type="2">31.4172</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31959</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219836502</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28902</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2985</log_duration>
+<log_distance type="2">13.7014</log_distance>
+<speed type="2">4.59008</speed>
+<cadence type="2">32.1109</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31960</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219839518</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28906</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3016</log_duration>
+<log_distance type="2">14.5078</log_distance>
+<speed type="2">4.81027</speed>
+<cadence type="2">36.5651</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31961</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219842524</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28896</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">12.2812</log_distance>
+<speed type="2">4.08557</speed>
+<cadence type="2">29.8507</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31962</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219845536</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28895</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">14.8007</log_distance>
+<speed type="2">4.91392</speed>
+<cadence type="2">28.9744</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31963</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219848542</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28891</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">14.4971</log_distance>
+<speed type="2">4.82271</speed>
+<cadence type="2">24.5697</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31964</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219851554</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28902</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">11.9732</log_distance>
+<speed type="2">3.97517</speed>
+<cadence type="2">22.8688</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31965</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219854598</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28911</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3044</log_duration>
+<log_distance type="2">12.7529</log_distance>
+<speed type="2">4.18951</speed>
+<cadence type="2">23.679</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31966</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219857541</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28904</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2943</log_duration>
+<log_distance type="2">13.7273</log_distance>
+<speed type="2">4.6644</speed>
+<cadence type="2">21.1387</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31967</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219860549</recorded_date>
+<lat type="2">48.8534</lat>
+<lon type="2">2.28896</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">13.4636</log_distance>
+<speed type="2">4.47593</speed>
+<cadence type="2">23.6713</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31968</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219863558</recorded_date>
+<lat type="2">48.8532</lat>
+<lon type="2">2.28905</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">12.9841</log_distance>
+<speed type="2">4.31509</speed>
+<cadence type="2">18.5991</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31969</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219866563</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28915</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3005</log_duration>
+<log_distance type="2">12.2188</log_distance>
+<speed type="2">4.06617</speed>
+<cadence type="2">22.832</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31970</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219869570</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.2891</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3007</log_duration>
+<log_distance type="2">14.2752</log_distance>
+<speed type="2">4.74733</speed>
+<cadence type="2">22.8378</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31971</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219872555</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28903</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2985</log_duration>
+<log_distance type="2">13.5833</log_distance>
+<speed type="2">4.55053</speed>
+<cadence type="2">26.2179</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31972</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219875586</recorded_date>
+<lat type="2">48.8532</lat>
+<lon type="2">2.28898</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3031</log_duration>
+<log_distance type="2">14.0778</log_distance>
+<speed type="2">4.64462</speed>
+<cadence type="2">25.3854</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31973</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219878743</recorded_date>
+<lat type="2">48.8531</lat>
+<lon type="2">2.28897</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3157</log_duration>
+<log_distance type="2">14.809</log_distance>
+<speed type="2">4.69083</speed>
+<cadence type="2">24.5808</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31974</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219881558</recorded_date>
+<lat type="2">48.853</lat>
+<lon type="2">2.28897</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2815</log_duration>
+<log_distance type="2">14.8269</log_distance>
+<speed type="2">5.26712</speed>
+<cadence type="2">24.6854</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31975</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219884545</recorded_date>
+<lat type="2">48.8528</lat>
+<lon type="2">2.28895</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2987</log_duration>
+<log_distance type="2">14.7101</log_distance>
+<speed type="2">4.92472</speed>
+<cadence type="2">24.6889</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31976</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219887620</recorded_date>
+<lat type="2">48.853</lat>
+<lon type="2">2.28889</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3075</log_duration>
+<log_distance type="2">14.1306</log_distance>
+<speed type="2">4.59532</speed>
+<cadence type="2">25.045</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31977</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219890602</recorded_date>
+<lat type="2">48.853</lat>
+<lon type="2">2.28901</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2982</log_duration>
+<log_distance type="2">11.2202</log_distance>
+<speed type="2">3.76263</speed>
+<cadence type="2">25.1336</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31978</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219893603</recorded_date>
+<lat type="2">48.8531</lat>
+<lon type="2">2.28896</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">14.1689</log_distance>
+<speed type="2">4.72139</speed>
+<cadence type="2">25.5514</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31979</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219896605</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28889</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3002</log_duration>
+<log_distance type="2">13.6592</log_distance>
+<speed type="2">4.55005</speed>
+<cadence type="2">23.9047</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31980</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219899605</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28876</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3000</log_duration>
+<log_distance type="2">10.1712</log_distance>
+<speed type="2">3.39039</speed>
+<cadence type="2">23.017</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31981</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219902617</recorded_date>
+<lat type="2">48.8532</lat>
+<lon type="2">2.28866</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">12.4002</log_distance>
+<speed type="2">4.11695</speed>
+<cadence type="2">22.2664</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31982</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219905606</recorded_date>
+<lat type="2">48.8531</lat>
+<lon type="2">2.28878</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">10.6366</log_distance>
+<speed type="2">3.55858</speed>
+<cadence type="2">20.5636</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31983</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219908614</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28871</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">13.4176</log_distance>
+<speed type="2">4.46064</speed>
+<cadence type="2">20.6281</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31984</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219911609</recorded_date>
+<lat type="2">48.8531</lat>
+<lon type="2">2.28863</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">13.4318</log_distance>
+<speed type="2">4.48475</speed>
+<cadence type="2">16.1875</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31985</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219914701</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28863</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3092</log_duration>
+<log_distance type="2">14.8201</log_distance>
+<speed type="2">4.79305</speed>
+<cadence type="2">10.8687</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31986</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219917624</recorded_date>
+<lat type="2">48.8534</lat>
+<lon type="2">2.28857</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2923</log_duration>
+<log_distance type="2">13.9099</log_distance>
+<speed type="2">4.75878</speed>
+<cadence type="2">8.16141</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31987</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219920624</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28866</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3000</log_duration>
+<log_distance type="2">12.3629</log_distance>
+<speed type="2">4.12096</speed>
+<cadence type="2">4.53022</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31988</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219923626</recorded_date>
+<lat type="2">48.8534</lat>
+<lon type="2">2.28857</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3002</log_duration>
+<log_distance type="2">12.5843</log_distance>
+<speed type="2">4.19198</speed>
+<cadence type="2">1.80761</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31989</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219926630</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28859</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3004</log_duration>
+<log_distance type="2">14.7402</log_distance>
+<speed type="2">4.90687</speed>
+<cadence type="2">2.70416</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31990</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219929640</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28871</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3010</log_duration>
+<log_distance type="2">11.0777</log_distance>
+<speed type="2">3.6803</speed>
+<cadence type="2">6.29553</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31991</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219932775</recorded_date>
+<lat type="2">48.8534</lat>
+<lon type="2">2.28883</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3135</log_duration>
+<log_distance type="2">10.664</log_distance>
+<speed type="2">3.40159</speed>
+<cadence type="2">17.9853</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31992</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219935707</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28887</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2932</log_duration>
+<log_distance type="2">14.5466</log_distance>
+<speed type="2">4.96134</speed>
+<cadence type="2">16.1863</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31993</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219938665</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28879</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2958</log_duration>
+<log_distance type="2">13.2041</log_distance>
+<speed type="2">4.46387</speed>
+<cadence type="2">12.5894</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31994</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219941645</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28875</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2980</log_duration>
+<log_distance type="2">14.4546</log_distance>
+<speed type="2">4.85053</speed>
+<cadence type="2">13.492</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31995</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219944645</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28878</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3000</log_duration>
+<log_distance type="2">14.5637</log_distance>
+<speed type="2">4.85457</speed>
+<cadence type="2">16.1698</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31996</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219947648</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28891</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3003</log_duration>
+<log_distance type="2">10.1794</log_distance>
+<speed type="2">3.38976</speed>
+<cadence type="2">15.0792</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31997</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219950677</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28881</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3029</log_duration>
+<log_distance type="2">12.4736</log_distance>
+<speed type="2">4.11807</speed>
+<cadence type="2">14.5008</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31998</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219953646</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28894</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2969</log_duration>
+<log_distance type="2">10.5146</log_distance>
+<speed type="2">3.54145</speed>
+<cadence type="2">12.7923</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">31999</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219956648</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28899</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3002</log_duration>
+<log_distance type="2">14.2136</log_distance>
+<speed type="2">4.73471</speed>
+<cadence type="2">12.7979</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32000</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219959656</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28887</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">11.3068</log_distance>
+<speed type="2">3.75892</speed>
+<cadence type="2">12.768</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32001</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219962654</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28877</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2998</log_duration>
+<log_distance type="2">11.9798</log_distance>
+<speed type="2">3.99594</speed>
+<cadence type="2">13.6066</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32002</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219965696</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28883</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3042</log_duration>
+<log_distance type="2">13.7641</log_distance>
+<speed type="2">4.52469</speed>
+<cadence type="2">15.2936</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32003</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219968662</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2966</log_duration>
+<log_distance type="2">14.7398</log_distance>
+<speed type="2">4.96958</speed>
+<cadence type="2">16.9921</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32004</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219971707</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.28881</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3045</log_duration>
+<log_distance type="2">14.8227</log_distance>
+<speed type="2">4.86788</speed>
+<cadence type="2">18.6913</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32005</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219974680</recorded_date>
+<lat type="2">48.8541</lat>
+<lon type="2">2.28887</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2973</log_duration>
+<log_distance type="2">13.9019</log_distance>
+<speed type="2">4.67606</speed>
+<cadence type="2">15.2931</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32006</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219977663</recorded_date>
+<lat type="2">48.8542</lat>
+<lon type="2">2.28883</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2983</log_duration>
+<log_distance type="2">14.4826</log_distance>
+<speed type="2">4.85505</speed>
+<cadence type="2">16.1279</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32007</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219980663</recorded_date>
+<lat type="2">48.8541</lat>
+<lon type="2">2.28884</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3000</log_duration>
+<log_distance type="2">14.8233</log_distance>
+<speed type="2">4.94111</speed>
+<cadence type="2">17.4187</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32008</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219983664</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.28891</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">13.7363</log_distance>
+<speed type="2">4.57726</speed>
+<cadence type="2">15.6738</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32009</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219986720</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28888</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3056</log_duration>
+<log_distance type="2">14.6683</log_distance>
+<speed type="2">4.79985</speed>
+<cadence type="2">15.3915</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32010</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219989683</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.289</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2963</log_duration>
+<log_distance type="2">10.5492</log_distance>
+<speed type="2">3.56032</speed>
+<cadence type="2">13.7463</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32011</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219992691</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.2891</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">12.4084</log_distance>
+<speed type="2">4.12513</speed>
+<cadence type="2">13.4965</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32012</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219995680</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28898</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">11.0776</log_distance>
+<speed type="2">3.70611</speed>
+<cadence type="2">12.4212</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32013</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396219998684</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28897</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3004</log_duration>
+<log_distance type="2">14.7644</log_distance>
+<speed type="2">4.91493</speed>
+<cadence type="2">11.9416</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32014</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220001685</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28883</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">9.82689</log_distance>
+<speed type="2">3.27454</speed>
+<cadence type="2">12.3437</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32015</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220004683</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28888</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2998</log_duration>
+<log_distance type="2">14.2852</log_distance>
+<speed type="2">4.7649</speed>
+<cadence type="2">12.8645</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32016</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220007691</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28897</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">12.9214</log_distance>
+<speed type="2">4.29568</speed>
+<cadence type="2">12.5583</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32017</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220010692</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28905</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">12.9942</log_distance>
+<speed type="2">4.32994</speed>
+<cadence type="2">12.2757</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32018</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220013694</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28893</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3002</log_duration>
+<log_distance type="2">10.967</log_distance>
+<speed type="2">3.65324</speed>
+<cadence type="2">13.6192</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32019</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220016693</recorded_date>
+<lat type="2">48.854</lat>
+<lon type="2">2.28903</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2999</log_duration>
+<log_distance type="2">12.2523</log_distance>
+<speed type="2">4.08545</speed>
+<cadence type="2">13.935</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32020</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220019704</recorded_date>
+<lat type="2">48.8539</lat>
+<lon type="2">2.28896</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3011</log_duration>
+<log_distance type="2">13.2606</log_distance>
+<speed type="2">4.40407</speed>
+<cadence type="2">14.4198</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32021</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220022701</recorded_date>
+<lat type="2">48.8538</lat>
+<lon type="2">2.28896</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2997</log_duration>
+<log_distance type="2">14.8273</log_distance>
+<speed type="2">4.94738</speed>
+<cadence type="2">15.4628</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32022</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220025704</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28906</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3003</log_duration>
+<log_distance type="2">12.0112</log_distance>
+<speed type="2">3.99973</speed>
+<cadence type="2">14.52</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32023</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220028708</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28912</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3004</log_duration>
+<log_distance type="2">13.975</log_distance>
+<speed type="2">4.65211</speed>
+<cadence type="2">14.9132</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32024</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220031703</recorded_date>
+<lat type="2">48.8537</lat>
+<lon type="2">2.28905</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">13.7954</log_distance>
+<speed type="2">4.60613</speed>
+<cadence type="2">13.6705</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32025</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220034703</recorded_date>
+<lat type="2">48.8536</lat>
+<lon type="2">2.28893</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3000</log_duration>
+<log_distance type="2">10.8529</log_distance>
+<speed type="2">3.61764</speed>
+<cadence type="2">11.185</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32026</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220037781</recorded_date>
+<lat type="2">48.8535</lat>
+<lon type="2">2.28887</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3078</log_duration>
+<log_distance type="2">13.7495</log_distance>
+<speed type="2">4.46702</speed>
+<cadence type="2">14.9237</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32027</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220040708</recorded_date>
+<lat type="2">48.8534</lat>
+<lon type="2">2.28882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2927</log_duration>
+<log_distance type="2">14.3289</log_distance>
+<speed type="2">4.89543</speed>
+<cadence type="2">13.0581</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32028</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220043716</recorded_date>
+<lat type="2">48.8533</lat>
+<lon type="2">2.28881</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">14.8024</log_distance>
+<speed type="2">4.92102</speed>
+<cadence type="2">14.2143</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32029</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220638216</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28845</lon>
+<ele type="2">65.0</ele>
+<log_duration type="0">null</log_duration>
+<log_distance type="0">null</log_distance>
+<speed type="0">null</speed>
+<cadence type="2">46.0892</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32030</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220641204</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28846</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2988</log_duration>
+<log_distance type="2">14.7883</log_distance>
+<speed type="2">4.94921</speed>
+<cadence type="2">47.8374</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32031</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220644215</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28855</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3011</log_duration>
+<log_distance type="2">12.654</log_distance>
+<speed type="2">4.2026</speed>
+<cadence type="2">51.2182</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32032</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220647216</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.28866</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">12.007</log_distance>
+<speed type="2">4.00101</speed>
+<cadence type="2">50.1769</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32033</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220650202</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28863</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2986</log_duration>
+<log_distance type="2">14.5876</log_distance>
+<speed type="2">4.88532</speed>
+<cadence type="2">51.0773</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32034</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220653216</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28851</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3014</log_duration>
+<log_distance type="2">11.4701</log_distance>
+<speed type="2">3.80561</speed>
+<cadence type="2">48.5162</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32035</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220656202</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28858</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2986</log_duration>
+<log_distance type="2">13.6413</log_distance>
+<speed type="2">4.56841</speed>
+<cadence type="2">49.4172</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32036</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220659203</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28849</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">12.391</log_distance>
+<speed type="2">4.12896</speed>
+<cadence type="2">52.9002</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32037</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220662212</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.28844</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">14.3816</log_distance>
+<speed type="2">4.77952</speed>
+<cadence type="2">53.397</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32038</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220665194</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28843</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2982</log_duration>
+<log_distance type="2">14.8118</log_distance>
+<speed type="2">4.96706</speed>
+<cadence type="2">54.9909</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32039</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220668215</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.28846</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3021</log_duration>
+<log_distance type="2">14.7265</log_distance>
+<speed type="2">4.87472</speed>
+<cadence type="2">58.7512</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32040</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220671210</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28842</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">14.5187</log_distance>
+<speed type="2">4.84764</speed>
+<cadence type="2">57.7059</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32041</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220674214</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28831</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3004</log_duration>
+<log_distance type="2">11.5685</log_distance>
+<speed type="2">3.85102</speed>
+<cadence type="2">54.753</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32042</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220677211</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28826</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2997</log_duration>
+<log_distance type="2">14.3469</log_distance>
+<speed type="2">4.78709</speed>
+<cadence type="2">57.9274</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32043</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220680224</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28833</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3013</log_duration>
+<log_distance type="2">13.6739</log_distance>
+<speed type="2">4.53832</speed>
+<cadence type="2">58.0343</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32044</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220683218</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28836</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2994</log_duration>
+<log_distance type="2">14.6927</log_distance>
+<speed type="2">4.90737</speed>
+<cadence type="2">58.5059</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32045</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220686233</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28823</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3015</log_duration>
+<log_distance type="2">10.0697</log_distance>
+<speed type="2">3.33985</speed>
+<cadence type="2">62.2191</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32046</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220689243</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.28813</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3010</log_duration>
+<log_distance type="2">12.351</log_distance>
+<speed type="2">4.10331</speed>
+<cadence type="2">65.8142</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32047</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220692231</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.2882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2988</log_duration>
+<log_distance type="2">13.3799</log_distance>
+<speed type="2">4.47786</speed>
+<cadence type="2">71.245</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32048</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220695226</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28808</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">10.294</log_distance>
+<speed type="2">3.43705</speed>
+<cadence type="2">73.9438</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32049</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220698242</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28805</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3016</log_duration>
+<log_distance type="2">14.6563</log_distance>
+<speed type="2">4.85953</speed>
+<cadence type="2">73.9638</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32050</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220701236</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.2881</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2994</log_duration>
+<log_distance type="2">14.1569</log_distance>
+<speed type="2">4.72843</speed>
+<cadence type="2">73.9516</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32051</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220704245</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28797</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">9.95107</log_distance>
+<speed type="2">3.3071</speed>
+<cadence type="2">72.6002</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32052</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220707252</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28789</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3007</log_duration>
+<log_distance type="2">13.3591</log_distance>
+<speed type="2">4.44267</speed>
+<cadence type="2">69.7924</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32053</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220710246</recorded_date>
+<lat type="2">48.8507</lat>
+<lon type="2">2.28795</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2994</log_duration>
+<log_distance type="2">14.0686</log_distance>
+<speed type="2">4.69892</speed>
+<cadence type="2">68.0232</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32054</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220713241</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28791</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">14.4898</log_distance>
+<speed type="2">4.838</speed>
+<cadence type="2">66.2756</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32055</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220716254</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28804</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3013</log_duration>
+<log_distance type="2">9.89854</log_distance>
+<speed type="2">3.28528</speed>
+<cadence type="2">64.4834</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32056</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220719268</recorded_date>
+<lat type="2">48.8507</lat>
+<lon type="2">2.28812</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3014</log_duration>
+<log_distance type="2">13.4383</log_distance>
+<speed type="2">4.45864</speed>
+<cadence type="2">64.4776</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32057</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220722242</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28809</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2974</log_duration>
+<log_distance type="2">14.613</log_distance>
+<speed type="2">4.9136</speed>
+<cadence type="2">61.8012</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32058</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220725262</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28798</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3020</log_duration>
+<log_distance type="2">11.44</log_distance>
+<speed type="2">3.78808</speed>
+<cadence type="2">61.8501</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32059</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220728248</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28806</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2986</log_duration>
+<log_distance type="2">13.0174</log_distance>
+<speed type="2">4.35949</speed>
+<cadence type="2">61.8058</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32060</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220731259</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28819</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3011</log_duration>
+<log_distance type="2">10.0192</log_distance>
+<speed type="2">3.32753</speed>
+<cadence type="2">60.9083</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32061</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220734257</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28814</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2998</log_duration>
+<log_distance type="2">14.2767</log_distance>
+<speed type="2">4.76207</speed>
+<cadence type="2">60.9037</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32062</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220737304</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.2882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3047</log_duration>
+<log_distance type="2">14.1332</log_distance>
+<speed type="2">4.63841</speed>
+<cadence type="2">61.6007</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32063</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220740259</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28812</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2955</log_duration>
+<log_distance type="2">13.2325</log_distance>
+<speed type="2">4.47801</speed>
+<cadence type="2">60.4283</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32064</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220743281</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28802</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3022</log_duration>
+<log_distance type="2">12.5175</log_distance>
+<speed type="2">4.14213</speed>
+<cadence type="2">57.8918</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32065</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220746267</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28814</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2986</log_duration>
+<log_distance type="2">11.4208</log_distance>
+<speed type="2">3.82479</speed>
+<cadence type="2">55.529</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32066</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220749282</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28806</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3015</log_duration>
+<log_distance type="2">13.3959</log_distance>
+<speed type="2">4.44308</speed>
+<cadence type="2">52.8342</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32067</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220752271</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28804</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">14.7318</log_distance>
+<speed type="2">4.92868</speed>
+<cadence type="2">51.0509</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32068</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220755267</recorded_date>
+<lat type="2">48.8507</lat>
+<lon type="2">2.28806</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2996</log_duration>
+<log_distance type="2">14.7298</log_distance>
+<speed type="2">4.9165</speed>
+<cadence type="2">51.0494</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32069</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220758276</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28806</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">14.8261</log_distance>
+<speed type="2">4.92727</speed>
+<cadence type="2">51.9349</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32070</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220761270</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28809</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2994</log_duration>
+<log_distance type="2">14.6993</log_distance>
+<speed type="2">4.90958</speed>
+<cadence type="2">51.9496</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32071</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220764284</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.2881</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3014</log_duration>
+<log_distance type="2">14.8071</log_distance>
+<speed type="2">4.91277</speed>
+<cadence type="2">52.8437</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32072</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220767299</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28816</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3015</log_duration>
+<log_distance type="2">13.9427</log_distance>
+<speed type="2">4.62445</speed>
+<cadence type="2">55.4727</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32073</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220770357</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28812</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3058</log_duration>
+<log_distance type="2">14.5625</log_distance>
+<speed type="2">4.7621</speed>
+<cadence type="2">58.1456</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32074</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220773289</recorded_date>
+<lat type="2">48.8507</lat>
+<lon type="2">2.28815</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2932</log_duration>
+<log_distance type="2">14.5953</log_distance>
+<speed type="2">4.97793</speed>
+<cadence type="2">58.5621</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32075</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220776302</recorded_date>
+<lat type="2">48.8508</lat>
+<lon type="2">2.28805</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3013</log_duration>
+<log_distance type="2">12.215</log_distance>
+<speed type="2">4.05409</speed>
+<cadence type="2">58.5691</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32076</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220779287</recorded_date>
+<lat type="2">48.851</lat>
+<lon type="2">2.28806</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2985</log_duration>
+<log_distance type="2">14.8194</log_distance>
+<speed type="2">4.96461</speed>
+<cadence type="2">56.7559</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32077</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220782294</recorded_date>
+<lat type="2">48.8509</lat>
+<lon type="2">2.28814</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3007</log_duration>
+<log_distance type="2">13.0419</log_distance>
+<speed type="2">4.33717</speed>
+<cadence type="2">56.7568</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32078</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220785299</recorded_date>
+<lat type="2">48.8509</lat>
+<lon type="2">2.28824</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3005</log_duration>
+<log_distance type="2">12.2731</log_distance>
+<speed type="2">4.08422</speed>
+<cadence type="2">55.86</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32079</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220788300</recorded_date>
+<lat type="2">48.8508</lat>
+<lon type="2">2.28832</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">13.4531</log_distance>
+<speed type="2">4.48287</speed>
+<cadence type="2">55.8651</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32080</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220791293</recorded_date>
+<lat type="2">48.8508</lat>
+<lon type="2">2.28821</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2993</log_duration>
+<log_distance type="2">11.7754</log_distance>
+<speed type="2">3.93431</speed>
+<cadence type="2">54.9591</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32081</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220794294</recorded_date>
+<lat type="2">48.8508</lat>
+<lon type="2">2.28834</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">10.3847</log_distance>
+<speed type="2">3.4604</speed>
+<cadence type="2">53.0965</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32082</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220797289</recorded_date>
+<lat type="2">48.8507</lat>
+<lon type="2">2.28837</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">14.611</log_distance>
+<speed type="2">4.87847</speed>
+<cadence type="2">53.0568</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32083</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220800332</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28824</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3043</log_duration>
+<log_distance type="2">10.1724</log_distance>
+<speed type="2">3.34287</speed>
+<cadence type="2">52.1083</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32084</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220803288</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28825</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2956</log_duration>
+<log_distance type="2">14.7631</log_distance>
+<speed type="2">4.99429</speed>
+<cadence type="2">53.0782</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32085</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220806314</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28818</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3026</log_duration>
+<log_distance type="2">13.3424</log_distance>
+<speed type="2">4.40926</speed>
+<cadence type="2">55.2294</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32086</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220809302</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28812</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2988</log_duration>
+<log_distance type="2">14.1266</log_distance>
+<speed type="2">4.72776</speed>
+<cadence type="2">57.957</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32087</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220812308</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28804</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">13.2337</log_distance>
+<speed type="2">4.40243</speed>
+<cadence type="2">61.6072</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32088</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220815299</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28801</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2991</log_duration>
+<log_distance type="2">14.5044</log_distance>
+<speed type="2">4.84935</speed>
+<cadence type="2">62.4764</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32089</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220818306</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28799</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3007</log_duration>
+<log_distance type="2">14.7585</log_distance>
+<speed type="2">4.90806</speed>
+<cadence type="2">61.5858</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32090</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220821332</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28787</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3026</log_duration>
+<log_distance type="2">11.359</log_distance>
+<speed type="2">3.75381</speed>
+<cadence type="2">62.4717</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32091</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220824318</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28796</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2986</log_duration>
+<log_distance type="2">12.7985</log_distance>
+<speed type="2">4.28618</speed>
+<cadence type="2">65.1653</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32092</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220827326</recorded_date>
+<lat type="2">48.8506</lat>
+<lon type="2">2.28794</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">14.6968</log_distance>
+<speed type="2">4.8859</speed>
+<cadence type="2">65.831</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32093</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220830316</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28797</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2990</log_duration>
+<log_distance type="2">14.6458</log_distance>
+<speed type="2">4.89827</speed>
+<cadence type="2">66.0164</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32094</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220833340</recorded_date>
+<lat type="2">48.8504</lat>
+<lon type="2">2.28792</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3024</log_duration>
+<log_distance type="2">14.3733</log_distance>
+<speed type="2">4.75307</speed>
+<cadence type="2">68.6764</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32095</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220836310</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28785</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2970</log_duration>
+<log_distance type="2">13.5621</log_distance>
+<speed type="2">4.56636</speed>
+<cadence type="2">67.9481</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32096</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220839374</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28774</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3064</log_duration>
+<log_distance type="2">11.1486</log_distance>
+<speed type="2">3.63857</speed>
+<cadence type="2">64.3441</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32097</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220842332</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28767</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2958</log_duration>
+<log_distance type="2">13.8011</log_distance>
+<speed type="2">4.66569</speed>
+<cadence type="2">60.7921</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32098</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220845320</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28761</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2988</log_duration>
+<log_distance type="2">13.9474</log_distance>
+<speed type="2">4.66779</speed>
+<cadence type="2">49.1752</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32099</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220848330</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28757</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3010</log_duration>
+<log_distance type="2">14.504</log_distance>
+<speed type="2">4.81859</speed>
+<cadence type="2">40.2223</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32100</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220851357</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.2876</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3027</log_duration>
+<log_distance type="2">14.6612</log_distance>
+<speed type="2">4.84348</speed>
+<cadence type="2">24.119</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32101</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220854330</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28769</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2973</log_duration>
+<log_distance type="2">12.637</log_distance>
+<speed type="2">4.25058</speed>
+<cadence type="2">15.1391</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32102</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220857334</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28782</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3004</log_duration>
+<log_distance type="2">10.6756</log_distance>
+<speed type="2">3.5538</speed>
+<cadence type="2">11.4095</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32103</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220860371</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.28782</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3037</log_duration>
+<log_distance type="2">14.8274</log_distance>
+<speed type="2">4.88226</speed>
+<cadence type="2">5.22519</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32104</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220863344</recorded_date>
+<lat type="2">48.8498</lat>
+<lon type="2">2.2879</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2973</log_duration>
+<log_distance type="2">13.1158</log_distance>
+<speed type="2">4.41163</speed>
+<cadence type="2">3.47917</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32105</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220866340</recorded_date>
+<lat type="2">48.8497</lat>
+<lon type="2">2.28783</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2996</log_duration>
+<log_distance type="2">13.7977</log_distance>
+<speed type="2">4.60536</speed>
+<cadence type="2">2.60221</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32106</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220869357</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28782</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3017</log_duration>
+<log_distance type="2">14.7483</log_distance>
+<speed type="2">4.88841</speed>
+<cadence type="2">3.45026</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32107</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220872352</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28793</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">11.4488</log_distance>
+<speed type="2">3.82264</speed>
+<cadence type="2">3.38309</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32108</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220875341</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28801</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">12.9854</log_distance>
+<speed type="2">4.34439</speed>
+<cadence type="2">3.37259</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32109</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220878350</recorded_date>
+<lat type="2">48.8492</lat>
+<lon type="2">2.28806</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">14.3053</log_distance>
+<speed type="2">4.75418</speed>
+<cadence type="2">3.36422</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32110</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220881344</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28814</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2994</log_duration>
+<log_distance type="2">13.2053</log_distance>
+<speed type="2">4.41059</speed>
+<cadence type="2">3.36379</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32111</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220884340</recorded_date>
+<lat type="2">48.8492</lat>
+<lon type="2">2.2882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2996</log_duration>
+<log_distance type="2">14.1193</log_distance>
+<speed type="2">4.7127</speed>
+<cadence type="2">3.36365</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32112</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220887353</recorded_date>
+<lat type="2">48.8491</lat>
+<lon type="2">2.28813</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3013</log_duration>
+<log_distance type="2">13.6453</log_distance>
+<speed type="2">4.52882</speed>
+<cadence type="2">3.36478</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32113</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220890356</recorded_date>
+<lat type="2">48.8492</lat>
+<lon type="2">2.28821</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3003</log_duration>
+<log_distance type="2">13.0287</log_distance>
+<speed type="2">4.33858</speed>
+<cadence type="2">5.03933</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32114</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220893386</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28818</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3030</log_duration>
+<log_distance type="2">14.509</log_distance>
+<speed type="2">4.78844</speed>
+<cadence type="2">8.39196</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32115</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220896421</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28817</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3035</log_duration>
+<log_distance type="2">14.8274</log_distance>
+<speed type="2">4.88548</speed>
+<cadence type="2">12.6017</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32116</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220899352</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28813</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2931</log_duration>
+<log_distance type="2">14.3166</log_distance>
+<speed type="2">4.88453</speed>
+<cadence type="2">12.6613</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32117</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220902418</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28803</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3066</log_duration>
+<log_distance type="2">12.11</log_distance>
+<speed type="2">3.94976</speed>
+<cadence type="2">17.0191</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32118</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220905373</recorded_date>
+<lat type="2">48.8492</lat>
+<lon type="2">2.28795</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2955</log_duration>
+<log_distance type="2">13.3195</log_distance>
+<speed type="2">4.50743</speed>
+<cadence type="2">26.4028</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32119</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220908361</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28802</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2988</log_duration>
+<log_distance type="2">13.4664</log_distance>
+<speed type="2">4.50683</speed>
+<cadence type="2">23.8389</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32120</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220911389</recorded_date>
+<lat type="2">48.8492</lat>
+<lon type="2">2.28808</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3028</log_duration>
+<log_distance type="2">14.1208</log_distance>
+<speed type="2">4.66341</speed>
+<cadence type="2">27.2348</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32121</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220914422</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28804</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3033</log_duration>
+<log_distance type="2">14.437</log_distance>
+<speed type="2">4.75998</speed>
+<cadence type="2">26.38</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32122</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220917382</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28812</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2960</log_duration>
+<log_distance type="2">12.9905</log_distance>
+<speed type="2">4.38867</speed>
+<cadence type="2">26.3826</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32123</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220920363</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28823</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2981</log_duration>
+<log_distance type="2">11.9371</log_distance>
+<speed type="2">4.00439</speed>
+<cadence type="2">28.0971</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32124</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220923368</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28831</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3005</log_duration>
+<log_distance type="2">12.8782</log_distance>
+<speed type="2">4.28559</speed>
+<cadence type="2">30.7067</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32125</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220926376</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28842</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">12.1625</log_distance>
+<speed type="2">4.04338</speed>
+<cadence type="2">31.8225</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32126</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220929380</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28847</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3004</log_duration>
+<log_distance type="2">14.0696</log_distance>
+<speed type="2">4.68361</speed>
+<cadence type="2">33.1747</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32127</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220932392</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.2886</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">10.2849</log_distance>
+<speed type="2">3.41463</speed>
+<cadence type="2">36.7513</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32128</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220935458</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28854</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3066</log_duration>
+<log_distance type="2">13.8874</log_distance>
+<speed type="2">4.5295</speed>
+<cadence type="2">39.6162</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32129</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220938383</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28853</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2925</log_duration>
+<log_distance type="2">14.7925</log_distance>
+<speed type="2">5.05726</speed>
+<cadence type="2">44.1143</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32130</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220941415</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28865</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3032</log_duration>
+<log_distance type="2">10.4966</log_distance>
+<speed type="2">3.46195</speed>
+<cadence type="2">47.0652</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32131</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220944387</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.28866</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2972</log_duration>
+<log_distance type="2">14.8074</log_distance>
+<speed type="2">4.98231</speed>
+<cadence type="2">48.0849</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32132</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220947397</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28865</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3010</log_duration>
+<log_distance type="2">14.7819</log_distance>
+<speed type="2">4.91094</speed>
+<cadence type="2">46.2781</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32133</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220950393</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28857</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2996</log_duration>
+<log_distance type="2">13.2601</log_distance>
+<speed type="2">4.42595</speed>
+<cadence type="2">48.99</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32134</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220953392</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28854</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2999</log_duration>
+<log_distance type="2">14.6465</log_distance>
+<speed type="2">4.8838</speed>
+<cadence type="2">49.0389</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32135</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220956404</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28847</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">13.6687</log_distance>
+<speed type="2">4.53809</speed>
+<cadence type="2">46.3292</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32136</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220959397</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28846</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2993</log_duration>
+<log_distance type="2">14.8162</log_distance>
+<speed type="2">4.95028</speed>
+<cadence type="2">46.3594</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32137</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220962392</recorded_date>
+<lat type="2">48.8493</lat>
+<lon type="2">2.28842</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">14.3393</log_distance>
+<speed type="2">4.78775</speed>
+<cadence type="2">49.0887</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32138</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220965386</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28842</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2994</log_duration>
+<log_distance type="2">14.8219</log_distance>
+<speed type="2">4.95053</speed>
+<cadence type="2">49.1028</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32139</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220968404</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.28837</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3018</log_duration>
+<log_distance type="2">14.2044</log_distance>
+<speed type="2">4.70658</speed>
+<cadence type="2">49.1006</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32140</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220971402</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28828</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2998</log_duration>
+<log_distance type="2">12.848</log_distance>
+<speed type="2">4.28554</speed>
+<cadence type="2">53.6575</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32141</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220974413</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28832</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3011</log_duration>
+<log_distance type="2">14.4646</log_distance>
+<speed type="2">4.80391</speed>
+<cadence type="2">49.0048</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32142</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220977402</recorded_date>
+<lat type="2">48.8492</lat>
+<lon type="2">2.28837</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">14.3054</log_distance>
+<speed type="2">4.78603</speed>
+<cadence type="2">49.337</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32143</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220980403</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28835</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">14.6957</log_distance>
+<speed type="2">4.89695</speed>
+<cadence type="2">45.5481</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32144</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220983400</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28832</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2997</log_duration>
+<log_distance type="2">14.6114</log_distance>
+<speed type="2">4.87534</speed>
+<cadence type="2">43.6357</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32145</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220986438</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28841</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3038</log_duration>
+<log_distance type="2">12.3916</log_distance>
+<speed type="2">4.07888</speed>
+<cadence type="2">38.8551</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32146</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220989404</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28828</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2966</log_duration>
+<log_distance type="2">9.81888</log_distance>
+<speed type="2">3.31048</speed>
+<cadence type="2">35.8581</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32147</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220992418</recorded_date>
+<lat type="2">48.8494</lat>
+<lon type="2">2.28816</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3014</log_duration>
+<log_distance type="2">10.6918</log_distance>
+<speed type="2">3.54739</speed>
+<cadence type="2">33.4509</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32148</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220995424</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28811</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">14.3936</log_distance>
+<speed type="2">4.78829</speed>
+<cadence type="2">29.6956</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32149</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396220998426</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.28808</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3002</log_duration>
+<log_distance type="2">14.6089</log_distance>
+<speed type="2">4.86639</speed>
+<cadence type="2">27.9564</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32150</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221001438</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.2882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">10.9247</log_distance>
+<speed type="2">3.62705</speed>
+<cadence type="2">27.5927</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32151</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221004418</recorded_date>
+<lat type="2">48.8495</lat>
+<lon type="2">2.28829</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2980</log_duration>
+<log_distance type="2">13.1969</log_distance>
+<speed type="2">4.42847</speed>
+<cadence type="2">24.7362</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32152</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221007419</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.28826</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">14.6817</log_distance>
+<speed type="2">4.89228</speed>
+<cadence type="2">23.5646</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32153</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221010425</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.28838</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3006</log_duration>
+<log_distance type="2">10.7309</log_distance>
+<speed type="2">3.56983</speed>
+<cadence type="2">22.7669</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32154</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221013420</recorded_date>
+<lat type="2">48.8498</lat>
+<lon type="2">2.28844</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">14.0155</log_distance>
+<speed type="2">4.67962</speed>
+<cadence type="2">20.2366</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32155</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221016433</recorded_date>
+<lat type="2">48.8497</lat>
+<lon type="2">2.28831</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3013</log_duration>
+<log_distance type="2">10.2332</log_distance>
+<speed type="2">3.39636</speed>
+<cadence type="2">17.1089</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32156</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221019445</recorded_date>
+<lat type="2">48.8498</lat>
+<lon type="2">2.28837</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">14.1443</log_distance>
+<speed type="2">4.69597</speed>
+<cadence type="2">15.4827</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32157</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221022453</recorded_date>
+<lat type="2">48.8497</lat>
+<lon type="2">2.28835</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3008</log_duration>
+<log_distance type="2">14.7689</log_distance>
+<speed type="2">4.90986</speed>
+<cadence type="2">16.0646</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32158</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221025429</recorded_date>
+<lat type="2">48.8496</lat>
+<lon type="2">2.2884</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2976</log_duration>
+<log_distance type="2">14.1812</log_distance>
+<speed type="2">4.76519</speed>
+<cadence type="2">13.6868</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32159</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221028498</recorded_date>
+<lat type="2">48.8497</lat>
+<lon type="2">2.28843</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3069</log_duration>
+<log_distance type="2">14.6339</log_distance>
+<speed type="2">4.7683</speed>
+<cadence type="2">12.2075</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32160</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221031436</recorded_date>
+<lat type="2">48.8498</lat>
+<lon type="2">2.2884</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2938</log_duration>
+<log_distance type="2">14.5511</log_distance>
+<speed type="2">4.95274</speed>
+<cadence type="2">12.8414</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32161</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221034429</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28841</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2993</log_duration>
+<log_distance type="2">14.7691</log_distance>
+<speed type="2">4.93456</speed>
+<cadence type="2">10.6532</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32162</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221037475</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.2885</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3046</log_duration>
+<log_distance type="2">13.0462</log_distance>
+<speed type="2">4.28305</speed>
+<cadence type="2">9.11822</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32163</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221040470</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.2884</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">12.6127</log_distance>
+<speed type="2">4.21126</speed>
+<cadence type="2">7.61158</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32164</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221043447</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28838</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2977</log_duration>
+<log_distance type="2">14.7026</log_distance>
+<speed type="2">4.93872</speed>
+<cadence type="2">6.19309</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32165</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221046460</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28835</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3013</log_duration>
+<log_distance type="2">14.5856</log_distance>
+<speed type="2">4.8409</speed>
+<cadence type="2">5.46865</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32166</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221049462</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28833</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3002</log_duration>
+<log_distance type="2">14.7408</log_distance>
+<speed type="2">4.91033</speed>
+<cadence type="2">5.45479</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32167</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221052444</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28836</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2982</log_duration>
+<log_distance type="2">14.5526</log_distance>
+<speed type="2">4.88015</speed>
+<cadence type="2">4.7638</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32168</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221056188</recorded_date>
+<lat type="2">48.8498</lat>
+<lon type="2">2.28834</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3744</log_duration>
+<log_distance type="2">14.7477</log_distance>
+<speed type="2">3.93902</speed>
+<cadence type="2">6.01102</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32169</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221059176</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.28845</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2988</log_duration>
+<log_distance type="2">11.7255</log_distance>
+<speed type="2">3.9242</speed>
+<cadence type="2">14.6218</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32170</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221062188</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28833</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3012</log_duration>
+<log_distance type="2">10.7331</log_distance>
+<speed type="2">3.56343</speed>
+<cadence type="2">14.5133</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32171</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221065181</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.28824</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2993</log_duration>
+<log_distance type="2">12.8672</log_distance>
+<speed type="2">4.2991</speed>
+<cadence type="2">2.63201</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32172</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221068200</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28828</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3019</log_duration>
+<log_distance type="2">14.4037</log_distance>
+<speed type="2">4.77103</speed>
+<cadence type="2">2.02161</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32173</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221071196</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28842</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2996</log_duration>
+<log_distance type="2">9.94643</log_distance>
+<speed type="2">3.3199</speed>
+<cadence type="2">2.01239</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32174</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221074186</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.28831</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2990</log_duration>
+<log_distance type="2">11.8023</log_distance>
+<speed type="2">3.94727</speed>
+<cadence type="2">2.00133</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32175</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221077224</recorded_date>
+<lat type="2">48.85</lat>
+<lon type="2">2.28841</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3038</log_duration>
+<log_distance type="2">12.3731</log_distance>
+<speed type="2">4.07277</speed>
+<cadence type="2">2.01254</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32176</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221080233</recorded_date>
+<lat type="2">48.8499</lat>
+<lon type="2">2.28833</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3009</log_duration>
+<log_distance type="2">13.1773</log_distance>
+<speed type="2">4.37929</speed>
+<cadence type="2">2.00844</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32177</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221083222</recorded_date>
+<lat type="2">48.8501</lat>
+<lon type="2">2.28833</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2989</log_duration>
+<log_distance type="2">14.8269</log_distance>
+<speed type="2">4.9605</speed>
+<cadence type="2">2.01171</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32178</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221086212</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28836</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2990</log_duration>
+<log_distance type="2">14.5903</log_distance>
+<speed type="2">4.87969</speed>
+<cadence type="2">2.08189</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32179</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221089203</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.28835</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2991</log_duration>
+<log_distance type="2">14.7987</log_distance>
+<speed type="2">4.94773</speed>
+<cadence type="2">2.09927</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32180</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221092214</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28827</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3011</log_duration>
+<log_distance type="2">13.4439</log_distance>
+<speed type="2">4.46491</speed>
+<cadence type="2">2.10258</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32181</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221095199</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.28825</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2985</log_duration>
+<log_distance type="2">14.728</log_distance>
+<speed type="2">4.93399</speed>
+<cadence type="2">2.07706</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32182</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221098214</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28821</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3015</log_duration>
+<log_distance type="2">14.4717</log_distance>
+<speed type="2">4.79991</speed>
+<cadence type="2">2.07507</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32183</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221101199</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.2882</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2985</log_duration>
+<log_distance type="2">14.7792</log_distance>
+<speed type="2">4.95117</speed>
+<cadence type="2">2.0912</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32184</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221104200</recorded_date>
+<lat type="2">48.8505</lat>
+<lon type="2">2.28824</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3001</log_duration>
+<log_distance type="2">14.3551</log_distance>
+<speed type="2">4.78343</speed>
+<cadence type="2">2.07867</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32185</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221107228</recorded_date>
+<lat type="2">48.8503</lat>
+<lon type="2">2.28819</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">3028</log_duration>
+<log_distance type="2">14.1105</log_distance>
+<speed type="2">4.65999</speed>
+<cadence type="2">2.10248</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+            <log>
+
+<_id type="1">32186</_id>
+<ride_id type="1">39</ride_id>
+<recorded_date type="1">1396221110223</recorded_date>
+<lat type="2">48.8502</lat>
+<lon type="2">2.28827</lon>
+<ele type="2">65.0</ele>
+<log_duration type="1">2995</log_duration>
+<log_distance type="2">13.1453</log_distance>
+<speed type="2">4.38907</speed>
+<cadence type="2">2.08657</cadence>
+<heart_rate type="0">null</heart_rate>
+
+            </log>
+
+
+        </logs>
+
+
+    </ride>
+</bikey>
+

@@ -25,6 +25,7 @@
 package org.jraf.android.bikey.backend.ride;
 
 import java.util.Date;
+import java.util.UUID;
 
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -33,10 +34,11 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 
-import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
@@ -49,7 +51,7 @@ import org.jraf.android.bikey.backend.provider.ride.RideContentValues;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
-import org.jraf.android.util.annotation.Background;
+import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.wrapper.Log;
@@ -68,9 +70,10 @@ public class RideManager {
         mContext = Application.getApplication();
     }
 
-    @Background
+    @WorkerThread
     public Uri create(String name) {
         RideContentValues values = new RideContentValues();
+        values.putUuid(UUID.randomUUID().toString());
         values.putCreatedDate(new Date());
         if (!TextUtils.isEmpty(name)) {
             values.putName(name);
@@ -81,46 +84,50 @@ public class RideManager {
         return values.insert(mContext);
     }
 
-    @Background
+    @WorkerThread
     public int delete(long[] ids) {
         // First pause any active rides in the list
         pauseRides(ids);
 
-        // Delete rides
-        RideSelection rideWhere = new RideSelection();
-        rideWhere.id(ids);
-        int res = rideWhere.delete(mContext);
+        // Mark rides as deleted
+        RideSelection rideSelection = new RideSelection();
+        rideSelection.id(ids);
+        RideContentValues rideContentValues = new RideContentValues();
+        rideContentValues.putState(RideState.DELETED);
+        int res = rideContentValues.update(mContext, rideSelection);
 
         // Delete logs
-        LogSelection logWhere = new LogSelection();
-        logWhere.rideId(ids);
-        logWhere.delete(mContext);
+        LogSelection logSelection = new LogSelection();
+        logSelection.rideId(ids);
+        logSelection.delete(mContext);
 
         // If we just deleted the current ride, select another ride to be the current ride (if any).
         Uri currentRideUri = getCurrentRide();
-        long currentRideId = Long.valueOf(currentRideUri.getLastPathSegment());
-        for (long id : ids) {
-            if (currentRideId == id) {
-                Uri nextRideUri = getMostRecentRide();
-                setCurrentRide(nextRideUri);
-                break;
+        if (currentRideUri != null) {
+            long currentRideId = Long.valueOf(currentRideUri.getLastPathSegment());
+            for (long id : ids) {
+                if (currentRideId == id) {
+                    Uri nextRideUri = getMostRecentRide();
+                    setCurrentRide(nextRideUri);
+                    break;
+                }
             }
         }
         return res;
     }
 
-    @Background
+    @WorkerThread
     public void merge(long[] ids) {
         // First pause any active rides in the list
         pauseRides(ids);
 
         // Choose the master ride (the one with the earliest creation date)
-        String[] projection = { RideColumns._ID };
-        RideSelection rideWhere = new RideSelection();
-        rideWhere.id(ids);
+        String[] projection = {RideColumns._ID};
+        RideSelection rideSelection = new RideSelection();
+        rideSelection.id(ids);
         String order = RideColumns.CREATED_DATE;
         ContentResolver contentResolver = mContext.getContentResolver();
-        RideCursor rideCursor = rideWhere.query(contentResolver, projection, order);
+        RideCursor rideCursor = rideSelection.query(contentResolver, projection, order);
         long masterRideId = 0;
         try {
             rideCursor.moveToNext();
@@ -130,8 +137,8 @@ public class RideManager {
         }
 
         // Calculate the total duration
-        projection = new String[] { "sum(" + RideColumns.DURATION + ")" };
-        Cursor c = contentResolver.query(RideColumns.CONTENT_URI, projection, rideWhere.sel(), rideWhere.args(), null);
+        projection = new String[] {"sum(" + RideColumns.DURATION + ")"};
+        Cursor c = contentResolver.query(RideColumns.CONTENT_URI, projection, rideSelection.sel(), rideSelection.args(), null);
         long totalDuration = 0;
         try {
             if (c.moveToNext()) {
@@ -146,18 +153,18 @@ public class RideManager {
             if (mergedRideId == masterRideId) continue;
 
             // Update logs
-            LogSelection logWhere = new LogSelection();
-            logWhere.rideId(mergedRideId);
+            LogSelection logSelection = new LogSelection();
+            logSelection.rideId(mergedRideId);
             LogContentValues values = new LogContentValues();
             values.putRideId(masterRideId);
-            values.update(contentResolver, logWhere);
+            values.update(contentResolver, logSelection);
 
             // Delete merged ride
-            rideWhere = new RideSelection();
-            rideWhere.id(mergedRideId);
+            rideSelection = new RideSelection();
+            rideSelection.id(mergedRideId);
             // Do not notify yet
             Uri contentUri = BikeyProvider.notify(RideColumns.CONTENT_URI, false);
-            contentResolver.delete(contentUri, rideWhere.sel(), rideWhere.args());
+            contentResolver.delete(contentUri, rideSelection.sel(), rideSelection.args());
         }
 
         // Rename master ride
@@ -191,7 +198,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public void activate(final Uri rideUri) {
         // Get first activated date
         Date firstActivatedDate = getFirstActivatedDate(rideUri);
@@ -217,21 +224,21 @@ public class RideManager {
         });
     }
 
-    @Background
+    @WorkerThread
     public void updateTotalDistance(Uri rideUri, float distance) {
         RideContentValues values = new RideContentValues();
         values.putDistance(distance);
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
-    @Background
+    @WorkerThread
     private void updateDuration(Uri rideUri, long duration) {
         RideContentValues values = new RideContentValues();
         values.putDuration(duration);
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
-    @Background
+    @WorkerThread
     public void updateName(Uri rideUri, String name) {
         RideContentValues values = new RideContentValues();
         if (TextUtils.isEmpty(name)) {
@@ -242,10 +249,10 @@ public class RideManager {
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
-    @Background
+    @WorkerThread
     public void pause(final Uri rideUri) {
         // Get current activated date / duration
-        String[] projection = { RideColumns.ACTIVATED_DATE, RideColumns.DURATION };
+        String[] projection = {RideColumns.ACTIVATED_DATE, RideColumns.DURATION};
         RideCursor c = new RideCursor(mContext.getContentResolver().query(rideUri, projection, null, null, null));
         try {
             if (!c.moveToNext()) {
@@ -289,7 +296,8 @@ public class RideManager {
         return new RideCursor(c);
     }
 
-    @Background
+    @WorkerThread
+    @Nullable
     public Uri getCurrentRide() {
         String currentRideUriStr = PreferenceManager.getDefaultSharedPreferences(mContext).getString(Constants.PREF_CURRENT_RIDE_URI, null);
         if (!TextUtils.isEmpty(currentRideUriStr)) {
@@ -299,14 +307,14 @@ public class RideManager {
         return null;
     }
 
-    @Background
+    @WorkerThread
     public void setCurrentRide(Uri rideUri) {
         PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString(Constants.PREF_CURRENT_RIDE_URI, rideUri.toString()).commit();
     }
 
-    @Background
+    @WorkerThread
     private Uri getMostRecentRide() {
-        String[] projection = { RideColumns._ID };
+        String[] projection = {RideColumns._ID};
         // Return a ride, prioritizing ACTIVE ones first, then sorting by creation date.
         Cursor c = mContext.getContentResolver().query(RideColumns.CONTENT_URI, projection, null, null,
                 RideColumns.STATE + ", " + RideColumns.CREATED_DATE + " DESC");
@@ -319,7 +327,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public Date getActivatedDate(Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
@@ -329,7 +337,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public Date getFirstActivatedDate(Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
@@ -339,7 +347,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public long getDuration(Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
@@ -349,7 +357,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public RideState getState(Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
@@ -359,7 +367,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public String getDisplayName(Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
@@ -375,7 +383,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public String getName(Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
@@ -385,7 +393,7 @@ public class RideManager {
         }
     }
 
-    @Background
+    @WorkerThread
     public boolean isExistingRide(Uri rideUri) {
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         try {

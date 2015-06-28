@@ -26,13 +26,14 @@ package org.jraf.android.bikey.backend.provider.log;
 
 import java.util.Date;
 
-import android.content.Context;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
 import org.jraf.android.bikey.backend.provider.base.AbstractSelection;
-import org.jraf.android.bikey.backend.provider.ride.*;
+import org.jraf.android.bikey.backend.provider.ride.RideColumns;
+import org.jraf.android.bikey.backend.provider.ride.RideState;
 
 /**
  * Selection for the {@code log} table.
@@ -134,6 +135,36 @@ public class LogSelection extends AbstractSelection<LogSelection> {
 
     public LogSelection rideIdLtEq(long value) {
         addLessThanOrEquals(LogColumns.RIDE_ID, value);
+        return this;
+    }
+
+    public LogSelection rideUuid(String... value) {
+        addEquals(RideColumns.UUID, value);
+        return this;
+    }
+
+    public LogSelection rideUuidNot(String... value) {
+        addNotEquals(RideColumns.UUID, value);
+        return this;
+    }
+
+    public LogSelection rideUuidLike(String... value) {
+        addLike(RideColumns.UUID, value);
+        return this;
+    }
+
+    public LogSelection rideUuidContains(String... value) {
+        addContains(RideColumns.UUID, value);
+        return this;
+    }
+
+    public LogSelection rideUuidStartsWith(String... value) {
+        addStartsWith(RideColumns.UUID, value);
+        return this;
+    }
+
+    public LogSelection rideUuidEndsWith(String... value) {
+        addEndsWith(RideColumns.UUID, value);
         return this;
     }
 

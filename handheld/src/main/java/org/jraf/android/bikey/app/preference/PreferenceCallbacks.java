@@ -35,5 +35,7 @@ public interface PreferenceCallbacks {
 
     void disconnectHeartRateMonitor();
 
-    void tryToReconnectOrGiveUp();
+    void tryToReconnectHeartRateMonitorOrGiveUp();
+
+    void syncWithGoogleDrive();
 }

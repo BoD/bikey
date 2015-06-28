@@ -41,7 +41,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = BikeySQLiteOpenHelper.class.getSimpleName();
 
     public static final String DATABASE_FILE_NAME = "bikey_provider.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
     private static BikeySQLiteOpenHelper sInstance;
     private final Context mContext;
     private final BikeySQLiteOpenHelperCallbacks mOpenHelperCallbacks;
@@ -66,6 +66,7 @@ public class BikeySQLiteOpenHelper extends SQLiteOpenHelper {
     public static final String SQL_CREATE_TABLE_RIDE = "CREATE TABLE IF NOT EXISTS "
             + RideColumns.TABLE_NAME + " ( "
             + RideColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + RideColumns.UUID + " TEXT NOT NULL, "
             + RideColumns.NAME + " TEXT, "
             + RideColumns.CREATED_DATE + " INTEGER NOT NULL, "
             + RideColumns.STATE + " INTEGER NOT NULL, "

@@ -30,6 +30,10 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.WorkerThread;
+
+import org.jraf.android.bikey.common.UnitUtil;
+import org.jraf.android.util.log.wrapper.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -44,10 +48,6 @@ import com.google.android.gms.wearable.NodeApi;
 import com.google.android.gms.wearable.PutDataMapRequest;
 import com.google.android.gms.wearable.PutDataRequest;
 import com.google.android.gms.wearable.Wearable;
-
-import org.jraf.android.bikey.common.UnitUtil;
-import org.jraf.android.util.annotation.Background;
-import org.jraf.android.util.log.wrapper.Log;
 
 /**
  * Helper singleton class to communicate with wearables.<br/>
@@ -109,12 +109,12 @@ public class WearCommHelper {
         });
     }
 
-    @Background(Background.Type.NETWORK)
+    @WorkerThread
     public void sendMessageRideResume() {
         sendMessage(CommConstants.PATH_RIDE_CONTROL, CommConstants.PAYLOAD_RESUME);
     }
 
-    @Background(Background.Type.NETWORK)
+    @WorkerThread
     public void sendMessageRidePause() {
         sendMessage(CommConstants.PATH_RIDE_CONTROL, CommConstants.PAYLOAD_PAUSE);
     }

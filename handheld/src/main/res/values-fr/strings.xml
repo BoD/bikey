@@ -61,6 +61,7 @@
     <string name="export_choices_gpx">Fichier GPX</string>
     <string name="export_choices_kml">Fichier KML</string>
     <string name="export_choices_genymotion">Script Genymotion</string>
+    <string name="export_choices_bikey">Fichier Bikey</string>
 
     <!-- Save to storage -->
     <string name="saveToStorage_label">Enregistrer sur stockage</string>
@@ -152,4 +153,17 @@
     <!-- Heart rate monitor scan -->
     <string name="heartRateMonitorScan_title">Se connecter à un cardiofréquencemètre</string>
 
+    <!-- Google Drive sync -->
+    <string name="googleDriveSync_title">Synchro Google Drive</string>
+    <string name="googleDriveSync_deleteRemoteItems">Suppression des parcours distants</string>
+    <string name="googleDriveSync_deleteLocalItems">Suppression des parcours locaux</string>
+    <string name="googleDriveSync_uploadNewLocalItems">Envoi des nouveaux parcours locaux</string>
+    <string name="googleDriveSync_downloadNewRemoteItems">Reception des nouveaux parcourse distants</string>
+    <string name="googleDriveSync_downloadNewRemoteItems_progress">Reception des nouveaux parcourse distants (%1$d/%2$d)</string>
+    <string name="googleDriveSync_abortSyncDialog_title">Abandonner synchro?</string>
+    <string name="googleDriveSync_abortSyncDialog_message">La synchro est en cours. Voulez-vous l\'abandonner?</string>
+    <string name="googleDriveSync_abortSyncDialog_positive">Abandonner synchro</string>
+    <string name="googleDriveSync_abortSyncDialog_negative">Continuer synchro</string>
+    <string name="googleDriveSync_success">Syncro terminée avec succes !</string>
+    <string name="googleDriveSync_fail">Synchro terminée avec des erreurs.</string>
 </resources>

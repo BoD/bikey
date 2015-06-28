@@ -33,13 +33,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.google.android.gms.wearable.DataApi;
-import com.google.android.gms.wearable.DataEvent;
-import com.google.android.gms.wearable.DataEventBuffer;
-import com.google.android.gms.wearable.DataItem;
-import com.google.android.gms.wearable.DataMap;
-import com.google.android.gms.wearable.DataMapItem;
-
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.common.wear.CommConstants;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
@@ -50,12 +43,19 @@ import org.jraf.android.bikey.wearable.app.display.fragment.speed.SpeedDisplayFr
 import org.jraf.android.bikey.wearable.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
 import org.jraf.android.util.log.wrapper.Log;
 
+import com.google.android.gms.wearable.DataApi;
+import com.google.android.gms.wearable.DataEvent;
+import com.google.android.gms.wearable.DataEventBuffer;
+import com.google.android.gms.wearable.DataItem;
+import com.google.android.gms.wearable.DataMap;
+import com.google.android.gms.wearable.DataMapItem;
+
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnTouch;
 
 public class DisplayActivity extends FragmentActivity {
-    @InjectView(R.id.txtTitle)
+    @Bind(R.id.txtTitle)
     protected TextView mTxtTitle;
 
     private FragmentCycler mFragmentCycler;
@@ -69,7 +69,7 @@ public class DisplayActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.display);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         setupFragments();
         retrieveRideValues();
     }

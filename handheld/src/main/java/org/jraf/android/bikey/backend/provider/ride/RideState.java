@@ -44,4 +44,9 @@ Only one ride can be active at any time.
      */
     PAUSED,
 
+    /**
+     * The ride has been deleted locally (deleted rides only exist until the next Google Drive sync).
+     */
+    DELETED,
+
 }

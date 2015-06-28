@@ -33,6 +33,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.WorkerThread;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,7 +46,6 @@ import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.util.annotation.Background;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -60,16 +60,16 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class RideMapActivity extends BaseAppCompatActivity {
     private Uri mRideUri;
 
-    @InjectView(R.id.conMap)
+    @Bind(R.id.conMap)
     protected ViewGroup mConMap;
 
-    @InjectView(R.id.vieStatusBarTint)
+    @Bind(R.id.vieStatusBarTint)
     protected View mVieStatusBarTint;
 
     private GoogleMap mMap;
@@ -83,7 +83,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
 
         mRideUri = getIntent().getData();
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         tintedStatusBarHack();
 
         loadData();
@@ -260,7 +260,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
     /**
      * Blocks until the map is actually available.
      */
-    @Background
+    @WorkerThread
     private GoogleMap getMap() {
         if (mMap == null) {
             final CountDownLatch latch = new CountDownLatch(1);

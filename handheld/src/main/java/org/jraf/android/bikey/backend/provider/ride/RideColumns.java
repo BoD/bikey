@@ -28,8 +28,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
-import org.jraf.android.bikey.backend.provider.log.LogColumns;
-import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 
 /**
  * Columns for the {@code ride} table.
@@ -42,6 +40,8 @@ public class RideColumns implements BaseColumns {
      * Primary key.
      */
     public static final String _ID = BaseColumns._ID;
+
+    public static final String UUID = "uuid";
 
     public static final String NAME = "name";
 
@@ -63,6 +63,7 @@ public class RideColumns implements BaseColumns {
     // @formatter:off
     public static final String[] ALL_COLUMNS = new String[] {
             _ID,
+            UUID,
             NAME,
             CREATED_DATE,
             STATE,
@@ -76,6 +77,7 @@ public class RideColumns implements BaseColumns {
     public static boolean hasColumns(String[] projection) {
         if (projection == null) return true;
         for (String c : projection) {
+            if (c.equals(UUID) || c.contains("." + UUID)) return true;
             if (c.equals(NAME) || c.contains("." + NAME)) return true;
             if (c.equals(CREATED_DATE) || c.contains("." + CREATED_DATE)) return true;
             if (c.equals(STATE) || c.contains("." + STATE)) return true;

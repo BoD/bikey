@@ -9,9 +9,15 @@
 -keepattributes SourceFile,LineNumberTable
 
 # For Butterknife
+-keep class butterknife.** { *; }
 -dontwarn butterknife.internal.**
--keep class **$$ViewInjector { *; }
--keepnames class * { @butterknife.InjectView *;}
+-keep class **$$ViewBinder { *; }
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
 
 # For Google Play Services
 -keep class * extends java.util.ListResourceBundle {

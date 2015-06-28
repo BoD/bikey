@@ -60,16 +60,16 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 public class RideMapActivity extends BaseAppCompatActivity {
     private Uri mRideUri;
 
-    @InjectView(R.id.conMap)
+    @Bind(R.id.conMap)
     protected ViewGroup mConMap;
 
-    @InjectView(R.id.vieStatusBarTint)
+    @Bind(R.id.vieStatusBarTint)
     protected View mVieStatusBarTint;
 
     private GoogleMap mMap;
@@ -83,7 +83,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
 
         mRideUri = getIntent().getData();
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         tintedStatusBarHack();
 
         loadData();

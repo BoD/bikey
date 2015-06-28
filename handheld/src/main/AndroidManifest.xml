@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="org.jraf.android.bikey"
+<manifest
+    package="org.jraf.android.bikey"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="MissingVersion">
@@ -157,6 +158,12 @@
         <activity
             android:name="org.jraf.android.util.about.AboutActivity"
             android:label="@string/about_title" />
+
+        <!-- Google drive sync -->
+        <activity
+            android:name="org.jraf.android.bikey.app.googledrivesync.GoogleDriveSyncActivity"
+            android:configChanges="orientation|screenSize"
+            android:label="@string/googleDriveSync_title" />
     </application>
 
 </manifest>

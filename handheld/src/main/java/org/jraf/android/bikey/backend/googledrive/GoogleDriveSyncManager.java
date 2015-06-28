@@ -71,6 +71,8 @@ public class GoogleDriveSyncManager {
     private static final String MIME_TYPE = "application/vnd.jraf.bikey.ride";
 
     private Context mContext;
+    private @Nullable GoogleDriveSyncListener mListener;
+    private volatile boolean mAbortRequested;
 
     public static GoogleDriveSyncManager get(Context context) {
         INSTANCE.mContext = context.getApplicationContext();
@@ -80,17 +82,28 @@ public class GoogleDriveSyncManager {
     private GoogleDriveSyncManager() {}
 
     @WorkerThread
-    public boolean sync(GoogleApiClient googleApiClient) {
+    public boolean sync(GoogleApiClient googleApiClient, @Nullable GoogleDriveSyncListener googleDriveSyncListener) {
+        mAbortRequested = false;
+        mListener = googleDriveSyncListener;
+        if (mListener != null) mListener.onSyncStart();
+
+        if (mListener != null) mListener.onDeleteRemoteItemsStart();
         Log.d("Get server list");
         ArrayList<ServerItem> serverItems = getServerItems(googleApiClient);
         Log.d("serverItems=" + serverItems);
         if (serverItems == null) {
             Log.d("Got null serverItems: abort");
+            if (mListener != null) mListener.onSyncFinish(false);
             return false;
         }
 
 //        serverDeleteAllItems(googleApiClient, serverItems);
 //        return true;
+
+        if (mAbortRequested) {
+            if (mListener != null) mListener.onSyncFinish(false);
+            return false;
+        }
 
         Log.d("Get locally deleted items");
         ArrayList<String> locallyDeletedItems = getLocallyDeletedItems();
@@ -105,18 +118,45 @@ public class GoogleDriveSyncManager {
                 purgeLocallyDeletedItems();
             }
         }
+        if (mListener != null) mListener.onDeleteRemoteItemsFinish();
 
+
+        if (mAbortRequested) {
+            if (mListener != null) mListener.onSyncFinish(false);
+            return false;
+        }
+
+
+        if (mListener != null) mListener.onDeleteLocalItemsStart();
         Log.d("Delete local items that are marked as deleted on the server");
         locallyDeleteRemotelyDeletedItems(serverItems);
+        if (mListener != null) mListener.onDeleteLocalItemsFinish();
 
+
+        if (mAbortRequested) {
+            if (mListener != null) mListener.onSyncFinish(false);
+            return false;
+        }
+
+
+        if (mListener != null) mListener.onUploadNewLocalItemsStart();
         Log.d("Get new local items");
         ArrayList<String> newLocalItems = getNewLocalItems(serverItems);
         Log.d("newLocalItems=" + newLocalItems);
 
-        Log.d("Send new local items to the server");
-        boolean ok = sendNewLocalItems(googleApiClient, newLocalItems);
+        Log.d("Upload new local items to the server");
+        boolean ok = uploadNewLocalItems(googleApiClient, newLocalItems);
         Log.d("ok=" + ok);
+        if (mListener != null) mListener.onUploadNewLocalItemsFinish();
 
+
+        if (mAbortRequested) {
+            if (mListener != null) mListener.onSyncFinish(false);
+            return false;
+        }
+
+
+        if (mListener != null) mListener.onDownloadNewRemoteItemsStart();
         Log.d("Get new server items");
         ArrayList<String> allLocalItems = getAllLocalItems();
         //        ArrayList<String> allLocalItems = newLocalItems; // Uncomment to test
@@ -128,7 +168,10 @@ public class GoogleDriveSyncManager {
             ok = ok && downloadNewServerItems(googleApiClient, newServerItems);
             Log.d("ok=" + ok);
         }
+        if (mListener != null) mListener.onDownloadNewRemoteItemsFinish();
 
+
+        if (mListener != null) mListener.onSyncFinish(ok);
         Log.d("Sync finished");
         return ok;
     }
@@ -176,19 +219,19 @@ public class GoogleDriveSyncManager {
     @WorkerThread
     private boolean serverTrashItems(GoogleApiClient googleApiClient, ArrayList<String> locallyDeletedItems, ArrayList<ServerItem> serverItems) {
         // Find the server items to trash
-        ArrayList<ServerItem> serverItemsToDelete = new ArrayList<>();
+        ArrayList<ServerItem> serverItemsToTrash = new ArrayList<>();
 
         // FIXME: Double iteration!  Bad perf!
         for (String locallyDeletedItem : locallyDeletedItems) {
             for (ServerItem serverItem : serverItems) {
                 if (serverItem.uuid.equals(locallyDeletedItem)) {
-                    serverItemsToDelete.add(serverItem);
+                    serverItemsToTrash.add(serverItem);
                     break;
                 }
             }
         }
-        Log.d("Server items to delete: " + serverItemsToDelete);
-        for (ServerItem serverItem : serverItemsToDelete) {
+        Log.d("Server items to trash: " + serverItemsToTrash);
+        for (ServerItem serverItem : serverItemsToTrash) {
             Log.d("Trash " + serverItem);
             DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
             // Mark the file as trashed
@@ -268,9 +311,12 @@ public class GoogleDriveSyncManager {
     }
 
     @WorkerThread
-    private boolean sendNewLocalItems(GoogleApiClient googleApiClient, ArrayList<String> newLocalItems) {
+    private boolean uploadNewLocalItems(GoogleApiClient googleApiClient, ArrayList<String> newLocalItems) {
         Log.d();
+        int itemsCount = newLocalItems.size();
+        int itemIndex = 0;
         for (String uuid : newLocalItems) {
+            if (mListener != null) mListener.onUploadNewLocalItemsProgress(itemIndex, itemsCount);
             Log.d("Creating " + uuid);
 
             DriveApi.DriveContentsResult driveContentsResult = Drive.DriveApi.newDriveContents(googleApiClient).await(AWAIT_DELAY_LONG, AWAIT_UNIT_LONG);
@@ -314,6 +360,14 @@ public class GoogleDriveSyncManager {
                 Log.w("Could not create new Drive file");
                 return false;
             }
+
+            itemIndex++;
+            if (mListener != null) mListener.onUploadNewLocalItemsProgress(itemIndex, itemsCount);
+
+            if (mAbortRequested) {
+                if (mListener != null) mListener.onSyncFinish(false);
+                return false;
+            }
         }
         return true;
     }
@@ -353,7 +407,10 @@ public class GoogleDriveSyncManager {
     @WorkerThread
     private boolean downloadNewServerItems(GoogleApiClient googleApiClient, ArrayList<ServerItem> newServerItems) {
         Log.d();
+        int itemsCount = newServerItems.size();
+        int itemIndex = 0;
         for (ServerItem serverItem : newServerItems) {
+            if (mListener != null) mListener.onDownloadNewRemoteItemsOverallProgress(itemIndex, itemsCount);
             Log.d("Download " + serverItem);
             DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
             DriveApi.DriveContentsResult driveContentsResult =
@@ -381,6 +438,7 @@ public class GoogleDriveSyncManager {
                 @Override
                 public void onLogImported(long logIndex, long total) {
                     Log.d(logIndex + "/" + total);
+                    if (mListener != null) mListener.onDownloadNewRemoteItemsDownloadProgress(logIndex, total);
                 }
 
                 @Override
@@ -388,6 +446,12 @@ public class GoogleDriveSyncManager {
                     Log.d("status=" + status);
                 }
             };
+
+            if (mAbortRequested) {
+                if (mListener != null) mListener.onSyncFinish(false);
+                return false;
+            }
+
             try {
                 new BikeyRideImporter(mContext.getContentResolver(), inputStream, rideImporterProgressListener).doImport();
             } catch (Exception e) {
@@ -396,8 +460,21 @@ public class GoogleDriveSyncManager {
                 return false;
             }
             contents.discard(googleApiClient);
+
+            itemIndex++;
+            if (mListener != null) mListener.onDownloadNewRemoteItemsOverallProgress(itemIndex, itemsCount);
+
+
+            if (mAbortRequested) {
+                if (mListener != null) mListener.onSyncFinish(false);
+                return false;
+            }
         }
 
         return true;
+    }
+
+    public void abort() {
+        mAbortRequested = true;
     }
 }

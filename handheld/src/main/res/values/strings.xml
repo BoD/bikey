@@ -168,5 +168,19 @@
     <!-- Heart rate monitor scan -->
     <string name="heartRateMonitorScan_title">Connect to a heart rate monitor</string>
 
+    <!-- Google Drive sync -->
+    <string name="googleDriveSync_title">Google Drive sync</string>
+    <string name="googleDriveSync_deleteRemoteItems">Delete remote items</string>
+    <string name="googleDriveSync_deleteLocalItems">Delete local items</string>
+    <string name="googleDriveSync_uploadNewLocalItems">Upload new local items</string>
+    <string name="googleDriveSync_downloadNewRemoteItems">Download new remote items</string>
+    <string name="googleDriveSync_downloadNewRemoteItems_progress">Download new remote items (%1$d/%2$d)</string>
+    <string name="googleDriveSync_abortSyncDialog_title">Abort sync?</string>
+    <string name="googleDriveSync_abortSyncDialog_message">The sync is in progress.  Do you want to abort it?</string>
+    <string name="googleDriveSync_abortSyncDialog_positive">Abort sync</string>
+    <string name="googleDriveSync_abortSyncDialog_negative">Continue sync</string>
+    <string name="googleDriveSync_success">Sync finished successfully!</string>
+    <string name="googleDriveSync_fail">Sync finished with errors.</string>
+
 
 </resources>

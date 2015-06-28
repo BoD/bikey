@@ -76,8 +76,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class RideDetailActivity extends BaseAppCompatActivity implements AlertDialogListener {
@@ -90,73 +90,73 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
     private Uri mRideUri;
 
-    @InjectView(R.id.pgbLoading)
+    @Bind(R.id.pgbLoading)
     protected ProgressBar mPgbLoading;
 
-    @InjectView(R.id.conRoot)
+    @Bind(R.id.conRoot)
     protected View mConRoot;
 
-    @InjectView(R.id.txtDateTimeDate)
+    @Bind(R.id.txtDateTimeDate)
     protected LabelTextView mTxtDateTimeDate;
 
-    @InjectView(R.id.txtDateTimeStart)
+    @Bind(R.id.txtDateTimeStart)
     protected LabelTextView mTxtDateTimeStart;
 
-    @InjectView(R.id.txtDateTimeFinish)
+    @Bind(R.id.txtDateTimeFinish)
     protected LabelTextView mTxtDateTimeFinish;
 
-    @InjectView(R.id.txtDurationMoving)
+    @Bind(R.id.txtDurationMoving)
     protected LabelTextView mTxtDurationMoving;
 
-    @InjectView(R.id.txtDurationTotal)
+    @Bind(R.id.txtDurationTotal)
     protected LabelTextView mTxtDurationTotal;
 
-    @InjectView(R.id.txtDistanceTotal)
+    @Bind(R.id.txtDistanceTotal)
     protected LabelTextView mTxtDistanceTotal;
 
-    @InjectView(R.id.txtSpeedAverage)
+    @Bind(R.id.txtSpeedAverage)
     protected LabelTextView mTxtSpeedAverage;
 
-    @InjectView(R.id.txtSpeedMax)
+    @Bind(R.id.txtSpeedMax)
     protected LabelTextView mTxtSpeedMax;
 
-    @InjectView(R.id.txtCadenceSectionTitle)
+    @Bind(R.id.txtCadenceSectionTitle)
     protected TextView mTxtCadenceSectionTitle;
 
-    @InjectView(R.id.txtCadenceAverage)
+    @Bind(R.id.txtCadenceAverage)
     protected LabelTextView mTxtCadenceAverage;
 
-    @InjectView(R.id.txtCadenceMax)
+    @Bind(R.id.txtCadenceMax)
     protected LabelTextView mTxtCadenceMax;
 
-    @InjectView(R.id.conMap)
+    @Bind(R.id.conMap)
     protected FrameLayout mConMap;
 
-    @InjectView(R.id.conDetailedInfo)
+    @Bind(R.id.conDetailedInfo)
     protected View mConDetailedInfo;
 
-    @InjectView(R.id.txtEmpty)
+    @Bind(R.id.txtEmpty)
     protected View mTxtEmpty;
 
-    @InjectView(R.id.grpSpeed)
+    @Bind(R.id.grpSpeed)
     protected GraphView mGrpSpeed;
 
-    @InjectView(R.id.grpCadence)
+    @Bind(R.id.grpCadence)
     protected GraphView mGrpCadence;
 
-    @InjectView(R.id.txtHeartRateSectionTitle)
+    @Bind(R.id.txtHeartRateSectionTitle)
     protected TextView mTxtHeartRateSectionTitle;
 
-    @InjectView(R.id.txtHeartRateMin)
+    @Bind(R.id.txtHeartRateMin)
     protected LabelTextView mTxtHeartRateMin;
 
-    @InjectView(R.id.txtHeartRateMax)
+    @Bind(R.id.txtHeartRateMax)
     protected LabelTextView mTxtHeartRateMax;
 
-    @InjectView(R.id.txtHeartRateAverage)
+    @Bind(R.id.txtHeartRateAverage)
     protected LabelTextView mTxtHeartRateAverage;
 
-    @InjectView(R.id.grpHeartRate)
+    @Bind(R.id.grpHeartRate)
     protected GraphView mGrpHeartRate;
 
     private RideDetailStateFragment mState;
@@ -171,7 +171,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
         mRideUri = getIntent().getData();
 
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         restoreState();
     }

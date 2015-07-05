@@ -18,8 +18,9 @@ Features:
 - Android Wear and Pebble support (keep your phone in your pocket!)
 - Bluetooth LE heart rate monitors support
 - some useful stats and graphs can be displayed on recorded rides
-- data can be exported in .gpx and .kml formats
 - cadence recording capability (requires the phone to stay in your leg pocket)
+- rides can be exported in .gpx and .kml formats
+- cloud sync (with Google Drive™) allows to backup/restore your rides and share them among several devices very easily
 - and more...
 
 The app is open source and in active development, please don't hesitate to report any bugs or feature requests: BoD@JRAF.org.

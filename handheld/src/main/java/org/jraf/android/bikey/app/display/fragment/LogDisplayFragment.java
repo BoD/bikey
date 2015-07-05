@@ -46,6 +46,7 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         rideManager.addListener(mRideListener);
 
         final Uri rideUri = getRideUri();
+        if (rideUri == null) return;
 
         new AsyncTask<Void, Void, Void>() {
             private boolean mIsActive;

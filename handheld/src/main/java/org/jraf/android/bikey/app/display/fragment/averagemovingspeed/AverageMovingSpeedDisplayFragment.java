@@ -24,6 +24,8 @@
  */
 package org.jraf.android.bikey.app.display.fragment.averagemovingspeed;
 
+import android.net.Uri;
+
 import org.jraf.android.bikey.app.display.fragment.LogDisplayFragment;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.common.UnitUtil;
@@ -35,6 +37,8 @@ public class AverageMovingSpeedDisplayFragment extends LogDisplayFragment {
 
     @Override
     protected CharSequence queryValue() {
-        return UnitUtil.formatSpeed((float) LogManager.get().getAverageMovingSpeed(getRideUri()));
+        Uri rideUri = getRideUri();
+        if (rideUri == null) return "";
+        return UnitUtil.formatSpeed((float) LogManager.get().getAverageMovingSpeed(rideUri));
     }
 }

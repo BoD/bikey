@@ -26,6 +26,7 @@ package org.jraf.android.bikey.app.display.fragment;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,6 +74,7 @@ public abstract class SimpleDisplayFragment extends BaseFragment<DisplayActivity
         return R.layout.display_simple;
     }
 
+    @Nullable
     protected Uri getRideUri() {
         if (getCallbacks() == null) {
             Log.w("null callbacks");

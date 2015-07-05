@@ -24,8 +24,11 @@
  */
 package org.jraf.android.bikey.backend.googledrive;
 
+import java.util.Map;
+
 import com.google.android.gms.drive.DriveId;
 import com.google.android.gms.drive.Metadata;
+import com.google.android.gms.drive.metadata.CustomPropertyKey;
 
 public class ServerItem {
     /**
@@ -46,7 +49,10 @@ public class ServerItem {
     public ServerItem(Metadata metadata) {
         uuid = metadata.getTitle().split("\\.")[0]; // Get only the file name, not the extension
         driveId = metadata.getDriveId();
-        deleted = metadata.isTrashed();
+
+        CustomPropertyKey key = new CustomPropertyKey(GoogleDriveSyncManager.PROPERTY_TRASHED, CustomPropertyKey.PRIVATE);
+        Map<CustomPropertyKey, String> customProperties = metadata.getCustomProperties();
+        deleted = customProperties.containsKey(key) && GoogleDriveSyncManager.PROPERTY_TRASHED_TRUE.equals(customProperties.get(key));
     }
 
     @Override

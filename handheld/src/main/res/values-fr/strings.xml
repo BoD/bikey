@@ -64,7 +64,7 @@
     <string name="export_choices_bikey">Fichier Bikey</string>
 
     <!-- Save to storage -->
-    <string name="saveToStorage_label">Enregistrer sur stockage</string>
+    <string name="saveToStorage_label">Enreg. sur stockage</string>
     <string name="saveToStorage_failedToast">Impossible d\'enregistrer le fichier.</string>
     <string name="saveToStorage_successToast">Fichier enregistré dans %1$s</string>
 
@@ -158,12 +158,12 @@
     <string name="googleDriveSync_deleteRemoteItems">Suppression des parcours distants</string>
     <string name="googleDriveSync_deleteLocalItems">Suppression des parcours locaux</string>
     <string name="googleDriveSync_uploadNewLocalItems">Envoi des nouveaux parcours locaux</string>
-    <string name="googleDriveSync_downloadNewRemoteItems">Reception des nouveaux parcourse distants</string>
-    <string name="googleDriveSync_downloadNewRemoteItems_progress">Reception des nouveaux parcourse distants (%1$d/%2$d)</string>
-    <string name="googleDriveSync_abortSyncDialog_title">Abandonner synchro?</string>
-    <string name="googleDriveSync_abortSyncDialog_message">La synchro est en cours. Voulez-vous l\'abandonner?</string>
-    <string name="googleDriveSync_abortSyncDialog_positive">Abandonner synchro</string>
-    <string name="googleDriveSync_abortSyncDialog_negative">Continuer synchro</string>
-    <string name="googleDriveSync_success">Syncro terminée avec succes !</string>
+    <string name="googleDriveSync_downloadNewRemoteItems">Reception des nouveaux parcours distants</string>
+    <string name="googleDriveSync_downloadNewRemoteItems_progress">Reception des nouveaux parcours distants (%1$d/%2$d)</string>
+    <string name="googleDriveSync_abortSyncDialog_title">Arrêter la synchro\u00A0?</string>
+    <string name="googleDriveSync_abortSyncDialog_message">La synchro est en cours. Voulez-vous l\'arrêter\u00A0?</string>
+    <string name="googleDriveSync_abortSyncDialog_positive">Arrêter</string>
+    <string name="googleDriveSync_abortSyncDialog_negative">Continuer</string>
+    <string name="googleDriveSync_success">Synchro terminée avec succès\u00A0!</string>
     <string name="googleDriveSync_fail">Synchro terminée avec des erreurs.</string>
 </resources>

@@ -56,6 +56,7 @@ import com.google.android.gms.drive.DriveFolder;
 import com.google.android.gms.drive.Metadata;
 import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
+import com.google.android.gms.drive.metadata.CustomPropertyKey;
 import com.google.android.gms.drive.query.Query;
 
 public class GoogleDriveSyncManager {
@@ -69,6 +70,9 @@ public class GoogleDriveSyncManager {
 
     private static final String EXTENSION = ".ride";
     private static final String MIME_TYPE = "application/vnd.jraf.bikey.ride";
+    static final String PROPERTY_TRASHED = "trashed";
+    static final String PROPERTY_TRASHED_TRUE = "true";
+
 
     private Context mContext;
     private @Nullable GoogleDriveSyncListener mListener;
@@ -234,13 +238,19 @@ public class GoogleDriveSyncManager {
         for (ServerItem serverItem : serverItemsToTrash) {
             Log.d("Trash " + serverItem);
             DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
-            // Mark the file as trashed
-            Status status = driveFile.trash(googleApiClient).await(AWAIT_DELAY_SHORT, AWAIT_UNIT_SHORT);
+
+            // Mark the file as trashed (by setting a property)
+            CustomPropertyKey key = new CustomPropertyKey(PROPERTY_TRASHED, CustomPropertyKey.PRIVATE);
+            MetadataChangeSet changeSet = new MetadataChangeSet.Builder()
+                    .setCustomProperty(key, PROPERTY_TRASHED_TRUE).build();
+
+            Status status = driveFile.updateMetadata(googleApiClient, changeSet).await(AWAIT_DELAY_SHORT, AWAIT_UNIT_SHORT).getStatus();
             Log.d("status=" + status);
             if (!status.isSuccess()) {
                 Log.w("Could not mark as trashed " + serverItem);
                 return false;
             }
+            serverItem.deleted = true;
         }
         return true;
     }

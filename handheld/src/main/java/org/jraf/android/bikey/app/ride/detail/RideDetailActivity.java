@@ -72,8 +72,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import butterknife.Bind;
@@ -343,9 +345,18 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                 // Map
                 a.getMap().getUiSettings().setMapToolbarEnabled(false);
                 if (mLatLngArray.size() > 0) {
+                    // Polyline
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
                     polylineOptions.color(getResources().getColor(R.color.map_polyline));
                     a.getMap().addPolyline(polylineOptions);
+
+                    // Start / finish markers
+                    a.getMap().addMarker(new MarkerOptions()
+                            .position(mLatLngArray.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                    a.getMap().addMarker(new MarkerOptions()
+                            .position(mLatLngArray.get(mLatLngArray.size() - 1)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
                     // Calculate bounds
                     LatLngBounds bounds = new LatLngBounds(mLatLngArray.get(0), mLatLngArray.get(0));
                     for (LatLng latLng : mLatLngArray) {

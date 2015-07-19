@@ -55,9 +55,10 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import butterknife.Bind;
@@ -227,26 +228,35 @@ public class RideMapActivity extends BaseAppCompatActivity {
                 int statusBarHeight = 0;
                 int navigationBarHeight = 0;
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                    statusBarHeight = getStatusBarHeight();
-                    navigationBarHeight = getNavigationBarHeight();
+                    statusBarHeight = a.getStatusBarHeight();
+                    navigationBarHeight = a.getNavigationBarHeight();
                 }
-                getMap().setPadding(0, getActionBarHeight() + statusBarHeight, 0, navigationBarHeight);
+                a.getMap().setPadding(0, getActionBarHeight() + statusBarHeight, 0, navigationBarHeight);
 
-                updateMapType();
+                a.updateMapType();
 
                 if (mLatLngArray.size() > 0) {
+                    // Polyline
                     PolylineOptions polylineOptions = new PolylineOptions().addAll(mLatLngArray);
                     polylineOptions.color(getResources().getColor(R.color.map_polyline));
-                    Polyline polyline = getMap().addPolyline(polylineOptions);
+                    a.getMap().addPolyline(polylineOptions);
+
+                    // Start / finish markers
+                    a.getMap().addMarker(new MarkerOptions()
+                            .position(mLatLngArray.get(0)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+
+                    a.getMap().addMarker(new MarkerOptions()
+                            .position(mLatLngArray.get(mLatLngArray.size() - 1)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED)));
+
                     // Calculate bounds
                     LatLngBounds bounds = new LatLngBounds(mLatLngArray.get(0), mLatLngArray.get(0));
                     for (LatLng latLng : mLatLngArray) {
                         bounds = bounds.including(latLng);
                     }
                     int padding = getResources().getDimensionPixelSize(R.dimen.ride_detail_map_padding);
-                    getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
+                    a.getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
 
-                    mConMap.setVisibility(View.VISIBLE);
+                    a.mConMap.setVisibility(View.VISIBLE);
                 }
             }
         }).execute(getSupportFragmentManager());

@@ -27,6 +27,7 @@ package org.jraf.android.bikey.app.display.fragment;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.backend.log.LogListener;
@@ -130,5 +131,5 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
     };
 
     @WorkerThread
-    protected abstract CharSequence queryValue();
+    protected abstract @Nullable CharSequence queryValue();
 }

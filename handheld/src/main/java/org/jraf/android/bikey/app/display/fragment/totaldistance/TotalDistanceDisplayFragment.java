@@ -24,6 +24,9 @@
  */
 package org.jraf.android.bikey.app.display.fragment.totaldistance;
 
+import android.net.Uri;
+import android.support.annotation.Nullable;
+
 import org.jraf.android.bikey.app.display.fragment.LogDisplayFragment;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.common.UnitUtil;
@@ -34,7 +37,9 @@ public class TotalDistanceDisplayFragment extends LogDisplayFragment {
     }
 
     @Override
-    protected CharSequence queryValue() {
-        return UnitUtil.formatDistance((float) LogManager.get().getTotalDistance(getRideUri()));
+    protected @Nullable CharSequence queryValue() {
+        Uri rideUri = getRideUri();
+        if (rideUri == null) return null;
+        return UnitUtil.formatDistance((float) LogManager.get().getTotalDistance(rideUri));
     }
 }

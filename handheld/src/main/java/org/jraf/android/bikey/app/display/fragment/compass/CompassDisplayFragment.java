@@ -80,7 +80,6 @@ public class CompassDisplayFragment extends BaseFragment<DisplayActivity> {
     private CompassListener mCompassListener = new CompassListener() {
         @Override
         public void onCompassChange(float compass) {
-            //            mImgCompass.setRotation(compass * 360f);
             float currentRotation = mImgCompass.getRotation();
             float newRotation = compass * 360f;
             if (newRotation - currentRotation < 180) {

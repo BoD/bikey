@@ -32,6 +32,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.location.Location;
 import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.app.Application;
@@ -63,7 +64,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public Uri add(final Uri rideUri, Location location, Location previousLocation, Float cadence, Integer heartRate) {
+    public Uri add(final @NonNull Uri rideUri, Location location, Location previousLocation, Float cadence, Integer heartRate) {
         // Add a log
         LogContentValues values = new LogContentValues();
         long rideId = ContentUris.parseId(rideUri);
@@ -103,7 +104,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public float getTotalDistance(Uri rideUri) {
+    public float getTotalDistance(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")" };
         LogSelection where = new LogSelection();
@@ -121,7 +122,7 @@ public class LogManager {
      * Note: the top 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public float getAverageMovingSpeed(Uri rideUri) {
+    public float getAverageMovingSpeed(@NonNull Uri rideUri) {
         // First get the max
         float max = getMaxSpeed(rideUri);
 
@@ -142,7 +143,7 @@ public class LogManager {
      * Note: the top 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public Float getAverageCadence(Uri rideUri) {
+    public Float getAverageCadence(@NonNull Uri rideUri) {
         // First get the min and max
         float min = getMinCadence(rideUri);
         float max = getMaxCadence(rideUri);
@@ -165,7 +166,7 @@ public class LogManager {
      * Note: the top 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public Float getAverageHeartRate(Uri rideUri) {
+    public Float getAverageHeartRate(@NonNull Uri rideUri) {
         // First get the min and max
         float min = getMinHeartRate(rideUri);
         float max = getMaxHeartRate(rideUri);
@@ -185,7 +186,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public Long getMovingDuration(Uri rideUri) {
+    public Long getMovingDuration(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "sum(" + LogColumns.LOG_DURATION + ")" };
         LogSelection where = new LogSelection();
@@ -204,7 +205,7 @@ public class LogManager {
      * Note: the top 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public float getMax(Uri rideUri, String column) {
+    public float getMax(@NonNull Uri rideUri, @NonNull String column) {
         // Get the point count to discard the top 10% values
         Integer count = getLogCount(rideUri);
         if (count == null) return 0;
@@ -226,7 +227,7 @@ public class LogManager {
      * Note: the bottom 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public float getMin(Uri rideUri, String column) {
+    public float getMin(@NonNull Uri rideUri, @NonNull String column) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { column };
         LogSelection where = new LogSelection();
@@ -245,33 +246,33 @@ public class LogManager {
     }
 
     @WorkerThread
-    public float getMaxSpeed(Uri rideUri) {
+    public float getMaxSpeed(@NonNull Uri rideUri) {
         return getMax(rideUri, LogColumns.SPEED);
     }
 
     @WorkerThread
-    public float getMaxCadence(Uri rideUri) {
+    public float getMaxCadence(@NonNull Uri rideUri) {
         return getMax(rideUri, LogColumns.CADENCE);
     }
 
-    private float getMinCadence(Uri rideUri) {
+    private float getMinCadence(@NonNull Uri rideUri) {
         return getMin(rideUri, LogColumns.CADENCE);
     }
 
     @WorkerThread
-    public float getMaxHeartRate(Uri rideUri) {
+    public float getMaxHeartRate(@NonNull Uri rideUri) {
         return getMax(rideUri, LogColumns.HEART_RATE);
     }
 
     @WorkerThread
-    public float getMinHeartRate(Uri rideUri) {
+    public float getMinHeartRate(@NonNull Uri rideUri) {
         return getMin(rideUri, LogColumns.HEART_RATE);
     }
 
 
 
     @WorkerThread
-    public Long getFirstLogDate(Uri rideUri) {
+    public Long getFirstLogDate(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "min(" + LogColumns.RECORDED_DATE + ")" };
         LogSelection where = new LogSelection();
@@ -287,7 +288,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public Long getLastLogDate(Uri rideUri) {
+    public Long getLastLogDate(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
         String[] projection = { "max(" + LogColumns.RECORDED_DATE + ")" };
         LogSelection where = new LogSelection();
@@ -302,7 +303,7 @@ public class LogManager {
         }
     }
 
-    private Integer getLogCount(Uri rideUri) {
+    private Integer getLogCount(@NonNull Uri rideUri) {
         String[] projection = { "count(*)" };
         long rideId = ContentUris.parseId(rideUri);
         LogSelection where = new LogSelection();
@@ -319,7 +320,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public List<LatLng> getLatLngArray(Uri rideUri, int max) {
+    public List<LatLng> getLatLngArray(@NonNull Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
         if (count == null) return null;
@@ -345,7 +346,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public List<Float> getSpeedArray(Uri rideUri, int max) {
+    public List<Float> getSpeedArray(@NonNull Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
         if (count == null) return null;
@@ -371,7 +372,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public List<Float> getCadenceArray(Uri rideUri, int max) {
+    public List<Float> getCadenceArray(@NonNull Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
         if (count == null) return null;
@@ -397,7 +398,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public List<Float> getHeartRateArray(Uri rideUri, int max) {
+    public List<Float> getHeartRateArray(@NonNull Uri rideUri, int max) {
         // Get the point count to determine the ratio to apply to not get more than max values
         Integer count = getLogCount(rideUri);
         if (count == null) return null;
@@ -427,11 +428,11 @@ public class LogManager {
      * Listeners.
      */
 
-    public void addListener(LogListener listener) {
+    public void addListener(@NonNull LogListener listener) {
         mListeners.add(listener);
     }
 
-    public void removeListener(LogListener listener) {
+    public void removeListener(@NonNull LogListener listener) {
         mListeners.remove(listener);
     }
 

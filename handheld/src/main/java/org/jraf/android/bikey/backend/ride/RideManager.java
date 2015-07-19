@@ -34,6 +34,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.text.TextUtils;
@@ -199,7 +200,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public void activate(final Uri rideUri) {
+    public void activate(final @NonNull Uri rideUri) {
         // Get first activated date
         Date firstActivatedDate = getFirstActivatedDate(rideUri);
 
@@ -225,21 +226,21 @@ public class RideManager {
     }
 
     @WorkerThread
-    public void updateTotalDistance(Uri rideUri, float distance) {
+    public void updateTotalDistance(@NonNull Uri rideUri, float distance) {
         RideContentValues values = new RideContentValues();
         values.putDistance(distance);
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
     @WorkerThread
-    private void updateDuration(Uri rideUri, long duration) {
+    private void updateDuration(@NonNull Uri rideUri, long duration) {
         RideContentValues values = new RideContentValues();
         values.putDuration(duration);
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
     }
 
     @WorkerThread
-    public void updateName(Uri rideUri, String name) {
+    public void updateName(@NonNull Uri rideUri, String name) {
         RideContentValues values = new RideContentValues();
         if (TextUtils.isEmpty(name)) {
             values.putNameNull();
@@ -250,7 +251,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public void pause(final Uri rideUri) {
+    public void pause(final @NonNull Uri rideUri) {
         // Get current activated date / duration
         String[] projection = {RideColumns.ACTIVATED_DATE, RideColumns.DURATION};
         RideCursor c = new RideCursor(mContext.getContentResolver().query(rideUri, projection, null, null, null));
@@ -287,10 +288,11 @@ public class RideManager {
      * Queries all the columns for the given ride.
      * Do not forget to call {@link Cursor#close()} on the returned Cursor.
      */
-    public RideCursor query(Uri rideUri) {
+    public RideCursor query(@NonNull Uri rideUri) {
         if (rideUri == null) throw new IllegalArgumentException("null rideUri");
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         if (!c.moveToNext()) {
+            c.close();
             throw new IllegalArgumentException(rideUri + " not found");
         }
         return new RideCursor(c);
@@ -308,7 +310,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public void setCurrentRide(Uri rideUri) {
+    public void setCurrentRide(@NonNull Uri rideUri) {
         PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString(Constants.PREF_CURRENT_RIDE_URI, rideUri.toString()).commit();
     }
 
@@ -328,7 +330,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public Date getActivatedDate(Uri rideUri) {
+    public Date getActivatedDate(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             return c.getActivatedDate();
@@ -338,7 +340,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public Date getFirstActivatedDate(Uri rideUri) {
+    public Date getFirstActivatedDate(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             return c.getFirstActivatedDate();
@@ -348,7 +350,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public long getDuration(Uri rideUri) {
+    public long getDuration(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             return c.getDuration();
@@ -358,7 +360,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public RideState getState(Uri rideUri) {
+    public RideState getState(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             return c.getState();
@@ -368,7 +370,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public String getDisplayName(Uri rideUri) {
+    public String getDisplayName(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             String name = c.getName();
@@ -384,7 +386,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public String getName(Uri rideUri) {
+    public String getName(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             return c.getName();
@@ -394,7 +396,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public boolean isExistingRide(Uri rideUri) {
+    public boolean isExistingRide(@NonNull Uri rideUri) {
         Cursor c = mContext.getContentResolver().query(rideUri, null, null, null, null);
         try {
             return c.moveToNext();
@@ -408,11 +410,11 @@ public class RideManager {
      * Listeners.
      */
 
-    public void addListener(RideListener listener) {
+    public void addListener(@NonNull RideListener listener) {
         mListeners.add(listener);
     }
 
-    public void removeListener(RideListener listener) {
+    public void removeListener(@NonNull RideListener listener) {
         mListeners.remove(listener);
     }
 }

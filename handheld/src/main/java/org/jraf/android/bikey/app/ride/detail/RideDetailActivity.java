@@ -70,8 +70,8 @@ import org.jraf.android.util.ui.graph.GraphView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -287,16 +287,19 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                 mHeartRateArray = CollectionUtil.unwrap(heartRateList.toArray(new Float[heartRateList.size()]));
                 mHeartRateArray = MathUtil.getMovingAverage(mHeartRateArray, mHeartRateArray.length / 10);
 
-                // Make sure the map is actually available
+                // Make sure the map is actually available (this is blocking for a few seconds)
                 getMap();
             }
 
             @Override
             protected void onPostExecuteOk() {
-                mPgbLoading.setVisibility(View.GONE);
-                mConRoot.setVisibility(View.VISIBLE);
-
                 RideDetailActivity a = getActivity();
+
+                if (a.mMap == null) return;
+
+                a.mPgbLoading.setVisibility(View.GONE);
+                a.mConRoot.setVisibility(View.VISIBLE);
+
                 if (mName != null) a.setTitle(mName);
                 a.mTxtDateTimeDate.setText(DateUtils.formatDateTime(a, mCreatedDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
                         | DateUtils.FORMAT_SHOW_YEAR));
@@ -396,7 +399,11 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
             HandlerUtil.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map);
+                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                    if (mapFragment == null) {
+                        latch.countDown();
+                        return;
+                    }
                     mapFragment.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {

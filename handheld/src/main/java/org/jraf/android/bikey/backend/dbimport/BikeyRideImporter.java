@@ -40,7 +40,7 @@ import android.util.Xml;
 
 import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.xmlpull.v1.XmlPullParser;
 
 public class BikeyRideImporter {

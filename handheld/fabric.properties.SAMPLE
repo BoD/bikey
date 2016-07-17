@@ -1,4 +1,0 @@
-# Edit and save this file to a file named fabric.properties.
-#Contains API Secret used to validate your application. Commit to internal source control; avoid making secret public.
-#Sat Apr 11 21:50:51 CEST 2015
-apiSecret=abcdef0123456789

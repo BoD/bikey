@@ -64,7 +64,7 @@ import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.widget.fragmentcycler.FragmentCycler;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
 
 public class DisplayActivity extends BaseFragmentActivity {

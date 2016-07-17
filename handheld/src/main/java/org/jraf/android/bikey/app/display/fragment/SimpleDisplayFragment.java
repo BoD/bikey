@@ -35,7 +35,7 @@ import android.widget.TextView;
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.util.app.base.BaseFragment;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.ui.graph.GraphView;
 
 public abstract class SimpleDisplayFragment extends BaseFragment<DisplayActivity> {

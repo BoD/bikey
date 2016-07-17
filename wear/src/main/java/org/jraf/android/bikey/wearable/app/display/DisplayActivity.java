@@ -41,7 +41,7 @@ import org.jraf.android.bikey.wearable.app.display.fragment.currenttime.CurrentT
 import org.jraf.android.bikey.wearable.app.display.fragment.elapsedtime.ElapsedTimeDisplayFragment;
 import org.jraf.android.bikey.wearable.app.display.fragment.speed.SpeedDisplayFragment;
 import org.jraf.android.bikey.wearable.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEvent;
@@ -50,12 +50,12 @@ import com.google.android.gms.wearable.DataItem;
 import com.google.android.gms.wearable.DataMap;
 import com.google.android.gms.wearable.DataMapItem;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
 
 public class DisplayActivity extends FragmentActivity {
-    @Bind(R.id.txtTitle)
+    @BindView(R.id.txtTitle)
     protected TextView mTxtTitle;
 
     private FragmentCycler mFragmentCycler;

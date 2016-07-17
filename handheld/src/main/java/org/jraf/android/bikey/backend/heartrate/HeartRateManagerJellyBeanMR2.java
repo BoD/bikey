@@ -41,8 +41,8 @@ import android.os.Build;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.log.LogUtil;
-import org.jraf.android.util.log.wrapper.Log;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {

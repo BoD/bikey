@@ -39,7 +39,7 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.intent.IntentUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
 
 public class SaveToStorageActivity extends FragmentActivity {

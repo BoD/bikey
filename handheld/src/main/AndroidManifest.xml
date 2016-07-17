@@ -32,18 +32,15 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.Bikey">
 
-        <!-- Meta data for Google Play Services and Maps api -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+        <!-- Google maps api key -->
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="${googleMapsKeys}" />
+            android:value="${apiKeyGoogleMaps}" />
 
         <!-- Crashlytics api key -->
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="${fabricCrashlyticsApiKey}" />
+            android:value="${apiKeyFabric}" />
 
 
         <!-- Provider -->
@@ -61,7 +58,9 @@
             android:exported="true"
             tools:ignore="ExportedService">
             <intent-filter>
-                <action android:name="com.google.android.gms.wearable.BIND_LISTENER" />
+                <action
+                    android:name="com.google.android.gms.wearable.BIND_LISTENER"
+                    tools:ignore="WearableBindListener" />
             </intent-filter>
         </service>
 

@@ -24,15 +24,15 @@
  */
 package org.jraf.android.bikey.app.mediabutton;
 
+import java.util.Locale;
+
 import android.content.Context;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
-import org.jraf.android.util.log.wrapper.Log;
-
-import java.util.Locale;
+import org.jraf.android.util.log.Log;
 
 public class TextToSpeechManager {
     private static final TextToSpeechManager INSTANCE = new TextToSpeechManager();

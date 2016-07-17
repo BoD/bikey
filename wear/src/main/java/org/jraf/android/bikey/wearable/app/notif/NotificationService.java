@@ -41,7 +41,7 @@ import org.jraf.android.bikey.common.wear.WearCommHelper;
 import org.jraf.android.bikey.wearable.app.display.DisplayActivity;
 import org.jraf.android.bikey.wearable.app.receiver.RideBroadcastReceiver;
 import org.jraf.android.util.datetime.DateTimeUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;

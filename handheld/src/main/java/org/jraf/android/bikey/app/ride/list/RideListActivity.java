@@ -192,12 +192,12 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
         String message = getResources().getQuantityString(R.plurals.ride_list_deleteDialog_message, quantity, quantity);
 
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE);
-        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
-        dialog.setMessage(message);
-        dialog.setPositiveButton(android.R.string.ok);
-        dialog.setNegativeButton(android.R.string.cancel);
-        dialog.setPayload(checkedItemIds);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.message(message);
+        dialog.positiveButton(android.R.string.ok);
+        dialog.negativeButton(android.R.string.cancel);
+        dialog.payload(checkedItemIds);
+        dialog.show(this);
     }
 
     private void delete(final long[] ids) {
@@ -220,12 +220,12 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
         String message = getString(R.string.ride_list_mergeDialog_message, quantity);
 
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_MERGE);
-        dialog.setTitle(R.string.ride_list_mergeDialog_title);
-        dialog.setMessage(message);
-        dialog.setPositiveButton(android.R.string.ok);
-        dialog.setNegativeButton(android.R.string.cancel);
-        dialog.setPayload(checkedItemIds);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.ride_list_mergeDialog_title);
+        dialog.message(message);
+        dialog.positiveButton(android.R.string.ok);
+        dialog.negativeButton(android.R.string.cancel);
+        dialog.payload(checkedItemIds);
+        dialog.show(this);
     }
 
     private void merge(final long[] ids) {
@@ -243,7 +243,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
      */
 
     @Override
-    public void onClickPositive(int tag, Object payload) {
+    public void onDialogClickPositive(int tag, Object payload) {
         long[] ids = (long[]) payload;
         switch (tag) {
             case DIALOG_CONFIRM_DELETE:
@@ -257,7 +257,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
     }
 
     @Override
-    public void onClickNegative(int tag, Object payload) {}
+    public void onDialogClickNegative(int tag, Object payload) {}
 
 
     /*
@@ -289,14 +289,14 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
     @Override
     public void showShareDialog(Uri checkedItemIdUri) {
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_SHARE);
-        dialog.setTitle(R.string.ride_list_shareDialog_title);
-        dialog.setItems(R.array.export_choices);
-        dialog.setPayload(checkedItemIdUri);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.ride_list_shareDialog_title);
+        dialog.items(R.array.export_choices);
+        dialog.payload(checkedItemIdUri);
+        dialog.show(this);
     }
 
     @Override
-    public void onClickListItem(int tag, int index, Object payload) {
+    public void onDialogClickListItem(int tag, int index, Object payload) {
         Uri rideUri = (Uri) payload;
         switch (index) {
             case 0:

@@ -36,7 +36,7 @@ import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.backend.compass.CompassListener;
 import org.jraf.android.bikey.backend.compass.CompassManager;
 import org.jraf.android.util.app.base.BaseFragment;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 public class CompassDisplayFragment extends BaseFragment<DisplayActivity> {
     private static final LinearInterpolator LINEAR_INTERPOLATOR = new LinearInterpolator();

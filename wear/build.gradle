@@ -1,13 +1,13 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 21
-        targetSdkVersion 22
+        targetSdkVersion targetSdkVersion
         versionCode buildNumber
         versionName buildProperties.versionName
 
@@ -17,10 +17,10 @@ android {
 
     signingConfigs {
         release {
-            storeFile file(buildProperties.keyStore)
-            storePassword buildProperties.keyStorePassword
-            keyAlias buildProperties.keyAlias
-            keyPassword buildProperties.keyPassword
+            storeFile file(buildProperties.signingStoreFile)
+            storePassword buildProperties.signingStorePassword
+            keyAlias buildProperties.signingKeyAlias
+            keyPassword buildProperties.signingKeyPassword
         }
     }
 
@@ -44,8 +44,9 @@ android {
 }
 
 dependencies {
+    // Common module
     compile project(':common')
-    compile 'org.jraf:jraf-android-util:1.0.0'
-    compile 'com.jakewharton:butterknife:7.0.0'
-    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.4@aar'
+
+    // Other libs
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.5@aar'
 }

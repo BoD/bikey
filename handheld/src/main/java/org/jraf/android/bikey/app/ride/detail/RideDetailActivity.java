@@ -64,7 +64,7 @@ import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.handler.HandlerUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.ui.graph.GraphView;
 
@@ -78,7 +78,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
@@ -92,73 +92,73 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
     private Uri mRideUri;
 
-    @Bind(R.id.pgbLoading)
+    @BindView(R.id.pgbLoading)
     protected ProgressBar mPgbLoading;
 
-    @Bind(R.id.conRoot)
+    @BindView(R.id.conRoot)
     protected View mConRoot;
 
-    @Bind(R.id.txtDateTimeDate)
+    @BindView(R.id.txtDateTimeDate)
     protected LabelTextView mTxtDateTimeDate;
 
-    @Bind(R.id.txtDateTimeStart)
+    @BindView(R.id.txtDateTimeStart)
     protected LabelTextView mTxtDateTimeStart;
 
-    @Bind(R.id.txtDateTimeFinish)
+    @BindView(R.id.txtDateTimeFinish)
     protected LabelTextView mTxtDateTimeFinish;
 
-    @Bind(R.id.txtDurationMoving)
+    @BindView(R.id.txtDurationMoving)
     protected LabelTextView mTxtDurationMoving;
 
-    @Bind(R.id.txtDurationTotal)
+    @BindView(R.id.txtDurationTotal)
     protected LabelTextView mTxtDurationTotal;
 
-    @Bind(R.id.txtDistanceTotal)
+    @BindView(R.id.txtDistanceTotal)
     protected LabelTextView mTxtDistanceTotal;
 
-    @Bind(R.id.txtSpeedAverage)
+    @BindView(R.id.txtSpeedAverage)
     protected LabelTextView mTxtSpeedAverage;
 
-    @Bind(R.id.txtSpeedMax)
+    @BindView(R.id.txtSpeedMax)
     protected LabelTextView mTxtSpeedMax;
 
-    @Bind(R.id.txtCadenceSectionTitle)
+    @BindView(R.id.txtCadenceSectionTitle)
     protected TextView mTxtCadenceSectionTitle;
 
-    @Bind(R.id.txtCadenceAverage)
+    @BindView(R.id.txtCadenceAverage)
     protected LabelTextView mTxtCadenceAverage;
 
-    @Bind(R.id.txtCadenceMax)
+    @BindView(R.id.txtCadenceMax)
     protected LabelTextView mTxtCadenceMax;
 
-    @Bind(R.id.conMap)
+    @BindView(R.id.conMap)
     protected FrameLayout mConMap;
 
-    @Bind(R.id.conDetailedInfo)
+    @BindView(R.id.conDetailedInfo)
     protected View mConDetailedInfo;
 
-    @Bind(R.id.txtEmpty)
+    @BindView(R.id.txtEmpty)
     protected View mTxtEmpty;
 
-    @Bind(R.id.grpSpeed)
+    @BindView(R.id.grpSpeed)
     protected GraphView mGrpSpeed;
 
-    @Bind(R.id.grpCadence)
+    @BindView(R.id.grpCadence)
     protected GraphView mGrpCadence;
 
-    @Bind(R.id.txtHeartRateSectionTitle)
+    @BindView(R.id.txtHeartRateSectionTitle)
     protected TextView mTxtHeartRateSectionTitle;
 
-    @Bind(R.id.txtHeartRateMin)
+    @BindView(R.id.txtHeartRateMin)
     protected LabelTextView mTxtHeartRateMin;
 
-    @Bind(R.id.txtHeartRateMax)
+    @BindView(R.id.txtHeartRateMax)
     protected LabelTextView mTxtHeartRateMax;
 
-    @Bind(R.id.txtHeartRateAverage)
+    @BindView(R.id.txtHeartRateAverage)
     protected LabelTextView mTxtHeartRateAverage;
 
-    @Bind(R.id.grpHeartRate)
+    @BindView(R.id.grpHeartRate)
     protected GraphView mGrpHeartRate;
 
     private RideDetailStateFragment mState;
@@ -447,11 +447,11 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
     private void showDeleteDialog() {
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_CONFIRM_DELETE);
-        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
-        dialog.setMessage(R.string.ride_detail_deleteDialog_message);
-        dialog.setPositiveButton(android.R.string.ok);
-        dialog.setNegativeButton(android.R.string.cancel);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.message(R.string.ride_detail_deleteDialog_message);
+        dialog.positiveButton(android.R.string.ok);
+        dialog.negativeButton(android.R.string.cancel);
+        dialog.show(this);
     }
 
     private void delete() {
@@ -476,13 +476,13 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
     public void showShareDialog() {
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_SHARE);
-        dialog.setTitle(R.string.ride_list_shareDialog_title);
-        dialog.setItems(R.array.export_choices);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.ride_list_shareDialog_title);
+        dialog.items(R.array.export_choices);
+        dialog.show(this);
     }
 
     @Override
-    public void onClickListItem(int tag, int index, Object payload) {
+    public void onDialogClickListItem(int tag, int index, Object payload) {
         switch (index) {
             case 0:
                 // Gpx
@@ -535,7 +535,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
      */
 
     @Override
-    public void onClickPositive(int tag, Object payload) {
+    public void onDialogClickPositive(int tag, Object payload) {
         switch (tag) {
             case DIALOG_CONFIRM_DELETE:
                 delete();
@@ -544,5 +544,5 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     }
 
     @Override
-    public void onClickNegative(int tag, Object payload) {}
+    public void onDialogClickNegative(int tag, Object payload) {}
 }

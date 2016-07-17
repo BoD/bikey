@@ -39,7 +39,7 @@ import android.hardware.SensorManager;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.listeners.Listeners.Dispatcher;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.object.ObjectUtil;
 

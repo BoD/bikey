@@ -42,14 +42,14 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
@@ -57,30 +57,30 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     private static final int REQUEST_RESOLVE_CONNECTION = 0;
     private static final int DIALOG_ABORT_SYNC_CONFIRM = 0;
 
-    @Bind(R.id.txtDeleteRemoteItems)
+    @BindView(R.id.txtDeleteRemoteItems)
     protected CheckedTextView mTxtDeleteRemoteItems;
 
-    @Bind(R.id.txtDeleteLocalItems)
+    @BindView(R.id.txtDeleteLocalItems)
     protected CheckedTextView mTxtDeleteLocalItems;
 
-    @Bind(R.id.txtUploadNewLocalItems)
+    @BindView(R.id.txtUploadNewLocalItems)
     protected CheckedTextView mTxtUploadNewLocalItems;
 
-    @Bind(R.id.pgbUploadNewLocalItems)
+    @BindView(R.id.pgbUploadNewLocalItems)
     protected ProgressBar mPgbUploadNewLocalItems;
 
-    @Bind(R.id.txtDownloadNewRemoteItems)
+    @BindView(R.id.txtDownloadNewRemoteItems)
     protected CheckedTextView mTxtDownloadNewRemoteItems;
 
-    @Bind(R.id.pgbDownloadNewRemoteItems)
+    @BindView(R.id.pgbDownloadNewRemoteItems)
     protected ProgressBar mPgbDownloadNewRemoteItems;
 
 
-    @Bind(R.id.txtSuccess)
+    @BindView(R.id.txtSuccess)
     protected TextView mTxtSuccess;
 
 
-    @Bind(R.id.txtFail)
+    @BindView(R.id.txtFail)
     protected TextView mTxtFail;
 
     private GoogleApiClient mGoogleApiClient;
@@ -109,11 +109,11 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     public void onBackPressed() {
         if (mSyncOnGoing) {
             AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_ABORT_SYNC_CONFIRM);
-            dialog.setTitle(R.string.googleDriveSync_abortSyncDialog_title);
-            dialog.setMessage(R.string.googleDriveSync_abortSyncDialog_message);
-            dialog.setPositiveButton(R.string.googleDriveSync_abortSyncDialog_positive);
-            dialog.setNegativeButton(R.string.googleDriveSync_abortSyncDialog_negative);
-            dialog.show(getSupportFragmentManager());
+            dialog.title(R.string.googleDriveSync_abortSyncDialog_title);
+            dialog.message(R.string.googleDriveSync_abortSyncDialog_message);
+            dialog.positiveButton(R.string.googleDriveSync_abortSyncDialog_positive);
+            dialog.negativeButton(R.string.googleDriveSync_abortSyncDialog_negative);
+            dialog.show(this);
         } else {
             super.onBackPressed();
         }
@@ -319,14 +319,14 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
      */
 
     @Override
-    public void onClickPositive(int i, Object o) {
+    public void onDialogClickPositive(int i, Object o) {
         GoogleDriveSyncManager.get(this).abort();
         super.onBackPressed();
     }
 
     @Override
-    public void onClickNegative(int i, Object o) { }
+    public void onDialogClickNegative(int i, Object o) { }
 
     @Override
-    public void onClickListItem(int i, int i1, Object o) {}
+    public void onDialogClickListItem(int i, int i1, Object o) {}
 }

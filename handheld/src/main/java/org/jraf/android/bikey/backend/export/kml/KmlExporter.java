@@ -40,7 +40,7 @@ import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.datetime.DateTimeUtil;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 public class KmlExporter extends Exporter {
 

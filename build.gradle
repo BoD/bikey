@@ -6,9 +6,14 @@ ext.globalProjectName = 'bikey'
 buildscript {
     repositories {
         jcenter()
+        maven { url 'https://maven.fabric.io/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.2.0-alpha5'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
+        classpath 'ca.rmen:lib-french-revolutionary-calendar:1.5.0'
+        classpath 'io.fabric.tools:gradle:1.21.7'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
     }
 }
 
@@ -16,27 +21,42 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
-        maven {
-            url 'http://JRAF.org/static/maven/2'
-        }
-        maven {
-            url 'https://maven.fabric.io/public'
-        }
+        maven { url "https://jitpack.io" }
+        maven { url 'https://maven.fabric.io/public' }
     }
 }
 
-
-def gitSha1() {
-    return 'git rev-parse --short HEAD'.execute().text.trim()
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
+// Run './gradlew dependencyUpdates' to see new versions of dependencies
+apply plugin: 'com.github.ben-manes.versions'
+
+// Returns the name of the current git branch
+def gitBranch() {
+    new ProcessBuilder('git', "--git-dir=${rootDir}/.git", "--work-tree=${rootDir}", 'rev-parse', '--abbrev-ref', 'HEAD').start().text.trim()
+}
+
+// Returns the SHA1 of the current git commit
+def gitSha1() {
+    new ProcessBuilder('git', "--git-dir=${rootDir}/.git", "--work-tree=${rootDir}", 'rev-parse', '--short', 'HEAD').start().text.trim()
+}
+
+// Returns the current date/time formatted in UTC
 def buildDate() {
     def dateFormat = new SimpleDateFormat('yyyy-MM-dd\'T\'HH:mm\'Z\'')
     dateFormat.setTimeZone(TimeZone.getTimeZone('UTC'))
     return dateFormat.format(new Date())
 }
 
-// Load build properties
+// This only for amusement purposes
+def getFrenchDate() {
+    def frenchDate = new ca.rmen.lfrc.FrenchRevolutionaryCalendar(Locale.FRENCH, ca.rmen.lfrc.FrenchRevolutionaryCalendar.CalculationMethod.ROMME).getDate(GregorianCalendar.getInstance())
+    "Le ${frenchDate.weekdayName} ${frenchDate.dayOfMonth} ${frenchDate.monthName} de l'an ${frenchDate.year}. (${frenchDate.objectTypeName} du jour : ${frenchDate.dayOfYear})"
+}
+
+// Build properties
 ext.buildProperties = new Properties()
 buildProperties.load(new FileInputStream(file('build.properties')))
 
@@ -45,3 +65,38 @@ ext.buildNumberFile = file('build.number')
 ext.buildNumberProperties = new Properties()
 buildNumberProperties.load(new FileInputStream(buildNumberFile))
 ext.buildNumber = buildNumberProperties.buildNumber.toInteger()
+
+// Build info
+ext.gitBranch = gitBranch()
+ext.gitSha1 = gitSha1()
+ext.buildDate = buildDate()
+
+// Versions used across modules
+ext.compileSdkVersion = 24
+ext.targetSdkVersion = 22
+ext.buildToolsVersion = '24.0.0'
+ext.supportLibVersion = '24.0.0'
+ext.playServicesVersion = '9.2.1'
+
+// Splash screen
+println """\n
+====================================\u001B[95m
+     _____  ___   ____
+ __ / / _ \\/ _ | / __/___  _______ _
+/ // / , _/ __ |/ _/_/ _ \\/ __/ _ `/
+\\___/_/¦_/_/ |_/_/ (_)___/_/  \\_, /
+                             /___/
+\u001B[0m
+Building ${globalProjectName}.
+
+${getFrenchDate()}
+
+rootDir: ${rootDir}
+buildDate: ${buildDate}
+versionCode: ${buildNumberProperties.buildNumber}
+versionName: ${buildProperties.versionName}
+gitBranch: ${gitBranch}
+gitSha1: ${gitSha1}
+
+====================================
+"""

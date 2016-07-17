@@ -28,7 +28,7 @@ import android.content.Context;
 
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 /**
  * SmartwatchSender implementation for Android Wear.

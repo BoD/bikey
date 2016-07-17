@@ -45,7 +45,7 @@ import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 import org.jraf.android.util.file.FileUtil;
 import org.jraf.android.util.io.IoUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 /**
  * Replace the contents of the current database with the contents of another database.

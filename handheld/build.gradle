@@ -1,42 +1,38 @@
-buildscript {
-    repositories {
-        maven { url 'https://maven.fabric.io/public' }
-    }
-
-    dependencies {
-        classpath 'io.fabric.tools:gradle:1.18.0'
-    }
-}
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion '22.0.1'
+    compileSdkVersion project.compileSdkVersion
+    buildToolsVersion project.buildToolsVersion
 
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion targetSdkVersion
         versionCode buildNumber
         versionName buildProperties.versionName
-        resConfigs "en", "fr"
 
-        buildConfigField 'String', 'GIT_SHA1', '"' + gitSha1() + '"'
-        buildConfigField 'String', 'BUILD_DATE', '"' + buildDate() + '"'
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+
+        buildConfigField 'String', 'GIT_SHA1', "\"${gitSha1}\""
+        buildConfigField 'String', 'BUILD_DATE', "\"${buildDate}\""
         // For now we enable strict mode for all the configs
         buildConfigField 'boolean', 'STRICT_MODE', 'true'
 
+        resConfigs 'en', 'fr'
+
         // Useful for api keys in the manifest (Maps, Crashlytics, ...)
         manifestPlaceholders = buildProperties
+
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
         release {
-            storeFile file(buildProperties.keyStore)
-            storePassword buildProperties.keyStorePassword
-            keyAlias buildProperties.keyAlias
-            keyPassword buildProperties.keyPassword
+            storeFile file(buildProperties.signingStoreFile)
+            storePassword buildProperties.signingStorePassword
+            keyAlias buildProperties.signingKeyAlias
+            keyPassword buildProperties.signingKeyPassword
         }
     }
 
@@ -49,55 +45,75 @@ android {
             buildConfigField 'boolean', 'CRASH_REPORT', 'true'
 
             minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources true
             signingConfig signingConfigs.release
         }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+def releaseTask = tasks.create('release')
+releaseTask << {
+    // Increment build number
+    buildNumberProperties.buildNumber = (buildNumber + 1).toString()
+    buildNumberProperties.store(buildNumberFile.newWriter(), null)
+}
+
+android.applicationVariants.all { variant ->
+    // Create new copy tasks, for release builds
+    if (variant.buildType.name == 'release') {
+        variant.outputs.each { output ->
+            def apkName = "${globalProjectName}-${android.defaultConfig.versionCode}-${variant.flavorName}-signed.apk"
+            // Copy the apk to the 'etc' folder
+            def copyApkTask = tasks.create("copy${variant.name.capitalize()}ApkToEtc", Copy)
+            copyApkTask.from(output.outputFile)
+            copyApkTask.into('../etc/apk')
+            copyApkTask.rename output.outputFile.name, apkName
+            copyApkTask.dependsOn variant.assemble
+
+            releaseTask.dependsOn copyApkTask
+
+            // Copy the apk to the deploy folder
+            copyApkTask = tasks.create("copy${variant.name.capitalize()}ApkToDeploy", Copy)
+            copyApkTask.from(output.outputFile)
+            copyApkTask.into(buildProperties.deployFolder)
+            copyApkTask.rename output.outputFile.name, apkName
+            copyApkTask.dependsOn variant.assemble
+
+            releaseTask.dependsOn copyApkTask
+        }
+
+        // Commented for now since we don't obfuscate (so we don't have a mapping.txt file)
+//        // Copy the proguard mapping to the 'etc' folder
+//        def copyMappingTask = tasks.create("copy${variant.name.capitalize()}ProguardMappingToEtc", Copy)
+//        copyMappingTask.from(variant.mappingFile)
+//        copyMappingTask.into('../etc/proguard')
+//        copyMappingTask.rename variant.mappingFile.name, "mapping-${android.defaultConfig.versionCode}-${variant.flavorName}.txt"
+//        copyMappingTask.dependsOn variant.assemble
+//
+//        releaseTask.dependsOn copyMappingTask
     }
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'org.jraf:jraf-android-util:1.0.0'
-    compile 'com.google.android.gms:play-services-maps:7.5.0'
-    compile 'com.google.android.gms:play-services-drive:7.5.0'
-    compile 'com.jakewharton:butterknife:7.0.0'
-    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.4@aar'
-    compile 'com.crashlytics.sdk.android:crashlytics:2.2.3'
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    testCompile 'junit:junit:4.12'
+
+    compile "com.android.support:appcompat-v7:${supportLibVersion}"
+    compile "com.google.android.gms:play-services-maps:${playServicesVersion}"
+    compile "com.google.android.gms:play-services-drive:${playServicesVersion}"
+    compile 'com.jakewharton:butterknife:8.2.1'
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.5@aar'
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') { transitive = true; }
+    compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'
     compile project(':common')
     compile project(':PebbleKit')
     // Package the wear apk inside this one
     wearApp project(':wear')
-}
-
-// noinspection GroovyAssignabilityCheck
-task deploy(
-        dependsOn: assembleRelease,
-        description:'Build a release apk, copy the result to the deploy and \'etc\' folders, then increment the build number.') << {
-    // Copy the apk to the 'etc' folder
-    file('../etc/apk').mkdirs()
-    copy {
-        from buildDir.getPath() + "/outputs/apk/${project.name}-release.apk"
-        into '../etc/apk'
-        rename "${project.name}-release.apk", "${globalProjectName}-${android.defaultConfig.versionCode}-signed.apk"
-    }
-
-    // Also copy the apk to the deploy folder
-    copy {
-        from buildDir.getPath() + "/outputs/apk/${project.name}-release.apk"
-        into buildProperties.deployFolder
-        rename "${project.name}-release.apk", "${globalProjectName}-${android.defaultConfig.versionCode}-signed.apk"
-    }
-
-    // Copy the proguard mapping to the 'etc' folder
-    file('../etc/proguard').mkdirs()
-    copy {
-        from buildDir.getPath() + '/outputs/mapping/release/mapping.txt'
-        into '../etc/proguard'
-        rename 'mapping.txt', "mapping-${android.defaultConfig.versionCode}.txt"
-    }
-
-    // Increment build number
-    buildNumberProperties.buildNumber = (buildNumber + 1).toString()
-    buildNumberProperties.store(buildNumberFile.newWriter(), null)
 }

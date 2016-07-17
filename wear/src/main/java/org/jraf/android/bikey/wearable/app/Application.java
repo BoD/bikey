@@ -30,7 +30,7 @@ import android.os.StrictMode;
 import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 import fr.nicolaspomepuy.androidwearcrashreport.wear.CrashReporter;
 
@@ -40,7 +40,7 @@ public class Application extends android.app.Application {
         super.onCreate();
 
         // Log
-        Log.init(Constants.TAG);
+        Log.init(this, Constants.TAG);
 
         // Crash reporting
         if (BuildConfig.CRASH_REPORT) {

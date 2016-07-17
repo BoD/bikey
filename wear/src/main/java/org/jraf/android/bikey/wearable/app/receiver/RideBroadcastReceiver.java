@@ -29,7 +29,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import org.jraf.android.bikey.common.wear.WearCommHelper;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
 
 public class RideBroadcastReceiver extends BroadcastReceiver {

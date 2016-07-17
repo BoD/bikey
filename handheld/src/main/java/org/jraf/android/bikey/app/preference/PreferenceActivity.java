@@ -45,7 +45,7 @@ import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 public class PreferenceActivity extends BaseAppCompatActivity
         implements PreferenceCallbacks, AlertDialogListener {
@@ -86,11 +86,11 @@ public class PreferenceActivity extends BaseAppCompatActivity
     @Override
     public void showRecordCadenceConfirmDialog() {
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_RECORD_CADENCE);
-        dialog.setTitle(R.string.preference_recordCadence_confirmDialog_title);
-        dialog.setMessage(R.string.preference_recordCadence_confirmDialog_message);
-        dialog.setPositiveButton(R.string.common_yes);
-        dialog.setNegativeButton(R.string.common_no);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.preference_recordCadence_confirmDialog_title);
+        dialog.message(R.string.preference_recordCadence_confirmDialog_message);
+        dialog.positiveButton(R.string.common_yes);
+        dialog.negativeButton(R.string.common_no);
+        dialog.show(this);
     }
 
 
@@ -176,24 +176,24 @@ public class PreferenceActivity extends BaseAppCompatActivity
     public void disconnectHeartRateMonitor() {
         Log.d();
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_DISCONNECT_HEART_RATE);
-        dialog.setTitle(R.string.preference_heartRate_disconnect_confirmDialog_title);
-        dialog.setMessage(R.string.preference_heartRate_disconnect_confirmDialog_message);
-        dialog.setPositiveButton(R.string.preference_heartRate_disconnect_confirmDialog_positive);
-        dialog.setNegativeButton(R.string.preference_heartRate_disconnect_confirmDialog_negative);
-        dialog.setCancelIsNegative(false);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.preference_heartRate_disconnect_confirmDialog_title);
+        dialog.message(R.string.preference_heartRate_disconnect_confirmDialog_message);
+        dialog.positiveButton(R.string.preference_heartRate_disconnect_confirmDialog_positive);
+        dialog.negativeButton(R.string.preference_heartRate_disconnect_confirmDialog_negative);
+        dialog.cancelIsNegative(false);
+        dialog.show(this);
     }
 
     @Override
     public void tryToReconnectHeartRateMonitorOrGiveUp() {
         Log.d();
         AlertDialogFragment dialog = AlertDialogFragment.newInstance(DIALOG_RECONNECT_HEART_RATE);
-        dialog.setTitle(R.string.preference_heartRate_reconnect_confirmDialog_title);
-        dialog.setMessage(R.string.preference_heartRate_reconnect_confirmDialog_message);
-        dialog.setPositiveButton(R.string.preference_heartRate_reconnect_confirmDialog_positive);
-        dialog.setNegativeButton(R.string.preference_heartRate_reconnect_confirmDialog_negative);
-        dialog.setCancelIsNegative(false);
-        dialog.show(getSupportFragmentManager());
+        dialog.title(R.string.preference_heartRate_reconnect_confirmDialog_title);
+        dialog.message(R.string.preference_heartRate_reconnect_confirmDialog_message);
+        dialog.positiveButton(R.string.preference_heartRate_reconnect_confirmDialog_positive);
+        dialog.negativeButton(R.string.preference_heartRate_reconnect_confirmDialog_negative);
+        dialog.cancelIsNegative(false);
+        dialog.show(this);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class PreferenceActivity extends BaseAppCompatActivity
      */
 
     @Override
-    public void onClickNegative(int tag, Object payload) {
+    public void onDialogClickNegative(int tag, Object payload) {
         switch (tag) {
             case DIALOG_RECORD_CADENCE:
                 PreferenceManager.getDefaultSharedPreferences(this).edit().putBoolean(Constants.PREF_RECORD_CADENCE, false).commit();
@@ -224,7 +224,7 @@ public class PreferenceActivity extends BaseAppCompatActivity
     }
 
     @Override
-    public void onClickPositive(int tag, Object payload) {
+    public void onDialogClickPositive(int tag, Object payload) {
         switch (tag) {
             case DIALOG_DISCONNECT_HEART_RATE:
                 // Disconnect
@@ -246,5 +246,5 @@ public class PreferenceActivity extends BaseAppCompatActivity
     }
 
     @Override
-    public void onClickListItem(int tag, int index, Object payload) {}
+    public void onDialogClickListItem(int tag, int index, Object payload) {}
 }

@@ -32,7 +32,7 @@ import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.bikey.common.UnitUtil;
 import org.jraf.android.bikey.common.wear.WearCommHelper;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 import com.crashlytics.android.Crashlytics;
 
@@ -52,7 +52,7 @@ public class Application extends android.app.Application {
         sApplication = this;
 
         // Log
-        Log.init(Constants.TAG);
+        Log.init(this, Constants.TAG);
 
         // Crash reporting
         if (BuildConfig.CRASH_REPORT) {

@@ -33,7 +33,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.common.UnitUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;

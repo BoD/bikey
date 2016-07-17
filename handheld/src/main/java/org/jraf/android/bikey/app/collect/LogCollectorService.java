@@ -42,8 +42,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
-import com.getpebble.android.kit.PebbleKit;
-
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.smartwatchsender.AndroidWearSender;
@@ -56,8 +54,10 @@ import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
+
+import com.getpebble.android.kit.PebbleKit;
 
 public class LogCollectorService extends Service {
     private static final String PREFIX = LogCollectorService.class.getName() + ".";

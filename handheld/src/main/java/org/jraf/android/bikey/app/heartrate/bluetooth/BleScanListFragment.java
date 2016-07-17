@@ -42,7 +42,7 @@ import android.widget.ListView;
 
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.util.handler.HandlerUtil;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR2)
 public class BleScanListFragment extends ListFragment {

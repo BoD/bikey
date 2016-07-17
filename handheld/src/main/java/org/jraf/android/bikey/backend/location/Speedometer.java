@@ -31,7 +31,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
 
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 /**
  * Keeps a log of mDistance/mDuration. The size of the log depends on the last measured speed.

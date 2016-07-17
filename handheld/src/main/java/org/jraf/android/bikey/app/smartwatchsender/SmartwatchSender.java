@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import org.jraf.android.bikey.backend.location.Speedometer;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.util.log.wrapper.Log;
+import org.jraf.android.util.log.Log;
 
 /**
  * Abstract class to send values to smartwatches.

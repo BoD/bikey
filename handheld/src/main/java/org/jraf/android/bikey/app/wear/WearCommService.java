@@ -29,15 +29,15 @@ import java.util.Arrays;
 import android.content.Intent;
 import android.net.Uri;
 
+import org.jraf.android.bikey.app.collect.LogCollectorService;
+import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.common.wear.CommConstants;
+import org.jraf.android.util.log.Log;
+
 import com.google.android.gms.wearable.DataEventBuffer;
 import com.google.android.gms.wearable.MessageEvent;
 import com.google.android.gms.wearable.Node;
 import com.google.android.gms.wearable.WearableListenerService;
-
-import org.jraf.android.bikey.app.collect.LogCollectorService;
-import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.bikey.common.wear.CommConstants;
-import org.jraf.android.util.log.wrapper.Log;
 
 public class WearCommService extends WearableListenerService {
     public WearCommService() {}

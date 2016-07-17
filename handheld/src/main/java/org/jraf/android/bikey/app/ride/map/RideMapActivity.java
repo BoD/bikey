@@ -61,16 +61,16 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class RideMapActivity extends BaseAppCompatActivity {
     private Uri mRideUri;
 
-    @Bind(R.id.conMap)
+    @BindView(R.id.conMap)
     protected ViewGroup mConMap;
 
-    @Bind(R.id.vieStatusBarTint)
+    @BindView(R.id.vieStatusBarTint)
     protected View mVieStatusBarTint;
 
     private GoogleMap mMap;

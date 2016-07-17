@@ -4,13 +4,13 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.backend.log.LogManager;
+import org.jraf.android.util.log.Log;
+
 import com.getpebble.android.kit.Constants;
 import com.getpebble.android.kit.PebbleKit;
 import com.getpebble.android.kit.util.PebbleDictionary;
-
-import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.log.LogManager;
-import org.jraf.android.util.log.wrapper.Log;
 
 /**
  * SmartwatchSender implementation for the Pebble watch.

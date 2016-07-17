@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'android-apt'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -116,4 +117,5 @@ dependencies {
     compile project(':PebbleKit')
     // Package the wear apk inside this one
     wearApp project(':wear')
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
 }

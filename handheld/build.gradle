@@ -70,22 +70,23 @@ android.applicationVariants.all { variant ->
         variant.outputs.each { output ->
             def apkName = "${globalProjectName}-${android.defaultConfig.versionCode}-${variant.flavorName}-signed.apk"
             // Copy the apk to the 'etc' folder
-            def copyApkTask = tasks.create("copy${variant.name.capitalize()}ApkToEtc", Copy)
-            copyApkTask.from(output.outputFile)
-            copyApkTask.into('../etc/apk')
-            copyApkTask.rename output.outputFile.name, apkName
-            copyApkTask.dependsOn variant.assemble
+            def copyApkToEtc = tasks.create("copy${variant.name.capitalize()}ApkToEtc", Copy)
+            copyApkToEtc.from(output.outputFile)
+            copyApkToEtc.into('../etc/apk')
+            copyApkToEtc.rename output.outputFile.name, apkName
 
-            releaseTask.dependsOn copyApkTask
 
             // Copy the apk to the deploy folder
-            copyApkTask = tasks.create("copy${variant.name.capitalize()}ApkToDeploy", Copy)
-            copyApkTask.from(output.outputFile)
-            copyApkTask.into(buildProperties.deployFolder)
-            copyApkTask.rename output.outputFile.name, apkName
-            copyApkTask.dependsOn variant.assemble
+            def copyApkToDeploy = tasks.create("copy${variant.name.capitalize()}ApkToDeploy", Copy)
+            copyApkToDeploy .from(output.outputFile)
+            copyApkToDeploy.into(buildProperties.deployFolder)
+            copyApkToDeploy.rename output.outputFile.name, apkName
 
-            releaseTask.dependsOn copyApkTask
+            variant.assemble.doLast {
+                copyApkToEtc.execute()
+                copyApkToDeploy.execute()
+                releaseTask.execute()
+            }
         }
 
         // Commented for now since we don't obfuscate (so we don't have a mapping.txt file)

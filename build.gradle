@@ -30,6 +30,22 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+// Add a 'release' task that increments the build number
+def releaseTask = tasks.create(name: 'release', group: 'build')
+releaseTask << {
+    buildNumberProperties.buildNumber = (buildNumber + 1).toString()
+    buildNumberProperties.store(buildNumberFile.newWriter(), null)
+}
+
+// Make the 'release' task depend on the 'assembleRelease' task of every subprojects
+subprojects {
+    tasks.whenTaskAdded { task ->
+        if (task.name == 'assembleRelease') {
+            releaseTask.dependsOn task
+        }
+    }
+}
+
 // Run './gradlew dependencyUpdates' to see new versions of dependencies
 apply plugin: 'com.github.ben-manes.versions'
 

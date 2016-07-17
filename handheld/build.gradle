@@ -57,46 +57,27 @@ android {
     }
 }
 
-def releaseTask = tasks.create('release')
-releaseTask << {
-    // Increment build number
-    buildNumberProperties.buildNumber = (buildNumber + 1).toString()
-    buildNumberProperties.store(buildNumberFile.newWriter(), null)
-}
-
 android.applicationVariants.all { variant ->
     // Create new copy tasks, for release builds
     if (variant.buildType.name == 'release') {
         variant.outputs.each { output ->
             def apkName = "${globalProjectName}-${android.defaultConfig.versionCode}-${variant.flavorName}-signed.apk"
-            // Copy the apk to the 'etc' folder
-            def copyApkTask = tasks.create("copy${variant.name.capitalize()}ApkToEtc", Copy)
-            copyApkTask.from(output.outputFile)
-            copyApkTask.into('../etc/apk')
-            copyApkTask.rename output.outputFile.name, apkName
-            copyApkTask.dependsOn variant.assemble
 
-            releaseTask.dependsOn copyApkTask
+            // Copy the apk to the 'etc' folder
+            def copyApkToEtc = tasks.create("copy${variant.name.capitalize()}ApkToEtc", Copy)
+            copyApkToEtc.from(output.outputFile)
+            copyApkToEtc.into('../etc/apk')
+            copyApkToEtc.rename output.outputFile.name, apkName
 
             // Copy the apk to the deploy folder
-            copyApkTask = tasks.create("copy${variant.name.capitalize()}ApkToDeploy", Copy)
-            copyApkTask.from(output.outputFile)
-            copyApkTask.into(buildProperties.deployFolder)
-            copyApkTask.rename output.outputFile.name, apkName
-            copyApkTask.dependsOn variant.assemble
+            def copyApkToDeploy = tasks.create("copy${variant.name.capitalize()}ApkToDeploy", Copy)
+            copyApkToDeploy.from(output.outputFile)
+            copyApkToDeploy.into(buildProperties.deployFolder)
+            copyApkToDeploy.rename output.outputFile.name, apkName
 
-            releaseTask.dependsOn copyApkTask
+            // Make the copy tasks run after the assemble tasks of the variant
+            variant.assemble.finalizedBy(copyApkToEtc, copyApkToDeploy)
         }
-
-        // Commented for now since we don't obfuscate (so we don't have a mapping.txt file)
-//        // Copy the proguard mapping to the 'etc' folder
-//        def copyMappingTask = tasks.create("copy${variant.name.capitalize()}ProguardMappingToEtc", Copy)
-//        copyMappingTask.from(variant.mappingFile)
-//        copyMappingTask.into('../etc/proguard')
-//        copyMappingTask.rename variant.mappingFile.name, "mapping-${android.defaultConfig.versionCode}-${variant.flavorName}.txt"
-//        copyMappingTask.dependsOn variant.assemble
-//
-//        releaseTask.dependsOn copyMappingTask
     }
 }
 

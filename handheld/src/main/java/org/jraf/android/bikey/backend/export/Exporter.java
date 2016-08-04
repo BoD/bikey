@@ -38,13 +38,16 @@ import org.jraf.android.bikey.app.Application;
 
 
 public abstract class Exporter {
-    private Context mContext;
-    private Uri mRideUri;
+    private final Context mContext;
+    private final Uri mRideUri;
     private OutputStream mOutputStream;
+    private final String mExportedFileName;
+    private File mExportFile;
 
     protected Exporter(Uri rideUri) {
         mContext = Application.getApplication();
         mRideUri = rideUri;
+        mExportedFileName = getExportedFileName();
     }
 
     protected abstract String getExportedFileName();
@@ -57,7 +60,10 @@ public abstract class Exporter {
     }
 
     public File getExportFile() {
-        return new File(mContext.getExternalFilesDir(null), getExportedFileName());
+        if (mExportFile == null) {
+            mExportFile = new File(mContext.getExternalFilesDir(null), mExportedFileName);
+        }
+        return mExportFile;
     }
 
     protected Context getContext() {

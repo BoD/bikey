@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'android-apt'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -53,5 +52,5 @@ dependencies {
 
     // Other libs
     compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.5@aar'
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 }

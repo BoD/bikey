@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import android.content.ContentUris;
@@ -58,6 +59,9 @@ import com.google.android.gms.drive.MetadataBuffer;
 import com.google.android.gms.drive.MetadataChangeSet;
 import com.google.android.gms.drive.metadata.CustomPropertyKey;
 import com.google.android.gms.drive.query.Query;
+
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 public class GoogleDriveSyncManager {
     private static final GoogleDriveSyncManager INSTANCE = new GoogleDriveSyncManager();
@@ -283,10 +287,10 @@ public class GoogleDriveSyncManager {
     @WorkerThread
     private void locallyDeleteRemotelyDeletedItems(ArrayList<ServerItem> serverItems) {
         Log.d();
-        ArrayList<String> uuidsToDelete = new ArrayList<>(serverItems.size());
-        for (ServerItem serverItem : serverItems) {
-            if (serverItem.deleted) uuidsToDelete.add(serverItem.uuid);
-        }
+        List<String> uuidsToDelete = StreamSupport.stream(serverItems)
+                .filter(serverItem -> serverItem.deleted)
+                .map(serverItem -> serverItem.uuid)
+                .collect(Collectors.toList());
         Log.d("uuidsToDelete=" + uuidsToDelete);
         if (uuidsToDelete.size() > 0) {
             RideSelection rideSelection = new RideSelection();

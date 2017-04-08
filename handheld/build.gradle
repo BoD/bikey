@@ -101,6 +101,7 @@ dependencies {
     compile "com.jakewharton:butterknife:${butterknifeVersion}"
     compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.5@aar'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') { transitive = true; }
+    compile 'net.sourceforge.streamsupport:streamsupport:1.5.4'
     compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'
     compile 'com.android.support:multidex:1.0.1'
     compile project(':common')

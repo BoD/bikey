@@ -317,7 +317,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                     a.mTxtDateTimeStart.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime(), DateUtils.FORMAT_SHOW_TIME));
                     a.mTxtDateTimeFinish.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime() + mDuration, DateUtils.FORMAT_SHOW_TIME));
                 }
-                if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration.longValue()));
+                if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration));
                 a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
                 a.mTxtDistanceTotal.setText(UnitUtil.formatDistance(mDistance, true, .85f, false));
 

@@ -34,6 +34,9 @@ import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.log.Log;
 
+import java8.util.stream.RefStreams;
+import java8.util.stream.StreamSupport;
+
 public class TextToSpeechManager {
     private static final TextToSpeechManager INSTANCE = new TextToSpeechManager();
 
@@ -100,9 +103,6 @@ public class TextToSpeechManager {
     private boolean isDeviceLanguageSupported() {
         Locale userLocale = mContext.getResources().getConfiguration().locale;
         String userLanguage = userLocale.getLanguage();
-        for (String supportedLanguage : SUPPORTED_LANGUAGES) {
-            if (supportedLanguage.equals(userLanguage)) return true;
-        }
-        return false;
+        return RefStreams.of(SUPPORTED_LANGUAGES).anyMatch(s -> s.equals(userLanguage));
     }
 }

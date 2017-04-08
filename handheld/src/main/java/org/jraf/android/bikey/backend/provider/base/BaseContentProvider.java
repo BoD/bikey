@@ -26,7 +26,7 @@ package org.jraf.android.bikey.backend.provider.base;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Set;
 
 import android.content.ContentProvider;
 import android.content.ContentProviderOperation;
@@ -39,6 +39,9 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
 import android.provider.BaseColumns;
 import android.util.Log;
+
+import java8.util.stream.Collectors;
+import java8.util.stream.StreamSupport;
 
 public abstract class BaseContentProvider extends ContentProvider {
     public static final String QUERY_NOTIFY = "QUERY_NOTIFY";
@@ -173,10 +176,7 @@ public abstract class BaseContentProvider extends ContentProvider {
 
     @Override
     public ContentProviderResult[] applyBatch(ArrayList<ContentProviderOperation> operations) throws OperationApplicationException {
-        HashSet<Uri> urisToNotify = new HashSet<>(operations.size());
-        for (ContentProviderOperation operation : operations) {
-            urisToNotify.add(operation.getUri());
-        }
+        Set<Uri> urisToNotify = StreamSupport.stream(operations).map(ContentProviderOperation::getUri).collect(Collectors.toSet());
         SQLiteDatabase db = mSqLiteOpenHelper.getWritableDatabase();
         db.beginTransaction();
         try {

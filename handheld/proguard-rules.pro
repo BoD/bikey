@@ -17,3 +17,7 @@
 
 # For retrolambda: https://github.com/evant/gradle-retrolambda
 -dontwarn java.lang.invoke.*
+
+# For streamsupport:
+-dontwarn java8.util.**
+-dontnote java8.util.**

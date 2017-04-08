@@ -8,7 +8,8 @@
  * repository.
  * 
  * Copyright (C) 2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ * Copyright (C) 2017 Carmen Alvarez (c@rmen.ca)
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -24,14 +25,12 @@
  */
 package org.jraf.android.bikey.util;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.preference.PreferenceManager;
 
 import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.bikey.app.mediabutton.MediaButtonReceiver;
+import org.jraf.android.bikey.app.mediabutton.MediaButtonHandler;
 import org.jraf.android.bikey.app.mediabutton.TextToSpeechManager;
 
 public class MediaButtonUtil {
@@ -42,22 +41,17 @@ public class MediaButtonUtil {
         if (sharedPreferences.getBoolean(Constants.PREF_LISTEN_TO_HEADSET_BUTTON, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) {
             registerMediaButtonEventReceiver(context);
         } else {
-            unregisterMediaButtonEventReceiver(context);
+            unregisterMediaButtonEventReceiver();
         }
     }
 
-
     public static void registerMediaButtonEventReceiver(Context context) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        ComponentName mediaButtonReceiverComponentName = new ComponentName(context.getPackageName(), MediaButtonReceiver.class.getName());
-        audioManager.registerMediaButtonEventReceiver(mediaButtonReceiverComponentName);
+        MediaButtonHandler.get().start(context);
         TextToSpeechManager.get().start();
     }
 
-    public static void unregisterMediaButtonEventReceiver(Context context) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        ComponentName mediaButtonReceiverComponentName = new ComponentName(context.getPackageName(), MediaButtonReceiver.class.getName());
-        audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiverComponentName);
+    public static void unregisterMediaButtonEventReceiver() {
+        MediaButtonHandler.get().stop();
         TextToSpeechManager.get().stop();
     }
 }

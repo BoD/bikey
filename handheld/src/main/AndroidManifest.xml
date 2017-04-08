@@ -141,13 +141,6 @@
             </intent-filter>
         </activity>
 
-        <!-- Media button -->
-        <receiver android:name="org.jraf.android.bikey.app.mediabutton.MediaButtonReceiver">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
-            </intent-filter>
-        </receiver>
-
         <!-- Heart rate monitor scan -->
         <activity
             android:name="org.jraf.android.bikey.app.heartrate.bluetooth.HeartRateMonitorScanActivity"

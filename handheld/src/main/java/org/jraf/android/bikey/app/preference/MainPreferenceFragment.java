@@ -8,6 +8,7 @@
  * repository.
  *
  * Copyright (C) 2013-2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
+ * Copyright (C) 2017 Carmen Alvarez (c@rmen.ca)
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,6 +30,7 @@ import android.app.Activity;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -65,6 +67,13 @@ public class MainPreferenceFragment extends PreferenceFragment {
         } else {
             PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(Constants.PREF_CATEGORY_HEART_RATE);
             getPreferenceScreen().removePreference(preferenceCategory);
+        }
+
+        // The headset button implementation is easier if we support lollipop+ only.
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            PreferenceCategory preferenceCategory = (PreferenceCategory) findPreference(Constants.PREF_CATEGORY_GENERAL);
+            Preference headsetPreference = preferenceCategory.findPreference(Constants.PREF_LISTEN_TO_HEADSET_BUTTON);
+            preferenceCategory.removePreference(headsetPreference);
         }
         findPreference(Constants.PREF_EXPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
         findPreference(Constants.PREF_IMPORT).setOnPreferenceClickListener(mOnPreferenceClickListener);
@@ -134,7 +143,7 @@ public class MainPreferenceFragment extends PreferenceFragment {
                     if (sharedPreferences.getBoolean(key, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) {
                         MediaButtonUtil.registerMediaButtonEventReceiver(getActivity());
                     } else {
-                        MediaButtonUtil.unregisterMediaButtonEventReceiver(getActivity());
+                        MediaButtonUtil.unregisterMediaButtonEventReceiver();
                     }
                     break;
 

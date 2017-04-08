@@ -35,7 +35,6 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.location.Location;
 import android.location.LocationListener;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -58,6 +57,8 @@ import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
 
 import com.getpebble.android.kit.PebbleKit;
+
+import io.reactivex.schedulers.Schedulers;
 
 public class LogCollectorService extends Service {
     private static final String PREFIX = LogCollectorService.class.getName() + ".";
@@ -98,7 +99,7 @@ public class LogCollectorService extends Service {
 
     private void startCollecting(final Uri rideUri) {
         final Context context = getApplicationContext();
-        runOnBackgroundThread(() -> {
+        Schedulers.io().scheduleDirect(() -> {
             // Smartwatches support (if enabled in prefs)
             if (mPreferences.getBoolean(Constants.PREF_ANDROID_WEAR, Constants.PREF_ANDROID_WEAR_DEFAULT)) {
                 mAndroidWearSender = new AndroidWearSender();
@@ -151,7 +152,7 @@ public class LogCollectorService extends Service {
     }
 
     private void stopCollecting(final Uri rideUri) {
-        runOnBackgroundThread(() -> RideManager.get().pause(rideUri));
+        Schedulers.io().scheduleDirect(() -> RideManager.get().pause(rideUri));
 
         // Dismiss notification
         dismissNotification();
@@ -164,17 +165,6 @@ public class LogCollectorService extends Service {
         stopSelf();
     }
 
-    private void runOnBackgroundThread(final Runnable runnable) {
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                runnable.run();
-                return null;
-            }
-        }.execute();
-    }
-
-
     /*
      * Location listener.
      */
@@ -182,7 +172,7 @@ public class LogCollectorService extends Service {
     private LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            runOnBackgroundThread(() -> {
+            Schedulers.io().scheduleDirect(() -> {
                 LogManager.get().add(mCollectingRideUri, location, mLastLocation, mLastCadence, mLastHeartRate);
                 mLastLocation = location;
             });

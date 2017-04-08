@@ -32,7 +32,6 @@ import android.content.res.Configuration;
 import android.graphics.PointF;
 import android.graphics.drawable.AnimationDrawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -58,13 +57,16 @@ import org.jraf.android.bikey.app.display.fragment.totaldistance.TotalDistanceDi
 import org.jraf.android.bikey.backend.heartrate.HeartRateManager;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationManager.StatusListener;
-import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.widget.fragmentcycler.FragmentCycler;
 import org.jraf.android.util.app.base.BaseFragmentActivity;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.ui.checkable.CheckableRelativeLayout;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class DisplayActivity extends BaseFragmentActivity {
     private static final long DELAY_HIDE_CONTROLS = 4500;
@@ -128,42 +130,35 @@ public class DisplayActivity extends BaseFragmentActivity {
     }
 
     private void toggleRecordingIfActive() {
-        new AsyncTask<Void, Void, Void>() {
-            private RideState mRideState;
+        Single.fromCallable(() -> RideManager.get().getState(mRideUri))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rideState -> {
+                    switch (rideState) {
+                        case CREATED:
+                            mChkRecord.setChecked(false, false);
+                            mChkRecordText.setText(R.string.display_chkRecord_created);
+                            break;
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                mRideState = RideManager.get().getState(mRideUri);
-                return null;
-            }
+                        case ACTIVE:
+                            mChkRecord.setChecked(true, false);
+                            mChkRecordText.setText(R.string.display_chkRecord_active);
+                            if (!mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.start();
+                            break;
 
-            @Override
-            protected void onPostExecute(Void result) {
-                switch (mRideState) {
-                    case CREATED:
-                        mChkRecord.setChecked(false, false);
-                        mChkRecordText.setText(R.string.display_chkRecord_created);
-                        break;
+                        case PAUSED:
+                            mChkRecord.setChecked(false, false);
+                            mChkRecordText.setText(R.string.display_chkRecord_paused);
+                            if (mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.cancel();
+                            mChkRecordText.setAlpha(1f);
 
-                    case ACTIVE:
-                        mChkRecord.setChecked(true, false);
-                        mChkRecordText.setText(R.string.display_chkRecord_active);
-                        if (!mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.start();
-                        break;
+                            break;
+                    }
 
-                    case PAUSED:
-                        mChkRecord.setChecked(false, false);
-                        mChkRecordText.setText(R.string.display_chkRecord_paused);
-                        if (mChkRecordTextAnimator.isStarted()) mChkRecordTextAnimator.cancel();
-                        mChkRecordText.setAlpha(1f);
+                    mChkRecord.setEnabled(true);
+                    mChkRecord.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
 
-                        break;
-                }
-
-                mChkRecord.setEnabled(true);
-                mChkRecord.setOnCheckedChangeListener(mRecordingOnCheckedChangeListener);
-            }
-        }.execute();
+                });
     }
 
     @Override

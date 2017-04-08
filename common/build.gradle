@@ -4,6 +4,9 @@ android {
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
 
+    dataBinding {
+        enabled true
+    }
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion targetSdkVersion

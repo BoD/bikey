@@ -136,24 +136,6 @@ public class MediaButtonHandler {
 
                     return null;
                 }
-
-                @Override
-                protected void onPostExecute(Integer result) {
-                    switch (result) {
-                        case RESULT_RIDE_DOES_NOT_EXIST:
-                            // Do not do anything
-                            break;
-
-                        case RESULT_RIDE_ACTIVATED:
-                            // TODO: talk
-                            break;
-
-                        case RESULT_RIDE_PAUSED:
-                            // TODO: talk
-                            break;
-                    }
-                }
-
             }.execute();
             return true;
         }

@@ -24,14 +24,12 @@
  */
 package org.jraf.android.bikey.util;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.preference.PreferenceManager;
 
 import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.bikey.app.mediabutton.MediaButtonReceiver;
+import org.jraf.android.bikey.app.mediabutton.MediaButtonService;
 import org.jraf.android.bikey.app.mediabutton.TextToSpeechManager;
 
 public class MediaButtonUtil {
@@ -46,18 +44,13 @@ public class MediaButtonUtil {
         }
     }
 
-
     public static void registerMediaButtonEventReceiver(Context context) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        ComponentName mediaButtonReceiverComponentName = new ComponentName(context.getPackageName(), MediaButtonReceiver.class.getName());
-        audioManager.registerMediaButtonEventReceiver(mediaButtonReceiverComponentName);
+        MediaButtonService.start(context);
         TextToSpeechManager.get().start();
     }
 
     public static void unregisterMediaButtonEventReceiver(Context context) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        ComponentName mediaButtonReceiverComponentName = new ComponentName(context.getPackageName(), MediaButtonReceiver.class.getName());
-        audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiverComponentName);
+        MediaButtonService.stop(context);
         TextToSpeechManager.get().stop();
     }
 }

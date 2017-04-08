@@ -1,6 +1,8 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <PreferenceCategory android:title="@string/preference_category_general_title">
+    <PreferenceCategory
+        android:key="PREF_CATEGORY_GENERAL"
+        android:title="@string/preference_category_general_title">
         <ListPreference
             android:defaultValue="PREF_UNITS_IMPERIAL"
             android:entries="@array/preferences_units_labels"

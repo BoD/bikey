@@ -8,7 +8,8 @@
  * repository.
  * 
  * Copyright (C) 2014 Benoit 'BoD' Lubek (BoD@JRAF.org)
- * 
+ * Copyright (C) 2017 Carmen Alvarez (c@rmen.ca)
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -24,16 +25,13 @@
  */
 package org.jraf.android.bikey.app.mediabutton;
 
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.IBinder;
 import android.preference.PreferenceManager;
-import android.support.annotation.Nullable;
-import android.support.v4.media.session.MediaButtonReceiver;
+import android.support.annotation.MainThread;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
@@ -45,50 +43,56 @@ import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
 
-public class MediaButtonService extends Service {
+public class MediaButtonHandler {
 
-    private static final String TAG = MediaButtonService.class.getSimpleName();
+    private static final String TAG = MediaButtonHandler.class.getSimpleName();
     private MediaSessionCompat mMediaSessionCompat;
 
-    public static void start(Context context) {
-        context.startService(new Intent(context, MediaButtonService.class));
+    private static final MediaButtonHandler INSTANCE = new MediaButtonHandler();
+
+    private MediaButtonHandler() {
+        // prevent instantiation
     }
 
-    public static void stop(Context context) {
-        context.stopService(new Intent(context, MediaButtonService.class));
+    public static MediaButtonHandler get() {
+        return INSTANCE;
     }
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
+    @MainThread
+    public void start(Context context) {
         Log.d();
-        mMediaSessionCompat = new MediaSessionCompat(this, TAG);
+        if (mMediaSessionCompat != null) {
+            mMediaSessionCompat.setActive(false);
+            mMediaSessionCompat.release();
+        }
+        mMediaSessionCompat = new MediaSessionCompat(context, TAG);
         mMediaSessionCompat.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS);
-        mMediaSessionCompat.setCallback(mCallback);
+        mMediaSessionCompat.setCallback(new BikeyMediaButtonCallback(context));
         mMediaSessionCompat.setActive(true);
     }
 
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("intent=" + intent);
-        MediaButtonReceiver.handleIntent(mMediaSessionCompat, intent);
-        return super.onStartCommand(intent, flags, startId);
-    }
-
-    @Override
-    public void onDestroy() {
+    @MainThread
+    public void stop() {
         Log.d();
-        mMediaSessionCompat.setActive(false);
-        mMediaSessionCompat.release();
-        super.onDestroy();
+        if (mMediaSessionCompat != null) {
+            mMediaSessionCompat.setActive(false);
+            mMediaSessionCompat.release();
+            mMediaSessionCompat = null;
+        }
     }
 
-    private final MediaSessionCompat.Callback mCallback = new MediaSessionCompat.Callback() {
+    private static class BikeyMediaButtonCallback extends MediaSessionCompat.Callback {
+
+        private final Context mContext;
+
+        BikeyMediaButtonCallback(Context context) {
+            mContext = context;
+        }
+
         @Override
         public boolean onMediaButtonEvent(Intent intent) {
             Log.d("intent=" + StringUtil.toString(intent));
-            final Context context = MediaButtonService.this;
-            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
 
             // Only care if the preference is checked
             if (!sharedPreferences.getBoolean(Constants.PREF_LISTEN_TO_HEADSET_BUTTON, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) return false;
@@ -120,12 +124,12 @@ public class MediaButtonService extends Service {
                     switch (state) {
                         case CREATED:
                         case PAUSED:
-                            context.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, context, LogCollectorService.class));
+                            mContext.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, mContext, LogCollectorService.class));
                             TextToSpeechManager.get().speak(R.string.speak_activate_ride);
                             return RESULT_RIDE_ACTIVATED;
 
                         case ACTIVE:
-                            context.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, context, LogCollectorService.class));
+                            mContext.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, mContext, LogCollectorService.class));
                             TextToSpeechManager.get().speak(R.string.speak_pause_ride);
                             return RESULT_RIDE_PAUSED;
                     }
@@ -153,11 +157,5 @@ public class MediaButtonService extends Service {
             }.execute();
             return true;
         }
-    };
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 }

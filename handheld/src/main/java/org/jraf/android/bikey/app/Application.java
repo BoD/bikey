@@ -37,7 +37,6 @@ import org.jraf.android.util.log.Log;
 
 import com.crashlytics.android.Crashlytics;
 
-import fr.nicolaspomepuy.androidwearcrashreport.mobile.CrashInfo;
 import fr.nicolaspomepuy.androidwearcrashreport.mobile.CrashReport;
 import io.fabric.sdk.android.Fabric;
 
@@ -66,13 +65,10 @@ public class Application extends android.app.Application {
 
             // AndroidWearCrashReport
             try {
-                CrashReport.getInstance(this).setOnCrashListener(new CrashReport.IOnCrashListener() {
-                    @Override
-                    public void onCrashReceived(CrashInfo crashInfo) {
-                        Exception exception = new Exception("Crash on the wearable app " + crashInfo.getManufacturer() + "/" + crashInfo.getModel() + "/" +
-                                crashInfo.getProduct() + "/" + crashInfo.getFingerprint(), crashInfo.getThrowable());
-                        Crashlytics.logException(exception);
-                    }
+                CrashReport.getInstance(this).setOnCrashListener(crashInfo -> {
+                    Exception exception = new Exception("Crash on the wearable app " + crashInfo.getManufacturer() + "/" + crashInfo.getModel() + "/" +
+                            crashInfo.getProduct() + "/" + crashInfo.getFingerprint(), crashInfo.getThrowable());
+                    Crashlytics.logException(exception);
                 });
             } catch (Throwable t) {
                 Log.w("Problem while initializing AndroidWearCrashReport", t);
@@ -97,13 +93,10 @@ public class Application extends android.app.Application {
 
     private void setupStrictMode() {
         // Do this in a Handler.post because of this issue: http://code.google.com/p/android/issues/detail?id=35298
-        new Handler().post(new Runnable() {
-            @Override
-            public void run() {
-                // Do not detect disk reads/writes because it seems it causes bugs in Google Maps (?!)
-                StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectCustomSlowCalls().detectNetwork().penaltyLog().build());
-                StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
-            }
+        new Handler().post(() -> {
+            // Do not detect disk reads/writes because it seems it causes bugs in Google Maps (?!)
+            StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder().detectCustomSlowCalls().detectNetwork().penaltyLog().build());
+            StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder().detectAll().penaltyLog().build());
         });
     }
 

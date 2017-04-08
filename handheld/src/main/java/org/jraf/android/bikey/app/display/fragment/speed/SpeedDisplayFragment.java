@@ -72,10 +72,5 @@ public class SpeedDisplayFragment extends SimpleDisplayFragment {
         }
     };
 
-    private StatusListener mGpsStatusListener = new StatusListener() {
-        @Override
-        public void onStatusChanged(boolean active) {
-            setTextEnabled(active);
-        }
-    };
+    private StatusListener mGpsStatusListener = this::setTextEnabled;
 }

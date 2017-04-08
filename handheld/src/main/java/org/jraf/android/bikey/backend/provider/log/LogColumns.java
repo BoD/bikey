@@ -28,7 +28,6 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 import org.jraf.android.bikey.backend.provider.BikeyProvider;
-import org.jraf.android.bikey.backend.provider.log.LogColumns;
 import org.jraf.android.bikey.backend.provider.ride.RideColumns;
 
 /**

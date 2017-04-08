@@ -5,6 +5,9 @@ android {
     compileSdkVersion project.compileSdkVersion
     buildToolsVersion project.buildToolsVersion
 
+    dataBinding {
+        enabled true
+    }
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 21

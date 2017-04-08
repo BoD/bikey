@@ -3,6 +3,9 @@ import java.text.SimpleDateFormat
 
 ext.globalProjectName = 'bikey'
 
+// Run './gradlew dependencyUpdates' to see new versions of dependencies
+apply plugin: 'com.github.ben-manes.versions'
+
 buildscript {
     repositories {
         jcenter()
@@ -10,10 +13,9 @@ buildscript {
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.1'
-        classpath 'com.github.ben-manes:gradle-versions-plugin:0.13.0'
-        classpath 'ca.rmen:lib-french-revolutionary-calendar:1.5.0'
-        classpath 'io.fabric.tools:gradle:1.21.7'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
+        classpath 'ca.rmen:lib-french-revolutionary-calendar:1.5.2'
+        classpath 'io.fabric.tools:gradle:1.22.1'
     }
 }
 
@@ -24,11 +26,36 @@ allprojects {
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
     }
+    dependencyUpdates.resolutionStrategy = {
+        componentSelection { rules ->
+            rules.all { ComponentSelection selection ->
+                boolean rejected = ['alpha', 'alpha-preview', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
+                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
+                }
+                if (rejected) {
+                    selection.reject('Release candidate')
+                }
+            }
+        }
+    }
+    // Force using our version of the support libraries, even for those we don't depend on directly (transitive dependencies)
+    configurations.all {
+        resolutionStrategy {
+            force "com.android.support:appcompat-v7:$supportLibVersion",
+                    "com.android.support:cardview-v7:$supportLibVersion",
+                    "com.android.support:customtabs:$supportLibVersion",
+                    "com.android.support:support-v4:$supportLibVersion",
+                    "com.android.support:support-annotations:$supportLibVersion",
+                    "com.android.support:percent:$supportLibVersion",
+                    "com.android.support:recyclerview-v7:$supportLibVersion"
+        }
+    }
 }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
 }
+
 
 // Add a 'release' task that increments the build number
 def releaseTask = tasks.create(name: 'release', group: 'build')
@@ -46,8 +73,6 @@ subprojects {
     }
 }
 
-// Run './gradlew dependencyUpdates' to see new versions of dependencies
-apply plugin: 'com.github.ben-manes.versions'
 
 // Returns the name of the current git branch
 def gitBranch() {
@@ -92,7 +117,8 @@ ext.compileSdkVersion = 24
 ext.targetSdkVersion = 22
 ext.buildToolsVersion = '25.0.2'
 ext.supportLibVersion = '25.3.1'
-ext.playServicesVersion = '9.2.1'
+ext.playServicesVersion = '10.2.1'
+ext.butterknifeVersion = '8.5.1'
 
 // Splash screen
 println """\n

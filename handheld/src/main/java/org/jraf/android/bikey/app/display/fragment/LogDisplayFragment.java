@@ -107,27 +107,24 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         }
     };
 
-    private LogListener mLogListener = new LogListener() {
-        @Override
-        public void onLogAdded(final Uri rideUri) {
-            if (!rideUri.equals(getRideUri())) return;
-            if (!isAdded()) return;
+    private LogListener mLogListener = rideUri -> {
+        if (!rideUri.equals(getRideUri())) return;
+        if (!isAdded()) return;
 
-            new AsyncTask<Void, Void, Void>() {
-                private CharSequence mValue;
+        new AsyncTask<Void, Void, Void>() {
+            private CharSequence mValue;
 
-                @Override
-                protected Void doInBackground(Void... params) {
-                    mValue = queryValue();
-                    return null;
-                }
+            @Override
+            protected Void doInBackground(Void... params) {
+                mValue = queryValue();
+                return null;
+            }
 
-                @Override
-                protected void onPostExecute(Void result) {
-                    setText(mValue);
-                }
-            }.execute();
-        }
+            @Override
+            protected void onPostExecute(Void result) {
+                setText(mValue);
+            }
+        }.execute();
     };
 
     @WorkerThread

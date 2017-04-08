@@ -67,7 +67,7 @@ public class Speedometer implements LocationListener {
     }
 
     private Location mLastLocation = null;
-    private Deque<LocationPair> mLog = new ArrayDeque<LocationPair>(LOG_SIZE_MAX);
+    private Deque<LocationPair> mLog = new ArrayDeque<>(LOG_SIZE_MAX);
     private int mLogSize = LOG_SIZE_SLOW;
     public DebugInfo mDebugInfo = new DebugInfo();
 

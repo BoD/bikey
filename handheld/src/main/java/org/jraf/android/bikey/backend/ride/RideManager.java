@@ -54,7 +54,6 @@ import org.jraf.android.bikey.backend.provider.ride.RideSelection;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.listeners.Listeners;
-import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.Log;
 
 public class RideManager {
@@ -217,12 +216,7 @@ public class RideManager {
         mContext.getContentResolver().update(rideUri, values.values(), null, null);
 
         // Dispatch to listeners
-        mListeners.dispatch(new Dispatcher<RideListener>() {
-            @Override
-            public void dispatch(RideListener listener) {
-                listener.onActivated(rideUri);
-            }
-        });
+        mListeners.dispatch(listener -> listener.onActivated(rideUri));
     }
 
     @WorkerThread
@@ -273,12 +267,7 @@ public class RideManager {
             mContext.getContentResolver().update(rideUri, values.values(), null, null);
 
             // Dispatch to listeners
-            mListeners.dispatch(new Dispatcher<RideListener>() {
-                @Override
-                public void dispatch(RideListener listener) {
-                    listener.onPaused(rideUri);
-                }
-            });
+            mListeners.dispatch(listener -> listener.onPaused(rideUri));
         } finally {
             c.close();
         }

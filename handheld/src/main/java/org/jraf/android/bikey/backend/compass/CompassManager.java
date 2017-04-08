@@ -32,7 +32,6 @@ import android.hardware.SensorManager;
 
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.listeners.Listeners;
-import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.Log;
 
 public class CompassManager {
@@ -118,12 +117,7 @@ public class CompassManager {
                 float azimuth = deviceOrientation[0];
                 final float value = 1f - (float) (azimuth / (2 * Math.PI));
 
-                mListeners.dispatch(new Dispatcher<CompassListener>() {
-                    @Override
-                    public void dispatch(CompassListener listener) {
-                        listener.onCompassChange(value);
-                    }
-                });
+                mListeners.dispatch(listener -> listener.onCompassChange(value));
             }
         }
 

@@ -98,68 +98,60 @@ public class LogCollectorService extends Service {
 
     private void startCollecting(final Uri rideUri) {
         final Context context = getApplicationContext();
-        runOnBackgroundThread(new Runnable() {
-            @Override
-            public void run() {
-                // Smartwatches support (if enabled in prefs)
-                if (mPreferences.getBoolean(Constants.PREF_ANDROID_WEAR, Constants.PREF_ANDROID_WEAR_DEFAULT)) {
-                    mAndroidWearSender = new AndroidWearSender();
-                    mAndroidWearSender.startSending(context);
-                }
-                if (mPreferences.getBoolean(Constants.PREF_PEBBLE, Constants.PREF_PEBBLE_DEFAULT)
-                        && PebbleKit.isWatchConnected(context)) {
-                    mPebbleSender = new PebbleSender();
-                    mPebbleSender.startSending(LogCollectorService.this);
-                }
-
-                // First, pause current ride if any
-                if (mCollectingRideUri != null) {
-                    RideManager.get().pause(mCollectingRideUri);
-                }
-
-                // Check if the ride still exists (it may have been deleted)
-                boolean rideExists = RideManager.get().isExistingRide(rideUri);
-                Log.d("rideExists=" + rideExists);
-                if (!rideExists) {
-                    stopSelf();
-                    return;
-                }
-
-                // Save the ride as the current one
-                RideManager.get().setCurrentRide(rideUri);
-
-                // Now collect for the new current ride
-                mCollectingRideUri = rideUri;
-                RideManager.get().activate(mCollectingRideUri);
-
-                // Show notification
-                Notification notification = createNotification();
-                startForeground(NOTIFICATION_ID, notification);
-
-                // Start recording location
-                LocationManager.get().addLocationListener(mLocationListener);
-
-                // Start monitoring cadence (if enabled in the prefs)
-                if (mPreferences.getBoolean(Constants.PREF_RECORD_CADENCE, Constants.PREF_RECORD_CADENCE_DEFAULT)) {
-                    CadenceManager.get().addListener(mCadenceListener);
-                }
-
-                // Start listening to pref changes (to enable / disable cadence recording accordingly)
-                mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
-
-                // Start recording heart rate
-                HeartRateManager.get().addListener(mHeartRateListener);
+        runOnBackgroundThread(() -> {
+            // Smartwatches support (if enabled in prefs)
+            if (mPreferences.getBoolean(Constants.PREF_ANDROID_WEAR, Constants.PREF_ANDROID_WEAR_DEFAULT)) {
+                mAndroidWearSender = new AndroidWearSender();
+                mAndroidWearSender.startSending(context);
             }
+            if (mPreferences.getBoolean(Constants.PREF_PEBBLE, Constants.PREF_PEBBLE_DEFAULT)
+                    && PebbleKit.isWatchConnected(context)) {
+                mPebbleSender = new PebbleSender();
+                mPebbleSender.startSending(LogCollectorService.this);
+            }
+
+            // First, pause current ride if any
+            if (mCollectingRideUri != null) {
+                RideManager.get().pause(mCollectingRideUri);
+            }
+
+            // Check if the ride still exists (it may have been deleted)
+            boolean rideExists = RideManager.get().isExistingRide(rideUri);
+            Log.d("rideExists=" + rideExists);
+            if (!rideExists) {
+                stopSelf();
+                return;
+            }
+
+            // Save the ride as the current one
+            RideManager.get().setCurrentRide(rideUri);
+
+            // Now collect for the new current ride
+            mCollectingRideUri = rideUri;
+            RideManager.get().activate(mCollectingRideUri);
+
+            // Show notification
+            Notification notification = createNotification();
+            startForeground(NOTIFICATION_ID, notification);
+
+            // Start recording location
+            LocationManager.get().addLocationListener(mLocationListener);
+
+            // Start monitoring cadence (if enabled in the prefs)
+            if (mPreferences.getBoolean(Constants.PREF_RECORD_CADENCE, Constants.PREF_RECORD_CADENCE_DEFAULT)) {
+                CadenceManager.get().addListener(mCadenceListener);
+            }
+
+            // Start listening to pref changes (to enable / disable cadence recording accordingly)
+            mPreferences.registerOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);
+
+            // Start recording heart rate
+            HeartRateManager.get().addListener(mHeartRateListener);
         });
     }
 
     private void stopCollecting(final Uri rideUri) {
-        runOnBackgroundThread(new Runnable() {
-            @Override
-            public void run() {
-                RideManager.get().pause(rideUri);
-            }
-        });
+        runOnBackgroundThread(() -> RideManager.get().pause(rideUri));
 
         // Dismiss notification
         dismissNotification();
@@ -190,12 +182,9 @@ public class LogCollectorService extends Service {
     private LocationListener mLocationListener = new LocationListener() {
         @Override
         public void onLocationChanged(final Location location) {
-            runOnBackgroundThread(new Runnable() {
-                @Override
-                public void run() {
-                    LogManager.get().add(mCollectingRideUri, location, mLastLocation, mLastCadence, mLastHeartRate);
-                    mLastLocation = location;
-                }
+            runOnBackgroundThread(() -> {
+                LogManager.get().add(mCollectingRideUri, location, mLastLocation, mLastCadence, mLastHeartRate);
+                mLastLocation = location;
             });
         }
 

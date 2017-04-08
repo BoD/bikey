@@ -14,3 +14,6 @@
 -dontwarn sun.misc.**
 -dontwarn javax.inject.**
 -dontwarn com.google.common.**
+
+# For retrolambda: https://github.com/evant/gradle-retrolambda
+-dontwarn java.lang.invoke.*

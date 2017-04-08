@@ -217,12 +217,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onDeleteRemoteItemsFinish() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTxtDeleteRemoteItems.setChecked(true);
-            }
-        });
+        runOnUiThread(() -> mTxtDeleteRemoteItems.setChecked(true));
     }
 
     @Override
@@ -230,12 +225,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onDeleteLocalItemsFinish() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTxtDeleteLocalItems.setChecked(true);
-            }
-        });
+        runOnUiThread(() -> mTxtDeleteLocalItems.setChecked(true));
     }
 
     @Override
@@ -243,23 +233,15 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onUploadNewLocalItemsProgress(final int progress, final int total) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mPgbUploadNewLocalItems.setMax(total);
-                mPgbUploadNewLocalItems.setProgress(progress);
-            }
+        runOnUiThread(() -> {
+            mPgbUploadNewLocalItems.setMax(total);
+            mPgbUploadNewLocalItems.setProgress(progress);
         });
     }
 
     @Override
     public void onUploadNewLocalItemsFinish() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTxtUploadNewLocalItems.setChecked(true);
-            }
-        });
+        runOnUiThread(() -> mTxtUploadNewLocalItems.setChecked(true));
     }
 
     @Override
@@ -267,33 +249,20 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onDownloadNewRemoteItemsOverallProgress(final int progress, final int total) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mTxtDownloadNewRemoteItems.setText(getString(R.string.googleDriveSync_downloadNewRemoteItems_progress, progress, total));
-            }
-        });
+        runOnUiThread(() -> mTxtDownloadNewRemoteItems.setText(getString(R.string.googleDriveSync_downloadNewRemoteItems_progress, progress, total)));
     }
 
     @Override
     public void onDownloadNewRemoteItemsDownloadProgress(final long progress, final long total) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                mPgbDownloadNewRemoteItems.setMax((int) total);
-                mPgbDownloadNewRemoteItems.setProgress((int) progress);
-            }
+        runOnUiThread(() -> {
+            mPgbDownloadNewRemoteItems.setMax((int) total);
+            mPgbDownloadNewRemoteItems.setProgress((int) progress);
         });
     }
 
     @Override
     public void onDownloadNewRemoteItemsFinish() {
-        runOnUiThread(new Runnable() {
-                          @Override
-                          public void run() {
-                              mTxtDownloadNewRemoteItems.setChecked(true);
-                          }
-                      }
+        runOnUiThread(() -> mTxtDownloadNewRemoteItems.setChecked(true)
 
         );
     }
@@ -301,14 +270,11 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     @Override
     public void onSyncFinish(final boolean success) {
         Log.d();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (success) {
-                    mTxtSuccess.setVisibility(View.VISIBLE);
-                } else {
-                    mTxtFail.setVisibility(View.VISIBLE);
-                }
+        runOnUiThread(() -> {
+            if (success) {
+                mTxtSuccess.setVisibility(View.VISIBLE);
+            } else {
+                mTxtFail.setVisibility(View.VISIBLE);
             }
         });
     }

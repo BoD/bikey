@@ -53,7 +53,6 @@ import org.jraf.android.util.handler.HandlerUtil;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -274,18 +273,12 @@ public class RideMapActivity extends BaseAppCompatActivity {
     private GoogleMap getMap() {
         if (mMap == null) {
             final CountDownLatch latch = new CountDownLatch(1);
-            HandlerUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
-                    mapFragment.getMapAsync(new OnMapReadyCallback() {
-                        @Override
-                        public void onMapReady(GoogleMap googleMap) {
-                            mMap = googleMap;
-                            latch.countDown();
-                        }
-                    });
-                }
+            HandlerUtil.runOnUiThread(() -> {
+                SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+                mapFragment.getMapAsync(googleMap -> {
+                    mMap = googleMap;
+                    latch.countDown();
+                });
             });
 
             try {

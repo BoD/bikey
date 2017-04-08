@@ -54,7 +54,7 @@ public abstract class AbstractSelection<T extends AbstractSelection<?>> {
     private static final String ENDS = " LIKE '%' || ?";
 
     private final StringBuilder mSelection = new StringBuilder();
-    private final List<String> mSelectionArgs = new ArrayList<String>(5);
+    private final List<String> mSelectionArgs = new ArrayList<>(5);
 
     Boolean mNotify;
     String mGroupBy;

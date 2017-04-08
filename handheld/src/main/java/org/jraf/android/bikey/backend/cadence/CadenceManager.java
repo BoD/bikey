@@ -38,7 +38,6 @@ import android.hardware.SensorManager;
 
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.listeners.Listeners;
-import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.object.ObjectUtil;
@@ -69,7 +68,7 @@ public class CadenceManager {
     }
 
     private Context mContext;
-    private ArrayDeque<Entry> mValues = new ArrayDeque<Entry>(200);
+    private ArrayDeque<Entry> mValues = new ArrayDeque<>(200);
     private ScheduledExecutorService mScheduledExecutorService;
     protected Float mLastValue = -1f;
     private float[][] mLastRawData;
@@ -217,7 +216,7 @@ public class CadenceManager {
 
         // Average
         float average = MathUtil.getAverage(values);
-        ArrayList<Long> periods = new ArrayList<Long>();
+        ArrayList<Long> periods = new ArrayList<>();
         long lastTime = -1;
         for (int i = 1; i < len; i++) {
             if (values[i - 1] < average && values[i] >= average) {
@@ -265,12 +264,7 @@ public class CadenceManager {
                 return;
             }
             mLastValue = value;
-            mListeners.dispatch(new Dispatcher<CadenceListener>() {
-                @Override
-                public void dispatch(CadenceListener listener) {
-                    listener.onCadenceChanged(value, mLastRawData);
-                }
-            });
+            mListeners.dispatch(listener -> listener.onCadenceChanged(value, mLastRawData));
         }
     };
 }

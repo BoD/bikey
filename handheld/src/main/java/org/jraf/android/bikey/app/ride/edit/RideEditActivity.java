@@ -28,13 +28,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.ride.RideManager;
@@ -50,12 +46,9 @@ public class RideEditActivity extends BaseAppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_edit);
         mEdtName = (EditText) findViewById(R.id.edtName);
-        mEdtName.setOnEditorActionListener(new OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                saveRide();
-                return true;
-            }
+        mEdtName.setOnEditorActionListener((v, actionId, event) -> {
+            saveRide();
+            return true;
         });
         populateViews();
         setupActionBar();
@@ -86,20 +79,10 @@ public class RideEditActivity extends BaseAppCompatActivity {
         actionBar.setCustomView(customActionBarView, new ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
         View btnDone = customActionBarView.findViewById(R.id.actionbar_done);
-        btnDone.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                saveRide();
-            }
-        });
+        btnDone.setOnClickListener(v -> saveRide());
 
         View btnDiscard = customActionBarView.findViewById(R.id.actionbar_discard);
-        btnDiscard.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        btnDiscard.setOnClickListener(v -> finish());
     }
 
     private void saveRide() {

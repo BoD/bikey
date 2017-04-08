@@ -48,13 +48,10 @@ public class CadenceDisplayFragment extends SimpleDisplayFragment {
         super.onStop();
     }
 
-    private CadenceListener mCadenceListener = new CadenceListener() {
-        @Override
-        public void onCadenceChanged(Float cadence, float[][] rawData) {
-            setText(UnitUtil.formatCadence(cadence));
-            setValues(0, rawData[0]);
-            setValues(1, rawData[1]);
-            setValues(2, rawData[2]);
-        }
+    private CadenceListener mCadenceListener = (cadence, rawData) -> {
+        setText(UnitUtil.formatCadence(cadence));
+        setValues(0, rawData[0]);
+        setValues(1, rawData[1]);
+        setValues(2, rawData[2]);
     };
 }

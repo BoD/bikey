@@ -1,6 +1,5 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
-apply plugin: 'android-apt'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -90,13 +89,13 @@ dependencies {
     compile "com.android.support:appcompat-v7:${supportLibVersion}"
     compile "com.google.android.gms:play-services-maps:${playServicesVersion}"
     compile "com.google.android.gms:play-services-drive:${playServicesVersion}"
-    compile 'com.jakewharton:butterknife:8.2.1'
+    compile "com.jakewharton:butterknife:${butterknifeVersion}"
     compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.5@aar'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.0@aar') { transitive = true; }
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') { transitive = true; }
     compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'
     compile project(':common')
     compile project(':PebbleKit')
     // Package the wear apk inside this one
     wearApp project(':wear')
-    apt 'com.jakewharton:butterknife-compiler:8.2.1'
+    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 }

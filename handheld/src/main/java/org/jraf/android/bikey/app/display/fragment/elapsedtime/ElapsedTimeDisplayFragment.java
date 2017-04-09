@@ -25,9 +25,9 @@
 package org.jraf.android.bikey.app.display.fragment.elapsedtime;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.support.annotation.WorkerThread;
 import android.view.View;
 import android.widget.Chronometer;
 
@@ -36,6 +36,10 @@ import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
     private Chronometer mChronometer;
@@ -69,33 +73,36 @@ public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
         final Uri rideUri = getRideUri();
         if (rideUri == null) return;
 
-        new AsyncTask<Void, Void, Void>() {
-            private long mDuration;
-            private boolean mIsActive;
-            private long mActivatedDate;
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                mDuration = rideManager.getDuration(rideUri);
-                mIsActive = rideManager.getState(rideUri) == RideState.ACTIVE;
-                if (mIsActive) {
-                    mActivatedDate = rideManager.getActivatedDate(rideUri).getTime();
-                }
-                return null;
-            }
+        Single.fromCallable(() -> readRideDurationInfo(rideUri))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(rideDurationInfo -> {
+                    if (rideDurationInfo.isActive) {
+                        long additionalDuration = System.currentTimeMillis() - rideDurationInfo.activatedDate;
+                        setChronometerDuration(rideDurationInfo.duration + additionalDuration);
+                        mChronometer.setEnabled(true);
+                        mChronometer.start();
+                    } else {
+                        setChronometerDuration(rideDurationInfo.duration);
+                    }
+                });
+    }
 
-            @Override
-            protected void onPostExecute(Void result) {
-                if (mIsActive) {
-                    long additionalDuration = System.currentTimeMillis() - mActivatedDate;
-                    setChronometerDuration(mDuration + additionalDuration);
-                    mChronometer.setEnabled(true);
-                    mChronometer.start();
-                } else {
-                    setChronometerDuration(mDuration);
-                }
-            }
-        }.execute();
+    private static class RideDurationInfo {
+        long duration;
+        boolean isActive;
+        long activatedDate;
+    }
+
+    @WorkerThread
+    private RideDurationInfo readRideDurationInfo(Uri rideUri) {
+        RideDurationInfo result = new RideDurationInfo();
+        final RideManager rideManager = RideManager.get();
+        result.duration = rideManager.getDuration(rideUri);
+        result.isActive = rideManager.getState(rideUri) == RideState.ACTIVE;
+        result.activatedDate = result.isActive ? rideManager.getActivatedDate(rideUri).getTime() : 0;
+        return result;
     }
 
     @Override
@@ -110,22 +117,14 @@ public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
         public void onActivated(final Uri rideUri) {
             if (!rideUri.equals(getRideUri())) return;
 
-            new AsyncTask<Void, Void, Void>() {
-                private long mDuration;
-
-                @Override
-                protected Void doInBackground(Void... params) {
-                    mDuration = RideManager.get().getDuration(rideUri);
-                    return null;
-                }
-
-                @Override
-                protected void onPostExecute(Void result) {
-                    setChronometerDuration(mDuration);
-                    mChronometer.start();
-                    mChronometer.setEnabled(true);
-                }
-            }.execute();
+            Single.fromCallable(() -> RideManager.get().getDuration(rideUri))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(duration -> {
+                        setChronometerDuration(duration);
+                        mChronometer.start();
+                        mChronometer.setEnabled(true);
+                    });
         }
 
         @Override

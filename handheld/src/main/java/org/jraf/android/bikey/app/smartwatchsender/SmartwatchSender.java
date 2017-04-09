@@ -1,17 +1,18 @@
 package org.jraf.android.bikey.app.smartwatchsender;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
 import android.content.Context;
 import android.net.Uri;
-import android.os.AsyncTask;
 
 import org.jraf.android.bikey.backend.location.Speedometer;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.log.Log;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Abstract class to send values to smartwatches.
@@ -56,21 +57,17 @@ public abstract class SmartwatchSender {
         public void onActivated(final Uri rideUri) {
             Log.d();
             mActiveRideUri = rideUri;
-            new AsyncTask<Void, Void, Void>() {
-                @Override
-                protected Void doInBackground(Void... params) {
-                    mInitialDuration = RideManager.get().getDuration(rideUri);
-                    mActivatedDate = RideManager.get().getActivatedDate(rideUri).getTime();
+            Schedulers.io().scheduleDirect(() -> {
+                        mInitialDuration = RideManager.get().getDuration(rideUri);
+                        mActivatedDate = RideManager.get().getActivatedDate(rideUri).getTime();
 
-                    // Start the scheduled task now
-                    if (mScheduledExecutorService == null) {
-                        mScheduledExecutorService = Executors.newScheduledThreadPool(1);
+                        // Start the scheduled task now
+                        if (mScheduledExecutorService == null) {
+                            mScheduledExecutorService = Executors.newScheduledThreadPool(1);
+                        }
+                        mScheduledExecutorService.scheduleAtFixedRate(mSendValueRunnable, 0, SEND_VALUES_RATE_S, TimeUnit.SECONDS);
                     }
-                    mScheduledExecutorService.scheduleAtFixedRate(mSendValueRunnable, 0, SEND_VALUES_RATE_S, TimeUnit.SECONDS);
-
-                    return null;
-                }
-            }.execute();
+            );
         }
 
         @Override

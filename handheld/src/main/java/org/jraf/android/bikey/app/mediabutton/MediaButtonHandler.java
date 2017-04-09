@@ -29,9 +29,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.annotation.MainThread;
+import android.support.annotation.WorkerThread;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
@@ -42,6 +42,12 @@ import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
+
+import java.util.concurrent.Callable;
+
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class MediaButtonHandler {
 
@@ -105,39 +111,32 @@ public class MediaButtonHandler {
             KeyEvent keyEvent = intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT);
             if (keyEvent != null && keyEvent.getAction() != KeyEvent.ACTION_DOWN) return false;
 
-            new AsyncTask<Void, Void, Integer>() {
-                private static final int RESULT_RIDE_DOES_NOT_EXIST = 0;
-                private static final int RESULT_RIDE_ACTIVATED = 1;
-                private static final int RESULT_RIDE_PAUSED = 2;
-
-
-                @Override
-                protected Integer doInBackground(Void... params) {
-                    // Check if the ride still exists (it may have been deleted)
-                    boolean rideExists = RideManager.get().isExistingRide(currentRideUri);
-                    Log.d("rideExists=" + rideExists);
-                    if (!rideExists) {
-                        return RESULT_RIDE_DOES_NOT_EXIST;
-                    }
-
-                    RideState state = RideManager.get().getState(currentRideUri);
-                    switch (state) {
-                        case CREATED:
-                        case PAUSED:
-                            mContext.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, mContext, LogCollectorService.class));
-                            TextToSpeechManager.get().speak(R.string.speak_activate_ride);
-                            return RESULT_RIDE_ACTIVATED;
-
-                        case ACTIVE:
-                            mContext.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, mContext, LogCollectorService.class));
-                            TextToSpeechManager.get().speak(R.string.speak_pause_ride);
-                            return RESULT_RIDE_PAUSED;
-                    }
-
-                    return null;
-                }
-            }.execute();
+            Single.fromCallable(() -> readRideState(currentRideUri))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(rideState -> {
+                        switch (rideState) {
+                            case CREATED:
+                            case PAUSED:
+                                mContext.startService(new Intent(LogCollectorService.ACTION_START_COLLECTING, currentRideUri, mContext, LogCollectorService.class));
+                                TextToSpeechManager.get().speak(R.string.speak_activate_ride);
+                                break;
+                            case ACTIVE:
+                                mContext.startService(new Intent(LogCollectorService.ACTION_STOP_COLLECTING, currentRideUri, mContext, LogCollectorService.class));
+                                TextToSpeechManager.get().speak(R.string.speak_pause_ride);
+                                break;
+                        }
+                    });
             return true;
+        }
+
+        @WorkerThread
+        private RideState readRideState(Uri currentRideUri) {
+            // Check if the ride still exists (it may have been deleted)
+            boolean rideExists = RideManager.get().isExistingRide(currentRideUri);
+            Log.d("rideExists=" + rideExists);
+            if (!rideExists) return RideState.DELETED;
+            return RideManager.get().getState(currentRideUri);
         }
     }
 }

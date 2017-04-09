@@ -25,7 +25,6 @@
 package org.jraf.android.bikey.app.display.fragment;
 
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
@@ -35,6 +34,11 @@ import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
+
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public abstract class LogDisplayFragment extends SimpleDisplayFragment {
 
@@ -49,23 +53,27 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         final Uri rideUri = getRideUri();
         if (rideUri == null) return;
 
-        new AsyncTask<Void, Void, Void>() {
-            private boolean mIsActive;
-            private CharSequence mValue;
+        Single.fromCallable(() -> readLogDisplayInfo(rideUri))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(logDisplayInfo -> {
+                    setTextEnabled(logDisplayInfo.isActive);
+                    setText(logDisplayInfo.value);
+                });
 
-            @Override
-            protected Void doInBackground(Void... params) {
-                mIsActive = rideManager.getState(rideUri) == RideState.ACTIVE;
-                mValue = queryValue();
-                return null;
-            }
+    }
 
-            @Override
-            protected void onPostExecute(Void result) {
-                setTextEnabled(mIsActive);
-                setText(mValue);
-            }
-        }.execute();
+    private static class LogDisplayInfo {
+        boolean isActive;
+        CharSequence value;
+    }
+
+    @WorkerThread
+    private LogDisplayInfo readLogDisplayInfo(Uri rideUri) {
+        LogDisplayInfo result = new LogDisplayInfo();
+        result.isActive = RideManager.get().getState(rideUri) == RideState.ACTIVE;
+        result.value = queryValue();
+        return result;
     }
 
     @Override
@@ -111,20 +119,10 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         if (!rideUri.equals(getRideUri())) return;
         if (!isAdded()) return;
 
-        new AsyncTask<Void, Void, Void>() {
-            private CharSequence mValue;
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                mValue = queryValue();
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                setText(mValue);
-            }
-        }.execute();
+        Maybe.fromCallable(this::queryValue)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(this::setText);
     };
 
     @WorkerThread

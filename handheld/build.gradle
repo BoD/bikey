@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
+apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
     compileSdkVersion project.compileSdkVersion
@@ -25,6 +26,8 @@ android {
         manifestPlaceholders = buildProperties
 
         vectorDrawables.useSupportLibrary = true
+        multiDexEnabled true
+
     }
 
     signingConfigs {
@@ -93,6 +96,7 @@ dependencies {
     compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.5@aar'
     compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') { transitive = true; }
     compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'
+    compile 'com.android.support:multidex:1.0.1'
     compile project(':common')
     compile project(':PebbleKit')
     // Package the wear apk inside this one

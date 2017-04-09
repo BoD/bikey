@@ -27,6 +27,7 @@ package org.jraf.android.bikey.app;
 import android.content.Context;
 import android.os.Handler;
 import android.os.StrictMode;
+import android.support.multidex.MultiDex;
 
 import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.common.Constants;
@@ -86,6 +87,12 @@ public class Application extends android.app.Application {
 
         // Strict mode
         if (BuildConfig.STRICT_MODE) setupStrictMode();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     private void setupStrictMode() {

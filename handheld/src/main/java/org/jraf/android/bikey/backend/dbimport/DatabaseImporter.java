@@ -80,7 +80,7 @@ public class DatabaseImporter {
     private static void importDatabase(Context context, File importDb) throws RemoteException, OperationApplicationException {
         Log.d("importDb=" + importDb);
         SQLiteDatabase dbImport = SQLiteDatabase.openDatabase(importDb.getAbsolutePath(), null, SQLiteDatabase.OPEN_READONLY);
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>();
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>();
         operations.add(ContentProviderOperation.newDelete(LogColumns.CONTENT_URI).build());
         operations.add(ContentProviderOperation.newDelete(RideColumns.CONTENT_URI).build());
         Uri insertUri = new Uri.Builder().authority(BikeyProvider.AUTHORITY).appendPath(RideColumns.TABLE_NAME)

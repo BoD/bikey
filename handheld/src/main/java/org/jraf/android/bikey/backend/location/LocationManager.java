@@ -33,7 +33,6 @@ import android.os.Handler;
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.handler.HandlerUtil;
 import org.jraf.android.util.listeners.Listeners;
-import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.Log;
 
 public class LocationManager {
@@ -104,24 +103,18 @@ public class LocationManager {
     private void startLocationListener() {
         Log.d();
         mIgnoreLocationCount = IGNORE_LOCATION_COUNT;
-        HandlerUtil.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                locationManager.removeUpdates(mGpsLocationListener);
-                locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
-            }
+        HandlerUtil.getMainHandler().post(() -> {
+            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(mGpsLocationListener);
+            locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsLocationListener);
         });
     }
 
     private void stopLocationListener() {
         Log.d();
-        HandlerUtil.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                locationManager.removeUpdates(mGpsLocationListener);
-            }
+        HandlerUtil.getMainHandler().post(() -> {
+            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(mGpsLocationListener);
         });
     }
 
@@ -166,12 +159,7 @@ public class LocationManager {
             }
 
             // Dispatch to listeners
-            mLocationListeners.dispatch(new Dispatcher<LocationListener>() {
-                @Override
-                public void dispatch(LocationListener listener) {
-                    listener.onLocationChanged(location);
-                }
-            });
+            mLocationListeners.dispatch(listener -> listener.onLocationChanged(location));
         }
 
         @Override
@@ -214,24 +202,18 @@ public class LocationManager {
     private void startGpsLocationListener() {
         Log.d();
         setActive(false);
-        HandlerUtil.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                locationManager.removeUpdates(mGpsStatusLocationListener);
-                locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsStatusLocationListener);
-            }
+        HandlerUtil.getMainHandler().post(() -> {
+            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(mGpsStatusLocationListener);
+            locationManager.requestLocationUpdates(android.location.LocationManager.GPS_PROVIDER, INTERVAL_LOC_REQUEST, 0, mGpsStatusLocationListener);
         });
     }
 
     private void stopGpsLocationListener() {
         Log.d();
-        HandlerUtil.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-                locationManager.removeUpdates(mGpsStatusLocationListener);
-            }
+        HandlerUtil.getMainHandler().post(() -> {
+            android.location.LocationManager locationManager = (android.location.LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            locationManager.removeUpdates(mGpsStatusLocationListener);
         });
     }
 
@@ -282,12 +264,7 @@ public class LocationManager {
     protected void setActive(final boolean active) {
         if (mActive != active) {
             // Dispatch to listeners
-            mStatusListeners.dispatch(new Dispatcher<StatusListener>() {
-                @Override
-                public void dispatch(StatusListener listener) {
-                    listener.onStatusChanged(active);
-                }
-            });
+            mStatusListeners.dispatch(listener -> listener.onStatusChanged(active));
         }
         mActive = active;
     }

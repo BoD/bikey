@@ -38,7 +38,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnSystemUiVisibilityChangeListener;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
@@ -119,15 +118,12 @@ public class DisplayActivity extends BaseFragmentActivity {
     }
 
     private void setupFragmentContainer() {
-        mConFragments.post(new Runnable() {
-            @Override
-            public void run() {
-                PointF shrinkPercents = getShrinkPercents();
-                mConFragments.setScaleX(shrinkPercents.x);
-                mConFragments.setScaleY(shrinkPercents.y);
+        mConFragments.post(() -> {
+            PointF shrinkPercents = getShrinkPercents();
+            mConFragments.setScaleX(shrinkPercents.x);
+            mConFragments.setScaleY(shrinkPercents.y);
 
-                mTxtTitle.setAlpha(0);
-            }
+            mTxtTitle.setAlpha(0);
         });
     }
 
@@ -232,17 +228,14 @@ public class DisplayActivity extends BaseFragmentActivity {
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     private void setupNavigationBarHiding() {
-        findViewById(android.R.id.content).setOnSystemUiVisibilityChangeListener(new OnSystemUiVisibilityChangeListener() {
-            @Override
-            public void onSystemUiVisibilityChange(int visibility) {
-                Log.d("visibility=" + visibility);
-                if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) {
-                    Log.d("Navigation bar showing");
-                    if (!isPaused()) mFragmentCycler.cycle(thiz);
-                    scheduleHideNavigationBar();
-                    showControls();
-                    scheduleHideControls();
-                }
+        findViewById(android.R.id.content).setOnSystemUiVisibilityChangeListener(visibility -> {
+            Log.d("visibility=" + visibility);
+            if ((visibility & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) != View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) {
+                Log.d("Navigation bar showing");
+                if (!isPaused()) mFragmentCycler.cycle(thiz);
+                scheduleHideNavigationBar();
+                showControls();
+                scheduleHideControls();
             }
         });
         scheduleHideNavigationBar();
@@ -270,12 +263,7 @@ public class DisplayActivity extends BaseFragmentActivity {
         return super.dispatchTouchEvent(ev);
     }
 
-    private Runnable mHideNavigationBarRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hideNavigationBar();
-        }
-    };
+    private Runnable mHideNavigationBarRunnable = this::hideNavigationBar;
 
     private void scheduleHideNavigationBar() {
         mHandler.removeCallbacks(mHideNavigationBarRunnable);
@@ -415,12 +403,7 @@ public class DisplayActivity extends BaseFragmentActivity {
         mTxtTitle.animate().alpha(0).setDuration(duration).setStartDelay(0);
     }
 
-    private Runnable mHideControlsRunnable = new Runnable() {
-        @Override
-        public void run() {
-            hideControls();
-        }
-    };
+    private Runnable mHideControlsRunnable = this::hideControls;
 
     private void scheduleHideControls() {
         mHandler.removeCallbacks(mHideControlsRunnable);

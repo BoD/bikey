@@ -118,15 +118,12 @@ public class BleScanListFragment extends ListFragment {
             }
             mFoundDeviceAddressList.add(device.getAddress());
 
-            HandlerUtil.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (mBleScanListAdapter == null) {
-                        mBleScanListAdapter = new BleScanListAdapter(getActivity());
-                        setListAdapter(mBleScanListAdapter);
-                    }
-                    mBleScanListAdapter.add(device);
+            HandlerUtil.runOnUiThread(() -> {
+                if (mBleScanListAdapter == null) {
+                    mBleScanListAdapter = new BleScanListAdapter(getActivity());
+                    setListAdapter(mBleScanListAdapter);
                 }
+                mBleScanListAdapter.add(device);
             });
         }
     };

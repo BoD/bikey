@@ -44,7 +44,6 @@ import org.jraf.android.bikey.backend.provider.log.LogCursor;
 import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.listeners.Listeners;
-import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -94,12 +93,7 @@ public class LogManager {
         RideManager.get().updateTotalDistance(rideUri, totalDistance);
 
         // Dispatch to listeners
-        mListeners.dispatch(new Dispatcher<LogListener>() {
-            @Override
-            public void dispatch(LogListener listener) {
-                listener.onLogAdded(rideUri);
-            }
-        });
+        mListeners.dispatch(listener -> listener.onLogAdded(rideUri));
         return res;
     }
 

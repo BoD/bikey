@@ -40,7 +40,6 @@ import android.os.Build;
 
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.util.listeners.Listeners;
-import org.jraf.android.util.listeners.Listeners.Dispatcher;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.log.LogUtil;
 
@@ -91,12 +90,7 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
         Log.d();
         mStatus = Status.CONNECTING;
         // Inform listeners
-        mListeners.dispatch(new Dispatcher<HeartRateListener>() {
-            @Override
-            public void dispatch(HeartRateListener listener) {
-                listener.onConnecting();
-            }
-        });
+        mListeners.dispatch(HeartRateListener::onConnecting);
 
         mBluetoothDevice = bluetoothDevice;
         mBluetoothGatt = mBluetoothDevice.connectGatt(mContext, true, mBluetoothGattCallback);
@@ -168,22 +162,12 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
                 mStatus = Status.CONNECTED;
 
                 // Inform listeners
-                mListeners.dispatch(new Dispatcher<HeartRateListener>() {
-                    @Override
-                    public void dispatch(HeartRateListener listener) {
-                        listener.onConnected();
-                    }
-                });
+                mListeners.dispatch(HeartRateListener::onConnected);
             }
 
             if (previousValue != mLastValue) {
                 // Inform listeners
-                mListeners.dispatch(new Dispatcher<HeartRateListener>() {
-                    @Override
-                    public void dispatch(HeartRateListener listener) {
-                        listener.onHeartRateChange(mLastValue);
-                    }
-                });
+                mListeners.dispatch(listener -> listener.onHeartRateChange(mLastValue));
             }
         }
     };
@@ -191,12 +175,7 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
     private void onDisconnect() {
         mStatus = Status.DISCONNECTED;
         mLastValue = -1;
-        mListeners.dispatch(new Dispatcher<HeartRateListener>() {
-            @Override
-            public void dispatch(HeartRateListener listener) {
-                listener.onDisconnected();
-            }
-        });
+        mListeners.dispatch(HeartRateListener::onDisconnected);
     }
 
 
@@ -227,12 +206,7 @@ public class HeartRateManagerJellyBeanMR2 extends HeartRateManager {
     }
 
     private void onError() {
-        mListeners.dispatch(new Dispatcher<HeartRateListener>() {
-            @Override
-            public void dispatch(HeartRateListener listener) {
-                listener.onError();
-            }
-        });
+        mListeners.dispatch(HeartRateListener::onError);
     }
 
 

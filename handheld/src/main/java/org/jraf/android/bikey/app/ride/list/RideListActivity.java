@@ -31,8 +31,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 
 import org.jraf.android.bikey.BuildConfig;
 import org.jraf.android.bikey.R;
@@ -73,12 +71,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ride_list);
-        findViewById(R.id.btnQuickStart).setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                quickStart();
-            }
-        });
+        findViewById(R.id.btnQuickStart).setOnClickListener(v -> quickStart());
         restoreState();
 
         MediaButtonUtil.registerMediaButtonEventReceiverAccordingToPreferences(this);

@@ -424,12 +424,7 @@ public class GoogleDriveSyncManager {
             Log.d("Download " + serverItem);
             DriveFile driveFile = Drive.DriveApi.getFile(googleApiClient, serverItem.driveId);
             DriveApi.DriveContentsResult driveContentsResult =
-                    driveFile.open(googleApiClient, DriveFile.MODE_READ_ONLY, new DriveFile.DownloadProgressListener() {
-                        @Override
-                        public void onProgress(long bytesDownloaded, long bytesExpected) {
-                            Log.d(bytesDownloaded + "/" + bytesExpected);
-                        }
-                    }).await(AWAIT_DELAY_LONG, AWAIT_UNIT_LONG);
+                    driveFile.open(googleApiClient, DriveFile.MODE_READ_ONLY, (bytesDownloaded, bytesExpected) -> Log.d(bytesDownloaded + "/" + bytesExpected)).await(AWAIT_DELAY_LONG, AWAIT_UNIT_LONG);
             Status status = driveContentsResult.getStatus();
             Log.d("driveContentsResult.status=" + status);
             if (!status.isSuccess()) {

@@ -27,7 +27,6 @@ package org.jraf.android.bikey.app.preference;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -123,41 +122,38 @@ public class MainPreferenceFragment extends PreferenceFragment {
         super.onStop();
     }
 
-    private final OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = new OnSharedPreferenceChangeListener() {
-        @Override
-        public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            updateListPreferenceSummary(key);
-            switch (key) {
-                case Constants.PREF_UNITS:
-                    // Update units
-                    UnitUtil.readPreferences(getActivity());
+    private final OnSharedPreferenceChangeListener mOnSharedPreferenceChangeListener = (sharedPreferences, key) -> {
+        updateListPreferenceSummary(key);
+        switch (key) {
+            case Constants.PREF_UNITS:
+                // Update units
+                UnitUtil.readPreferences(getActivity());
 
-                    // Propagate unit preferences to wearables
-                    WearCommHelper.get().updatePreferences();
+                // Propagate unit preferences to wearables
+                WearCommHelper.get().updatePreferences();
 
-                    // Notify observers of rides since they display distances using a conversion depending on the preference
-                    getActivity().getContentResolver().notifyChange(RideColumns.CONTENT_URI, null);
-                    break;
+                // Notify observers of rides since they display distances using a conversion depending on the preference
+                getActivity().getContentResolver().notifyChange(RideColumns.CONTENT_URI, null);
+                break;
 
-                case Constants.PREF_LISTEN_TO_HEADSET_BUTTON:
-                    if (sharedPreferences.getBoolean(key, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) {
-                        MediaButtonUtil.registerMediaButtonEventReceiver(getActivity());
-                    } else {
-                        MediaButtonUtil.unregisterMediaButtonEventReceiver();
-                    }
-                    break;
+            case Constants.PREF_LISTEN_TO_HEADSET_BUTTON:
+                if (sharedPreferences.getBoolean(key, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) {
+                    MediaButtonUtil.registerMediaButtonEventReceiver(getActivity());
+                } else {
+                    MediaButtonUtil.unregisterMediaButtonEventReceiver();
+                }
+                break;
 
-                case Constants.PREF_RECORD_CADENCE:
-                    if (sharedPreferences.getBoolean(Constants.PREF_RECORD_CADENCE, Constants.PREF_RECORD_CADENCE_DEFAULT)) {
-                        getCallbacks().showRecordCadenceConfirmDialog();
-                    } else {
-                        // The pref was unchecked because the user pressed 'No' in the confirmation dialog.
-                        // Update the switch.
-                        SwitchPreference pref = (SwitchPreference) getPreferenceManager().findPreference(Constants.PREF_RECORD_CADENCE);
-                        pref.setChecked(false);
-                    }
-                    break;
-            }
+            case Constants.PREF_RECORD_CADENCE:
+                if (sharedPreferences.getBoolean(Constants.PREF_RECORD_CADENCE, Constants.PREF_RECORD_CADENCE_DEFAULT)) {
+                    getCallbacks().showRecordCadenceConfirmDialog();
+                } else {
+                    // The pref was unchecked because the user pressed 'No' in the confirmation dialog.
+                    // Update the switch.
+                    SwitchPreference pref = (SwitchPreference) getPreferenceManager().findPreference(Constants.PREF_RECORD_CADENCE);
+                    pref.setChecked(false);
+                }
+                break;
         }
     };
 
@@ -169,31 +165,28 @@ public class MainPreferenceFragment extends PreferenceFragment {
         }
     }
 
-    private OnPreferenceClickListener mOnPreferenceClickListener = new OnPreferenceClickListener() {
-        @Override
-        public boolean onPreferenceClick(Preference preference) {
-            if (Constants.PREF_EXPORT.equals(preference.getKey())) {
-                getCallbacks().startExport();
-                return true;
-            } else if (Constants.PREF_IMPORT.equals(preference.getKey())) {
-                getCallbacks().startImport();
-                return true;
-            } else if (Constants.SYNC_WITH_GOOGLE_DRIVE.equals(preference.getKey())) {
-                getCallbacks().syncWithGoogleDrive();
-                return true;
-            } else if (Constants.PREF_HEART_RATE_SCAN.equals(preference.getKey())) {
-                HeartRateManager heartRateManager = HeartRateManager.get();
-                if (heartRateManager.isConnected()) {
-                    getCallbacks().disconnectHeartRateMonitor();
-                } else if (heartRateManager.isConnecting()) {
-                    getCallbacks().tryToReconnectHeartRateMonitorOrGiveUp();
-                } else {
-                    getCallbacks().startHeartRateMonitorScan();
-                }
-                return true;
+    private OnPreferenceClickListener mOnPreferenceClickListener = preference -> {
+        if (Constants.PREF_EXPORT.equals(preference.getKey())) {
+            getCallbacks().startExport();
+            return true;
+        } else if (Constants.PREF_IMPORT.equals(preference.getKey())) {
+            getCallbacks().startImport();
+            return true;
+        } else if (Constants.SYNC_WITH_GOOGLE_DRIVE.equals(preference.getKey())) {
+            getCallbacks().syncWithGoogleDrive();
+            return true;
+        } else if (Constants.PREF_HEART_RATE_SCAN.equals(preference.getKey())) {
+            HeartRateManager heartRateManager = HeartRateManager.get();
+            if (heartRateManager.isConnected()) {
+                getCallbacks().disconnectHeartRateMonitor();
+            } else if (heartRateManager.isConnecting()) {
+                getCallbacks().tryToReconnectHeartRateMonitorOrGiveUp();
+            } else {
+                getCallbacks().startHeartRateMonitorScan();
             }
-            return false;
+            return true;
         }
+        return false;
     };
 
     private HeartRateListener mHeartRateListener = new HeartRateListener() {

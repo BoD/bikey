@@ -135,7 +135,7 @@ dependencies {
     compile "fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:$versions.wearCrashReport@aar"
 
     // Fabric / Crashlytics
-    compile("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") { transitive = true; }
+    compile("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") { transitive = true }
 
     // Wear
     provided "com.google.android.wearable:wearable:$versions.androidWearable"

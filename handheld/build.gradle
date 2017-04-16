@@ -112,15 +112,15 @@ acpg {
 */
 
 dependencies {
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestCompile("com.android.support.test.espresso:espresso-core:$versions.espresso", {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    testCompile 'junit:junit:4.12'
-    testCompile 'org.robolectric:robolectric:3.3.2'
-    testCompile 'org.easytesting:fest-assert-core:2.0M10'
+    testCompile "junit:junit:$versions.junit"
+    testCompile "org.robolectric:robolectric:$versions.robolectric"
+    testCompile "org.easytesting:fest-assert-core:$versions.fest"
 
     // Multidex
-    compile 'com.android.support:multidex:1.0.1'
+    compile "com.android.support:multidex:$versions.multidex"
 
     // Support library
     compile "com.android.support:appcompat-v7:$versions.supportLibrary"
@@ -134,14 +134,14 @@ dependencies {
     annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
 
     // Rx
-    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+    compile "io.reactivex.rxjava2:rxjava:$versions.rxJava"
+    compile "io.reactivex.rxjava2:rxandroid:$versions.rxAndroid"
 
     // Wear Crashreport
-    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.6@aar'
+    compile "fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:$versions.wearCrashReport@aar"
 
     // Fabric / Crashlytics
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') { transitive = true; }
+    compile("com.crashlytics.sdk.android:crashlytics:$versions.crashlytics@aar") { transitive = true; }
 
     compile project(':common')
     // Package the wear apk inside this one

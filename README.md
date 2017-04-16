@@ -15,7 +15,7 @@ Bikey is best used with a bike mount: the data is displayed in full screen with 
 and a single tap cycles through the different information.
 
 Features:
-- Android Wear and Pebble support (keep your phone in your pocket!)
+- Android Wear support (keep your phone in your pocket!)
 - Bluetooth LE heart rate monitors support
 - some useful stats and graphs can be displayed on recorded rides
 - cadence recording capability (requires the phone to stay in your leg pocket)

@@ -6,9 +6,5 @@ build.properties
 local.properties
 etc/apk/*
 etc/proguard/*
-build/intermediates
-handheld/build/*
-wear/build/*
-common/build/*
-pebbleKit/build/*
+build
 .DS_Store

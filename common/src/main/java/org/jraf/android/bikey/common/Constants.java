@@ -54,6 +54,4 @@ public class Constants {
 
     public static final String PREF_ANDROID_WEAR = "PREF_ANDROID_WEAR";
     public static final boolean PREF_ANDROID_WEAR_DEFAULT = false;
-    public static final String PREF_PEBBLE = "PREF_PEBBLE";
-    public static final boolean PREF_PEBBLE_DEFAULT = false;
 }

@@ -1,21 +1,16 @@
 apply plugin: 'com.android.application'
-apply plugin: 'io.fabric'
+if (buildProperties.enableFabric.toBoolean()) apply plugin: 'io.fabric'
+//apply plugin: 'org.jraf.acpg.gradleplugin'
 apply plugin: 'com.getkeepsafe.dexcount'
-apply plugin: 'me.tatarka.retrolambda'
 
 android {
-    compileSdkVersion project.compileSdkVersion
-    buildToolsVersion project.buildToolsVersion
-
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 14
-        targetSdkVersion targetSdkVersion
+        targetSdkVersion versions.targetSdk
         versionCode buildNumber
         versionName buildProperties.versionName
 
@@ -31,9 +26,11 @@ android {
         // Useful for api keys in the manifest (Maps, Crashlytics, ...)
         manifestPlaceholders = buildProperties
 
+        // Setting this to false disables the png generation at buildtime
+        // (see http://android-developers.blogspot.fr/2016/02/android-support-library-232.html)
         vectorDrawables.useSupportLibrary = true
-        multiDexEnabled true
 
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -43,6 +40,11 @@ android {
             keyAlias buildProperties.signingKeyAlias
             keyPassword buildProperties.signingKeyPassword
         }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
     buildTypes {
@@ -63,13 +65,19 @@ android {
     dataBinding {
         enabled = true
     }
+
+    lintOptions {
+        abortOnError true
+        textReport true
+        ignoreWarnings true
+    }
 }
 
 android.applicationVariants.all { variant ->
     // Create new copy tasks, for release builds
     if (variant.buildType.name == 'release') {
         variant.outputs.each { output ->
-            def apkName = "${globalProjectName}-${android.defaultConfig.versionCode}-${variant.flavorName}-signed.apk"
+            def apkName = "${globalProjectName}-${project.name}-${android.defaultConfig.versionCode}-${variant.flavorName}-signed.apk"
 
             // Copy the apk to the 'etc' folder
             def copyApkToEtc = tasks.create("copy${variant.name.capitalize()}ApkToEtc", Copy)
@@ -89,25 +97,53 @@ android.applicationVariants.all { variant ->
     }
 }
 
+/*
+acpg {
+    providerJavaPackage 'org.jraf.android.cinetoday.provider'
+    authority 'org.jraf.android.cinetoday.provider'
+    providerClassName 'CineTodayProvider'
+    databaseFileName 'cinetoday.db'
+    databaseVersion 1
+    sqliteOpenHelperCallbacksClassName 'CineTodaySQLiteOpenHelperCallbacks'
+    enableForeignKeys true
+    useAnnotations true
+    useSupportLibrary false
+}
+*/
+
 dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     testCompile 'junit:junit:4.12'
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    testCompile 'org.easytesting:fest-assert-core:2.0M10'
 
-    compile "com.android.support:appcompat-v7:${supportLibVersion}"
-    compile "com.google.android.gms:play-services-maps:${playServicesVersion}"
-    compile "com.google.android.gms:play-services-drive:${playServicesVersion}"
-    compile "com.jakewharton:butterknife:${butterknifeVersion}"
-    compile "io.reactivex.rxjava2:rxjava:2.0.8"
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
-    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.5@aar'
-    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') { transitive = true; }
-    compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'
+    // Multidex
     compile 'com.android.support:multidex:1.0.1'
+
+    // Support library
+    compile "com.android.support:appcompat-v7:$versions.supportLibrary"
+
+    // Play Services
+    compile "com.google.android.gms:play-services-maps:$versions.playServices"
+    compile "com.google.android.gms:play-services-drive:$versions.playServices"
+
+    // Butterknife
+    compile "com.jakewharton:butterknife:$versions.butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
+
+    // Rx
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // Wear Crashreport
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-mobile:0.6@aar'
+
+    // Fabric / Crashlytics
+    compile('com.crashlytics.sdk.android:crashlytics:2.6.7@aar') { transitive = true; }
+
     compile project(':common')
-    compile project(':PebbleKit')
     // Package the wear apk inside this one
     wearApp project(':wear')
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
 }

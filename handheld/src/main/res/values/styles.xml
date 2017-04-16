@@ -15,7 +15,7 @@
         <item name="android:textColor">@color/primary_text_color_dark</item>
     </style>
 
-    <style name="Widget.Bikey.ListView.Base" parent="@android:style/Widget.Holo.Light.ListView"/>
+    <style name="Widget.Bikey.ListView.Base" parent="@android:style/Widget.Holo.Light.ListView" />
 
     <style name="Widget.Bikey.ListView" parent="Widget.Bikey.ListView.Base">
         <item name="android:paddingLeft">16dp</item>
@@ -42,8 +42,6 @@
         <item name="android:background">@color/action_bar_translucent_bg</item>
     </style>
 
-    <style name="Widget.Bikey.Button" parent="Widget.AppCompat.Button">
-        <item name="android:textColor">#FFF</item>
-    </style>
+    <style name="Widget.Bikey.Button" parent="Widget.AppCompat.Button.Colored" />
 
 </resources>

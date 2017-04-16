@@ -5,5 +5,6 @@ signingStorePassword=changeme
 signingKeyAlias=android_release_key
 signingKeyPassword=changeme
 deployFolder=/www/public/apk/
+enableFabric=false
 apiKeyGoogleMaps=aaabbbcccddd000111222333444
 apiKeyFabric=aaabbbcccddd000111222333444

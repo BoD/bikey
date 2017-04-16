@@ -1,15 +1,12 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion project.compileSdkVersion
-    buildToolsVersion project.buildToolsVersion
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
-    dataBinding {
-        enabled true
-    }
     defaultConfig {
         minSdkVersion 14
-        targetSdkVersion targetSdkVersion
+        targetSdkVersion versions.targetSdk
     }
 
     buildTypes {
@@ -20,13 +17,16 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    dataBinding {
+        enabled true
+    }
 }
 
 dependencies {
-    // Google Play Services
-    compile "com.google.android.gms:play-services-wearable:${playServicesVersion}"
+    // Play Services
+    compile "com.google.android.gms:play-services-wearable:$versions.playServices"
 
-    // Other libs
-    compile "com.jakewharton:butterknife:${butterknifeVersion}"
+    // JRAF util
     compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'
 }

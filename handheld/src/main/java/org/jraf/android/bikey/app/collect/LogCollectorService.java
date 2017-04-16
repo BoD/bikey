@@ -41,10 +41,11 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 
+import io.reactivex.schedulers.Schedulers;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.smartwatchsender.AndroidWearSender;
-import org.jraf.android.bikey.app.smartwatchsender.PebbleSender;
 import org.jraf.android.bikey.backend.cadence.CadenceListener;
 import org.jraf.android.bikey.backend.cadence.CadenceManager;
 import org.jraf.android.bikey.backend.heartrate.HeartRateListener;
@@ -55,10 +56,6 @@ import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
-
-import com.getpebble.android.kit.PebbleKit;
-
-import io.reactivex.schedulers.Schedulers;
 
 public class LogCollectorService extends Service {
     private static final String PREFIX = LogCollectorService.class.getName() + ".";
@@ -72,20 +69,20 @@ public class LogCollectorService extends Service {
     private Integer mLastHeartRate;
     private SharedPreferences mPreferences;
     private AndroidWearSender mAndroidWearSender = null;
-    private PebbleSender mPebbleSender = null;
 
     @Override
     public IBinder onBind(Intent intent) {
         return null;
     }
 
+    @Override
     public void onCreate() {
         super.onCreate();
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
     }
 
     @Override
-    public int onStartCommand(final Intent intent, int flags, int startId) {
+    public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("intent=" + StringUtil.toString(intent));
         if (intent == null) return Service.START_STICKY;
         String action = intent.getAction();
@@ -97,18 +94,13 @@ public class LogCollectorService extends Service {
         return Service.START_STICKY;
     }
 
-    private void startCollecting(final Uri rideUri) {
-        final Context context = getApplicationContext();
+    private void startCollecting(Uri rideUri) {
+        Context context = getApplicationContext();
         Schedulers.io().scheduleDirect(() -> {
             // Smartwatches support (if enabled in prefs)
             if (mPreferences.getBoolean(Constants.PREF_ANDROID_WEAR, Constants.PREF_ANDROID_WEAR_DEFAULT)) {
                 mAndroidWearSender = new AndroidWearSender();
                 mAndroidWearSender.startSending(context);
-            }
-            if (mPreferences.getBoolean(Constants.PREF_PEBBLE, Constants.PREF_PEBBLE_DEFAULT)
-                    && PebbleKit.isWatchConnected(context)) {
-                mPebbleSender = new PebbleSender();
-                mPebbleSender.startSending(LogCollectorService.this);
             }
 
             // First, pause current ride if any
@@ -151,7 +143,7 @@ public class LogCollectorService extends Service {
         });
     }
 
-    private void stopCollecting(final Uri rideUri) {
+    private void stopCollecting(Uri rideUri) {
         Schedulers.io().scheduleDirect(() -> RideManager.get().pause(rideUri));
 
         // Dismiss notification
@@ -171,7 +163,7 @@ public class LogCollectorService extends Service {
 
     private LocationListener mLocationListener = new LocationListener() {
         @Override
-        public void onLocationChanged(final Location location) {
+        public void onLocationChanged(Location location) {
             Schedulers.io().scheduleDirect(() -> {
                 LogManager.get().add(mCollectingRideUri, location, mLastLocation, mLastCadence, mLastHeartRate);
                 mLastLocation = location;
@@ -292,7 +284,6 @@ public class LogCollectorService extends Service {
     public void onDestroy() {
         // Disconnect smartwatch senders
         if (mAndroidWearSender != null) mAndroidWearSender.stopSending();
-        if (mPebbleSender != null) mPebbleSender.stopSending();
 
         // Unregister pref listener
         PreferenceManager.getDefaultSharedPreferences(LogCollectorService.this).unregisterOnSharedPreferenceChangeListener(mOnSharedPreferenceChangeListener);

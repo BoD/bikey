@@ -1,23 +1,37 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
+
+import ca.rmen.lfrc.FrenchRevolutionaryCalendar
+
 import java.text.SimpleDateFormat
 
 ext.globalProjectName = 'bikey'
 
-// Run './gradlew dependencyUpdates' to see new versions of dependencies
-apply plugin: 'com.github.ben-manes.versions'
-
 buildscript {
+    // Versions used across modules
+    ext.versions = [:]
+    ext.versions.with {
+        androidGradlePlugin = '2.4.0-alpha6'
+        compileSdk = 24
+        targetSdk = 22
+        buildTools = '25.0.2'
+        supportLibrary = '25.3.1'
+        playServices = '10.2.1'
+        butterknife = '8.5.1'
+    }
+
     repositories {
+        mavenLocal()
         jcenter()
         maven { url 'https://maven.fabric.io/public' }
     }
+
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.3.1'
+        classpath "com.android.tools.build:gradle:$versions.androidGradlePlugin"
         classpath 'com.github.ben-manes:gradle-versions-plugin:0.14.0'
         classpath 'ca.rmen:lib-french-revolutionary-calendar:1.5.2'
         classpath 'io.fabric.tools:gradle:1.22.1'
         classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:0.6.4'
-        classpath 'me.tatarka:gradle-retrolambda:3.6.0'
+        classpath 'org.jraf:acpg-gradle-plugin:1.13.0'
     }
 }
 
@@ -25,31 +39,28 @@ allprojects {
     repositories {
         mavenLocal()
         jcenter()
+        mavenCentral()
         maven { url "https://jitpack.io" }
         maven { url 'https://maven.fabric.io/public' }
     }
-    dependencyUpdates.resolutionStrategy = {
-        componentSelection { rules ->
-            rules.all { ComponentSelection selection ->
-                boolean rejected = ['alpha', 'alpha-preview', 'beta', 'rc', 'cr', 'm'].any { qualifier ->
-                    selection.candidate.version ==~ /(?i).*[.-]${qualifier}[.\d-]*/
-                }
-                if (rejected) {
-                    selection.reject('Release candidate')
-                }
-            }
-        }
-    }
+
     // Force using our version of the support libraries, even for those we don't depend on directly (transitive dependencies)
     configurations.all {
         resolutionStrategy {
-            force "com.android.support:appcompat-v7:$supportLibVersion",
-                    "com.android.support:cardview-v7:$supportLibVersion",
-                    "com.android.support:customtabs:$supportLibVersion",
-                    "com.android.support:support-v4:$supportLibVersion",
-                    "com.android.support:support-annotations:$supportLibVersion",
-                    "com.android.support:percent:$supportLibVersion",
-                    "com.android.support:recyclerview-v7:$supportLibVersion"
+            force "com.android.support:appcompat-v7:$versions.supportLibrary",
+                    "com.android.support:cardview-v7:$versions.supportLibrary",
+                    "com.android.support:customtabs:$versions.supportLibrary",
+                    "com.android.support:support-v4:$versions.supportLibrary",
+                    "com.android.support:support-annotations:$versions.supportLibrary",
+                    "com.android.support:percent:$versions.supportLibrary",
+                    "com.android.support:recyclerview-v7:$versions.supportLibrary"
+        }
+    }
+
+    // Show a report in the log when running tests
+    tasks.withType(Test) {
+        testLogging {
+            events "passed", "skipped", "failed", "standardOut", "standardError"
         }
     }
 }
@@ -58,6 +69,10 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+    distributionType = Wrapper.DistributionType.ALL
+}
 
 // Add a 'release' task that increments the build number
 def releaseTask = tasks.create(name: 'release', group: 'build')
@@ -75,6 +90,20 @@ subprojects {
     }
 }
 
+// Run './gradlew dependencyUpdates' to see new versions of dependencies
+apply plugin: 'com.github.ben-manes.versions'
+dependencyUpdates.resolutionStrategy = {
+    componentSelection { rules ->
+        rules.all { ComponentSelection selection ->
+            boolean rejected = ['alpha', 'beta', 'rc', '20050927'].any { qualifier ->
+                selection.candidate.version ==~ /.*-${qualifier}.*/
+            }
+            if (rejected) {
+                selection.reject('Release candidate')
+            }
+        }
+    }
+}
 
 // Returns the name of the current git branch
 def gitBranch() {
@@ -87,25 +116,40 @@ def gitSha1() {
 }
 
 // Returns the current date/time formatted in UTC
-def buildDate() {
+static def buildDate() {
     def dateFormat = new SimpleDateFormat('yyyy-MM-dd\'T\'HH:mm\'Z\'')
     dateFormat.setTimeZone(TimeZone.getTimeZone('UTC'))
     return dateFormat.format(new Date())
 }
 
 // This only for amusement purposes
-def getFrenchDate() {
-    def frenchDate = new ca.rmen.lfrc.FrenchRevolutionaryCalendar(Locale.FRENCH, ca.rmen.lfrc.FrenchRevolutionaryCalendar.CalculationMethod.ROMME).getDate(GregorianCalendar.getInstance())
+static def getFrenchDate() {
+    def frenchDate = new FrenchRevolutionaryCalendar(Locale.FRENCH, FrenchRevolutionaryCalendar.CalculationMethod.ROMME).getDate(GregorianCalendar.getInstance())
     "Le ${frenchDate.weekdayName} ${frenchDate.dayOfMonth} ${frenchDate.monthName} de l'an ${frenchDate.year}. (${frenchDate.objectTypeName} du jour : ${frenchDate.dayOfYear})"
+}
+
+// Returns a file on the project's root - creates it from a sample if it doesn't exist
+def getAndCreateIfNotExists(String fileName) {
+    def res = file(fileName)
+    if (!res.exists()) {
+        logger.warn("$fileName file does not exist: creating it now - please check its values")
+        copy {
+            from "${fileName}.SAMPLE"
+            into project.projectDir
+            rename { fileName }
+        }
+    }
+    return res
 }
 
 // Build properties
 ext.buildProperties = new Properties()
-buildProperties.load(new FileInputStream(file('build.properties')))
+def buildPropertiesFile = getAndCreateIfNotExists('build.properties')
+buildProperties.load(new FileInputStream(buildPropertiesFile))
 
 // Build number
-ext.buildNumberFile = file('build.number')
 ext.buildNumberProperties = new Properties()
+ext.buildNumberFile = getAndCreateIfNotExists('build.number')
 buildNumberProperties.load(new FileInputStream(buildNumberFile))
 ext.buildNumber = buildNumberProperties.buildNumber.toInteger()
 
@@ -113,14 +157,6 @@ ext.buildNumber = buildNumberProperties.buildNumber.toInteger()
 ext.gitBranch = gitBranch()
 ext.gitSha1 = gitSha1()
 ext.buildDate = buildDate()
-
-// Versions used across modules
-ext.compileSdkVersion = 24
-ext.targetSdkVersion = 22
-ext.buildToolsVersion = '25.0.2'
-ext.supportLibVersion = '25.3.1'
-ext.playServicesVersion = '10.2.1'
-ext.butterknifeVersion = '8.5.1'
 
 // Splash screen
 println """\n

@@ -1,21 +1,31 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion project.compileSdkVersion
-    buildToolsVersion project.buildToolsVersion
+    compileSdkVersion versions.compileSdk
+    buildToolsVersion versions.buildTools
 
-    dataBinding {
-        enabled true
-    }
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
         minSdkVersion 21
-        targetSdkVersion targetSdkVersion
+        targetSdkVersion versions.targetSdk
         versionCode buildNumber
         versionName buildProperties.versionName
 
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+
+        buildConfigField 'String', 'GIT_SHA1', "\"${gitSha1}\""
+        buildConfigField 'String', 'BUILD_DATE', "\"${buildDate}\""
         // For now we enable strict mode for all the configs
         buildConfigField 'boolean', 'STRICT_MODE', 'true'
+
+        resConfigs 'en', 'fr'
+
+        // Useful for api keys in the manifest (Maps, Crashlytics, ...)
+        manifestPlaceholders = buildProperties
+
+        // Setting this to false disables the png generation at buildtime
+        // (see http://android-developers.blogspot.fr/2016/02/android-support-library-232.html)
+        vectorDrawables.useSupportLibrary = true
     }
 
     signingConfigs {
@@ -27,22 +37,34 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     buildTypes {
         debug {
             buildConfigField 'boolean', 'CRASH_REPORT', 'false'
-
-            minifyEnabled false
-            shrinkResources false
         }
 
         release {
             buildConfigField 'boolean', 'CRASH_REPORT', 'true'
 
             minifyEnabled true
-            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            shrinkResources true
             signingConfig signingConfigs.release
         }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    lintOptions {
+        abortOnError true
+        textReport true
+        ignoreWarnings true
     }
 }
 
@@ -50,7 +72,10 @@ dependencies {
     // Common module
     compile project(':common')
 
-    // Other libs
-    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.5@aar'
-    annotationProcessor "com.jakewharton:butterknife-compiler:${butterknifeVersion}"
+    // Butterknife
+    compile "com.jakewharton:butterknife:$versions.butterknife"
+    annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
+
+    // Wear Crashreport
+    compile 'fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:0.6@aar'
 }

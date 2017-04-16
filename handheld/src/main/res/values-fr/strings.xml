@@ -103,15 +103,13 @@
     <string name="preference_smartwatches_title">Smartwatches</string>
     <string name="preference_androidWear_title">Android Wear</string>
     <string name="preference_androidWear_summary">Se connecter à une smartwatch Android Wear</string>
-    <string name="preference_pebble_title">Pebble</string>
-    <string name="preference_pebble_summary">Se connecter à une smartwatch Pebble</string>
     <string name="preference_importDialog_title">Sélectionner le fichier à importer</string>
     <string name="preference_import_failToast">Échec de l\'importation des parcours.</string>
     <string name="preference_import_successToast">Succès de l\'importation des parcours.</string>
 
     <!-- About -->
     <string name="about_title">À propos</string>
-    <string name="about_txtInfo2" tools:ignore="TypographyOther,TypographyDashes">Copyright (C) 2013-2015 Benoit \'BoD\' Lubek.\nCode additionnel par Carmen Alvarez (c@rmen.ca).</string>
+    <string name="about_txtInfo2" tools:ignore="TypographyOther,TypographyDashes">Copyright (C) 2013-2017 Benoit \'BoD\' Lubek.\nCode additionnel par Carmen Alvarez (c@rmen.ca).</string>
     <string name="about_shareText_subject">Essayez Bikey !</string>
     <string name="about_shareText_body">Bikey pour Android est une appli excellente !\nTestez là ici :\nhttp://play.google.com/store/apps/details?id=%s</string>
 

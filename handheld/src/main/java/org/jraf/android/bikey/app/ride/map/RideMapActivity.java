@@ -41,16 +41,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
-import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.backend.log.LogManager;
-import org.jraf.android.bikey.backend.provider.ride.RideCursor;
-import org.jraf.android.bikey.backend.ride.RideManager;
-import org.jraf.android.bikey.common.Constants;
-import org.jraf.android.util.app.base.BaseAppCompatActivity;
-import org.jraf.android.util.async.Task;
-import org.jraf.android.util.async.TaskFragment;
-import org.jraf.android.util.handler.HandlerUtil;
-
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -62,6 +52,16 @@ import com.google.android.gms.maps.model.PolylineOptions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
+import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.backend.log.LogManager;
+import org.jraf.android.bikey.backend.provider.ride.RideCursor;
+import org.jraf.android.bikey.backend.ride.RideManager;
+import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.util.app.base.BaseAppCompatActivity;
+import org.jraf.android.util.async.Task;
+import org.jraf.android.util.async.TaskFragment;
+import org.jraf.android.util.handler.HandlerUtil;
 
 public class RideMapActivity extends BaseAppCompatActivity {
     private Uri mRideUri;
@@ -272,7 +272,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
     @WorkerThread
     private GoogleMap getMap() {
         if (mMap == null) {
-            final CountDownLatch latch = new CountDownLatch(1);
+            CountDownLatch latch = new CountDownLatch(1);
             HandlerUtil.runOnUiThread(() -> {
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 mapFragment.getMapAsync(googleMap -> {

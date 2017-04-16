@@ -31,15 +31,15 @@ import android.support.annotation.WorkerThread;
 import android.view.View;
 import android.widget.Chronometer;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.fragment.SimpleDisplayFragment;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
-
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
     private Chronometer mChronometer;
@@ -67,10 +67,10 @@ public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         // Ride updates
-        final RideManager rideManager = RideManager.get();
+        RideManager rideManager = RideManager.get();
         rideManager.addListener(mRideListener);
 
-        final Uri rideUri = getRideUri();
+        Uri rideUri = getRideUri();
         if (rideUri == null) return;
 
 
@@ -98,7 +98,7 @@ public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
     @WorkerThread
     private RideDurationInfo readRideDurationInfo(Uri rideUri) {
         RideDurationInfo result = new RideDurationInfo();
-        final RideManager rideManager = RideManager.get();
+        RideManager rideManager = RideManager.get();
         result.duration = rideManager.getDuration(rideUri);
         result.isActive = rideManager.getState(rideUri) == RideState.ACTIVE;
         result.activatedDate = result.isActive ? rideManager.getActivatedDate(rideUri).getTime() : 0;
@@ -114,7 +114,7 @@ public class ElapsedTimeDisplayFragment extends SimpleDisplayFragment {
 
     private RideListener mRideListener = new RideListener() {
         @Override
-        public void onActivated(final Uri rideUri) {
+        public void onActivated(Uri rideUri) {
             if (!rideUri.equals(getRideUri())) return;
 
             Single.fromCallable(() -> RideManager.get().getDuration(rideUri))

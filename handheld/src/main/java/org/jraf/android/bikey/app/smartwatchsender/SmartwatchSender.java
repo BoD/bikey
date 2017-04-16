@@ -1,18 +1,18 @@
 package org.jraf.android.bikey.app.smartwatchsender;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import android.content.Context;
 import android.net.Uri;
+
+import io.reactivex.schedulers.Schedulers;
 
 import org.jraf.android.bikey.backend.location.Speedometer;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.log.Log;
-
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Abstract class to send values to smartwatches.
@@ -54,7 +54,7 @@ public abstract class SmartwatchSender {
 
     private RideListener mRideListener = new RideListener() {
         @Override
-        public void onActivated(final Uri rideUri) {
+        public void onActivated(Uri rideUri) {
             Log.d();
             mActiveRideUri = rideUri;
             Schedulers.io().scheduleDirect(() -> {

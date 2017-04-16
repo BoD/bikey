@@ -29,16 +29,16 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 
+import io.reactivex.Maybe;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 import org.jraf.android.bikey.backend.log.LogListener;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
 import org.jraf.android.bikey.backend.ride.RideListener;
 import org.jraf.android.bikey.backend.ride.RideManager;
-
-import io.reactivex.Maybe;
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public abstract class LogDisplayFragment extends SimpleDisplayFragment {
 
@@ -47,10 +47,10 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         super.onActivityCreated(savedInstanceState);
 
         // Ride updates
-        final RideManager rideManager = RideManager.get();
+        RideManager rideManager = RideManager.get();
         rideManager.addListener(mRideListener);
 
-        final Uri rideUri = getRideUri();
+        Uri rideUri = getRideUri();
         if (rideUri == null) return;
 
         Single.fromCallable(() -> readLogDisplayInfo(rideUri))
@@ -89,7 +89,7 @@ public abstract class LogDisplayFragment extends SimpleDisplayFragment {
         super.onStart();
 
         // Log updates
-        final LogManager logManager = LogManager.get();
+        LogManager logManager = LogManager.get();
         logManager.addListener(mLogListener);
     }
 

@@ -145,7 +145,7 @@ public class LocationManager {
 
     private LocationListener mLocationListener = new LocationListener() {
         @Override
-        public void onLocationChanged(final Location location) {
+        public void onLocationChanged(Location location) {
             Log.d("location=" + location);
             if (location.hasAccuracy() && location.getAccuracy() > ACCURACY_THRESHOLD_M) {
                 Log.d("Accuracy above threshold: ignore location");
@@ -261,7 +261,7 @@ public class LocationManager {
         }
     };
 
-    protected void setActive(final boolean active) {
+    protected void setActive(boolean active) {
         if (mActive != active) {
             // Dispatch to listeners
             mStatusListeners.dispatch(listener -> listener.onStatusChanged(active));

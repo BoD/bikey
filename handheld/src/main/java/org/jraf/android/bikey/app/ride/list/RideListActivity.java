@@ -193,7 +193,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
         dialog.show(this);
     }
 
-    private void delete(final long[] ids) {
+    private void delete(long[] ids) {
         new TaskFragment(new Task<RideListActivity>() {
             @Override
             protected void doInBackground() throws Throwable {
@@ -221,7 +221,7 @@ public class RideListActivity extends BaseAppCompatActivity implements AlertDial
         dialog.show(this);
     }
 
-    private void merge(final long[] ids) {
+    private void merge(long[] ids) {
         new TaskFragment(new Task<RideListActivity>() {
             @Override
             protected void doInBackground() throws Throwable {

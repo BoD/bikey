@@ -109,7 +109,7 @@ public class BleScanListFragment extends ListFragment {
 
     private LeScanCallback mLeScanCallback = new LeScanCallback() {
         @Override
-        public void onLeScan(final BluetoothDevice device, int rssi, byte[] scanRecord) {
+        public void onLeScan(BluetoothDevice device, int rssi, byte[] scanRecord) {
             Log.d("device=" + device.getAddress());
 
             if (mFoundDeviceAddressList.contains(device.getAddress())) {

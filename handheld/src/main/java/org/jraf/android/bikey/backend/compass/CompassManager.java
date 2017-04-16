@@ -115,7 +115,7 @@ public class CompassManager {
                 float[] deviceOrientation = new float[3];
                 SensorManager.getOrientation(mOutR, deviceOrientation);
                 float azimuth = deviceOrientation[0];
-                final float value = 1f - (float) (azimuth / (2 * Math.PI));
+                float value = 1f - (float) (azimuth / (2 * Math.PI));
 
                 mListeners.dispatch(listener -> listener.onCompassChange(value));
             }

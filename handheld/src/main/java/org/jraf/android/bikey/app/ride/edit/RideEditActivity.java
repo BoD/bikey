@@ -55,7 +55,7 @@ public class RideEditActivity extends BaseAppCompatActivity {
     }
 
     private void populateViews() {
-        final Uri rideUri = getIntent().getData();
+        Uri rideUri = getIntent().getData();
         if (rideUri == null) return;
         new TaskFragment(new Task<RideEditActivity>() {
             private String mRideName;

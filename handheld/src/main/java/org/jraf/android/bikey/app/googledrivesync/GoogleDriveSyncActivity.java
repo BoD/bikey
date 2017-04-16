@@ -34,6 +34,14 @@ import android.widget.CheckedTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.googledrive.GoogleDriveSyncListener;
 import org.jraf.android.bikey.backend.googledrive.GoogleDriveSyncManager;
@@ -43,14 +51,6 @@ import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.dialog.AlertDialogFragment;
 import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.log.Log;
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Drive;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
         GoogleDriveSyncListener, AlertDialogListener {
@@ -232,7 +232,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     public void onUploadNewLocalItemsStart() {}
 
     @Override
-    public void onUploadNewLocalItemsProgress(final int progress, final int total) {
+    public void onUploadNewLocalItemsProgress(int progress, int total) {
         runOnUiThread(() -> {
             mPgbUploadNewLocalItems.setMax(total);
             mPgbUploadNewLocalItems.setProgress(progress);
@@ -248,12 +248,12 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     public void onDownloadNewRemoteItemsStart() {}
 
     @Override
-    public void onDownloadNewRemoteItemsOverallProgress(final int progress, final int total) {
+    public void onDownloadNewRemoteItemsOverallProgress(int progress, int total) {
         runOnUiThread(() -> mTxtDownloadNewRemoteItems.setText(getString(R.string.googleDriveSync_downloadNewRemoteItems_progress, progress, total)));
     }
 
     @Override
-    public void onDownloadNewRemoteItemsDownloadProgress(final long progress, final long total) {
+    public void onDownloadNewRemoteItemsDownloadProgress(long progress, long total) {
         runOnUiThread(() -> {
             mPgbDownloadNewRemoteItems.setMax((int) total);
             mPgbDownloadNewRemoteItems.setProgress((int) progress);
@@ -268,7 +268,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     }
 
     @Override
-    public void onSyncFinish(final boolean success) {
+    public void onSyncFinish(boolean success) {
         Log.d();
         runOnUiThread(() -> {
             if (success) {

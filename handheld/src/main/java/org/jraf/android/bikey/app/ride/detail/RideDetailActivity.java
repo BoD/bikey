@@ -43,6 +43,19 @@ import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
 import org.jraf.android.bikey.app.ride.edit.RideEditActivity;
@@ -67,19 +80,6 @@ import org.jraf.android.util.handler.HandlerUtil;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.math.MathUtil;
 import org.jraf.android.util.ui.graph.GraphView;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class RideDetailActivity extends BaseAppCompatActivity implements AlertDialogListener {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
@@ -405,7 +405,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     @WorkerThread
     private GoogleMap getMap() {
         if (mMap == null) {
-            final CountDownLatch latch = new CountDownLatch(1);
+            CountDownLatch latch = new CountDownLatch(1);
             HandlerUtil.runOnUiThread(() -> {
                 SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
                 if (mapFragment == null) {
@@ -448,7 +448,7 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     }
 
     private void delete() {
-        final long[] ids = {ContentUris.parseId(mRideUri)};
+        long[] ids = {ContentUris.parseId(mRideUri)};
         new TaskFragment(new Task<RideDetailActivity>() {
             @Override
             protected void doInBackground() throws Throwable {

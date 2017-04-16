@@ -79,7 +79,7 @@ public class RideManager {
             values.putName(name);
         }
         values.putState(RideState.CREATED);
-        values.putDuration(0l);
+        values.putDuration(0L);
         values.putDistance(0f);
         return values.insert(mContext);
     }
@@ -125,10 +125,10 @@ public class RideManager {
         String[] projection = {RideColumns._ID};
         RideSelection rideSelection = new RideSelection();
         rideSelection.id(ids);
-        String order = RideColumns.CREATED_DATE;
+        rideSelection.orderByCreatedDate();
         ContentResolver contentResolver = mContext.getContentResolver();
-        RideCursor rideCursor = rideSelection.query(contentResolver, projection, order);
-        long masterRideId = 0;
+        RideCursor rideCursor = rideSelection.query(contentResolver, projection);
+        long masterRideId;
         try {
             rideCursor.moveToNext();
             masterRideId = rideCursor.getId();
@@ -199,7 +199,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public void activate(final @NonNull Uri rideUri) {
+    public void activate(@NonNull Uri rideUri) {
         // Get first activated date
         Date firstActivatedDate = getFirstActivatedDate(rideUri);
 
@@ -245,7 +245,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public void pause(final @NonNull Uri rideUri) {
+    public void pause(@NonNull Uri rideUri) {
         // Get current activated date / duration
         String[] projection = {RideColumns.ACTIVATED_DATE, RideColumns.DURATION};
         RideCursor c = new RideCursor(mContext.getContentResolver().query(rideUri, projection, null, null, null));
@@ -300,7 +300,7 @@ public class RideManager {
 
     @WorkerThread
     public void setCurrentRide(@NonNull Uri rideUri) {
-        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString(Constants.PREF_CURRENT_RIDE_URI, rideUri.toString()).commit();
+        PreferenceManager.getDefaultSharedPreferences(mContext).edit().putString(Constants.PREF_CURRENT_RIDE_URI, rideUri.toString()).apply();
     }
 
     @WorkerThread
@@ -329,7 +329,7 @@ public class RideManager {
     }
 
     @WorkerThread
-    public Date getFirstActivatedDate(@NonNull Uri rideUri) {
+    private Date getFirstActivatedDate(@NonNull Uri rideUri) {
         RideCursor c = query(rideUri);
         try {
             return c.getFirstActivatedDate();

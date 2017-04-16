@@ -35,6 +35,8 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.jraf.android.bikey.app.Application;
 import org.jraf.android.bikey.backend.location.LocationManager;
 import org.jraf.android.bikey.backend.location.LocationPair;
@@ -45,8 +47,6 @@ import org.jraf.android.bikey.backend.provider.log.LogSelection;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.util.listeners.Listeners;
 import org.jraf.android.util.log.Log;
-
-import com.google.android.gms.maps.model.LatLng;
 
 public class LogManager {
     private static final LogManager INSTANCE = new LogManager();
@@ -63,7 +63,7 @@ public class LogManager {
     }
 
     @WorkerThread
-    public Uri add(final @NonNull Uri rideUri, Location location, Location previousLocation, Float cadence, Integer heartRate) {
+    public Uri add(@NonNull Uri rideUri, Location location, Location previousLocation, Float cadence, Integer heartRate) {
         // Add a log
         LogContentValues values = new LogContentValues();
         long rideId = ContentUris.parseId(rideUri);
@@ -100,7 +100,7 @@ public class LogManager {
     @WorkerThread
     public float getTotalDistance(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")" };
+        String[] projection = {"sum(" + LogColumns.LOG_DISTANCE + ")"};
         LogSelection where = new LogSelection();
         where.rideId(rideId);
         Cursor c = where.query(mContext, projection);
@@ -121,7 +121,7 @@ public class LogManager {
         float max = getMaxSpeed(rideUri);
 
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.LOG_DISTANCE + ")/sum(" + LogColumns.LOG_DURATION + ")*1000" };
+        String[] projection = {"sum(" + LogColumns.LOG_DISTANCE + ")/sum(" + LogColumns.LOG_DURATION + ")*1000"};
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S).and().speedLtEq(max);
         Cursor c = where.query(mContext, projection);
@@ -143,7 +143,7 @@ public class LogManager {
         float max = getMaxCadence(rideUri);
 
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "avg(" + LogColumns.CADENCE + ")" };
+        String[] projection = {"avg(" + LogColumns.CADENCE + ")"};
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().cadenceGtEq(min).and().cadenceLtEq(max);
         Cursor c = where.query(mContext, projection);
@@ -166,7 +166,7 @@ public class LogManager {
         float max = getMaxHeartRate(rideUri);
 
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "avg(" + LogColumns.HEART_RATE + ")" };
+        String[] projection = {"avg(" + LogColumns.HEART_RATE + ")"};
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().heartRateGtEq((int) min).and().heartRateLtEq((int) max);
         Cursor c = where.query(mContext, projection);
@@ -182,7 +182,7 @@ public class LogManager {
     @WorkerThread
     public Long getMovingDuration(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "sum(" + LogColumns.LOG_DURATION + ")" };
+        String[] projection = {"sum(" + LogColumns.LOG_DURATION + ")"};
         LogSelection where = new LogSelection();
         where.rideId(rideId).and().speedGt(LocationManager.SPEED_MIN_THRESHOLD_M_S);
         Cursor c = where.query(mContext, projection);
@@ -199,16 +199,18 @@ public class LogManager {
      * Note: the top 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public float getMax(@NonNull Uri rideUri, @NonNull String column) {
+    private float getMax(@NonNull Uri rideUri, @NonNull String column) {
         // Get the point count to discard the top 10% values
         Integer count = getLogCount(rideUri);
         if (count == null) return 0;
 
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { column };
-        LogSelection where = new LogSelection();
-        where.rideId(rideId).and().addRaw(column + " IS NOT NULL");
-        Cursor c = where.query(mContext, projection, column + " DESC LIMIT " + count / 10);
+        String[] projection = {column};
+        LogSelection where = new LogSelection()
+                .rideId(rideId).and().addRaw(column + " IS NOT NULL")
+                .orderBy(column, true)
+                .limit(count / 10);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToLast()) return 0;
             return c.getFloat(0);
@@ -221,12 +223,13 @@ public class LogManager {
      * Note: the bottom 10% points are discarded to account for imprecise values.
      */
     @WorkerThread
-    public float getMin(@NonNull Uri rideUri, @NonNull String column) {
+    private float getMin(@NonNull Uri rideUri, @NonNull String column) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { column };
-        LogSelection where = new LogSelection();
-        where.rideId(rideId).and().addRaw(column + " IS NOT NULL");
-        Cursor c = where.query(mContext, projection, column);
+        String[] projection = {column};
+        LogSelection where = new LogSelection()
+                .rideId(rideId).and().addRaw(column + " IS NOT NULL")
+                .orderBy(column);
+        Cursor c = where.query(mContext, projection);
         try {
             if (!c.moveToFirst()) return 0;
             int count = c.getCount();
@@ -264,11 +267,10 @@ public class LogManager {
     }
 
 
-
     @WorkerThread
     public Long getFirstLogDate(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "min(" + LogColumns.RECORDED_DATE + ")" };
+        String[] projection = {"min(" + LogColumns.RECORDED_DATE + ")"};
         LogSelection where = new LogSelection();
         where.rideId(rideId);
         Cursor c = where.query(mContext, projection);
@@ -284,7 +286,7 @@ public class LogManager {
     @WorkerThread
     public Long getLastLogDate(@NonNull Uri rideUri) {
         long rideId = ContentUris.parseId(rideUri);
-        String[] projection = { "max(" + LogColumns.RECORDED_DATE + ")" };
+        String[] projection = {"max(" + LogColumns.RECORDED_DATE + ")"};
         LogSelection where = new LogSelection();
         where.rideId(rideId);
         Cursor c = where.query(mContext, projection);
@@ -298,7 +300,7 @@ public class LogManager {
     }
 
     private Integer getLogCount(@NonNull Uri rideUri) {
-        String[] projection = { "count(*)" };
+        String[] projection = {"count(*)"};
         long rideId = ContentUris.parseId(rideUri);
         LogSelection where = new LogSelection();
         where.rideId(rideId);
@@ -323,7 +325,7 @@ public class LogManager {
 
         ArrayList<LatLng> res = new ArrayList<>(max);
         // Get the values
-        String[] projection = new String[] { LogColumns.LAT, LogColumns.LON };
+        String[] projection = new String[] {LogColumns.LAT, LogColumns.LON};
         LogSelection where = new LogSelection();
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
@@ -349,7 +351,7 @@ public class LogManager {
 
         ArrayList<Float> res = new ArrayList<>(max);
         // Get the values
-        String[] projection = new String[] { LogColumns.SPEED };
+        String[] projection = new String[] {LogColumns.SPEED};
         LogSelection where = new LogSelection();
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
@@ -375,7 +377,7 @@ public class LogManager {
 
         ArrayList<Float> res = new ArrayList<>(max);
         // Get the values
-        String[] projection = new String[] { LogColumns.CADENCE };
+        String[] projection = new String[] {LogColumns.CADENCE};
         LogSelection where = new LogSelection();
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);
@@ -401,7 +403,7 @@ public class LogManager {
 
         ArrayList<Float> res = new ArrayList<>(max);
         // Get the values
-        String[] projection = new String[] { LogColumns.HEART_RATE };
+        String[] projection = new String[] {LogColumns.HEART_RATE};
         LogSelection where = new LogSelection();
         // Get at most max rows by applying a modulo on the id
         long rideId = ContentUris.parseId(rideUri);

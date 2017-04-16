@@ -113,7 +113,7 @@ public class BikeySQLiteUpgradeHelper {
             + " ;";
     // @formatter:on
 
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (BuildConfig.DEBUG) Log.d(TAG, "Upgrading database from version " + oldVersion + " to " + newVersion);
 
         int curVersion = oldVersion;

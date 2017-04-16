@@ -152,7 +152,7 @@ public class PreferenceActivity extends BaseAppCompatActivity
         }
     }
 
-    private void importRides(final Uri ridesFile) {
+    private void importRides(Uri ridesFile) {
         new TaskFragment(new Task<PreferenceActivity>() {
             @Override
             protected void doInBackground() throws Throwable {

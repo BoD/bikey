@@ -35,6 +35,10 @@ import android.support.annotation.WorkerThread;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.view.KeyEvent;
 
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.collect.LogCollectorService;
 import org.jraf.android.bikey.backend.provider.ride.RideState;
@@ -42,12 +46,6 @@ import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.string.StringUtil;
-
-import java.util.concurrent.Callable;
-
-import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class MediaButtonHandler {
 
@@ -104,7 +102,7 @@ public class MediaButtonHandler {
             if (!sharedPreferences.getBoolean(Constants.PREF_LISTEN_TO_HEADSET_BUTTON, Constants.PREF_LISTEN_TO_HEADSET_BUTTON_DEFAULT)) return false;
 
             // Only care if there is a current ride
-            final Uri currentRideUri = RideManager.get().getCurrentRide();
+            Uri currentRideUri = RideManager.get().getCurrentRide();
             if (currentRideUri == null) return false;
 
             // Only care about key down

@@ -86,10 +86,10 @@ public class SaveToStorageActivity extends FragmentActivity {
         }
     }
 
-    private void copyFile(final File destDir) {
-        final String fileName = mSourceFileUri.getLastPathSegment();
-        final File src = new File(mSourceFileUri.getPath());
-        final File dest = new File(destDir, fileName);
+    private void copyFile(File destDir) {
+        String fileName = mSourceFileUri.getLastPathSegment();
+        File src = new File(mSourceFileUri.getPath());
+        File dest = new File(destDir, fileName);
         String successToast = getString(R.string.saveToStorage_successToast, dest);
         new TaskFragment(new Task<SaveToStorageActivity>() {
             @Override

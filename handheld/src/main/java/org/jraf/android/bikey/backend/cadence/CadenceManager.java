@@ -257,7 +257,7 @@ public class CadenceManager {
     private Runnable mBroadcastCurrentValueRunnable = new Runnable() {
         @Override
         public void run() {
-            final Float value = getCurrentCadence();
+            Float value = getCurrentCadence();
             if (ObjectUtil.equals(mLastValue, value)) {
                 // Skip if the value was the same
                 mLastValue = value;

@@ -31,7 +31,7 @@ import java.util.Date;
 import android.support.annotation.WorkerThread;
 
 import org.jraf.android.bikey.backend.export.Exporter;
-import org.jraf.android.bikey.backend.provider.BikeySQLiteOpenHelper;
+import org.jraf.android.bikey.backend.provider.BikeyProviderSQLiteOpenHelper;
 import org.jraf.android.util.file.FileUtil;
 
 public class DbExporter extends Exporter {
@@ -47,7 +47,7 @@ public class DbExporter extends Exporter {
     @Override
     @WorkerThread
     public void export() throws IOException {
-        File dbFile = getContext().getDatabasePath(BikeySQLiteOpenHelper.DATABASE_FILE_NAME);
+        File dbFile = getContext().getDatabasePath(BikeyProviderSQLiteOpenHelper.DATABASE_FILE_NAME);
         FileUtil.copy(dbFile, getExportFile());
     }
 }

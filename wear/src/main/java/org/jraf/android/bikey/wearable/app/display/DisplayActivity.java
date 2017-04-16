@@ -33,16 +33,6 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import org.jraf.android.bikey.R;
-import org.jraf.android.bikey.common.wear.CommConstants;
-import org.jraf.android.bikey.common.wear.WearCommHelper;
-import org.jraf.android.bikey.common.widget.fragmentcycler.FragmentCycler;
-import org.jraf.android.bikey.wearable.app.display.fragment.currenttime.CurrentTimeDisplayFragment;
-import org.jraf.android.bikey.wearable.app.display.fragment.elapsedtime.ElapsedTimeDisplayFragment;
-import org.jraf.android.bikey.wearable.app.display.fragment.speed.SpeedDisplayFragment;
-import org.jraf.android.bikey.wearable.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
-import org.jraf.android.util.log.Log;
-
 import com.google.android.gms.wearable.DataApi;
 import com.google.android.gms.wearable.DataEvent;
 import com.google.android.gms.wearable.DataEventBuffer;
@@ -53,6 +43,16 @@ import com.google.android.gms.wearable.DataMapItem;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnTouch;
+
+import org.jraf.android.bikey.R;
+import org.jraf.android.bikey.common.wear.CommConstants;
+import org.jraf.android.bikey.common.wear.WearCommHelper;
+import org.jraf.android.bikey.common.widget.fragmentcycler.FragmentCycler;
+import org.jraf.android.bikey.wearable.app.display.fragment.currenttime.CurrentTimeDisplayFragment;
+import org.jraf.android.bikey.wearable.app.display.fragment.elapsedtime.ElapsedTimeDisplayFragment;
+import org.jraf.android.bikey.wearable.app.display.fragment.speed.SpeedDisplayFragment;
+import org.jraf.android.bikey.wearable.app.display.fragment.totaldistance.TotalDistanceDisplayFragment;
+import org.jraf.android.util.log.Log;
 
 public class DisplayActivity extends FragmentActivity {
     @BindView(R.id.txtTitle)
@@ -160,9 +160,9 @@ public class DisplayActivity extends FragmentActivity {
 
                     case CommConstants.PATH_RIDE_VALUES:
                         // Values update
-                        final float rideDistance = dataMap.getFloat(CommConstants.EXTRA_DISTANCE);
-                        final float rideSpeed = dataMap.getFloat(CommConstants.EXTRA_SPEED);
-                        final long rideStartDateOffset = dataMap.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
+                        float rideDistance = dataMap.getFloat(CommConstants.EXTRA_DISTANCE);
+                        float rideSpeed = dataMap.getFloat(CommConstants.EXTRA_SPEED);
+                        long rideStartDateOffset = dataMap.getLong(CommConstants.EXTRA_START_DATE_OFFSET);
                         int heartRate = dataMap.getInt(CommConstants.EXTRA_HEART_RATE);
 
                         runOnUiThread(new Runnable() {

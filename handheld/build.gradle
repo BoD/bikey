@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 if (buildProperties.enableFabric.toBoolean()) apply plugin: 'io.fabric'
-//apply plugin: 'org.jraf.acpg.gradleplugin'
+apply plugin: 'org.jraf.acpg.gradleplugin'
 apply plugin: 'com.getkeepsafe.dexcount'
 
 android {
@@ -97,19 +97,17 @@ android.applicationVariants.all { variant ->
     }
 }
 
-/*
 acpg {
-    providerJavaPackage 'org.jraf.android.cinetoday.provider'
-    authority 'org.jraf.android.cinetoday.provider'
-    providerClassName 'CineTodayProvider'
-    databaseFileName 'cinetoday.db'
-    databaseVersion 1
-    sqliteOpenHelperCallbacksClassName 'CineTodaySQLiteOpenHelperCallbacks'
+    providerJavaPackage 'org.jraf.android.bikey.backend.provider'
+    authority 'org.jraf.android.bikey.backend.provider'
+    providerClassName 'BikeyProvider'
+    databaseFileName 'bikey_provider.db'
+    databaseVersion 6
+    sqliteOpenHelperCallbacksClassName 'BikeySQLiteOpenHelperCallbacks'
     enableForeignKeys true
     useAnnotations true
-    useSupportLibrary false
+    useSupportLibrary true
 }
-*/
 
 dependencies {
     androidTestCompile("com.android.support.test.espresso:espresso-core:$versions.espresso", {

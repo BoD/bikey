@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 import android.content.ContentUris;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.WorkerThread;
@@ -39,9 +40,6 @@ import android.text.format.DateUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -51,10 +49,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.app.display.DisplayActivity;
@@ -68,7 +62,7 @@ import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.UnitUtil;
-import org.jraf.android.bikey.widget.LabelTextView;
+import org.jraf.android.bikey.databinding.RideDetailBinding;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -79,7 +73,6 @@ import org.jraf.android.util.dialog.AlertDialogListener;
 import org.jraf.android.util.handler.HandlerUtil;
 import org.jraf.android.util.log.Log;
 import org.jraf.android.util.math.MathUtil;
-import org.jraf.android.util.ui.graph.GraphView;
 
 public class RideDetailActivity extends BaseAppCompatActivity implements AlertDialogListener {
     private static final String FRAGMENT_RETAINED_STATE = "FRAGMENT_RETAINED_STATE";
@@ -89,77 +82,9 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     private static final int DIALOG_CONFIRM_DELETE = 0;
     private static final int DIALOG_SHARE = 1;
 
+    private RideDetailBinding mBinding;
+
     private Uri mRideUri;
-
-    @BindView(R.id.pgbLoading)
-    protected ProgressBar mPgbLoading;
-
-    @BindView(R.id.conRoot)
-    protected View mConRoot;
-
-    @BindView(R.id.txtDateTimeDate)
-    protected LabelTextView mTxtDateTimeDate;
-
-    @BindView(R.id.txtDateTimeStart)
-    protected LabelTextView mTxtDateTimeStart;
-
-    @BindView(R.id.txtDateTimeFinish)
-    protected LabelTextView mTxtDateTimeFinish;
-
-    @BindView(R.id.txtDurationMoving)
-    protected LabelTextView mTxtDurationMoving;
-
-    @BindView(R.id.txtDurationTotal)
-    protected LabelTextView mTxtDurationTotal;
-
-    @BindView(R.id.txtDistanceTotal)
-    protected LabelTextView mTxtDistanceTotal;
-
-    @BindView(R.id.txtSpeedAverage)
-    protected LabelTextView mTxtSpeedAverage;
-
-    @BindView(R.id.txtSpeedMax)
-    protected LabelTextView mTxtSpeedMax;
-
-    @BindView(R.id.txtCadenceSectionTitle)
-    protected TextView mTxtCadenceSectionTitle;
-
-    @BindView(R.id.txtCadenceAverage)
-    protected LabelTextView mTxtCadenceAverage;
-
-    @BindView(R.id.txtCadenceMax)
-    protected LabelTextView mTxtCadenceMax;
-
-    @BindView(R.id.conMap)
-    protected FrameLayout mConMap;
-
-    @BindView(R.id.conDetailedInfo)
-    protected View mConDetailedInfo;
-
-    @BindView(R.id.txtEmpty)
-    protected View mTxtEmpty;
-
-    @BindView(R.id.grpSpeed)
-    protected GraphView mGrpSpeed;
-
-    @BindView(R.id.grpCadence)
-    protected GraphView mGrpCadence;
-
-    @BindView(R.id.txtHeartRateSectionTitle)
-    protected TextView mTxtHeartRateSectionTitle;
-
-    @BindView(R.id.txtHeartRateMin)
-    protected LabelTextView mTxtHeartRateMin;
-
-    @BindView(R.id.txtHeartRateMax)
-    protected LabelTextView mTxtHeartRateMax;
-
-    @BindView(R.id.txtHeartRateAverage)
-    protected LabelTextView mTxtHeartRateAverage;
-
-    @BindView(R.id.grpHeartRate)
-    protected GraphView mGrpHeartRate;
-
     private RideDetailStateFragment mState;
     private GoogleMap mMap;
 
@@ -167,12 +92,10 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ride_detail);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.ride_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRideUri = getIntent().getData();
-
-        ButterKnife.bind(this);
 
         restoreState();
     }
@@ -248,8 +171,8 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
             @Override
             protected void onPreExecute() {
-                mPgbLoading.setVisibility(View.VISIBLE);
-                mConRoot.setVisibility(View.INVISIBLE);
+                mBinding.pgbLoading.setVisibility(View.VISIBLE);
+                mBinding.conRoot.setVisibility(View.INVISIBLE);
             }
 
             @Override
@@ -298,47 +221,48 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
                 if (a.mMap == null) return;
 
-                a.mPgbLoading.setVisibility(View.GONE);
-                a.mConRoot.setVisibility(View.VISIBLE);
+                a.mBinding.pgbLoading.setVisibility(View.GONE);
+                a.mBinding.conRoot.setVisibility(View.VISIBLE);
 
                 if (mName != null) a.setTitle(mName);
-                a.mTxtDateTimeDate.setText(DateUtils.formatDateTime(a, mCreatedDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
+                a.mBinding.txtDateTimeDate
+                        .setText(DateUtils.formatDateTime(a, mCreatedDate.getTime(), DateUtils.FORMAT_SHOW_DATE | DateUtils.FORMAT_SHOW_WEEKDAY
                         | DateUtils.FORMAT_SHOW_YEAR));
 
                 if (mLatLngArray.isEmpty()) {
                     // Special case: we have no points. Show empty screen.
-                    a.mConMap.setVisibility(View.GONE);
-                    a.mConDetailedInfo.setVisibility(View.GONE);
-                    a.mTxtEmpty.setVisibility(View.VISIBLE);
+                    a.mBinding.conMap.setVisibility(View.GONE);
+                    a.mBinding.conDetailedInfo.setVisibility(View.GONE);
+                    a.mBinding.txtEmpty.setVisibility(View.VISIBLE);
                     return;
                 }
 
                 if (mFirstActivatedDate != null) {
-                    a.mTxtDateTimeStart.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime(), DateUtils.FORMAT_SHOW_TIME));
-                    a.mTxtDateTimeFinish.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime() + mDuration, DateUtils.FORMAT_SHOW_TIME));
+                    mBinding.txtDateTimeStart.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime(), DateUtils.FORMAT_SHOW_TIME));
+                    mBinding.txtDateTimeFinish.setText(DateUtils.formatDateTime(a, mFirstActivatedDate.getTime() + mDuration, DateUtils.FORMAT_SHOW_TIME));
                 }
-                if (mMovingDuration != null) a.mTxtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration.longValue()));
-                a.mTxtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
-                a.mTxtDistanceTotal.setText(UnitUtil.formatDistance(mDistance, true, .85f, false));
+                if (mMovingDuration != null) mBinding.txtDurationMoving.setText(DateTimeUtil.formatDuration(a, mMovingDuration));
+                mBinding.txtDurationTotal.setText(DateTimeUtil.formatDuration(a, mDuration));
+                mBinding.txtDistanceTotal.setText(UnitUtil.formatDistance(mDistance, true, .85f, false));
 
-                a.mTxtSpeedAverage.setText(UnitUtil.formatSpeed(mAverageMovingSpeed, true, .85f, false));
-                a.mTxtSpeedMax.setText(UnitUtil.formatSpeed(mMaxSpeed, true, .85f, false));
+                mBinding.txtSpeedAverage.setText(UnitUtil.formatSpeed(mAverageMovingSpeed, true, .85f, false));
+                mBinding.txtSpeedMax.setText(UnitUtil.formatSpeed(mMaxSpeed, true, .85f, false));
 
                 // Cadence
                 if (mAverageCadence == null) {
-                    a.mTxtCadenceSectionTitle.setVisibility(View.GONE);
-                    a.mTxtCadenceAverage.setVisibility(View.GONE);
-                    a.mTxtCadenceMax.setVisibility(View.GONE);
-                    a.mGrpCadence.setVisibility(View.GONE);
+                    mBinding.txtCadenceSectionTitle.setVisibility(View.GONE);
+                    mBinding.txtCadenceAverage.setVisibility(View.GONE);
+                    mBinding.txtCadenceMax.setVisibility(View.GONE);
+                    mBinding.grpCadence.setVisibility(View.GONE);
                 } else {
-                    a.mTxtCadenceSectionTitle.setVisibility(View.VISIBLE);
-                    a.mTxtCadenceAverage.setVisibility(View.VISIBLE);
-                    a.mTxtCadenceAverage.setText(UnitUtil.formatCadence(mAverageCadence, true));
-                    a.mTxtCadenceMax.setVisibility(View.VISIBLE);
-                    a.mTxtCadenceMax.setText(UnitUtil.formatCadence(mMaxCadence, true));
-                    a.mGrpCadence.setVisibility(View.VISIBLE);
-                    a.mGrpCadence.setColor(0, a.getResources().getColor(R.color.graph_line));
-                    a.mGrpCadence.setValues(0, mCadenceArray);
+                    mBinding.txtCadenceSectionTitle.setVisibility(View.VISIBLE);
+                    mBinding.txtCadenceAverage.setVisibility(View.VISIBLE);
+                    mBinding.txtCadenceAverage.setText(UnitUtil.formatCadence(mAverageCadence, true));
+                    mBinding.txtCadenceMax.setVisibility(View.VISIBLE);
+                    mBinding.txtCadenceMax.setText(UnitUtil.formatCadence(mMaxCadence, true));
+                    mBinding.grpCadence.setVisibility(View.VISIBLE);
+                    mBinding.grpCadence.setColor(0, a.getResources().getColor(R.color.graph_line));
+                    mBinding.grpCadence.setValues(0, mCadenceArray);
                 }
 
                 // Map
@@ -364,31 +288,31 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
                     int padding = getResources().getDimensionPixelSize(R.dimen.ride_detail_map_padding);
                     a.getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
 
-                    a.mConMap.setVisibility(View.VISIBLE);
+                    a.mBinding.conMap.setVisibility(View.VISIBLE);
                 }
 
                 // Speed graph
-                a.mGrpSpeed.setColor(0, a.getResources().getColor(R.color.graph_line));
-                a.mGrpSpeed.setValues(0, mSpeedArray);
+                mBinding.grpSpeed.setColor(0, a.getResources().getColor(R.color.graph_line));
+                mBinding.grpSpeed.setValues(0, mSpeedArray);
 
                 // Heart rate
                 if (mAverageHeartRate == null) {
-                    a.mTxtHeartRateSectionTitle.setVisibility(View.GONE);
-                    a.mTxtHeartRateAverage.setVisibility(View.GONE);
-                    a.mTxtHeartRateMin.setVisibility(View.GONE);
-                    a.mTxtHeartRateMax.setVisibility(View.GONE);
-                    a.mGrpHeartRate.setVisibility(View.GONE);
+                    mBinding.txtHeartRateSectionTitle.setVisibility(View.GONE);
+                    mBinding.txtHeartRateAverage.setVisibility(View.GONE);
+                    mBinding.txtHeartRateMin.setVisibility(View.GONE);
+                    mBinding.txtHeartRateMax.setVisibility(View.GONE);
+                    mBinding.grpHeartRate.setVisibility(View.GONE);
                 } else {
-                    a.mTxtHeartRateSectionTitle.setVisibility(View.VISIBLE);
-                    a.mTxtHeartRateAverage.setVisibility(View.VISIBLE);
-                    a.mTxtHeartRateAverage.setText(UnitUtil.formatHeartRate(mAverageHeartRate.intValue(), true));
-                    a.mTxtHeartRateMin.setVisibility(View.VISIBLE);
-                    a.mTxtHeartRateMin.setText(UnitUtil.formatHeartRate((int) mMinHeartRate, true));
-                    a.mTxtHeartRateMax.setVisibility(View.VISIBLE);
-                    a.mTxtHeartRateMax.setText(UnitUtil.formatHeartRate((int) mMaxHeartRate, true));
-                    a.mGrpHeartRate.setVisibility(View.VISIBLE);
-                    a.mGrpHeartRate.setColor(0, a.getResources().getColor(R.color.graph_line));
-                    a.mGrpHeartRate.setValues(0, mHeartRateArray);
+                    mBinding.txtHeartRateSectionTitle.setVisibility(View.VISIBLE);
+                    mBinding.txtHeartRateAverage.setVisibility(View.VISIBLE);
+                    mBinding.txtHeartRateAverage.setText(UnitUtil.formatHeartRate(mAverageHeartRate.intValue(), true));
+                    mBinding.txtHeartRateMin.setVisibility(View.VISIBLE);
+                    mBinding.txtHeartRateMin.setText(UnitUtil.formatHeartRate((int) mMinHeartRate, true));
+                    mBinding.txtHeartRateMax.setVisibility(View.VISIBLE);
+                    mBinding.txtHeartRateMax.setText(UnitUtil.formatHeartRate((int) mMaxHeartRate, true));
+                    mBinding.grpHeartRate.setVisibility(View.VISIBLE);
+                    mBinding.grpHeartRate.setColor(0, a.getResources().getColor(R.color.graph_line));
+                    mBinding.grpHeartRate.setValues(0, mHeartRateArray);
                 }
             }
         }).execute(getSupportFragmentManager(), false);
@@ -420,13 +344,12 @@ public class RideDetailActivity extends BaseAppCompatActivity implements AlertDi
 
             try {
                 latch.await(2, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {}
         }
         return mMap;
     }
 
-    @OnClick(R.id.vieMapClickLayer)
-    protected void onMapClicked() {
+    public void onMapClicked(View view) {
         Log.d();
         Intent intent = new Intent(this, RideMapActivity.class);
         intent.setData(mRideUri);

@@ -36,7 +36,7 @@ public class TestBikeySQLiteOpenHelper extends SQLiteOpenHelper {
     private static final String TAG = TestBikeySQLiteOpenHelper.class.getSimpleName();
 
     public TestBikeySQLiteOpenHelper(Context context) {
-        super(context, "test_" + BikeySQLiteOpenHelper.DATABASE_FILE_NAME, null, 1);
+        super(context, "test_" + BikeyProviderSQLiteOpenHelper.DATABASE_FILE_NAME, null, 1);
     }
 
     /**
@@ -47,8 +47,8 @@ public class TestBikeySQLiteOpenHelper extends SQLiteOpenHelper {
      */
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(BikeySQLiteOpenHelper.SQL_CREATE_TABLE_LOG);
-        db.execSQL(BikeySQLiteOpenHelper.SQL_CREATE_TABLE_RIDE);
+        db.execSQL(BikeyProviderSQLiteOpenHelper.SQL_CREATE_TABLE_LOG);
+        db.execSQL(BikeyProviderSQLiteOpenHelper.SQL_CREATE_TABLE_RIDE);
     }
 
     @Override

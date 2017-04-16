@@ -1,38 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    android:id="@+id/conMap"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:visibility="invisible">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <RelativeLayout
+        android:id="@+id/conMap"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:uiCompass="true"
-        app:uiRotateGestures="true"
-        app:uiScrollGestures="true"
-        app:uiTiltGestures="true"
-        app:uiZoomControls="true"
-        app:uiZoomGestures="true"
-        app:useViewLifecycle="true" />
+        android:visibility="invisible">
 
-    <View
-        android:id="@+id/vieStatusBarTint"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:background="@color/action_bar_translucent_bg" />
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:uiCompass="true"
+            app:uiRotateGestures="true"
+            app:uiScrollGestures="true"
+            app:uiTiltGestures="true"
+            app:uiZoomControls="true"
+            app:uiZoomGestures="true"
+            app:useViewLifecycle="true" />
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolBar"
-        style="@style/Widget.Bikey.ActionBar.Translucent"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/vieStatusBarTint"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        <View
+            android:id="@+id/vieStatusBarTint"
+            android:layout_width="match_parent"
+            android:layout_height="0px"
+            android:background="@color/action_bar_translucent_bg" />
 
-</RelativeLayout>
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolBar"
+            style="@style/Widget.Bikey.ActionBar.Translucent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/vieStatusBarTint"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    </RelativeLayout>
+</layout>

@@ -20,10 +20,6 @@
     <uses-feature
         android:name="android.hardware.bluetooth_le"
         android:required="false" />
-    <uses-feature
-        android:name="android.hardware.type.watch"
-        android:required="false" />
-
 
     <application
         android:name="org.jraf.android.bikey.app.Application"

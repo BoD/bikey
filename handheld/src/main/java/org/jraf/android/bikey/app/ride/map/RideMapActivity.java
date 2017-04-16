@@ -29,6 +29,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 import android.content.res.TypedArray;
+import android.databinding.DataBindingUtil;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,7 +39,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -50,40 +50,32 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.log.LogManager;
 import org.jraf.android.bikey.backend.provider.ride.RideCursor;
 import org.jraf.android.bikey.backend.ride.RideManager;
 import org.jraf.android.bikey.common.Constants;
+import org.jraf.android.bikey.databinding.RideMapBinding;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
 import org.jraf.android.util.handler.HandlerUtil;
 
 public class RideMapActivity extends BaseAppCompatActivity {
+    private RideMapBinding mBinding;
+
     private Uri mRideUri;
-
-    @BindView(R.id.conMap)
-    protected ViewGroup mConMap;
-
-    @BindView(R.id.vieStatusBarTint)
-    protected View mVieStatusBarTint;
-
     private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ride_map);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.ride_map);
         setSupportActionBar((Toolbar) findViewById(R.id.toolBar));
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mRideUri = getIntent().getData();
 
-        ButterKnife.bind(this);
         tintedStatusBarHack();
 
         loadData();
@@ -160,12 +152,12 @@ public class RideMapActivity extends BaseAppCompatActivity {
 
     private void tintedStatusBarHack() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
-            mVieStatusBarTint.setVisibility(View.GONE);
+            mBinding.vieStatusBarTint.setVisibility(View.GONE);
         } else {
-            mVieStatusBarTint.setVisibility(View.VISIBLE);
-            LayoutParams params = mVieStatusBarTint.getLayoutParams();
+            mBinding.vieStatusBarTint.setVisibility(View.VISIBLE);
+            LayoutParams params = mBinding.vieStatusBarTint.getLayoutParams();
             params.height = getStatusBarHeight();
-            mVieStatusBarTint.setLayoutParams(params);
+            mBinding.vieStatusBarTint.setLayoutParams(params);
         }
     }
 
@@ -255,7 +247,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
                     int padding = getResources().getDimensionPixelSize(R.dimen.ride_detail_map_padding);
                     a.getMap().moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, padding));
 
-                    a.mConMap.setVisibility(View.VISIBLE);
+                    a.mBinding.conMap.setVisibility(View.VISIBLE);
                 }
             }
         }).execute(getSupportFragmentManager());
@@ -283,7 +275,7 @@ public class RideMapActivity extends BaseAppCompatActivity {
 
             try {
                 latch.await(2, TimeUnit.SECONDS);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ignored) {}
         }
         return mMap;
     }

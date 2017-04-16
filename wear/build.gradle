@@ -6,8 +6,8 @@ android {
 
     defaultConfig {
         applicationId 'org.jraf.android.bikey'
-        minSdkVersion 21
-        targetSdkVersion versions.targetSdk
+        minSdkVersion 25
+        targetSdkVersion 25
         versionCode buildNumber
         versionName buildProperties.versionName
 
@@ -72,9 +72,8 @@ dependencies {
     // Common module
     compile project(':common')
 
-    // Butterknife
-    compile "com.jakewharton:butterknife:$versions.butterknife"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$versions.butterknife"
+    // Wear
+    provided "com.google.android.wearable:wearable:$versions.androidWearable"
 
     // Wear Crashreport
     compile "fr.nicolaspomepuy.androidwearcrashreport:crashreport-wear:$versions.wearCrashReport@aar"

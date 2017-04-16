@@ -21,7 +21,6 @@ buildscript {
         buildTools = '25.0.2'
         supportLibrary = '25.3.1'
         playServices = '10.2.1'
-        butterknife = '8.5.1'
         espresso = '2.2.2'
         junit = '4.12'
         robolectric = '3.3.2'
@@ -31,6 +30,7 @@ buildscript {
         rxAndroid = '2.0.1'
         wearCrashReport = '0.6'
         crashlytics = '2.6.7'
+        androidWearable = '2.0.1'
     }
 
     repositories {

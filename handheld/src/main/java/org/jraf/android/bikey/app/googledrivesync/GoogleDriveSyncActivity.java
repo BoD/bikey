@@ -26,25 +26,22 @@ package org.jraf.android.bikey.app.googledrivesync;
 
 import android.content.Intent;
 import android.content.IntentSender;
+import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckedTextView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesUtil;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.drive.Drive;
-
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 import org.jraf.android.bikey.R;
 import org.jraf.android.bikey.backend.googledrive.GoogleDriveSyncListener;
 import org.jraf.android.bikey.backend.googledrive.GoogleDriveSyncManager;
+import org.jraf.android.bikey.databinding.GoogleDriveSyncBinding;
 import org.jraf.android.util.app.base.BaseAppCompatActivity;
 import org.jraf.android.util.async.Task;
 import org.jraf.android.util.async.TaskFragment;
@@ -57,41 +54,15 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     private static final int REQUEST_RESOLVE_CONNECTION = 0;
     private static final int DIALOG_ABORT_SYNC_CONFIRM = 0;
 
-    @BindView(R.id.txtDeleteRemoteItems)
-    protected CheckedTextView mTxtDeleteRemoteItems;
-
-    @BindView(R.id.txtDeleteLocalItems)
-    protected CheckedTextView mTxtDeleteLocalItems;
-
-    @BindView(R.id.txtUploadNewLocalItems)
-    protected CheckedTextView mTxtUploadNewLocalItems;
-
-    @BindView(R.id.pgbUploadNewLocalItems)
-    protected ProgressBar mPgbUploadNewLocalItems;
-
-    @BindView(R.id.txtDownloadNewRemoteItems)
-    protected CheckedTextView mTxtDownloadNewRemoteItems;
-
-    @BindView(R.id.pgbDownloadNewRemoteItems)
-    protected ProgressBar mPgbDownloadNewRemoteItems;
-
-
-    @BindView(R.id.txtSuccess)
-    protected TextView mTxtSuccess;
-
-
-    @BindView(R.id.txtFail)
-    protected TextView mTxtFail;
-
+    private GoogleDriveSyncBinding mBinding;
     private GoogleApiClient mGoogleApiClient;
     private volatile boolean mSyncOnGoing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.google_drive_sync);
+        mBinding = DataBindingUtil.setContentView(this, R.layout.google_drive_sync);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        ButterKnife.bind(this);
         syncWithGoogleDrive();
     }
 
@@ -149,7 +120,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     }
 
     @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         if (connectionResult.hasResolution()) {
             try {
                 connectionResult.startResolutionForResult(this, REQUEST_RESOLVE_CONNECTION);
@@ -157,7 +128,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
                 Log.e("Could not resolve connection failed", e);
             }
         } else {
-            GooglePlayServicesUtil.getErrorDialog(connectionResult.getErrorCode(), this, 0).show();
+            GoogleApiAvailability.getInstance().getErrorDialog(this, connectionResult.getErrorCode(), 0).show();
         }
     }
 
@@ -217,7 +188,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onDeleteRemoteItemsFinish() {
-        runOnUiThread(() -> mTxtDeleteRemoteItems.setChecked(true));
+        runOnUiThread(() -> mBinding.txtDeleteRemoteItems.setChecked(true));
     }
 
     @Override
@@ -225,7 +196,7 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onDeleteLocalItemsFinish() {
-        runOnUiThread(() -> mTxtDeleteLocalItems.setChecked(true));
+        runOnUiThread(() -> mBinding.txtDeleteLocalItems.setChecked(true));
     }
 
     @Override
@@ -234,14 +205,14 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
     @Override
     public void onUploadNewLocalItemsProgress(int progress, int total) {
         runOnUiThread(() -> {
-            mPgbUploadNewLocalItems.setMax(total);
-            mPgbUploadNewLocalItems.setProgress(progress);
+            mBinding.pgbUploadNewLocalItems.setMax(total);
+            mBinding.pgbUploadNewLocalItems.setProgress(progress);
         });
     }
 
     @Override
     public void onUploadNewLocalItemsFinish() {
-        runOnUiThread(() -> mTxtUploadNewLocalItems.setChecked(true));
+        runOnUiThread(() -> mBinding.txtUploadNewLocalItems.setChecked(true));
     }
 
     @Override
@@ -249,20 +220,20 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
 
     @Override
     public void onDownloadNewRemoteItemsOverallProgress(int progress, int total) {
-        runOnUiThread(() -> mTxtDownloadNewRemoteItems.setText(getString(R.string.googleDriveSync_downloadNewRemoteItems_progress, progress, total)));
+        runOnUiThread(() -> mBinding.txtDownloadNewRemoteItems.setText(getString(R.string.googleDriveSync_downloadNewRemoteItems_progress, progress, total)));
     }
 
     @Override
     public void onDownloadNewRemoteItemsDownloadProgress(long progress, long total) {
         runOnUiThread(() -> {
-            mPgbDownloadNewRemoteItems.setMax((int) total);
-            mPgbDownloadNewRemoteItems.setProgress((int) progress);
+            mBinding.pgbDownloadNewRemoteItems.setMax((int) total);
+            mBinding.pgbDownloadNewRemoteItems.setProgress((int) progress);
         });
     }
 
     @Override
     public void onDownloadNewRemoteItemsFinish() {
-        runOnUiThread(() -> mTxtDownloadNewRemoteItems.setChecked(true)
+        runOnUiThread(() -> mBinding.txtDownloadNewRemoteItems.setChecked(true)
 
         );
     }
@@ -272,9 +243,9 @@ public class GoogleDriveSyncActivity extends BaseAppCompatActivity implements Go
         Log.d();
         runOnUiThread(() -> {
             if (success) {
-                mTxtSuccess.setVisibility(View.VISIBLE);
+                mBinding.txtSuccess.setVisibility(View.VISIBLE);
             } else {
-                mTxtFail.setVisibility(View.VISIBLE);
+                mBinding.txtFail.setVisibility(View.VISIBLE);
             }
         });
     }

@@ -21,11 +21,21 @@ android {
     dataBinding {
         enabled true
     }
+
+    lintOptions {
+        abortOnError true
+        textReport true
+        ignoreWarnings true
+    }
 }
 
 dependencies {
     // Play Services
     compile "com.google.android.gms:play-services-wearable:$versions.playServices"
+
+    //  Wear
+    compile "com.google.android.support:wearable:$versions.androidWearable"
+    provided "com.google.android.wearable:wearable:$versions.androidWearable"
 
     // JRAF util
     compile 'com.github.BoD:jraf-android-util:-SNAPSHOT'

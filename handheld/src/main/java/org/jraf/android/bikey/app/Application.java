@@ -52,7 +52,7 @@ public class Application extends android.app.Application {
         sApplication = this;
 
         // Log
-        Log.init(this, Constants.TAG);
+        Log.init(this, Constants.TAG, false);
 
         // Crash reporting
         if (BuildConfig.CRASH_REPORT) {
